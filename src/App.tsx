@@ -1,16 +1,17 @@
-import { useCallback, useState } from "react";
 import {
-  ReactFlow,
+  addEdge,
+  applyEdgeChanges,
+  applyNodeChanges,
   Background,
   Controls,
-  applyNodeChanges,
-  applyEdgeChanges,
-  addEdge,
-  OnNodesChange,
+  Node,
   OnConnect,
   OnEdgesChange,
-  Node,
+  OnNodesChange,
+  ReactFlow,
 } from "@xyflow/react";
+import { useCallback, useState } from "react";
+
 import "@xyflow/react/dist/style.css";
 
 function App() {
@@ -31,26 +32,22 @@ function App() {
   const [nodes, setNodes] = useState(initialNodes);
   const [edges, setEdges] = useState(initialEdges);
 
-  const onNodesChange: OnNodesChange = useCallback(
-    (changes) => {
-      setNodes((oldNodes) => applyNodeChanges(changes, oldNodes));
-    },
-    [],
-  );
+  const onNodesChange: OnNodesChange = useCallback((changes) => {
+    setNodes((oldNodes) => applyNodeChanges(changes, oldNodes));
+  }, []);
   const onEdgesChange: OnEdgesChange = useCallback(
     (changes) => setEdges((eds) => applyEdgeChanges(changes, eds)),
     []
   );
 
   const onConnect: OnConnect = useCallback(
-    (params) => 
-      setEdges((eds) => addEdge(params, eds)),
+    (params) => setEdges((eds) => addEdge(params, eds)),
     []
   );
 
   return (
     <>
-      <div className="w-full h-screen">
+      <div className="h-screen w-full">
         <ReactFlow
           nodes={nodes}
           onNodesChange={onNodesChange}
