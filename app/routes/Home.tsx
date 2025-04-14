@@ -4,17 +4,17 @@ import {
   applyNodeChanges,
   Background,
   Controls,
-  Node,
-  OnConnect,
-  OnEdgesChange,
-  OnNodesChange,
   ReactFlow,
+  type Node,
+  type OnConnect,
+  type OnEdgesChange,
+  type OnNodesChange,
 } from "@xyflow/react";
 import { useCallback, useState } from "react";
 
 import "@xyflow/react/dist/style.css";
 
-function App() {
+const Home = () => {
   const initialNodes: Node[] = [
     {
       id: "1",
@@ -62,6 +62,6 @@ function App() {
       </div>
     </>
   );
-}
+};
 
-export default App;
+export default Home;
