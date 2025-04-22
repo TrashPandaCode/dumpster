@@ -6,19 +6,13 @@ import Value from "~/lib/node-editor/nodes/math-float/Value";
 
 import "@xyflow/react/dist/style.css";
 
+import { nodeTypes } from "./nodes/node-types";
+import { debugNodes } from "./solutions/debug";
+
 const NodeEditor = () => {
-  const nodes = [
-    {
-      id: "1",
-      type: "Add",
-      position: { x: 0, y: 0 },
-      data: { label: "" },
-    },
-  ];
-  const nodeTypes = { Value, Add }; // Define your custom node types here
   return (
     <div style={{ height: "100%" }}>
-      <ReactFlow nodes={nodes} nodeTypes={nodeTypes}>
+      <ReactFlow nodes={debugNodes} nodeTypes={nodeTypes}>
         <Background />
         <Controls />
       </ReactFlow>
