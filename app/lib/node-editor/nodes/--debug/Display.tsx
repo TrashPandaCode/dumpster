@@ -13,6 +13,7 @@ const Display = () => {
       handleType: "target",
     })?.[0].source
   );
+
   return (
     <div>
       <Handle
