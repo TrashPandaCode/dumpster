@@ -15,6 +15,7 @@ import React, { useCallback, useState } from "react";
 
 import "@xyflow/react/dist/style.css";
 
+import AddNodePanel from "./editor-components/AddNode";
 import { nodeTypes } from "./nodes/node-types";
 import { debugEdges, debugNodes } from "./solutions/debug";
 
@@ -48,6 +49,7 @@ const NodeEditor = () => {
       >
         <Background />
         <Controls />
+        <AddNodePanel />
       </ReactFlow>
     </div>
   );
