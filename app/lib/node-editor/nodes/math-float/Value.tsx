@@ -17,7 +17,7 @@ const Value = () => {
           className="nodrag"
         />
       </div>
-      <Handle type="source" position={Position.Bottom} isConnectable={true} />
+      <Handle type="source" position={Position.Right} isConnectable={true} />
     </div>
   );
 };
