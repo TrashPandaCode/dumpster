@@ -1,5 +1,5 @@
-import makeKaplayCtx from "./kaplayCtx";
+import getKaplayCtx from "./kaplayCtx";
 
 export default async function initGame() {
-  makeKaplayCtx();
+  getKaplayCtx();
 }

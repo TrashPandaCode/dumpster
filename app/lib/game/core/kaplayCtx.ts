@@ -3,13 +3,13 @@ import kaplay, { type KAPLAYCtx } from "kaplay";
 // Kaplay Context Singleton, kaplay does not work if initialized multiple times
 let k: KAPLAYCtx | undefined = undefined;
 
-export default function makeKaplayCtx() {
+export default function getKaplayCtx() {
   const canvas = document.getElementById("game-canvas") as HTMLCanvasElement;
   if (!canvas) {
     console.error("Canvas element not found");
     return;
   }
-  
+
   if (k) {
     return k;
   }
