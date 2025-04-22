@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 
 import initGame from "~/lib/game/core/initGame";
+import NodeEditor from "~/lib/node-editor/components/NodeEditor";
 
 const Game = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -22,7 +23,7 @@ const Game = () => {
       </Panel>
       <PanelResizeHandle className="w-2 bg-blue-800" />
       <Panel id="nodes-panel" minSize={25} order={2}>
-        <div className="w-1/2">Test</div>
+        <NodeEditor />
       </Panel>
     </PanelGroup>
   );
