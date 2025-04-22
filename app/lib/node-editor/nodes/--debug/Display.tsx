@@ -22,18 +22,33 @@ const Display = () => {
       <Header>Debug-Display</Header>
       <Body>
         <div className="flex gap-2">
-          <Handle id="in1" type="target" position={Position.Left} />
+          <Handle
+            id="in1"
+            type="target"
+            position={Position.Left}
+            className="!relative !top-[15px]"
+          />
           <label htmlFor="in1">OF</label>
           <p>{String(incomingData?.data.value)}</p>
         </div>
         <div className="flex gap-2">
-          <Handle id="in2" type="target" position={Position.Left} />
+          <Handle
+            id="in2"
+            type="target"
+            position={Position.Left}
+            className="!relative !top-[15px]"
+          />
           <label htmlFor="in2">OOF</label>
 
           <p>{String(incomingData?.data.value)}</p>
         </div>
         <div className="flex gap-2">
-          <Handle id="in3" type="target" position={Position.Left} />
+          <Handle
+            id="in3"
+            type="target"
+            position={Position.Left}
+            className="!relative !top-[15px]"
+          />
           <label htmlFor="in3">OOOF</label>
           <p>{String(incomingData?.data.value)}</p>
         </div>

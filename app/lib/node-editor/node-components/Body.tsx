@@ -5,7 +5,11 @@ type HeaderProps = {
 };
 
 const Body: React.FC<HeaderProps> = ({ children }) => {
-  return <div className="border-x-2 px-2">{children}</div>;
+  return (
+    <div className="flex flex-col justify-around border-x-2 px-2">
+      {children}
+    </div>
+  );
 };
 
 export default Body;
