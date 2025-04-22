@@ -192,7 +192,7 @@ const Home = () => {
           scrambled it to make a type specimen book.
         </p>
       </section>
-      <section className="p-12 bg-blue-950 text-white">
+      <section className="bg-blue-950 p-12 text-white">
         <h1 className="font-pixel text-4xl font-bold">About</h1>
         <p className="text-sm">
           Lorem Ipsum is simply dummy text of the printing and typesetting
@@ -201,25 +201,85 @@ const Home = () => {
           scrambled it to make a type specimen book.
         </p>
       </section>
-      <footer className="p-12 grid grid-cols-3 gap-12">
+      <footer className="grid grid-cols-3 gap-12 p-12">
         <div className="flex flex-col">
-          <h1 className="text-lg font-bold pb-4">About</h1>
-          <a href="" className="text-sm hover:underline">Team</a>
-          <a href="" className="text-sm hover:underline">Source Code</a>
-          <a href="" className="text-sm hover:underline">Literature</a>
+          <h1 className="pb-4 text-lg font-bold">About</h1>
+          <a
+            href=""
+            target="_blank"
+            className="self-start text-sm hover:underline"
+          >
+            Team
+          </a>
+          <a
+            href=""
+            target="_blank"
+            className="self-start text-sm hover:underline"
+          >
+            Source Code
+          </a>
+          <a
+            href=""
+            target="_blank"
+            className="self-start text-sm hover:underline"
+          >
+            Literature
+          </a>
         </div>
         <div className="flex flex-col">
-          <h1 className="text-lg font-bold pb-4">Legal & Policies</h1>
-          <a href="" className="text-sm hover:underline">Imprint</a>
-          <a href="" className="text-sm hover:underline">Privacy policy</a>
-          <a href="" className="text-sm hover:underline">Cookie policy</a>
-          <a href="" className="text-sm hover:underline">Code of conduct</a>
+          <h1 className="pb-4 text-lg font-bold">Legal & Policies</h1>
+          <a
+            href=""
+            target="_blank"
+            className="self-start text-sm hover:underline"
+          >
+            Imprint
+          </a>
+          <a
+            href=""
+            target="_blank"
+            className="self-start text-sm hover:underline"
+          >
+            Privacy policy
+          </a>
+          <a
+            href=""
+            target="_blank"
+            className="self-start text-sm hover:underline"
+          >
+            Cookie policy
+          </a>
+          <a
+            href=""
+            target="_blank"
+            className="self-start text-sm hover:underline"
+          >
+            Code of conduct
+          </a>
         </div>
         <div className="flex flex-col">
-          <h1 className="text-lg font-bold pb-4">Get Help</h1>
-          <a href="" className="text-sm hover:underline">FAQs</a>
-          <a href="" className="text-sm hover:underline">Getting Started</a>
-          <a href="" className="text-sm hover:underline">Dumpster Docs</a>
+          <h1 className="pb-4 text-lg font-bold">Get Help</h1>
+          <a
+            href=""
+            target="_blank"
+            className="self-start text-sm hover:underline"
+          >
+            FAQs
+          </a>
+          <a
+            href=""
+            target="_blank"
+            className="self-start text-sm hover:underline"
+          >
+            Getting Started
+          </a>
+          <a
+            href=""
+            target="_blank"
+            className="self-start text-sm hover:underline"
+          >
+            Dumpster Docs
+          </a>
         </div>
       </footer>
     </>
