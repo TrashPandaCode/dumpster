@@ -21,13 +21,20 @@ const Display = () => {
     <div>
       <Header>Debug-Display</Header>
       <Body>
-        <div className="flex items-center justify-center">
-          <Handle
-            id="in"
-            type="target"
-            position={Position.Left}
-            isConnectable={true}
-          />
+        <div className="flex gap-2">
+          <Handle id="in1" type="target" position={Position.Left} />
+          <label htmlFor="in1">OF</label>
+          <p>{String(incomingData?.data.value)}</p>
+        </div>
+        <div className="flex gap-2">
+          <Handle id="in2" type="target" position={Position.Left} />
+          <label htmlFor="in2">OOF</label>
+
+          <p>{String(incomingData?.data.value)}</p>
+        </div>
+        <div className="flex gap-2">
+          <Handle id="in3" type="target" position={Position.Left} />
+          <label htmlFor="in3">OOOF</label>
           <p>{String(incomingData?.data.value)}</p>
         </div>
       </Body>
