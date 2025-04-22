@@ -26,7 +26,7 @@ const Display = () => {
             id="in1"
             type="target"
             position={Position.Left}
-            className="!relative !top-[15px]"
+            className="!relative !top-3"
           />
           <label htmlFor="in1">OF</label>
           <p>{String(incomingData?.data.value)}</p>
@@ -36,7 +36,7 @@ const Display = () => {
             id="in2"
             type="target"
             position={Position.Left}
-            className="!relative !top-[15px]"
+            className="!relative !top-3"
           />
           <label htmlFor="in2">OOF</label>
 
@@ -47,13 +47,12 @@ const Display = () => {
             id="in3"
             type="target"
             position={Position.Left}
-            className="!relative !top-[15px]"
+            className="!relative !top-3"
           />
           <label htmlFor="in3">OOOF</label>
           <p>{String(incomingData?.data.value)}</p>
         </div>
       </Body>
-      <Footer>This is the Footer ????</Footer>
     </div>
   );
 };
