@@ -1,18 +1,24 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 
 import initGame from "~/lib/game/core/initGame";
 
 const Game = () => {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
   useEffect(() => {
-    initGame();
+    if (!canvasRef.current) {
+      return;
+    }
+
+    initGame(canvasRef.current);
   }, []);
 
   return (
     <PanelGroup direction="horizontal">
       {/* autoSaveId="main-layout" */}
       <Panel id="game-panel" minSize={25} order={1}>
-        <canvas id="game-canvas" className="w-1/2"></canvas>
+        <canvas id="game-canvas" ref={canvasRef} className="w-1/2"></canvas>
       </Panel>
       <PanelResizeHandle className="w-2 bg-blue-800" />
       <Panel id="nodes-panel" minSize={25} order={2}>

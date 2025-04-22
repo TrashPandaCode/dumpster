@@ -1,5 +1,5 @@
 import getKaplayCtx from "./kaplayCtx";
 
-export default async function initGame() {
-  getKaplayCtx();
+export default async function initGame(canvas: HTMLCanvasElement) {
+  getKaplayCtx(canvas);
 }
