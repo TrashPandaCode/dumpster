@@ -1,8 +1,8 @@
 import { Background, Controls, ReactFlow } from "@xyflow/react";
 import React from "react";
 
-import Add from "~/lib/node-editor/nodes-types/math-float/Add";
-import Value from "~/lib/node-editor/nodes-types/math-float/Value";
+import Add from "~/lib/node-editor/nodes/math-float/Add";
+import Value from "~/lib/node-editor/nodes/math-float/Value";
 
 import "@xyflow/react/dist/style.css";
 

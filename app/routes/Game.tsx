@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 
 import initGame from "~/lib/game/core/initGame";
-import NodeEditor from "~/lib/node-editor/components/NodeEditor";
+import NodeEditor from "~/lib/node-editor/NodeEditor";
 
 const Game = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
