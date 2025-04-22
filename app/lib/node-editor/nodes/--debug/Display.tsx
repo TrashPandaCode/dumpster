@@ -11,11 +11,11 @@ import Footer from "../../node-components/Footer";
 import Header from "../../node-components/Header";
 
 const Display = () => {
-  const incomingConnections = useNodeConnections({
-    handleId: "in",
+  const incomingConnection = useNodeConnections({
+    handleId: "in-one",
     handleType: "target",
   });
-  const incomingData = useNodesData(incomingConnections?.[0]?.source);
+  const incomingData = useNodesData(incomingConnection?.[0]?.source);
 
   return (
     <div>
@@ -23,33 +23,11 @@ const Display = () => {
       <Body>
         <div className="flex gap-2">
           <Handle
-            id="in1"
+            id="in-one"
             type="target"
             position={Position.Left}
             className="!relative !top-3"
           />
-          <label htmlFor="in1">OF</label>
-          <p>{String(incomingData?.data.value)}</p>
-        </div>
-        <div className="flex gap-2">
-          <Handle
-            id="in2"
-            type="target"
-            position={Position.Left}
-            className="!relative !top-3"
-          />
-          <label htmlFor="in2">OOF</label>
-
-          <p>{String(incomingData?.data.value)}</p>
-        </div>
-        <div className="flex gap-2">
-          <Handle
-            id="in3"
-            type="target"
-            position={Position.Left}
-            className="!relative !top-3"
-          />
-          <label htmlFor="in3">OOOF</label>
           <p>{String(incomingData?.data.value)}</p>
         </div>
       </Body>

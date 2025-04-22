@@ -5,19 +5,19 @@ export const debugNodes: Node[] = [
     id: "1",
     type: "Value",
     position: { x: 0, y: 0 },
-    data: { label: "" },
+    data: {},
   },
   {
     id: "2",
     type: "Add",
     position: { x: 0, y: 100 },
-    data: { label: "" },
+    data: {},
   },
   {
     id: "3",
     type: "Display",
     position: { x: 0, y: 200 },
-    data: { label: "" },
+    data: {},
   },
 ];
 

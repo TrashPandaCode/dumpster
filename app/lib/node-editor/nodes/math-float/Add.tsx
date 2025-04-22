@@ -1,16 +1,43 @@
-import { Handle, Position } from "@xyflow/react";
-import React, { useCallback } from "react";
+import {
+  Handle,
+  Position,
+  useNodeConnections,
+  useNodesData,
+  useReactFlow,
+} from "@xyflow/react";
+import React, { useCallback, useEffect, useState } from "react";
 
 import Body from "../../node-components/Body";
 import Header from "../../node-components/Header";
 
-const Add = () => {
-  const [value, setValue] = React.useState(0);
+const Add = ({ id }: { id: string }) => {
+  const { updateNodeData } = useReactFlow();
+  const [xInputData, setxInputData] = useState(0);
+  const [yInputData, setyInputData] = useState(0);
 
-  const onChange = useCallback(() => {
-    const result = 10;
-    setValue(result);
-  }, []);
+  const xConnection = useNodeConnections({
+    handleId: "x",
+    handleType: "target",
+  });
+  const xData = useNodesData(xConnection?.[0]?.source);
+  const yConnection = useNodeConnections({
+    handleId: "y",
+    handleType: "target",
+  });
+  const yData = useNodesData(yConnection?.[0]?.source);
+
+  const result =
+    Number(xData?.data ? (xData.data.value as number) : xInputData) +
+    Number(yData?.data ? (yData?.data.value as number) : yInputData);
+
+  useEffect(() => {
+    updateNodeData(id, { value: result });
+  }, [result]);
+
+  // wirklich gottlos hässlig das hier
+  // TODO: nochmal scharf nachdenken bevor wir das hier übernehmen
+  // TODO: wenn man auf die pfeile im value feld klickt und weiter hovered dann saust der wert hoch/runter
+
   return (
     <div>
       <Header>Addition (float)</Header>
@@ -28,8 +55,10 @@ const Add = () => {
               <input
                 type="number"
                 className="w-full"
-                defaultValue={0}
-                onChange={onChange}
+                value={xInputData}
+                onChange={(evt) => {
+                  setxInputData(Number(evt.target.value));
+                }}
               />
             </div>
             <div className="flex gap-2">
@@ -43,20 +72,22 @@ const Add = () => {
               <input
                 type="number"
                 className="w-full"
-                defaultValue={0}
-                onChange={onChange}
+                value={yInputData}
+                onChange={(evt) => {
+                  setyInputData(Number(evt.target.value));
+                }}
               />
             </div>
           </div>
 
           <div className="flex w-full justify-end gap-2">
-            <label htmlFor="out">{value}</label>
             <Handle
               id="out"
               type="source"
               position={Position.Right}
               className="!relative !top-3"
             />
+            <label htmlFor="out">{result}</label>
           </div>
         </div>
       </Body>

@@ -1,26 +1,36 @@
-import { Handle, Position } from "@xyflow/react";
-import React, { useCallback, useState } from "react";
+import { Handle, Position, useReactFlow } from "@xyflow/react";
+import React, { useCallback, useEffect, useState } from "react";
 
-const Value = () => {
-  const onChange = useCallback((evt: { target: { value: any } }) => {
-    console.log(evt.target.value);
-    setValue(evt.target.value);
+import Body from "../../node-components/Body";
+import Header from "../../node-components/Header";
+
+const Value = ({ id }: { id: string }) => {
+  const { updateNodeData } = useReactFlow();
+
+  useEffect(() => {
+    updateNodeData(id, { value: 0 }); // write default value into node data
   }, []);
-  const [value, setValue] = useState(0);
+
+  const onChange = useCallback((evt: { target: { value: any } }) => {
+    updateNodeData(id, { value: evt.target.value });
+  }, []);
+
   return (
     <div>
-      <div>
-        <label htmlFor="value">Value: </label>
-        <input
-          id="value"
-          type="number"
-          onChange={onChange}
-          //defaultValue={0}
-          className="nodrag"
-          value={value}
-        />
-      </div>
-      <Handle type="source" position={Position.Right} isConnectable={true} />
+      <Header>Float Value</Header>
+      <Body>
+        <div>
+          <label htmlFor="value">Value: </label>
+          <input
+            id="value"
+            type="number"
+            onChange={onChange}
+            className="nodrag"
+            defaultValue={0}
+          />
+        </div>
+        <Handle type="source" position={Position.Right} isConnectable={true} />
+      </Body>
     </div>
   );
 };
