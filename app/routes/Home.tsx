@@ -1,10 +1,53 @@
+import React, { useState } from "react";
 import { NavLink } from "react-router";
 
 import arrowDownIcon from "../assets/arrow_down.svg";
 import houseImage from "../assets/house.png";
 import playIcon from "../assets/play.svg";
+import alleyOne from "../assets/alley_one.jpg";
+import alleyTwo from "../assets/alley_two.png";
+
+const CARDS = [
+  {
+    id: 1,
+    name: "Level 1",
+    description: "This is level 1",
+    image: houseImage,
+  },
+  {
+    id: 2,
+    name: "Level 2",
+    description: "This is level 2",
+    image: alleyOne,
+  },
+  {
+    id: 3,
+    name: "Level 3",
+    description: "This is level 3",
+    image: alleyTwo,
+  },
+  {
+    id: 4,
+    name: "Level 4",
+    description: "This is level 4",
+    image: houseImage,
+  },
+  {
+    id: 5,
+    name: "Level 5",
+    description: "This is level 5",
+    image: alleyOne,
+  },
+  {
+    id: 6,
+    name: "Level 6",
+    description: "This is level 6",
+    image: alleyTwo,
+  },
+];
 
 const Home = () => {
+  const [currentHoverCard, setCurrentHoverCard] = useState(CARDS[0]);
   return (
     <>
       <div className="flex min-h-screen flex-col">
@@ -15,18 +58,21 @@ const Home = () => {
             <NavLink to="/game">Game</NavLink>
           </nav>
         </header>
-        <img className="absolute bottom-12 left-1/2 pointer-events-none" src={arrowDownIcon}/>
+        <img
+          className="pointer-events-none absolute bottom-12 left-1/2"
+          src={arrowDownIcon}
+        />
         <main className="relative flex flex-grow overflow-hidden">
           <img
             className="pointer-events-none absolute z-[-1] h-full w-full scale-110 object-cover blur-lg"
-            src={houseImage}
+            src={currentHoverCard.image}
             alt=""
           />
 
           <div className="flex-grow overflow-auto p-12">
             <div className="grid h-full grid-cols-3 gap-12">
               <div className="rounded-xl bg-blue-950 p-4 text-white">
-                <h1 className="font-pixel text-4xl font-bold">Overview</h1>
+                <h1 className="font-pixel text-4xl font-bold">{currentHoverCard.name}</h1>
                 <p className="text-sm">
                   Lorem Ipsum is simply dummy text of the printing and
                   typesetting industry. Lorem Ipsum has been the industry's
@@ -38,6 +84,12 @@ const Home = () => {
                   the release of Letraset sheets containing Lorem Ipsum
                   passages, and more recently with desktop publishing software
                   like Aldus PageMaker including versions of Lorem Ipsum.
+                </p>
+                <br />
+                <br />
+                <br />
+                <p className="text-sm">
+                  {currentHoverCard.description}
                 </p>
               </div>
               <div className="col-span-2 col-start-2 flex flex-col">
@@ -51,14 +103,15 @@ const Home = () => {
                   }}
                 >
                   <div className="grid w-full grid-cols-4 gap-4">
-                    <LevelCard />
-                    <LevelCard />
-                    <LevelCard />
-                    <LevelCard />
-                    <LevelCard />
-                    <LevelCard />
-                    <LevelCard />
-                    <LevelCard />
+                    {CARDS.map((card) => (
+                      <LevelCard
+                        key={card.id}
+                        img={card.image}
+                        onMouseEnter={() => {
+                          setCurrentHoverCard(card);
+                        }}
+                      />
+                    ))}
                   </div>
                 </div>
 
@@ -79,7 +132,7 @@ const Home = () => {
                   to="/game"
                 >
                   Play
-                  <img src={playIcon} alt="" className="pixel h-5 w-5" />
+                  <img src={playIcon} alt="" className="h-5 w-5" />
                 </NavLink>
               </div>
             </div>
@@ -93,13 +146,15 @@ const Home = () => {
   );
 };
 
-const LevelCard = () => (
-  <div className="relative aspect-square h-full w-full overflow-hidden rounded-xl">
-    <img
-      className="h-full w-full scale-110 object-cover"
-      src={houseImage}
-      alt=""
-    />
+const LevelCard: React.FC<{ img: string; onMouseEnter: () => void }> = ({
+  img,
+  onMouseEnter,
+}) => (
+  <div
+    className="relative aspect-square h-full w-full overflow-hidden rounded-xl cursor-pointer hover:outline-2 outline-jam-600"
+    onMouseEnter={onMouseEnter}
+  >
+    <img className="h-full w-full scale-110 object-cover" src={img} alt="" />
   </div>
 );
 
