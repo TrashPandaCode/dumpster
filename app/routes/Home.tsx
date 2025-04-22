@@ -15,6 +15,7 @@ const Home = () => {
             <NavLink to="/game">Game</NavLink>
           </nav>
         </header>
+        <img className="absolute bottom-12 left-1/2 pointer-events-none" src={arrowDownIcon}/>
         <main className="relative flex flex-grow overflow-hidden">
           <img
             className="pointer-events-none absolute z-[-1] h-full w-full scale-110 object-cover blur-lg"
