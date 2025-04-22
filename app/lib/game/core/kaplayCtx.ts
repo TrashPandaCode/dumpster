@@ -1,4 +1,7 @@
-import kaplay from "kaplay";
+import kaplay, { type KAPLAYCtx } from "kaplay";
+
+// Kaplay Context Singleton, kaplay does not work if initialized multiple times
+let k: KAPLAYCtx | undefined = undefined;
 
 export default function makeKaplayCtx() {
   const canvas = document.getElementById("game-canvas") as HTMLCanvasElement;
@@ -7,7 +10,11 @@ export default function makeKaplayCtx() {
     return;
   }
   
-  return kaplay({
+  if (k) {
+    return k;
+  }
+
+  k = kaplay({
     global: false,
     pixelDensity: 2,
     touchToMouse: true,
@@ -15,4 +22,5 @@ export default function makeKaplayCtx() {
     debugKey: "f1",
     canvas: canvas,
   });
+  return k;
 }
