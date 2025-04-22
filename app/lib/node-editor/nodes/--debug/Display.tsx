@@ -7,12 +7,12 @@ import {
 import React, { useCallback, useState } from "react";
 
 const Display = () => {
-  const incomingData = useNodesData(
-    useNodeConnections({
-      handleId: "in",
-      handleType: "target",
-    })?.[0].source
-  );
+  // const incomingData = useNodesData(
+  //   useNodeConnections({
+  //     handleId: "in",
+  //     handleType: "target",
+  //   })?.[0].source
+  // );
 
   return (
     <div>
@@ -22,7 +22,8 @@ const Display = () => {
         position={Position.Left}
         isConnectable={true}
       />
-      <p>{incomingData ? String(incomingData) : ""}</p>
+      <p>I am a Display-Node</p>
+      {/* <p>{incomingData?.data ? String(incomingData.data.value) : ""}</p> */}
     </div>
   );
 };
