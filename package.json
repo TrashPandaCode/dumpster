@@ -16,8 +16,10 @@
     "@react-router/serve": "^7.5.0",
     "@xyflow/react": "^12.5.5",
     "isbot": "^5",
+    "kaplay": "^3001.0.16",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-resizable-panels": "^2.1.8",
     "react-router": "^7.5.0"
   },
   "devDependencies": {

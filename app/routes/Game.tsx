@@ -1,65 +1,22 @@
-import {
-  addEdge,
-  applyEdgeChanges,
-  applyNodeChanges,
-  Background,
-  Controls,
-  ReactFlow,
-  type Node,
-  type OnConnect,
-  type OnEdgesChange,
-  type OnNodesChange,
-} from "@xyflow/react";
-import { useCallback, useState } from "react";
+import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 
-import "@xyflow/react/dist/style.css";
+import initGame from "~/lib/game/core/initGame";
 
 const Game = () => {
-  const initialNodes: Node[] = [
-    {
-      id: "1",
-      position: { x: 0, y: 0 },
-      data: { label: "Hello" },
-    },
-    {
-      id: "2",
-      position: { x: 100, y: 100 },
-      data: { label: "World" },
-    },
-  ];
-  const initialEdges = [{ id: "1-2", source: "1", target: "2" }];
-
-  const [nodes, setNodes] = useState(initialNodes);
-  const [edges, setEdges] = useState(initialEdges);
-
-  const onNodesChange: OnNodesChange = useCallback((changes) => {
-    setNodes((oldNodes) => applyNodeChanges(changes, oldNodes));
-  }, []);
-  const onEdgesChange: OnEdgesChange = useCallback(
-    (changes) => setEdges((eds) => applyEdgeChanges(changes, eds)),
-    []
-  );
-
-  const onConnect: OnConnect = useCallback(
-    (params) => setEdges((eds) => addEdge(params, eds)),
-    []
-  );
-
   return (
-    <div className="h-screen w-full">
-      <ReactFlow
-        nodes={nodes}
-        onNodesChange={onNodesChange}
-        edges={edges}
-        onEdgesChange={onEdgesChange}
-        onConnect={onConnect}
-        fitView
-      >
-        <Background />
-        <Controls />
-      </ReactFlow>
-    </div>
+    <PanelGroup direction="horizontal">
+      {/* autoSaveId="main-layout" */}
+      <Panel id="game" minSize={25} order={1}>
+        <canvas id="game" className="w-1/2"></canvas>
+      </Panel>
+      <PanelResizeHandle className="w-2 bg-blue-800" />
+      <Panel id="nodes" minSize={25} order={2}>
+        <div className="w-1/2">Test</div>
+      </Panel>
+    </PanelGroup>
   );
 };
+
+initGame();
 
 export default Game;
