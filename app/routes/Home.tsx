@@ -1,6 +1,6 @@
 import { NavLink } from "react-router";
 
-import arrowDownIcon from "../assets/arrow_down.png";
+import arrowDownIcon from "../assets/arrow_down.svg";
 import houseImage from "../assets/house.png";
 import playIcon from "../assets/play.svg";
 
