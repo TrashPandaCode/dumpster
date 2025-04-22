@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router";
 
+import alleyOne from "../assets/alley_one.jpg";
+import alleyTwo from "../assets/alley_two.png";
 import arrowDownIcon from "../assets/arrow_down.svg";
 import houseImage from "../assets/house.png";
 import playIcon from "../assets/play.svg";
-import alleyOne from "../assets/alley_one.jpg";
-import alleyTwo from "../assets/alley_two.png";
 
 const CARDS = [
   {
@@ -72,7 +72,9 @@ const Home = () => {
           <div className="flex-grow overflow-auto p-12">
             <div className="grid h-full grid-cols-3 gap-12">
               <div className="rounded-xl bg-blue-950 p-4 text-white">
-                <h1 className="font-pixel text-4xl font-bold">{currentHoverCard.name}</h1>
+                <h1 className="font-pixel text-4xl font-bold">
+                  {currentHoverCard.name}
+                </h1>
                 <p className="text-sm">
                   Lorem Ipsum is simply dummy text of the printing and
                   typesetting industry. Lorem Ipsum has been the industry's
@@ -88,9 +90,7 @@ const Home = () => {
                 <br />
                 <br />
                 <br />
-                <p className="text-sm">
-                  {currentHoverCard.description}
-                </p>
+                <p className="text-sm">{currentHoverCard.description}</p>
               </div>
               <div className="col-span-2 col-start-2 flex flex-col">
                 <div
@@ -151,7 +151,7 @@ const LevelCard: React.FC<{ img: string; onMouseEnter: () => void }> = ({
   onMouseEnter,
 }) => (
   <div
-    className="relative aspect-square h-full w-full overflow-hidden rounded-xl cursor-pointer hover:outline-2 outline-jam-600"
+    className="outline-jam-600 relative aspect-square h-full w-full cursor-pointer overflow-hidden rounded-xl hover:outline-2"
     onMouseEnter={onMouseEnter}
   >
     <img className="h-full w-full scale-110 object-cover" src={img} alt="" />
