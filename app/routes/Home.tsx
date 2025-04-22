@@ -139,8 +139,148 @@ const Home = () => {
           </div>
         </main>
       </div>
-      <footer className="p-4 text-center text-black">
-        <p>haha du hast das hier gelesen</p>
+
+      <section className="flex items-center justify-center bg-white">
+        <div className="flex h-full w-full flex-col p-12">
+          <h1 className="font-pixel pb-12 text-4xl font-bold">
+            Learn these skills to become a dumpster diver
+          </h1>
+          <div className="flex items-start justify-center gap-32">
+            <div className="flex flex-col gap-4 text-center">
+              <div className="bg-jam-600 h-32 w-32 rounded-full" />
+              Computer
+              <br />
+              Animation
+            </div>
+            <div className="flex flex-col gap-4 text-center">
+              <div className="bg-jam-600 h-32 w-32 rounded-full" />
+              Eating Trash
+            </div>
+            <div className="flex flex-col gap-4 text-center">
+              <div className="bg-jam-600 h-32 w-32 rounded-full" />
+              Raiding The <br />
+              Trash
+            </div>
+          </div>
+        </div>
+      </section>
+      <section className="flex h-96 items-center justify-center bg-blue-950">
+        <div className="flex h-full w-full max-w-2xl flex-col items-center justify-center gap-4">
+          <h1 className="font-pixel text-4xl font-bold text-white">
+            Join the community
+          </h1>
+          <p className="text-center text-sm text-white">
+            Lorem Ipsum is simply dummy text of the printing and typesetting
+            industry. Lorem Ipsum has been the industry's standard dummy text
+            ever since the 1500s, when an unknown printer took a galley of type
+            and scrambled it to make a type specimen book.
+          </p>
+          <a
+            href="https://discord.gg/yourdiscordlink"
+            className="bg-jam-600 rounded-full px-6 py-3 text-lg font-bold text-white"
+          >
+            Join Discord
+          </a>
+        </div>
+      </section>
+      <section className="p-12">
+        <h1 className="font-pixel text-4xl font-bold">About</h1>
+        <p className="text-sm">
+          Lorem Ipsum is simply dummy text of the printing and typesetting
+          industry. Lorem Ipsum has been the industry's standard dummy text ever
+          since the 1500s, when an unknown printer took a galley of type and
+          scrambled it to make a type specimen book.
+        </p>
+      </section>
+      <section className="bg-blue-950 p-12 text-white">
+        <h1 className="font-pixel text-4xl font-bold">About</h1>
+        <p className="text-sm">
+          Lorem Ipsum is simply dummy text of the printing and typesetting
+          industry. Lorem Ipsum has been the industry's standard dummy text ever
+          since the 1500s, when an unknown printer took a galley of type and
+          scrambled it to make a type specimen book.
+        </p>
+      </section>
+      <footer className="grid grid-cols-3 gap-12 p-12">
+        <div className="flex flex-col">
+          <h1 className="pb-4 text-lg font-bold">About</h1>
+          <a
+            href=""
+            target="_blank"
+            className="self-start text-sm hover:underline"
+          >
+            Team
+          </a>
+          <a
+            href=""
+            target="_blank"
+            className="self-start text-sm hover:underline"
+          >
+            Source Code
+          </a>
+          <a
+            href=""
+            target="_blank"
+            className="self-start text-sm hover:underline"
+          >
+            Literature
+          </a>
+        </div>
+        <div className="flex flex-col">
+          <h1 className="pb-4 text-lg font-bold">Legal & Policies</h1>
+          <a
+            href=""
+            target="_blank"
+            className="self-start text-sm hover:underline"
+          >
+            Imprint
+          </a>
+          <a
+            href=""
+            target="_blank"
+            className="self-start text-sm hover:underline"
+          >
+            Privacy policy
+          </a>
+          <a
+            href=""
+            target="_blank"
+            className="self-start text-sm hover:underline"
+          >
+            Cookie policy
+          </a>
+          <a
+            href=""
+            target="_blank"
+            className="self-start text-sm hover:underline"
+          >
+            Code of conduct
+          </a>
+        </div>
+        <div className="flex flex-col">
+          <h1 className="pb-4 text-lg font-bold">Get Help</h1>
+          <a
+            href=""
+            target="_blank"
+            className="self-start text-sm hover:underline"
+          >
+            FAQs
+          </a>
+          <a
+            href=""
+            target="_blank"
+            className="self-start text-sm hover:underline"
+          >
+            Getting Started
+          </a>
+          <a
+            href=""
+            target="_blank"
+            className="self-start text-sm hover:underline"
+          >
+            Dumpster Docs
+          </a>
+        </div>
       </footer>
     </>
   );

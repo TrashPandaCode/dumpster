@@ -13,6 +13,12 @@ export const debugNodes: Node[] = [
     position: { x: 0, y: 100 },
     data: { label: "" },
   },
+  {
+    id: "3",
+    type: "Display",
+    position: { x: 0, y: 200 },
+    data: { label: "" },
+  },
 ];
 
 export const debugEdges: Edge[] = [];

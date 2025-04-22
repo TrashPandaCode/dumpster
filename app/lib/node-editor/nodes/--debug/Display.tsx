@@ -6,23 +6,39 @@ import {
 } from "@xyflow/react";
 import React, { useCallback, useState } from "react";
 
+import Body from "../../node-components/Body";
+import Footer from "../../node-components/Footer";
+import Header from "../../node-components/Header";
+
 const Display = () => {
-  const incomingData = useNodesData(
-    useNodeConnections({
-      handleId: "in",
-      handleType: "target",
-    })?.[0].source
-  );
+  const incomingConnections = useNodeConnections({
+    handleId: "in",
+    handleType: "target",
+  });
+  const incomingData = useNodesData(incomingConnections?.[0]?.source);
 
   return (
     <div>
-      <Handle
-        id="in"
-        type="target"
-        position={Position.Left}
-        isConnectable={true}
-      />
-      <p>{incomingData ? String(incomingData) : ""}</p>
+      <Header>Debug-Display</Header>
+      <Body>
+        <div className="flex gap-2">
+          <Handle id="in1" type="target" position={Position.Left} />
+          <label htmlFor="in1">OF</label>
+          <p>{String(incomingData?.data.value)}</p>
+        </div>
+        <div className="flex gap-2">
+          <Handle id="in2" type="target" position={Position.Left} />
+          <label htmlFor="in2">OOF</label>
+
+          <p>{String(incomingData?.data.value)}</p>
+        </div>
+        <div className="flex gap-2">
+          <Handle id="in3" type="target" position={Position.Left} />
+          <label htmlFor="in3">OOOF</label>
+          <p>{String(incomingData?.data.value)}</p>
+        </div>
+      </Body>
+      <Footer>This is the Footer ????</Footer>
     </div>
   );
 };
