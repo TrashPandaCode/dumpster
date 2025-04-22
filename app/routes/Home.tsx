@@ -158,7 +158,8 @@ const Home = () => {
             </div>
             <div className="flex flex-col gap-4 text-center">
               <div className="bg-jam-600 h-32 w-32 rounded-full" />
-              Raiding The <br />Trash
+              Raiding The <br />
+              Trash
             </div>
           </div>
         </div>
@@ -168,7 +169,7 @@ const Home = () => {
           <h1 className="font-pixel text-4xl font-bold text-white">
             Join the community
           </h1>
-          <p className="text-sm text-white text-center">
+          <p className="text-center text-sm text-white">
             Lorem Ipsum is simply dummy text of the printing and typesetting
             industry. Lorem Ipsum has been the industry's standard dummy text
             ever since the 1500s, when an unknown printer took a galley of type
@@ -182,8 +183,44 @@ const Home = () => {
           </a>
         </div>
       </section>
-      <footer className="p-4 text-center text-black">
-        <p>haha du hast das hier gelesen</p>
+      <section className="p-12">
+        <h1 className="font-pixel text-4xl font-bold">About</h1>
+        <p className="text-sm">
+          Lorem Ipsum is simply dummy text of the printing and typesetting
+          industry. Lorem Ipsum has been the industry's standard dummy text ever
+          since the 1500s, when an unknown printer took a galley of type and
+          scrambled it to make a type specimen book.
+        </p>
+      </section>
+      <section className="p-12 bg-blue-950 text-white">
+        <h1 className="font-pixel text-4xl font-bold">About</h1>
+        <p className="text-sm">
+          Lorem Ipsum is simply dummy text of the printing and typesetting
+          industry. Lorem Ipsum has been the industry's standard dummy text ever
+          since the 1500s, when an unknown printer took a galley of type and
+          scrambled it to make a type specimen book.
+        </p>
+      </section>
+      <footer className="p-12 grid grid-cols-3 gap-12">
+        <div className="flex flex-col">
+          <h1 className="text-lg font-bold pb-4">About</h1>
+          <a href="" className="text-sm hover:underline">Team</a>
+          <a href="" className="text-sm hover:underline">Source Code</a>
+          <a href="" className="text-sm hover:underline">Literature</a>
+        </div>
+        <div className="flex flex-col">
+          <h1 className="text-lg font-bold pb-4">Legal & Policies</h1>
+          <a href="" className="text-sm hover:underline">Imprint</a>
+          <a href="" className="text-sm hover:underline">Privacy policy</a>
+          <a href="" className="text-sm hover:underline">Cookie policy</a>
+          <a href="" className="text-sm hover:underline">Code of conduct</a>
+        </div>
+        <div className="flex flex-col">
+          <h1 className="text-lg font-bold pb-4">Get Help</h1>
+          <a href="" className="text-sm hover:underline">FAQs</a>
+          <a href="" className="text-sm hover:underline">Getting Started</a>
+          <a href="" className="text-sm hover:underline">Dumpster Docs</a>
+        </div>
       </footer>
     </>
   );
