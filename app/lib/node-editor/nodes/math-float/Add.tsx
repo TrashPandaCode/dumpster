@@ -7,7 +7,7 @@ const Add = () => {
   }, []);
   return (
     <div>
-      <Handle type="target" position={Position.Top} isConnectable={true} />
+      <Handle type="target" position={Position.Left} isConnectable={true} />
       <div>
         <label htmlFor="add-value">Add Value: </label>
         <input
@@ -18,7 +18,7 @@ const Add = () => {
           className="nodrag"
         />
       </div>
-      <Handle type="source" position={Position.Bottom} isConnectable={true} />
+      <Handle type="source" position={Position.Right} isConnectable={true} />
     </div>
   );
 };
