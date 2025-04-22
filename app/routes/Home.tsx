@@ -73,13 +73,13 @@ const Home = () => {
                   <p>Dumpster</p>
                   <p>Diving</p>
                 </h1>
-                <a
+                <NavLink
                   className="bg-jam-600 font-pixel absolute right-12 bottom-12 flex items-center gap-2 rounded-full px-6 py-3 text-4xl font-bold text-white shadow-lg"
-                  href=""
+                  to="/game"
                 >
                   Play
                   <img src={playIcon} alt="" className="pixel h-5 w-5" />
-                </a>
+                </NavLink>
               </div>
             </div>
           </div>
