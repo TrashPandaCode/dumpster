@@ -1,18 +1,51 @@
-import { Background, Controls, ReactFlow } from "@xyflow/react";
-import React from "react";
-
-import Add from "~/lib/node-editor/nodes/math-float/Add";
-import Value from "~/lib/node-editor/nodes/math-float/Value";
+import {
+  addEdge,
+  applyEdgeChanges,
+  applyNodeChanges,
+  Background,
+  Controls,
+  ReactFlow,
+  type Edge,
+  type Node,
+  type OnConnect,
+  type OnEdgesChange,
+  type OnNodesChange,
+} from "@xyflow/react";
+import React, { useCallback, useState } from "react";
 
 import "@xyflow/react/dist/style.css";
 
 import { nodeTypes } from "./nodes/node-types";
-import { debugNodes } from "./solutions/debug";
+import { debugEdges, debugNodes } from "./solutions/debug";
 
 const NodeEditor = () => {
+  const [nodes, setNodes] = useState<Node[]>(debugNodes);
+  const [edges, setEdges] = useState<Edge[]>(debugEdges);
+
+  const onNodesChange: OnNodesChange = useCallback(
+    (changes) => setNodes((nds) => applyNodeChanges(changes, nds)),
+    [setNodes]
+  );
+  const onEdgesChange: OnEdgesChange = useCallback(
+    (changes) => setEdges((eds) => applyEdgeChanges(changes, eds)),
+    [setEdges]
+  );
+  const onConnect: OnConnect = useCallback(
+    (connection) => setEdges((eds) => addEdge(connection, eds)),
+    [setEdges]
+  );
+
   return (
     <div style={{ height: "100%" }}>
-      <ReactFlow nodes={debugNodes} nodeTypes={nodeTypes}>
+      <ReactFlow
+        nodeTypes={nodeTypes}
+        nodes={nodes}
+        edges={edges}
+        onNodesChange={onNodesChange}
+        onEdgesChange={onEdgesChange}
+        onConnect={onConnect}
+        fitView
+      >
         <Background />
         <Controls />
       </ReactFlow>
