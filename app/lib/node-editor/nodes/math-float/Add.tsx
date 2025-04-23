@@ -6,8 +6,10 @@ import {
   useReactFlow,
 } from "@xyflow/react";
 import React, { useCallback, useEffect, useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 
 import Body from "../../node-components/Body";
+import CustomHandle from "../../node-components/CustomHandle";
 import Header from "../../node-components/Header";
 
 const Add = ({ id }: { id: string }) => {
@@ -16,12 +18,12 @@ const Add = ({ id }: { id: string }) => {
   const [yInputData, setyInputData] = useState(0);
 
   const xConnection = useNodeConnections({
-    handleId: "x",
+    handleId: "input-x-handle",
     handleType: "target",
   });
   const xData = useNodesData(xConnection?.[0]?.source);
   const yConnection = useNodeConnections({
-    handleId: "y",
+    handleId: "input-y-handle",
     handleType: "target",
   });
   const yData = useNodesData(yConnection?.[0]?.source);
@@ -38,58 +40,30 @@ const Add = ({ id }: { id: string }) => {
   // TODO: nochmal scharf nachdenken bevor wir das hier übernehmen
   // TODO: wenn man auf die pfeile im value feld klickt und weiter hovered dann saust der wert hoch/runter
 
+  // TODO: allow for children in customhandle (which would then be the numberinput component)
+
   return (
     <div>
       <Header>Addition (float)</Header>
       <Body>
-        <div className="flex items-center gap-2">
-          <div className="flex w-full flex-col">
-            <div className="flex gap-2">
-              <Handle
-                id="x"
-                type="target"
-                position={Position.Left}
-                className="!relative !top-3"
-              />
-              <label htmlFor="x">x</label>
-              <input
-                type="number"
-                className="w-full"
-                value={xInputData}
-                onChange={(evt) => {
-                  setxInputData(Number(evt.target.value));
-                }}
-              />
-            </div>
-            <div className="flex gap-2">
-              <Handle
-                id="y"
-                type="target"
-                position={Position.Left}
-                className="!relative !top-3"
-              />
-              <label htmlFor="y">y</label>
-              <input
-                type="number"
-                className="w-full"
-                value={yInputData}
-                onChange={(evt) => {
-                  setyInputData(Number(evt.target.value));
-                }}
-              />
-            </div>
-          </div>
-
-          <div className="flex w-full justify-end gap-2">
-            <Handle
-              id="out"
-              type="source"
-              position={Position.Right}
-              className="!relative !top-3"
-            />
-            <label htmlFor="out">{result}</label>
-          </div>
-        </div>
+        <CustomHandle
+          id="result-handle"
+          label="Result"
+          position={Position.Right}
+          key={uuidv4()}
+        />
+        <CustomHandle
+          id="input-x-handle"
+          label=""
+          position={Position.Left}
+          key={uuidv4()}
+        />
+        <CustomHandle
+          id="input-y-handle"
+          label=""
+          position={Position.Left}
+          key={uuidv4()}
+        />
       </Body>
     </div>
   );

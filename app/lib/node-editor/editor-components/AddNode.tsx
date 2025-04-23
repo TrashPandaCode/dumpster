@@ -22,12 +22,12 @@ import {
   HamburgerMenuIcon,
 } from "@radix-ui/react-icons";
 import { Panel, useReactFlow } from "@xyflow/react";
-import React from "react";
+import React, { memo } from "react";
 import { v4 as uuidv4 } from "uuid";
 
 import { nodeTypes } from "../nodes/node-types";
 
-const AddNodePanel = () => {
+const AddNodePanel = memo(() => {
   const { addNodes } = useReactFlow();
 
   return (
@@ -67,6 +67,6 @@ const AddNodePanel = () => {
       </DropdownMenu>
     </Panel>
   );
-};
+});
 
 export default AddNodePanel;

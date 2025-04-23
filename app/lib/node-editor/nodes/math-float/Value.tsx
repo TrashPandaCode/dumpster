@@ -2,6 +2,7 @@ import { Handle, Position, useReactFlow } from "@xyflow/react";
 import React, { memo, useCallback, useEffect, useState } from "react";
 
 import Body from "../../node-components/Body";
+import CustomHandle from "../../node-components/CustomHandle";
 import Header from "../../node-components/Header";
 import NumberInput from "../../node-components/NumberInput";
 
@@ -17,8 +18,12 @@ const Value = memo(({ id }: { id: string }) => {
     <div>
       <Header>Float Value</Header>
       <Body>
-        <NumberInput name="Value" setValue={setValue}></NumberInput>
-        <Handle type="source" position={Position.Right} isConnectable={true} />
+        <CustomHandle
+          id="result-handle"
+          label="Value"
+          position={Position.Right}
+        />
+        <NumberInput setValue={setValue} />
       </Body>
     </div>
   );

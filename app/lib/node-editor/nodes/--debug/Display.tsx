@@ -4,11 +4,12 @@ import {
   useNodeConnections,
   useNodesData,
 } from "@xyflow/react";
+import { memo } from "react";
 
 import Body from "../../node-components/Body";
 import Header from "../../node-components/Header";
 
-const Display = () => {
+const Display = memo(() => {
   const incomingConnection = useNodeConnections({
     handleId: "in-one",
     handleType: "target",
@@ -31,6 +32,6 @@ const Display = () => {
       </Body>
     </div>
   );
-};
+});
 
 export default Display;

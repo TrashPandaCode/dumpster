@@ -1,12 +1,6 @@
 import React, { useState } from "react";
 
-const NumberInput = ({
-  name,
-  setValue,
-}: {
-  name: string;
-  setValue(input: number): void;
-}) => {
+const NumberInput = ({ setValue }: { setValue(input: number): void }) => {
   const [rawValue, setRawValue] = useState("0");
 
   const parseNumber = (evt: React.ChangeEvent<HTMLInputElement>) => {
@@ -20,17 +14,13 @@ const NumberInput = ({
   };
 
   return (
-    <div>
-      <label htmlFor="value">{name} </label>
-      <input
-        id="value"
-        type="text"
-        inputMode="decimal"
-        onChange={parseNumber}
-        className="nodrag"
-        value={rawValue}
-      />
-    </div>
+    <input
+      type="text"
+      inputMode="decimal"
+      onChange={parseNumber}
+      className="nodrag mx-3 bg-amber-300"
+      value={rawValue}
+    />
   );
 };
 
