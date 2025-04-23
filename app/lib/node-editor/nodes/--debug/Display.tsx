@@ -4,10 +4,8 @@ import {
   useNodeConnections,
   useNodesData,
 } from "@xyflow/react";
-import React, { useCallback, useState } from "react";
 
 import Body from "../../node-components/Body";
-import Footer from "../../node-components/Footer";
 import Header from "../../node-components/Header";
 
 const Display = () => {
