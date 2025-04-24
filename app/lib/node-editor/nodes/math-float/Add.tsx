@@ -11,6 +11,7 @@ import { v4 as uuidv4 } from "uuid";
 import Body from "../../node-components/Body";
 import CustomHandle from "../../node-components/CustomHandle";
 import Header from "../../node-components/Header";
+import NumberInput from "../../node-components/NumberInput";
 
 const Add = ({ id }: { id: string }) => {
   const { updateNodeData } = useReactFlow();
@@ -36,11 +37,8 @@ const Add = ({ id }: { id: string }) => {
     updateNodeData(id, { value: result });
   }, [result]);
 
-  // wirklich gottlos hässlig das hier
-  // TODO: nochmal scharf nachdenken bevor wir das hier übernehmen
-  // TODO: wenn man auf die pfeile im value feld klickt und weiter hovered dann saust der wert hoch/runter
-
-  // TODO: allow for children in customhandle (which would then be the numberinput component)
+  // TODO: numbers don't show in NumberInput field, idk why
+  // even though they compute
 
   return (
     <div>
@@ -48,22 +46,29 @@ const Add = ({ id }: { id: string }) => {
       <Body>
         <CustomHandle
           id="result-handle"
-          label="Result"
           position={Position.Right}
           key={uuidv4()}
-        />
+        >
+          <span>Result</span>
+        </CustomHandle>
         <CustomHandle
           id="input-x-handle"
-          label=""
           position={Position.Left}
           key={uuidv4()}
-        />
+        >
+          {!xData?.data && (
+            <NumberInput setValue={setxInputData} defaultValue={0} />
+          )}
+        </CustomHandle>
         <CustomHandle
           id="input-y-handle"
-          label=""
           position={Position.Left}
           key={uuidv4()}
-        />
+        >
+          {!yData?.data && (
+            <NumberInput setValue={setyInputData} defaultValue={0} />
+          )}
+        </CustomHandle>
       </Body>
     </div>
   );

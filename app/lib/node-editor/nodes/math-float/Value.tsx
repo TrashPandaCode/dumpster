@@ -18,12 +18,10 @@ const Value = memo(({ id }: { id: string }) => {
     <div>
       <Header>Float Value</Header>
       <Body>
-        <CustomHandle
-          id="result-handle"
-          label="Value"
-          position={Position.Right}
-        />
-        <NumberInput setValue={setValue} />
+        <CustomHandle id="result-handle" position={Position.Right}>
+          <span>Value</span>
+        </CustomHandle>
+        <NumberInput setValue={setValue} defaultValue={0} />
       </Body>
     </div>
   );

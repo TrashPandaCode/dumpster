@@ -1,7 +1,13 @@
 import React, { useState } from "react";
 
-const NumberInput = ({ setValue }: { setValue(input: number): void }) => {
-  const [rawValue, setRawValue] = useState("0");
+const NumberInput = ({
+  setValue,
+  defaultValue,
+}: {
+  setValue(input: number): void;
+  defaultValue: number;
+}) => {
+  const [rawValue, setRawValue] = useState(String(defaultValue));
 
   const parseNumber = (evt: React.ChangeEvent<HTMLInputElement>) => {
     const input = evt.target.value.replace(",", ".");

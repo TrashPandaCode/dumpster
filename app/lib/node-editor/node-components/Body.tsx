@@ -7,7 +7,7 @@ type HeaderProps = {
 
 const Body: React.FC<HeaderProps> = ({ children }) => {
   return (
-    <div className="flex flex-col justify-around rounded-b-md border-x-2 border-b-2 pb-2">
+    <div className="flex flex-col justify-around rounded-b-md border-x-2 border-b-2 py-2">
       {children}
     </div>
   );
