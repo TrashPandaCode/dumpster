@@ -7,7 +7,7 @@ const NumberInput = ({
   disabled = false,
   ...props
 }: {
-  value?: number, 
+  value?: number;
   setValue(input: number): void;
   defaultValue: number;
   disabled?: boolean;
@@ -15,7 +15,7 @@ const NumberInput = ({
   const [rawValue, setRawValue] = useState(String(defaultValue));
 
   const parseNumber = (evt: React.ChangeEvent<HTMLInputElement>) => {
-    if (value) return;
+    if (disabled && value) return;
 
     const input = evt.target.value.replace(",", ".");
 
@@ -35,7 +35,7 @@ const NumberInput = ({
       inputMode="decimal"
       onChange={parseNumber}
       className="nodrag ml-3 w-8 rounded-sm border-1 border-slate-700 bg-slate-900 px-1 focus:border-slate-500 focus:outline-none disabled:text-slate-500"
-      value={value ?? rawValue}
+      value={value && disabled ? value : rawValue}
       disabled={disabled}
       {...props}
     />

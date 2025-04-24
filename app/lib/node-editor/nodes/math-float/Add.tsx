@@ -52,6 +52,7 @@ const Add = memo(({ id }: { id: string }) => {
         <div className="text-left">
           x
           <NumberInput
+            value={Number(xData?.data.value)}
             setValue={setxInputData}
             defaultValue={0}
             disabled={!!xData?.data}
@@ -61,6 +62,7 @@ const Add = memo(({ id }: { id: string }) => {
         <div className="text-left">
           y
           <NumberInput
+            value={Number(yData?.data.value)}
             setValue={setyInputData}
             defaultValue={0}
             disabled={!!yData?.data}
