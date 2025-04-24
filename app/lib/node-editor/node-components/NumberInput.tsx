@@ -3,9 +3,11 @@ import React, { useState } from "react";
 const NumberInput = ({
   setValue,
   defaultValue,
+  disabled = false,
 }: {
   setValue(input: number): void;
   defaultValue: number;
+  disabled?: boolean;
 }) => {
   const [rawValue, setRawValue] = useState(String(defaultValue));
 
@@ -27,8 +29,9 @@ const NumberInput = ({
       type="text"
       inputMode="decimal"
       onChange={parseNumber}
-      className="nodrag mx-3 bg-amber-300"
+      className="nodrag ml-3 w-8 rounded-sm border-1 border-slate-700 bg-slate-900 px-1 focus:border-slate-500 disabled:text-slate-500 focus:outline-none"
       value={rawValue}
+      disabled={disabled}
     />
   );
 };

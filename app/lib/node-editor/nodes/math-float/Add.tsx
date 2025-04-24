@@ -42,7 +42,7 @@ const Add = ({ id }: { id: string }) => {
   // even though they compute
 
   return (
-    <div>
+    <div className="min-w-3xs">
       <Header>Addition</Header>
       <Body>
         <LabelHandle

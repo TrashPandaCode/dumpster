@@ -15,7 +15,7 @@ const Value = memo(({ id }: { id: string }) => {
   }, [value]);
 
   return (
-    <div>
+    <div className="min-w-48">
       <Header>Value</Header>
       <Body>
         <LabelHandle
