@@ -48,6 +48,7 @@ const AddNodePanel = memo(() => {
               return (
                 <DropdownMenuItem key={"add_node_dropdown_" + index}>
                   <button
+                  className="text-white"
                     onClick={() => {
                       addNodes({
                         id: uuidv4(),
