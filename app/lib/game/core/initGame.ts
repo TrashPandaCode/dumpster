@@ -9,5 +9,5 @@ export default async function initGame(canvas: HTMLCanvasElement) {
 
   k.onUpdate("bean", (b) => {
     b.moveBy(1, 1);
-  })
+  });
 }
