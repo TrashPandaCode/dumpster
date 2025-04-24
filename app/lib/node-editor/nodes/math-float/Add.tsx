@@ -5,7 +5,7 @@ import {
   useNodesData,
   useReactFlow,
 } from "@xyflow/react";
-import React, { useEffect, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
 import BaseHandle from "../../node-components/BaseHandle";
@@ -14,7 +14,7 @@ import Header from "../../node-components/Header";
 import LabelHandle from "../../node-components/LabelHandle";
 import NumberInput from "../../node-components/NumberInput";
 
-const Add = ({ id }: { id: string }) => {
+const Add = memo(({ id }: { id: string }) => {
   const { updateNodeData } = useReactFlow();
   const [xInputData, setxInputData] = useState(0);
   const [yInputData, setyInputData] = useState(0);
@@ -24,6 +24,7 @@ const Add = ({ id }: { id: string }) => {
     handleType: "target",
   });
   const xData = useNodesData(xConnection?.[0]?.source);
+
   const yConnection = useNodeConnections({
     handleId: "input-y-handle",
     handleType: "target",
@@ -32,14 +33,11 @@ const Add = ({ id }: { id: string }) => {
 
   const result =
     Number(xData?.data ? (xData.data.value as number) : xInputData) +
-    Number(yData?.data ? (yData?.data.value as number) : yInputData);
+    Number(yData?.data ? (yData.data.value as number) : yInputData);
 
   useEffect(() => {
     updateNodeData(id, { value: result });
   }, [result]);
-
-  // TODO: numbers don't show in NumberInput field, idk why
-  // even though they compute
 
   return (
     <div className="min-w-3xs">
@@ -52,20 +50,26 @@ const Add = ({ id }: { id: string }) => {
           label="Result"
         />
         <div className="text-left">
-          {!xData?.data && (
-            <NumberInput setValue={setxInputData} defaultValue={0} />
-          )}
+          x
+          <NumberInput
+            setValue={setxInputData}
+            defaultValue={0}
+            disabled={!!xData?.data}
+          />
           <BaseHandle id="input-x-handle" position={Position.Left} />
         </div>
         <div className="text-left">
-          {!yData?.data && (
-            <NumberInput setValue={setyInputData} defaultValue={0} />
-          )}
+          y
+          <NumberInput
+            setValue={setyInputData}
+            defaultValue={0}
+            disabled={!!yData?.data}
+          />
           <BaseHandle id="input-y-handle" position={Position.Left} />
         </div>
       </Body>
     </div>
   );
-};
+});
 
 export default Add;
