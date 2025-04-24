@@ -11,7 +11,10 @@ const NumberInput = ({
 
   const parseNumber = (evt: React.ChangeEvent<HTMLInputElement>) => {
     const input = evt.target.value.replace(",", ".");
-    setRawValue(input);
+    
+    if (/^\d*\.?\d*$/.test(input)) {
+      setRawValue(input);
+    }
 
     const parsed = Number(input);
     if (!isNaN(parsed)) {
