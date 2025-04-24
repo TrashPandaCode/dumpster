@@ -1,5 +1,6 @@
 import { useDebugStore } from "~/lib/zustand/debug";
 import { getKaplayCtx } from "./kaplayCtx";
+import { useTimeStore } from "~/lib/zustand/time";
 
 export default async function initGame(canvas: HTMLCanvasElement) {
   const k = getKaplayCtx(canvas);
@@ -9,6 +10,10 @@ export default async function initGame(canvas: HTMLCanvasElement) {
   k.add([k.sprite("bean"), k.pos(20, 20)]);
 
   k.onUpdate(() => {
+    const setTime = useTimeStore.getState().setTime;
+    const time = k.time();
+    setTime(time);
+
     const x = useDebugStore.getState().xpos;
 
     bean.moveBy(x, 0);
