@@ -108,7 +108,7 @@ const Home = () => {
                       "linear-gradient(to bottom, black 60%, transparent 100%)",
                     maskImage:
                       "linear-gradient(to bottom, black 60%, transparent 100%)",
-                    height: showAll ? "900px" : "350px",
+                    height: showAll ? "70vh" : "35vh",
                   }}
                 >
                   <div className="grid w-full grid-cols-4 gap-4 p-2">
@@ -135,8 +135,7 @@ const Home = () => {
                 </div>
 
                 <div
-                  className={`transition-all duration-500 ${showAll ? "opacity-0 translate-y-4 delay-0" : "opacity-100 translate-y-0 delay-500"
-                    }`}
+                  className={`transition-all duration-500 ${showAll ? "hidden opacity-0 translate-y-4" : "block opacity-100 translate-y-0 delay-500"}`}
                 >
                   <h1 className="font-pixel pt-16 text-7xl font-bold text-white">
                     <p>Dumpster</p>
