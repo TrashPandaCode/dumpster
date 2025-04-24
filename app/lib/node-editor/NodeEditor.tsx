@@ -46,6 +46,7 @@ const NodeEditor = () => {
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
         fitView
+        proOptions={{ hideAttribution: true }}
       >
         <Background bgColor="#14141d" color="#a7abc2" />
         {/* <Controls className="text-white !bg-slate-800" /> sind kacke zu stylen */}

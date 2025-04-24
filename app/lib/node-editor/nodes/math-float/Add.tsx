@@ -5,8 +5,7 @@ import {
   useNodesData,
   useReactFlow,
 } from "@xyflow/react";
-import React, { useCallback, useEffect, useState } from "react";
-import { v4 as uuidv4 } from "uuid";
+import { useEffect, useState } from "react";
 
 import Body from "../../node-components/Body";
 import CustomHandle from "../../node-components/CustomHandle";
@@ -41,34 +40,40 @@ const Add = ({ id }: { id: string }) => {
   // even though they compute
 
   return (
-    <div>
+    <div className="min-w-3xs">
       <Header>Addition</Header>
       <Body>
         <CustomHandle
           id="result-handle"
           position={Position.Right}
-          key={uuidv4()}
         >
           <span>Result</span>
         </CustomHandle>
         <CustomHandle
           id="input-x-handle"
           position={Position.Left}
-          key={uuidv4()}
-        ><></>
+        >
+          <></>
         </CustomHandle>
-          {!xData?.data && (
-            <NumberInput setValue={setxInputData} defaultValue={0} /> 
-          )}
+        <div className="w-full flex justify-between items-center gap-2 px-3">
+          <span className="flex-1">x</span>
+          <span>
+            =
+            {!xData?.data && (
+              <NumberInput setValue={setxInputData} defaultValue={0} />
+            )}
+          </span>
+        </div>
+
         <CustomHandle
           id="input-y-handle"
           position={Position.Left}
-          key={uuidv4()}
-        ><></>
+        >
+          <></>
         </CustomHandle>
-          {!yData?.data && (
-            <NumberInput setValue={setyInputData} defaultValue={0} />
-          )}
+        {!yData?.data && (
+          <NumberInput setValue={setyInputData} defaultValue={0} />
+        )}
       </Body>
     </div>
   );

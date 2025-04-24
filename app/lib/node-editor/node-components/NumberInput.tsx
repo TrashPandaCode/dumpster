@@ -28,7 +28,7 @@ const NumberInput = ({
       type="text"
       inputMode="decimal"
       onChange={parseNumber}
-      className="nodrag mx-3 bg-amber-300"
+      className="nodrag mx-3 w-8 bg-slate-900 px-1 border-1 rounded-sm border-slate-700 focus:outline-none focus:border-slate-500"
       value={rawValue}
     />
   );
