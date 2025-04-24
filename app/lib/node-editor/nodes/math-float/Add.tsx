@@ -31,13 +31,13 @@ const Add = memo(({ id }: { id: string }) => {
   });
   const yData = useNodesData(yConnection?.[0]?.source);
 
-  const result =
-    Number(xData?.data ? (xData.data.value as number) : xInputData) +
-    Number(yData?.data ? (yData.data.value as number) : yInputData);
-
   useEffect(() => {
-    updateNodeData(id, { value: result });
-  }, [result]);
+    updateNodeData(id, {
+      value:
+        Number(xData?.data ? (xData.data.value as number) : xInputData) +
+        Number(yData?.data ? (yData.data.value as number) : yInputData),
+    });
+  }, [xInputData, yInputData, xData, yData]);
 
   return (
     <div className="min-w-3xs">
