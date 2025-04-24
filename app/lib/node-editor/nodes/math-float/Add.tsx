@@ -55,13 +55,13 @@ const Add = ({ id }: { id: string }) => {
           {!xData?.data && (
             <NumberInput setValue={setxInputData} defaultValue={0} />
           )}
-          <BaseHandle id={id} position={Position.Left} />
+          <BaseHandle id="input-x-handle" position={Position.Left} />
         </div>
         <div className="text-left">
-          {!xData?.data && (
-            <NumberInput setValue={setxInputData} defaultValue={0} />
+          {!yData?.data && (
+            <NumberInput setValue={setyInputData} defaultValue={0} />
           )}
-          <BaseHandle id={id} position={Position.Left} />
+          <BaseHandle id="input-y-handle" position={Position.Left} />
         </div>
       </Body>
     </div>
