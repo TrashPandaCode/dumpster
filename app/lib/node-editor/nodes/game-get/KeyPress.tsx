@@ -8,7 +8,6 @@ import LabelHandle from "../../node-components/LabelHandle";
 const KeyPress = memo(({ id }: { id: string }) => {
   const { updateNodeData } = useReactFlow();
   const spacePressed = useKeyPress("d");
-  console.log(spacePressed);
 
   useEffect(() => {
     updateNodeData(id, { value: +spacePressed });
