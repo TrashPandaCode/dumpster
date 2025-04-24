@@ -3,23 +3,7 @@ import {
   ChevronDownIcon,
   ChevronUpIcon,
 } from "@radix-ui/react-icons";
-import {
-  Item,
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectIcon,
-  SelectItemIndicator,
-  SelectItemText,
-  SelectLabel,
-  SelectPortal,
-  SelectScrollDownButton,
-  SelectScrollUpButton,
-  SelectSeparator,
-  SelectTrigger,
-  SelectValue,
-  SelectViewport,
-} from "@radix-ui/react-select";
+import * as SelectPrimitive from "@radix-ui/react-select";
 import { Position, useKeyPress, useReactFlow } from "@xyflow/react";
 import classnames from "classnames";
 import React, { memo, useEffect, useState } from "react";
@@ -41,67 +25,59 @@ const KeyPress = memo(({ id }: { id: string }) => {
     <div className="min-w-48">
       <Header>KeyPress (Test)</Header>
       <Body>
-        <Select>
-          <SelectTrigger
-            className="text-violet11 hover:bg-mauve3 data-[placeholder]:text-violet9 inline-flex h-[35px] items-center justify-center gap-[5px] rounded bg-white px-[15px] text-[13px] leading-none shadow-[0_2px_10px] shadow-black/10 outline-none focus:shadow-[0_0_0_2px] focus:shadow-black"
-            aria-label="Food"
-          >
-            <SelectValue placeholder="Select a fruit…" />
-            <SelectIcon className="text-violet11">
-              <ChevronDownIcon />
-            </SelectIcon>
-          </SelectTrigger>
-          <SelectPortal>
-            <SelectContent className="overflow-hidden rounded-md bg-white shadow-[0px_10px_38px_-10px_rgba(22,_23,_24,_0.35),0px_10px_20px_-15px_rgba(22,_23,_24,_0.2)]">
-              <SelectScrollUpButton className="text-violet11 flex h-[25px] cursor-default items-center justify-center bg-white">
-                <ChevronUpIcon />
-              </SelectScrollUpButton>
-              <SelectViewport className="p-[5px]">
-                <SelectGroup>
-                  <SelectLabel className="text-mauve11 px-[25px] text-xs leading-[25px]">
-                    Fruits
-                  </SelectLabel>
-                  <SelectItem value="apple">Apple</SelectItem>
-                  <SelectItem value="banana">Banana</SelectItem>
-                  <SelectItem value="blueberry">Blueberry</SelectItem>
-                  <SelectItem value="grapes">Grapes</SelectItem>
-                  <SelectItem value="pineapple">Pineapple</SelectItem>
-                </SelectGroup>
-
-                <SelectSeparator className="bg-violet6 m-[5px] h-px" />
-
-                <SelectGroup>
-                  <SelectLabel className="text-mauve11 px-[25px] text-xs leading-[25px]">
-                    Vegetables
-                  </SelectLabel>
-                  <SelectItem value="aubergine">Aubergine</SelectItem>
-                  <SelectItem value="broccoli">Broccoli</SelectItem>
-                  <SelectItem value="carrot" disabled>
-                    Carrot
-                  </SelectItem>
-                  <SelectItem value="courgette">Courgette</SelectItem>
-                  <SelectItem value="leek">Leek</SelectItem>
-                </SelectGroup>
-
-                <SelectSeparator className="bg-violet6 m-[5px] h-px" />
-
-                <SelectGroup>
-                  <SelectLabel className="text-mauve11 px-[25px] text-xs leading-[25px]">
-                    Meat
-                  </SelectLabel>
-                  <SelectItem value="beef">Beef</SelectItem>
-                  <SelectItem value="chicken">Chicken</SelectItem>
-                  <SelectItem value="lamb">Lamb</SelectItem>
-                  <SelectItem value="pork">Pork</SelectItem>
-                </SelectGroup>
-              </SelectViewport>
-              <SelectScrollDownButton className="text-violet11 flex h-[25px] cursor-default items-center justify-center bg-white">
-                <ChevronDownIcon />
-              </SelectScrollDownButton>
-            </SelectContent>
-          </SelectPortal>
-        </Select>
         <div className="flex w-full justify-end gap-2">
+          <SelectPrimitive.Select>
+            <SelectPrimitive.SelectTrigger
+              className="nodrag text-md mx-3 flex flex-1 items-baseline rounded-sm border border-slate-700 bg-slate-900 px-1 text-white focus:border-slate-500 focus:outline-none"
+              aria-label="Key"
+            >
+              <SelectPrimitive.SelectValue placeholder="..." />
+              <SelectPrimitive.SelectIcon className="ml-auto text-white">
+                <ChevronDownIcon />
+              </SelectPrimitive.SelectIcon>
+            </SelectPrimitive.SelectTrigger>
+
+            <SelectPrimitive.SelectPortal>
+              <SelectPrimitive.SelectContent className="overflow-hidden rounded-md border border-slate-700 bg-slate-900 shadow-md">
+                <SelectPrimitive.SelectScrollUpButton className="flex h-[25px] items-center justify-center bg-slate-900 text-white">
+                  <ChevronUpIcon />
+                </SelectPrimitive.SelectScrollUpButton>
+                <SelectPrimitive.SelectViewport className="p-1">
+                  <SelectPrimitive.SelectGroup>
+                    <SelectPrimitive.Label className="px-2 font-mono text-xs text-white">
+                      Keys
+                    </SelectPrimitive.Label>
+                    <SelectItem value="w">W</SelectItem>
+                    <SelectItem value="a">A</SelectItem>
+                    <SelectItem value="s">S</SelectItem>
+                    <SelectItem value="d">D</SelectItem>
+                    <SelectItem value="e">E</SelectItem>
+                    <SelectItem value="f">F</SelectItem>
+
+                    <SelectPrimitive.Label className="px-2 font-mono text-xs text-white">
+                      Arrows
+                    </SelectPrimitive.Label>
+                    <SelectItem value="left">Left</SelectItem>
+                    <SelectItem value="right">Right</SelectItem>
+                    <SelectItem value="up">Up</SelectItem>
+                    <SelectItem value="down">Down</SelectItem>
+
+                    <SelectPrimitive.Label className="px-2 font-mono text-xs text-white">
+                      Other
+                    </SelectPrimitive.Label>
+                    <SelectItem value=" ">Space</SelectItem>
+                    <SelectItem value="enter">Enter</SelectItem>
+
+                    
+                  </SelectPrimitive.SelectGroup>
+                </SelectPrimitive.SelectViewport>
+                <SelectPrimitive.SelectScrollDownButton className="flex h-[25px] items-center justify-center bg-slate-900 text-white">
+                  <ChevronDownIcon />
+                </SelectPrimitive.SelectScrollDownButton>
+              </SelectPrimitive.SelectContent>
+            </SelectPrimitive.SelectPortal>
+          </SelectPrimitive.Select>
+
           <LabelHandle
             id="result-handle"
             position={Position.Right}
@@ -113,23 +89,25 @@ const KeyPress = memo(({ id }: { id: string }) => {
   );
 });
 const SelectItem = React.forwardRef<
-  React.ComponentRef<typeof Item>,
-  React.ComponentPropsWithoutRef<typeof Item>
+  React.ComponentRef<typeof SelectPrimitive.Item>,
+  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Item>
 >(({ className, children, ...props }, ref) => {
   return (
-    <SelectItem
+    <SelectPrimitive.SelectItem
       className={classnames(
-        "text-violet11 data-[highlighted]:bg-violet9 data-[disabled]:text-mauve8 data-[highlighted]:text-violet1 relative flex h-[25px] items-center rounded-[3px] pr-[35px] pl-[25px] text-[13px] leading-none select-none data-[disabled]:pointer-events-none data-[highlighted]:outline-none",
+        "text-md relative flex h-[25px] items-center justify-between rounded px-1 font-mono leading-none text-white select-none data-[disabled]:pointer-events-none data-[disabled]:text-slate-500 data-[highlighted]:bg-slate-800 data-[highlighted]:outline-none",
         className
       )}
       {...props}
       ref={ref}
     >
-      <SelectItemText>{children}</SelectItemText>
-      <SelectItemIndicator className="absolute left-0 inline-flex w-[25px] items-center justify-center">
+      <SelectPrimitive.SelectItemText>
+        {children}
+      </SelectPrimitive.SelectItemText>
+      <SelectPrimitive.SelectItemIndicator className="absolute right-0 inline-flex w-[25px] items-center justify-center">
         <CheckIcon />
-      </SelectItemIndicator>
-    </SelectItem>
+      </SelectPrimitive.SelectItemIndicator>
+    </SelectPrimitive.SelectItem>
   );
 });
 
