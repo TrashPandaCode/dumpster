@@ -43,32 +43,22 @@ const Add = ({ id }: { id: string }) => {
     <div className="min-w-3xs">
       <Header>Addition</Header>
       <Body>
-        <CustomHandle
-          id="result-handle"
-          position={Position.Right}
-        >
+        <CustomHandle id="result-handle" position={Position.Right}>
           <span>Result</span>
         </CustomHandle>
-        <CustomHandle
-          id="input-x-handle"
-          position={Position.Left}
-        >
+        <CustomHandle id="input-x-handle" position={Position.Left}>
           <></>
         </CustomHandle>
-        <div className="w-full flex justify-between items-center gap-2 px-3">
+
+        <div className="flex w-full items-center justify-between gap-2 px-3">
           <span className="flex-1">x</span>
           <span>
             =
-            {!xData?.data && (
-              <NumberInput setValue={setxInputData} defaultValue={0} />
-            )}
+            <NumberInput setValue={setxInputData} defaultValue={0} disabled={!!xData?.data} />
           </span>
         </div>
 
-        <CustomHandle
-          id="input-y-handle"
-          position={Position.Left}
-        >
+        <CustomHandle id="input-y-handle" position={Position.Left}>
           <></>
         </CustomHandle>
         {!yData?.data && (
