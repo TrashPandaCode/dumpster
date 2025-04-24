@@ -1,11 +1,6 @@
 import { Handle, Position, useNodeConnections } from "@xyflow/react";
-import React from "react";
 
 const BaseHandle = ({ id, position }: { id: string; position: Position }) => {
-  const targetConnections = useNodeConnections({
-    handleType: "target",
-  });
-
   if (position == Position.Right) {
     return (
       <Handle
@@ -22,7 +17,6 @@ const BaseHandle = ({ id, position }: { id: string; position: Position }) => {
         type="target"
         position={Position.Left}
         className="!static float-left mt-3 flex !h-3 !w-3 items-baseline justify-center !rounded-[2px] !border-emerald-300 text-[8px]"
-        isConnectable={targetConnections.length < 1}
       />
     );
   }
