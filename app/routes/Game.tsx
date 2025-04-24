@@ -1,3 +1,4 @@
+import { DragHandleDots2Icon } from "@radix-ui/react-icons";
 import { useEffect, useRef } from "react";
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 
@@ -21,7 +22,9 @@ const Game = () => {
       <Panel id="game-panel" minSize={25} order={1}>
         <canvas id="game-canvas" ref={canvasRef} className="w-1/2"></canvas>
       </Panel>
-      <PanelResizeHandle className="w-2 bg-blue-800" />
+      <PanelResizeHandle className="flex w-2 items-center justify-center bg-slate-800">
+        <DragHandleDots2Icon width={32} height={32} className="scale-125 text-slate-400" />
+      </PanelResizeHandle>
       <Panel id="nodes-panel" minSize={25} order={2}>
         <NodeEditor />
       </Panel>
