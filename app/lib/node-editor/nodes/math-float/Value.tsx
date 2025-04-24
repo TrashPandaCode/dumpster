@@ -18,12 +18,14 @@ const Value = memo(({ id }: { id: string }) => {
     <div className="min-w-48">
       <Header>Value</Header>
       <Body>
-        <LabelHandle
-          id="result-handle"
-          position={Position.Right}
-          label="Value"
-        />
-        <NumberInput setValue={setValue} defaultValue={0} />
+        <div className="flex w-full justify-end gap-2">
+          <NumberInput setValue={setValue} defaultValue={0} />
+          <LabelHandle
+            id="result-handle"
+            position={Position.Right}
+            label="Value"
+          />
+        </div>
       </Body>
     </div>
   );
