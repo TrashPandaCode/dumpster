@@ -54,7 +54,7 @@ const Add = memo(({ id }: { id: string }) => {
           <NumberInput
             setValue={setxInputData}
             defaultValue={0}
-            disabled={xData?.data ? true : false}
+            disabled={!!xData?.data}
           />
           <BaseHandle id="input-x-handle" position={Position.Left} />
         </div>
@@ -63,7 +63,7 @@ const Add = memo(({ id }: { id: string }) => {
           <NumberInput
             setValue={setyInputData}
             defaultValue={0}
-            disabled={yData?.data ? true : false}
+            disabled={!!yData?.data}
           />
           <BaseHandle id="input-y-handle" position={Position.Left} />
         </div>
