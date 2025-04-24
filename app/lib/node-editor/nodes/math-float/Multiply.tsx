@@ -13,7 +13,7 @@ import Header from "../../node-components/Header";
 import LabelHandle from "../../node-components/LabelHandle";
 import NumberInput from "../../node-components/NumberInput";
 
-const Add = memo(({ id }: { id: string }) => {
+const Multiply = memo(({ id }: { id: string }) => {
   const { updateNodeData } = useReactFlow();
   const [xInputData, setxInputData] = useState(0);
   const [yInputData, setyInputData] = useState(0);
@@ -33,14 +33,14 @@ const Add = memo(({ id }: { id: string }) => {
   useEffect(() => {
     updateNodeData(id, {
       value:
-        Number(xData?.data ? (xData.data.value as number) : xInputData) +
+        Number(xData?.data ? (xData.data.value as number) : xInputData) *
         Number(yData?.data ? (yData.data.value as number) : yInputData),
     });
   }, [xInputData, yInputData, xData, yData]);
 
   return (
     <div className="min-w-3xs">
-      <Header>Addition</Header>
+      <Header>Multiply</Header>
       <Body>
         <LabelHandle
           id="result-handle"
@@ -73,4 +73,4 @@ const Add = memo(({ id }: { id: string }) => {
   );
 });
 
-export default Add;
+export default Multiply;
