@@ -57,7 +57,7 @@ const Add = ({ id }: { id: string }) => {
           key={uuidv4()}
         >
           {!xData?.data && (
-            <NumberInput setValue={setxInputData} defaultValue={0} />
+            <NumberInput setValue={setxInputData} defaultValue={0} /> // TODO: this setState causes rerender
           )}
         </CustomHandle>
         <CustomHandle
