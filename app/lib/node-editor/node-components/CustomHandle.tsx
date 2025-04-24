@@ -5,14 +5,14 @@ const CustomHandle = ({
   id,
   position,
   children,
-  type
+  type,
 }: {
   id: string;
   position: Position;
-  children: ReactNode;
-  type: "float" | "vector";
+  children?: ReactNode;
+  type: "float" | "vector" | "any";
 }) => {
-  const letter = type == "float" ? "f" : "v";
+  const letter = type == "float" ? "f" : type == "vector" ? "v" : "a";
   if (position == Position.Right) {
     return (
       <div className="text-right">
@@ -21,8 +21,10 @@ const CustomHandle = ({
           id={id}
           type="source"
           position={Position.Right}
-          className="!static float-right mt-3 text-[8px] flex justify-center items-baseline !w-3 !h-3 !rounded-[2px] !border-emerald-300"
-        >{letter}</Handle>
+          className="!static float-right mt-3 flex !h-3 !w-3 items-baseline justify-center !rounded-[2px] !border-emerald-300 text-[8px]"
+        >
+          {letter}
+        </Handle>
       </div>
     );
   } else if (position == Position.Left) {
@@ -33,8 +35,10 @@ const CustomHandle = ({
           id={id}
           type="target"
           position={Position.Left}
-          className="!static float-left mt-3 text-[8px] flex justify-center items-baseline !w-3 !h-3 !rounded-[2px] !border-emerald-300"
-        >{letter}</Handle>
+          className="!static float-left mt-3 flex !h-3 !w-3 items-baseline justify-center !rounded-[2px] !border-emerald-300 text-[8px]"
+        >
+          {letter}
+        </Handle>
       </div>
     );
   }
