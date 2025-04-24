@@ -44,9 +44,9 @@ const AddNodePanel = memo(() => {
 
         <DropdownMenuPortal>
           <DropdownMenuContent sideOffset={5}>
-            {Object.keys(nodeTypes).map((name) => {
+            {Object.keys(nodeTypes).map((name, index) => {
               return (
-                <DropdownMenuItem>
+                <DropdownMenuItem key={"add_node_dropdown_" + index}>
                   <button
                     onClick={() => {
                       addNodes({
