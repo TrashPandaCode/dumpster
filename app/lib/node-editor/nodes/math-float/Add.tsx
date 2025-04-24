@@ -55,20 +55,20 @@ const Add = ({ id }: { id: string }) => {
           id="input-x-handle"
           position={Position.Left}
           key={uuidv4()}
-        >
-          {!xData?.data && (
-            <NumberInput setValue={setxInputData} defaultValue={0} />
-          )}
+        ><></>
         </CustomHandle>
+          {!xData?.data && (
+            <NumberInput setValue={setxInputData} defaultValue={0} /> 
+          )}
         <CustomHandle
           id="input-y-handle"
           position={Position.Left}
           key={uuidv4()}
-        >
+        ><></>
+        </CustomHandle>
           {!yData?.data && (
             <NumberInput setValue={setyInputData} defaultValue={0} />
           )}
-        </CustomHandle>
       </Body>
     </div>
   );

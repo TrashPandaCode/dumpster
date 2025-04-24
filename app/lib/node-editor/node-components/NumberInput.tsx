@@ -7,11 +7,15 @@ const NumberInput = ({
   setValue(input: number): void;
   defaultValue: number;
 }) => {
+  // TODO: number input propably shouldn't have internal state (make it controlled)
   const [rawValue, setRawValue] = useState(String(defaultValue));
 
   const parseNumber = (evt: React.ChangeEvent<HTMLInputElement>) => {
     const input = evt.target.value.replace(",", ".");
-    setRawValue(input);
+    
+    if (/^\d*\.?\d*$/.test(input)) {
+      setRawValue(input);
+    }
 
     const parsed = Number(input);
     if (!isNaN(parsed)) {
