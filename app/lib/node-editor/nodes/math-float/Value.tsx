@@ -16,7 +16,7 @@ const Value = memo(({ id }: { id: string }) => {
 
   return (
     <div>
-      <Header>Float Value</Header>
+      <Header>Value</Header>
       <Body>
         <CustomHandle id="result-handle" position={Position.Right}>
           <span>Value</span>

@@ -42,7 +42,7 @@ const Add = ({ id }: { id: string }) => {
 
   return (
     <div>
-      <Header>Addition (float)</Header>
+      <Header>Addition</Header>
       <Body>
         <CustomHandle
           id="result-handle"
