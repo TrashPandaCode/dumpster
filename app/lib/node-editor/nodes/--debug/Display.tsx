@@ -21,7 +21,8 @@ const Display = memo(() => {
   const incomingData = useNodesData(incomingConnection?.[0]?.source);
 
   useEffect(() => {
-    setXPos(Number(incomingData?.data.value));
+    const number = Number(incomingData?.data.value);
+    setXPos(!isNaN(number) ? number : 0);
   }, [incomingData]);
 
   return (

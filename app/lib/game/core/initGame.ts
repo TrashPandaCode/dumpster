@@ -10,6 +10,7 @@ export default async function initGame(canvas: HTMLCanvasElement) {
 
   k.onUpdate(() => {
     const x = useDebugStore.getState().xpos;
+
     bean.moveBy(x, 0);
 
     if (bean.pos.x > k.width()) {
