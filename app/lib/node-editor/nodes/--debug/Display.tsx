@@ -4,18 +4,25 @@ import {
   useNodeConnections,
   useNodesData,
 } from "@xyflow/react";
-import { memo } from "react";
+import { memo, useEffect } from "react";
 
+import { useDebugStore } from "~/lib/zustand/debug";
 import Body from "../../node-components/Body";
 import Header from "../../node-components/Header";
 import LabelHandle from "../../node-components/LabelHandle";
 
 const Display = memo(() => {
+  const setXPos = useDebugStore((state) => state.setxpos);
+
   const incomingConnection = useNodeConnections({
     handleId: "in-one",
     handleType: "target",
   });
   const incomingData = useNodesData(incomingConnection?.[0]?.source);
+
+  useEffect(() => {
+    setXPos(Number(incomingData?.data.value));
+  }, [incomingData]);
 
   return (
     <div>

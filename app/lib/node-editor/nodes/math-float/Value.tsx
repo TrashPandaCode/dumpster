@@ -1,20 +1,17 @@
 import { Position, useReactFlow } from "@xyflow/react";
-import React, { memo, useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 
 import Body from "../../node-components/Body";
 import Header from "../../node-components/Header";
 import LabelHandle from "../../node-components/LabelHandle";
 import NumberInput from "../../node-components/NumberInput";
-import { useBearStore } from "~/lib/zustand/test";
 
 const Value = memo(({ id }: { id: string }) => {
   const { updateNodeData } = useReactFlow();
   const [value, setValue] = useState(0);
-  const setBears = useBearStore((state) => state.setBears);
 
   useEffect(() => {
     updateNodeData(id, { value: value });
-    setBears(value);
   }, [value]);
 
   return (
