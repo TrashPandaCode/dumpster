@@ -45,7 +45,6 @@ const Add = ({ id }: { id: string }) => {
       <Header>Addition (float)</Header>
       <Body>
         <CustomHandle
-          type="float"
           id="result-handle"
           position={Position.Right}
           key={uuidv4()}
@@ -53,7 +52,6 @@ const Add = ({ id }: { id: string }) => {
           <span>Result</span>
         </CustomHandle>
         <CustomHandle
-          type="float"
           id="input-x-handle"
           position={Position.Left}
           key={uuidv4()}
@@ -63,7 +61,6 @@ const Add = ({ id }: { id: string }) => {
           )}
         </CustomHandle>
         <CustomHandle
-          type="float"
           id="input-y-handle"
           position={Position.Left}
           key={uuidv4()}

@@ -24,7 +24,6 @@ const Display = memo(() => {
         <div className="flex gap-2">
           <CustomHandle
             id="in-one"
-            type="any"
             position={Position.Left}
           />
           <p>{String(incomingData?.data.value)}</p>
