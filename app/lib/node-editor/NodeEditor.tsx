@@ -47,8 +47,8 @@ const NodeEditor = () => {
         onConnect={onConnect}
         fitView
       >
-        <Background />
-        <Controls />
+        <Background bgColor="#14141d" color="#a7abc2" />
+        {/* <Controls className="text-white !bg-slate-800" /> sind kacke zu stylen */}
         <AddNodePanel />
       </ReactFlow>
     </div>
