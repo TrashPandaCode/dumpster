@@ -5,12 +5,13 @@ import {
   useNodesData,
   useReactFlow,
 } from "@xyflow/react";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
+import BaseHandle from "../../node-components/BaseHandle";
 import Body from "../../node-components/Body";
-import CustomHandle from "../../node-components/CustomHandle";
 import Header from "../../node-components/Header";
+import LabelHandle from "../../node-components/LabelHandle";
 import NumberInput from "../../node-components/NumberInput";
 
 const Add = ({ id }: { id: string }) => {
@@ -44,31 +45,24 @@ const Add = ({ id }: { id: string }) => {
     <div>
       <Header>Addition</Header>
       <Body>
-        <CustomHandle
+        <LabelHandle
           id="result-handle"
           position={Position.Right}
           key={uuidv4()}
-        >
-          <span>Result</span>
-        </CustomHandle>
-        <CustomHandle
-          id="input-x-handle"
-          position={Position.Left}
-          key={uuidv4()}
-        ><></>
-        </CustomHandle>
+          label="Result"
+        />
+        <div className="text-left">
           {!xData?.data && (
-            <NumberInput setValue={setxInputData} defaultValue={0} /> 
+            <NumberInput setValue={setxInputData} defaultValue={0} />
           )}
-        <CustomHandle
-          id="input-y-handle"
-          position={Position.Left}
-          key={uuidv4()}
-        ><></>
-        </CustomHandle>
-          {!yData?.data && (
-            <NumberInput setValue={setyInputData} defaultValue={0} />
+          <BaseHandle id={id} position={Position.Left} />
+        </div>
+        <div className="text-left">
+          {!xData?.data && (
+            <NumberInput setValue={setxInputData} defaultValue={0} />
           )}
+          <BaseHandle id={id} position={Position.Left} />
+        </div>
       </Body>
     </div>
   );

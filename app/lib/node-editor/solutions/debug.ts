@@ -10,13 +10,13 @@ export const debugNodes: Node[] = [
   {
     id: "2",
     type: "Add",
-    position: { x: 0, y: 100 },
+    position: { x: 0, y: 200 },
     data: {},
   },
   {
     id: "3",
     type: "Display",
-    position: { x: 0, y: 200 },
+    position: { x: 0, y: 500 },
     data: {},
   },
 ];
