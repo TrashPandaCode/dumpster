@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { NavLink } from "react-router";
 
 import alleyOne from "../assets/alley_one.jpg";
@@ -48,19 +48,27 @@ const CARDS = [
 
 const Home = () => {
   const [currentHoverCard, setCurrentHoverCard] = useState(CARDS[0]);
+  const [showAll, setShowAll] = useState(false);
+  const scrollTargetRef = useRef<HTMLDivElement>(null);
+  const scrollToTarget = () => {
+    scrollTargetRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
     <>
       <div className="flex min-h-screen flex-col">
         <header>
           <nav className="flex items-center gap-8 p-4">
             <div className="font-pixel text-xl font-bold">Dumpster Diving</div>
-            <NavLink to="/docs">Docs</NavLink>
-            <NavLink to="/game">Game</NavLink>
+            <NavLink to="/docs" className="transition-all duration-300 hover:text-jam-600 hover:scale-105">Docs</NavLink>
+            <NavLink to="/game" className="transition-all duration-300 hover:text-jam-600 hover:scale-105">Game</NavLink>
           </nav>
         </header>
         <img
-          className="pointer-events-none absolute bottom-12 left-1/2"
+          className="absolute bottom-12 left-1/2 z-1 cursor-pointer transition-transform hover:scale-110"
           src={arrowDownIcon}
+          onClick={scrollToTarget}
+          alt="Scroll down"
         />
         <main className="relative flex flex-grow overflow-hidden">
           <img
@@ -94,15 +102,16 @@ const Home = () => {
               </div>
               <div className="col-span-2 col-start-2 flex flex-col">
                 <div
-                  className="relative max-h-[350px] overflow-hidden"
+                  className={`relative overflow-hidden transition-all duration-500`}
                   style={{
                     WebkitMaskImage:
                       "linear-gradient(to bottom, black 60%, transparent 100%)",
                     maskImage:
                       "linear-gradient(to bottom, black 60%, transparent 100%)",
+                    height: showAll ? "900px" : "350px",
                   }}
                 >
-                  <div className="grid w-full grid-cols-4 gap-4">
+                  <div className="grid w-full grid-cols-4 gap-4 p-2">
                     {CARDS.map((card) => (
                       <LevelCard
                         key={card.id}
@@ -117,18 +126,39 @@ const Home = () => {
 
                 <div className="flex items-center justify-center">
                   <div className="mr-[-2px] h-1 w-full rounded-l-full bg-white"></div>
-                  <a className="flex-1/2 rounded-full bg-white px-4 py-2 text-center text-sm font-bold">
-                    show all
+                  <a className="flex-1/2 rounded-full bg-white px-4 py-2 text-center text-sm font-bold cursor-pointer transition-transform hover:scale-110"
+                    onClick={() => setShowAll(!showAll)}
+                  >
+                    {showAll ? "Show Less" : "Show All"}
                   </a>
                   <div className="ml-[-2px] h-1 w-full rounded-r-full bg-white"></div>
                 </div>
 
-                <h1 className="font-pixel pt-16 text-7xl font-bold text-white">
-                  <p>Dumpster</p>
-                  <p>Diving</p>
-                </h1>
+                <div
+                  className={`transition-all duration-500 ${showAll ? "opacity-0 translate-y-4 delay-0" : "opacity-100 translate-y-0 delay-500"
+                    }`}
+                >
+                  <h1 className="font-pixel pt-16 text-7xl font-bold text-white">
+                    <p>Dumpster</p>
+                    <p>Diving</p>
+                  </h1>
+                  <br />
+                  <p className="text-sm text-white">
+                    Lorem Ipsum is simply dummy text of the printing and
+                    typesetting industry. Lorem Ipsum has been the industry's
+                    standard dummy text ever since the 1500s, when an unknown
+                    printer took a galley of type and scrambled it to make a type
+                    specimen book. It has survived not only five centuries, but
+                    also the leap into electronic typesetting, remaining
+                    essentially unchanged. It was popularised in the 1960s with
+                    the release of Letraset sheets containing Lorem Ipsum
+                    passages, and more recently with desktop publishing software
+                    like Aldus PageMaker including versions of Lorem Ipsum.
+                  </p>
+                </div>
+
                 <NavLink
-                  className="bg-jam-600 font-pixel absolute right-12 bottom-12 flex items-center gap-2 rounded-full px-6 py-3 text-4xl font-bold text-white shadow-lg"
+                  className="bg-jam-600 font-pixel absolute right-12 bottom-12 flex items-center gap-2 rounded-full px-6 py-3 text-4xl font-bold text-white shadow-lg transition-all duration-300 hover:bg-jam-500 hover:shadow-2xl hover:scale-110"
                   to="/game"
                 >
                   Play
@@ -140,7 +170,7 @@ const Home = () => {
         </main>
       </div>
 
-      <section className="flex items-center justify-center bg-white">
+      <section ref={scrollTargetRef} className="flex items-center justify-center bg-white">
         <div className="flex h-full w-full flex-col p-12">
           <h1 className="font-pixel pb-12 text-4xl font-bold">
             Learn these skills to become a dumpster diver
@@ -177,7 +207,7 @@ const Home = () => {
           </p>
           <a
             href="https://discord.gg/yourdiscordlink"
-            className="bg-jam-600 rounded-full px-6 py-3 text-lg font-bold text-white"
+            className="bg-jam-600 rounded-full px-6 py-3 text-lg font-bold text-white transition-all duration-300 hover:bg-jam-500 hover:shadow-2xl hover:scale-105"
           >
             Join Discord
           </a>
@@ -291,7 +321,7 @@ const LevelCard: React.FC<{ img: string; onMouseEnter: () => void }> = ({
   onMouseEnter,
 }) => (
   <div
-    className="outline-jam-600 relative aspect-square h-full w-full cursor-pointer overflow-hidden rounded-xl hover:outline-2"
+    className="outline-jam-600 relative aspect-square h-full w-full cursor-pointer overflow-hidden rounded-xl hover:outline-5"
     onMouseEnter={onMouseEnter}
   >
     <img className="h-full w-full scale-110 object-cover" src={img} alt="" />
