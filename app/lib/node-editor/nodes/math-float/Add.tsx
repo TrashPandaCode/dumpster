@@ -8,9 +8,8 @@ import { memo, useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
 import BaseHandle from "../../node-components/BaseHandle";
-import Body from "../../node-components/Body";
-import Header from "../../node-components/Header";
 import LabelHandle from "../../node-components/LabelHandle";
+import NodeContent from "../../node-components/NodeContent";
 import NumberInput from "../../node-components/NumberInput";
 
 const Add = memo(({ id }: { id: string }) => {
@@ -22,13 +21,13 @@ const Add = memo(({ id }: { id: string }) => {
     handleId: "input-x-handle",
     handleType: "target",
   });
-  const xData = useNodesData(xConnection?.[0]?.source);
+  const xData = useNodesData(xConnection[0]?.source);
 
   const yConnection = useNodeConnections({
     handleId: "input-y-handle",
     handleType: "target",
   });
-  const yData = useNodesData(yConnection?.[0]?.source);
+  const yData = useNodesData(yConnection[0]?.source);
 
   useEffect(() => {
     updateNodeData(id, {
@@ -40,8 +39,7 @@ const Add = memo(({ id }: { id: string }) => {
 
   return (
     <div className="min-w-3xs">
-      <Header>Addition</Header>
-      <Body>
+      <NodeContent label="Addition" type="float">
         <LabelHandle
           id="result-handle"
           position={Position.Right}
@@ -56,7 +54,11 @@ const Add = memo(({ id }: { id: string }) => {
             defaultValue={0}
             disabled={!!xData?.data}
           />
-          <BaseHandle id="input-x-handle" position={Position.Left} />
+          <BaseHandle
+            id="input-x-handle"
+            position={Position.Left}
+            isConnectable={xConnection.length < 1}
+          />
         </div>
         <div className="text-left">
           y
@@ -66,9 +68,13 @@ const Add = memo(({ id }: { id: string }) => {
             defaultValue={0}
             disabled={!!yData?.data}
           />
-          <BaseHandle id="input-y-handle" position={Position.Left} />
+          <BaseHandle
+            id="input-y-handle"
+            position={Position.Left}
+            isConnectable={yConnection.length < 1}
+          />
         </div>
-      </Body>
+      </NodeContent>
     </div>
   );
 });

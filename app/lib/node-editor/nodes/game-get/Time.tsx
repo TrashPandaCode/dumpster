@@ -2,9 +2,8 @@ import { Position, useReactFlow } from "@xyflow/react";
 import { memo, useEffect, useState } from "react";
 
 import { useTimeStore } from "~/lib/zustand/time";
-import Body from "../../node-components/Body";
-import Header from "../../node-components/Header";
 import LabelHandle from "../../node-components/LabelHandle";
+import NodeContent from "../../node-components/NodeContent";
 import NumberInput from "../../node-components/NumberInput";
 
 const Time = memo(({ id }: { id: string }) => {
@@ -20,17 +19,21 @@ const Time = memo(({ id }: { id: string }) => {
 
   return (
     <div className="min-w-48">
-      <Header>Time</Header>
-      <Body>
+      <NodeContent label="Time" type="float">
         <div className="flex w-full justify-end gap-2">
-          <NumberInput value={value} setValue={setValue} defaultValue={0} disabled />
+          <NumberInput
+            value={value}
+            setValue={setValue}
+            defaultValue={0}
+            disabled
+          />
           <LabelHandle
             id="result-handle"
             position={Position.Right}
             label="Value"
           />
         </div>
-      </Body>
+      </NodeContent>
     </div>
   );
 });

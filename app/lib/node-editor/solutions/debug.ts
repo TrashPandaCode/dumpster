@@ -5,7 +5,7 @@ export const debugNodes: Node[] = [
     id: "1",
     type: "Value",
     position: { x: 0, y: 0 },
-    data: {},
+    data: { value: 0 },
   },
   {
     id: "2",
@@ -17,6 +17,18 @@ export const debugNodes: Node[] = [
     id: "3",
     type: "Display",
     position: { x: 0, y: 500 },
+    data: {},
+  },
+  {
+    id: "4",
+    type: "KeyPress",
+    position: { x: 200, y: 0 },
+    data: {},
+  },
+  {
+    id: "5",
+    type: "Multiply",
+    position: { x: 300, y: 200 },
     data: {},
   },
 ];

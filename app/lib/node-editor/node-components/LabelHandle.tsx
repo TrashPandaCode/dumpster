@@ -6,10 +6,12 @@ const LabelHandle = ({
   id,
   position,
   label,
+  isConnectable = true,
 }: {
   id: string;
   position: Position;
   label?: string;
+  isConnectable?: boolean;
 }) => {
   if (position == Position.Right) {
     return (
@@ -22,7 +24,7 @@ const LabelHandle = ({
     return (
       <div className="text-left">
         {label}
-        <BaseHandle id={id} position={position} />
+        <BaseHandle id={id} position={position} isConnectable={isConnectable} />
       </div>
     );
   }

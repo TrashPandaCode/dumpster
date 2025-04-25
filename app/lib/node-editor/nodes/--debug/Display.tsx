@@ -7,9 +7,8 @@ import {
 import { memo, useEffect } from "react";
 
 import { useDebugStore } from "~/lib/zustand/debug";
-import Body from "../../node-components/Body";
-import Header from "../../node-components/Header";
 import LabelHandle from "../../node-components/LabelHandle";
+import NodeContent from "../../node-components/NodeContent";
 
 const Display = memo(() => {
   const setXPos = useDebugStore((state) => state.setxpos);
@@ -18,7 +17,7 @@ const Display = memo(() => {
     handleId: "in-one",
     handleType: "target",
   });
-  const incomingData = useNodesData(incomingConnection?.[0]?.source);
+  const incomingData = useNodesData(incomingConnection[0]?.source);
 
   useEffect(() => {
     const number = Number(incomingData?.data.value);
@@ -27,13 +26,16 @@ const Display = memo(() => {
 
   return (
     <div>
-      <Header>Debug-Display</Header>
-      <Body>
+      <NodeContent label="Debug-Display" type="float">
         <div className="flex gap-2">
-          <LabelHandle id="in-one" position={Position.Left} />
+          <LabelHandle
+            id="in-one"
+            position={Position.Left}
+            isConnectable={incomingConnection.length < 1}
+          />
           <p>{String(incomingData?.data.value)}</p>
         </div>
-      </Body>
+      </NodeContent>
     </div>
   );
 });

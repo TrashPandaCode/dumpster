@@ -8,9 +8,8 @@ import { Position, useKeyPress, useReactFlow } from "@xyflow/react";
 import classnames from "classnames";
 import React, { memo, useEffect, useState } from "react";
 
-import Body from "../../node-components/Body";
-import Header from "../../node-components/Header";
 import LabelHandle from "../../node-components/LabelHandle";
+import NodeContent from "../../node-components/NodeContent";
 
 const KeyPress = memo(({ id }: { id: string }) => {
   const { updateNodeData } = useReactFlow();
@@ -23,8 +22,7 @@ const KeyPress = memo(({ id }: { id: string }) => {
 
   return (
     <div className="min-w-48">
-      <Header>KeyPress (Test)</Header>
-      <Body>
+      <NodeContent label="KeyPress" type="float">
         <div className="flex w-full justify-end gap-2">
           <SelectPrimitive.Select>
             <SelectPrimitive.SelectTrigger
@@ -67,8 +65,6 @@ const KeyPress = memo(({ id }: { id: string }) => {
                     </SelectPrimitive.Label>
                     <SelectItem value=" ">Space</SelectItem>
                     <SelectItem value="enter">Enter</SelectItem>
-
-                    
                   </SelectPrimitive.SelectGroup>
                 </SelectPrimitive.SelectViewport>
                 <SelectPrimitive.SelectScrollDownButton className="flex h-[25px] items-center justify-center bg-slate-900 text-white">
@@ -84,7 +80,7 @@ const KeyPress = memo(({ id }: { id: string }) => {
             label="Value"
           />
         </div>
-      </Body>
+      </NodeContent>
     </div>
   );
 });

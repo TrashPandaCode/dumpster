@@ -1,9 +1,8 @@
 import { Position, useReactFlow } from "@xyflow/react";
-import { memo, useEffect, useState } from "react";
+import { memo, useEffect, useMemo, useState } from "react";
 
-import Body from "../../node-components/Body";
-import Header from "../../node-components/Header";
 import LabelHandle from "../../node-components/LabelHandle";
+import NodeContent from "../../node-components/NodeContent";
 import NumberInput from "../../node-components/NumberInput";
 
 const Value = memo(({ id }: { id: string }) => {
@@ -14,10 +13,14 @@ const Value = memo(({ id }: { id: string }) => {
     updateNodeData(id, { value: value });
   }, [value]);
 
+  // TODO: this remove unnecessary rerender but initial value has to be set when spawing node
+  // const setValue = (val: number) => {
+  //   updateNodeData(id, { value: val });
+  // };
+
   return (
     <div className="min-w-48">
-      <Header>Value</Header>
-      <Body>
+      <NodeContent label="Value" type="float">
         <div className="flex w-full justify-end gap-2">
           <NumberInput setValue={setValue} defaultValue={0} />
           <LabelHandle
@@ -26,7 +29,7 @@ const Value = memo(({ id }: { id: string }) => {
             label="Value"
           />
         </div>
-      </Body>
+      </NodeContent>
     </div>
   );
 });
