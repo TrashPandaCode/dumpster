@@ -22,9 +22,9 @@ const KeyPress = memo(({ id }: { id: string }) => {
 
   return (
     <div className="min-w-48">
-      <NodeContent label="KeyPress" type="float">
+      <NodeContent label="KeyPress" type="float" highlight={keyPressed}>
         <div className="flex w-full justify-end gap-2">
-          <SelectPrimitive.Select>
+          <SelectPrimitive.Select onValueChange={(key) => setCurKey(key)}>
             <SelectPrimitive.SelectTrigger
               className="nodrag text-md mx-3 flex flex-1 items-baseline rounded-sm border border-slate-700 bg-slate-900 px-1 text-white focus:border-slate-500 focus:outline-none"
               aria-label="Key"
