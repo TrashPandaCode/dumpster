@@ -20,7 +20,7 @@ const KeyPress = memo(({ id }: { id: string }) => {
         <div className="flex w-full justify-end gap-2">
           <SelectDropDown
             setSelected={setCurKey}
-            items={{ keys: ["w", "a", "s", "d"], other: ["space", "enter"] }}
+            items={{ keys: ["w", "a", "s", "d"], other: ["Space", "Enter"] }}
           />
           <LabelHandle
             id="result-handle"
