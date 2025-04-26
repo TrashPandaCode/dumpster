@@ -48,6 +48,7 @@ export default async function initGame(canvas: HTMLCanvasElement) {
 
     //Move
     const x = useDebugStore.getState().xpos;
+
     //bean.addForce(k.vec2(x, 0)); //scuffed, needs max velocity function
 
     //Jump

@@ -31,6 +31,12 @@ export const debugNodes: Node[] = [
     position: { x: 200, y: 500 },
     data: {},
   },
+  {
+    id: "6",
+    type: "ExportToGameobject",
+    position: { x: 400, y: 500 },
+    data: {},
+  },
 ];
 
 export const debugEdges: Edge[] = [];
