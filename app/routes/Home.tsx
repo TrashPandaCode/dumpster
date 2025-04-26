@@ -6,6 +6,7 @@ import alleyTwo from "../assets/alley_two.png";
 import arrowDownIcon from "../assets/arrow_down.svg";
 import houseImage from "../assets/house.png";
 import playIcon from "../assets/play.svg";
+import filledDumpster from "../assets/filled_dumpster.svg";
 
 const CARDS = [
   {
@@ -57,9 +58,12 @@ const Home = () => {
   return (
     <>
       <div className="flex min-h-screen flex-col">
-        <header>
+        <header className="pl-[5vw]">
           <nav className="flex items-center gap-8 p-4">
-            <div className="font-pixel text-xl font-bold">Dumpster Diving</div>
+            <div  className="z-1 flex flex-col items-left rotate-358 font-fonm text-2xl font-bold">
+            <p>Dumpster</p>
+            <p>Diving</p>
+            </div>
             <NavLink to="/docs" className="transition-all duration-300 hover:text-jam-600 hover:scale-105">Docs</NavLink>
             <NavLink to="/game" className="transition-all duration-300 hover:text-jam-600 hover:scale-105">Game</NavLink>
           </nav>
@@ -80,7 +84,7 @@ const Home = () => {
           <div className="flex-grow overflow-auto p-12">
             <div className="grid h-full grid-cols-3 gap-12">
               <div className="rounded-xl bg-blue-950 p-4 text-white">
-                <h1 className="font-pixel text-4xl font-bold">
+                <h1 className="font-fonm text-4xl font-bold">
                   {currentHoverCard.name}
                 </h1>
                 <p className="text-sm">
@@ -137,8 +141,8 @@ const Home = () => {
                 <div
                   className={`transition-all duration-500 ${showAll ? "hidden opacity-0 translate-y-4" : "block opacity-100 translate-y-0 delay-500"}`}
                 >
-                  <h1 className="font-pixel pt-16 text-7xl font-bold text-white">
-                    <p>Dumpster</p>
+                  <h1 className="font-fonm pt-16 text-7xl font-bold text-white">
+                    <p className="pb-2">Dumpster</p>
                     <p>Diving</p>
                   </h1>
                   <br />
@@ -157,7 +161,7 @@ const Home = () => {
                 </div>
 
                 <NavLink
-                  className="bg-jam-600 font-pixel absolute right-12 bottom-12 flex items-center gap-2 rounded-full px-6 py-3 text-4xl font-bold text-white shadow-lg transition-all duration-300 hover:bg-jam-500 hover:shadow-2xl hover:scale-110"
+                  className="bg-jam-600 font-fonm absolute right-12 bottom-12 flex items-center gap-2 rounded-full px-6 py-3 text-4xl font-bold text-white shadow-lg transition-all duration-300 hover:bg-jam-500 hover:shadow-2xl hover:scale-110"
                   to="/game"
                 >
                   Play
@@ -171,7 +175,7 @@ const Home = () => {
 
       <section ref={scrollTargetRef} className="flex items-center justify-center bg-white">
         <div className="flex h-full w-full flex-col p-12">
-          <h1 className="font-pixel pb-12 text-4xl font-bold">
+          <h1 className="font-fonm pb-12 text-4xl font-bold">
             Learn these skills to become a dumpster diver
           </h1>
           <div className="flex items-start justify-center gap-32">
@@ -195,7 +199,7 @@ const Home = () => {
       </section>
       <section className="flex h-96 items-center justify-center bg-blue-950">
         <div className="flex h-full w-full max-w-2xl flex-col items-center justify-center gap-4">
-          <h1 className="font-pixel text-4xl font-bold text-white">
+          <h1 className="font-fonm text-4xl font-bold text-white">
             Join the community
           </h1>
           <p className="text-center text-sm text-white">
@@ -213,7 +217,7 @@ const Home = () => {
         </div>
       </section>
       <section className="p-12">
-        <h1 className="font-pixel text-4xl font-bold">About</h1>
+        <h1 className="font-fonm text-4xl font-bold">About</h1>
         <p className="text-sm">
           Lorem Ipsum is simply dummy text of the printing and typesetting
           industry. Lorem Ipsum has been the industry's standard dummy text ever
@@ -222,7 +226,7 @@ const Home = () => {
         </p>
       </section>
       <section className="bg-blue-950 p-12 text-white">
-        <h1 className="font-pixel text-4xl font-bold">About</h1>
+        <h1 className="font-fonm text-4xl font-bold">About</h1>
         <p className="text-sm">
           Lorem Ipsum is simply dummy text of the printing and typesetting
           industry. Lorem Ipsum has been the industry's standard dummy text ever
