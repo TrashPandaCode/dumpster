@@ -48,11 +48,14 @@ export default async function initGame(canvas: HTMLCanvasElement) {
 
     //Move
     const x = useDebugStore.getState().xpos;
+    const y = useDebugStore.getState().ypos;
+
+    bean.pos.x = x;
 
     //bean.addForce(k.vec2(x, 0)); //scuffed, needs max velocity function
 
     //Jump
-    if (x > 0 && beanState.canJump == true) {
+    if (y > 0 && beanState.canJump == true) {
       //Provisionary input until we have proper export nodes
       bean.jump(beanState.jumpForce);
       beanState.canJump = false;
