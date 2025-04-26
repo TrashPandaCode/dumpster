@@ -6,7 +6,6 @@ import alleyTwo from "../assets/alley_two.png";
 import arrowDownIcon from "../assets/arrow_down.svg";
 import houseImage from "../assets/house.png";
 import playIcon from "../assets/play.svg";
-import filledDumpster from "../assets/filled_dumpster.svg";
 
 const CARDS = [
   {
