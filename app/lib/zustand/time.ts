@@ -7,5 +7,8 @@ interface TimeState {
 
 export const useTimeStore = create<TimeState>((set) => ({
   time: 0,
-  setTime: (time: number) => set({ time }),
+  setTime: (time: number) => {
+    time = Math.round(time * 1000) / 1000;
+    return set({ time });
+  },
 }));

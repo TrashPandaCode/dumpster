@@ -7,7 +7,7 @@ const NumberInput = ({
   disabled = false,
   ...props
 }: {
-  value?: number;
+  value?: number | string;
   setValue(input: number): void;
   defaultValue: number;
   disabled?: boolean;
