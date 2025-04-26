@@ -1,17 +1,13 @@
 import Display from "./--debug/Display";
 import KeyPress from "./game-get/KeyPress";
 import Time from "./game-get/Time";
-import Add from "./math-float/Add";
 import MathFloatNode from "./math-float/MathFloatNode";
-import Multiply from "./math-float/Multiply";
 import Value from "./math-float/Value";
 
 export const nodeTypes = {
   Value,
-  Add,
   Display,
   Time,
   KeyPress,
-  Multiply,
   MathFloatNode,
 };

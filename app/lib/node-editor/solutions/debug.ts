@@ -9,7 +9,7 @@ export const debugNodes: Node[] = [
   },
   {
     id: "2",
-    type: "Add",
+    type: "Time",
     position: { x: 0, y: 200 },
     data: {},
   },
@@ -27,12 +27,6 @@ export const debugNodes: Node[] = [
   },
   {
     id: "5",
-    type: "Multiply",
-    position: { x: 300, y: 200 },
-    data: {},
-  },
-  {
-    id: "6",
     type: "MathFloatNode",
     position: { x: 200, y: 500 },
     data: {},
