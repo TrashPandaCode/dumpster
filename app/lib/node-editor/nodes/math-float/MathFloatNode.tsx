@@ -15,7 +15,13 @@ import SelectDropDown from "../../node-components/SelectDropDown";
 
 const MathFloatNode = memo(({ id }: { id: string }) => {
   const { updateNodeData } = useReactFlow();
-  const [computeType, setComputeType] = useState<string | null>(null);
+  const [computeType, _setComputeType] = useState<string | null>(null);
+  const [inputEnable, setInputEnable] = useState([true, true]);
+
+  function setComputeType(type: string): void {
+    _setComputeType(type);
+    setInputEnable(INPUTS[type]);
+  }
 
   const [xInputData, setxInputData] = useState(0);
   const [yInputData, setyInputData] = useState(0);
@@ -35,7 +41,7 @@ const MathFloatNode = memo(({ id }: { id: string }) => {
   useEffect(() => {
     if (computeType) {
       updateNodeData(id, {
-        value: compute[computeType](
+        value: COMPUTE[computeType](
           Number(xData?.data ? (xData.data.value as number) : xInputData),
           Number(yData?.data ? (yData.data.value as number) : yInputData)
         ),
@@ -49,7 +55,7 @@ const MathFloatNode = memo(({ id }: { id: string }) => {
         label={computeType ? computeType : "Select Math Type"}
         type="float"
       >
-        <SelectDropDown items={types} setSelected={setComputeType} />
+        <SelectDropDown items={TYPES} setSelected={setComputeType} />
         {computeType && (
           <>
             <br />
@@ -59,34 +65,38 @@ const MathFloatNode = memo(({ id }: { id: string }) => {
               key={uuidv4()}
               label="Result"
             />
-            <div className="text-left">
-              x
-              <NumberInput
-                value={Number(xData?.data.value)}
-                setValue={setxInputData}
-                defaultValue={0}
-                disabled={!!xData?.data}
-              />
-              <BaseHandle
-                id="input-x-handle"
-                position={Position.Left}
-                isConnectable={xConnection.length < 1}
-              />
-            </div>
-            <div className="text-left">
-              y
-              <NumberInput
-                value={Number(yData?.data.value)}
-                setValue={setyInputData}
-                defaultValue={0}
-                disabled={!!yData?.data}
-              />
-              <BaseHandle
-                id="input-y-handle"
-                position={Position.Left}
-                isConnectable={yConnection.length < 1}
-              />
-            </div>
+            {inputEnable[0] && (
+              <div className="text-left">
+                x
+                <NumberInput
+                  value={Number(xData?.data.value)}
+                  setValue={setxInputData}
+                  defaultValue={0}
+                  disabled={!!xData?.data}
+                />
+                <BaseHandle
+                  id="input-x-handle"
+                  position={Position.Left}
+                  isConnectable={xConnection.length < 1}
+                />
+              </div>
+            )}
+            {inputEnable[1] && (
+              <div className="text-left">
+                y
+                <NumberInput
+                  value={Number(yData?.data.value)}
+                  setValue={setyInputData}
+                  defaultValue={0}
+                  disabled={!!yData?.data}
+                />
+                <BaseHandle
+                  id="input-y-handle"
+                  position={Position.Left}
+                  isConnectable={yConnection.length < 1}
+                />
+              </div>
+            )}
           </>
         )}
       </NodeContent>
@@ -96,12 +106,23 @@ const MathFloatNode = memo(({ id }: { id: string }) => {
 
 export default MathFloatNode;
 
-const types = {
-  Functions: ["Addition", "Multiply", "Divide"],
+const TYPES = {
+  Functions: ["Addition", "Substraction", "Multiply", "Divide"],
+  Trigonometric: ["Sine"],
 };
 
-const compute: { [key: string]: (x: number, y: number) => number } = {
+const INPUTS: { [key: string]: boolean[] } = {
+  Addition: [true, true],
+  Substraction: [true, true],
+  Multiply: [true, true],
+  Divide: [true, true],
+  Sine: [true, false],
+};
+
+const COMPUTE: { [key: string]: (x: number, y: number) => number } = {
   Addition: (x, y) => x + y,
+  Substraction: (x, y) => x - y,
   Multiply: (x, y) => x * y,
   Divide: (x, y) => x / y,
+  Sine: (x, _) => Math.sin(x),
 };
