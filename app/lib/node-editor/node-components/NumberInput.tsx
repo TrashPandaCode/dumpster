@@ -19,7 +19,7 @@ const NumberInput = ({
 
     const input = evt.target.value.replace(",", ".");
 
-    if (/^\d*\.?\d*$/.test(input)) {
+    if (/^(-?)\d*\.?\d*$/.test(input)) {
       setRawValue(input);
     }
 
