@@ -129,16 +129,16 @@ const Home = () => {
 
                 <div className="flex items-center justify-center">
                   <div className="mr-[-2px] h-1 w-full rounded-l-full bg-white"></div>
-                  <a className="flex-1/2 rounded-full bg-white px-4 py-2 text-center text-sm font-bold cursor-pointer transition-transform hover:scale-110"
+                  <a className="flex-1/2 rounded-full bg-white px-4 py-2 text-center text-sm font-bold cursor-pointer transition-transform"
                     onClick={() => setShowAll(!showAll)}
                   >
-                    {showAll ? "Show Less" : "Show All"}
+                    {showAll ? "show less" : "show all"}
                   </a>
                   <div className="ml-[-2px] h-1 w-full rounded-r-full bg-white"></div>
                 </div>
 
                 <div
-                  className={`transition-all duration-500 ${showAll ? "hidden opacity-0 translate-y-4" : "block opacity-100 translate-y-0 delay-500"}`}
+                  className={`transition-all duration-500 ${showAll ? "hidden opacity-0 translate-y-4" :  "block opacity-100 translate-y-0 delay-500"}`}
                 >
                   <h1 className="font-fonm pt-16 text-7xl font-bold text-white">
                     <p className="pb-2">Dumpster</p>
