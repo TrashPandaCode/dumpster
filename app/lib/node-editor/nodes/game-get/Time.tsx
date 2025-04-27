@@ -14,7 +14,7 @@ const Time = memo(({ id }: { id: string }) => {
 
   useEffect(() => {
     setValue(time);
-    updateNodeData(id, { value: value });
+    updateNodeData(id, { "result-handle": value });
   }, [time]);
 
   return (

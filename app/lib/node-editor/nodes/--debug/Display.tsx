@@ -5,11 +5,13 @@ import LabelHandle from "../../node-components/LabelHandle";
 import NodeContent from "../../node-components/NodeContent";
 
 const Display = memo(() => {
-  const incomingConnection = useNodeConnections({
+  const connection = useNodeConnections({
     handleId: "in-one",
     handleType: "target",
   });
-  const incomingData = useNodesData(incomingConnection[0]?.source);
+  const data = useNodesData(connection[0]?.source)?.data[
+    connection[0]?.sourceHandle ?? ""
+  ];
 
   return (
     <div>
@@ -18,9 +20,9 @@ const Display = memo(() => {
           <LabelHandle
             id="in-one"
             position={Position.Left}
-            isConnectable={incomingConnection.length < 1}
+            isConnectable={connection.length < 1}
           />
-          <p>{String(incomingData?.data.value)}</p>
+          <p>{String(data)}</p>
         </div>
       </NodeContent>
     </div>

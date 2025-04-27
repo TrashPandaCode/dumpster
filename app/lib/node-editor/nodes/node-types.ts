@@ -1,4 +1,5 @@
 import Display from "./--debug/Display";
+import GetFromGameobject from "./game-get/GetFromGameobject";
 import KeyPress from "./game-get/KeyPress";
 import Time from "./game-get/Time";
 import ExportToGameobject from "./game-set/ExportToGameobject";
@@ -12,4 +13,5 @@ export const nodeTypes = {
   KeyPress,
   MathFloatNode,
   ExportToGameobject,
+  GetFromGameobject,
 };

@@ -10,7 +10,7 @@ const Value = memo(({ id }: { id: string }) => {
   const [value, setValue] = useState(0);
 
   useEffect(() => {
-    updateNodeData(id, { value: value });
+    updateNodeData(id, { "result-handle": value });
   }, [value]);
 
   // TODO: this remove unnecessary rerender but initial value has to be set when spawing node

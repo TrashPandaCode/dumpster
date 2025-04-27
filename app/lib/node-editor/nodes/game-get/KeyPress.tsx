@@ -11,7 +11,7 @@ const KeyPress = memo(({ id }: { id: string }) => {
   const keyPressed = useKeyPress(curKey);
 
   useEffect(() => {
-    updateNodeData(id, { value: +keyPressed });
+    updateNodeData(id, { "result-handle": +keyPressed });
   }, [keyPressed]);
 
   return (

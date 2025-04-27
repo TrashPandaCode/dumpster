@@ -9,32 +9,8 @@ export const debugNodes: Node[] = [
   },
   {
     id: "2",
-    type: "Time",
-    position: { x: 0, y: 200 },
-    data: {},
-  },
-  {
-    id: "3",
-    type: "Display",
-    position: { x: 0, y: 500 },
-    data: {},
-  },
-  {
-    id: "4",
-    type: "KeyPress",
-    position: { x: 200, y: 0 },
-    data: {},
-  },
-  {
-    id: "5",
     type: "MathFloatNode",
-    position: { x: 200, y: 500 },
-    data: {},
-  },
-  {
-    id: "6",
-    type: "ExportToGameobject",
-    position: { x: 400, y: 500 },
+    position: { x: 0, y: 200 },
     data: {},
   },
 ];

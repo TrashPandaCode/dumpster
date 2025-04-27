@@ -5,7 +5,6 @@ import {
   useReactFlow,
 } from "@xyflow/react";
 import { memo, useEffect, useState } from "react";
-import { v4 as uuidv4 } from "uuid";
 
 import BaseHandle from "../../node-components/BaseHandle";
 import LabelHandle from "../../node-components/LabelHandle";
@@ -30,20 +29,24 @@ const MathFloatNode = memo(({ id }: { id: string }) => {
     handleId: "input-x-handle",
     handleType: "target",
   });
-  const xData = useNodesData(xConnection[0]?.source);
+  const xData = useNodesData(xConnection[0]?.source)?.data[
+    xConnection[0]?.sourceHandle ?? ""
+  ];
 
   const yConnection = useNodeConnections({
     handleId: "input-y-handle",
     handleType: "target",
   });
-  const yData = useNodesData(yConnection[0]?.source);
+  const yData = useNodesData(yConnection[0]?.source)?.data[
+    yConnection[0]?.sourceHandle ?? ""
+  ];
 
   useEffect(() => {
     if (computeType) {
       updateNodeData(id, {
-        value: COMPUTE[computeType](
-          Number(xData?.data ? (xData.data.value as number) : xInputData),
-          Number(yData?.data ? (yData.data.value as number) : yInputData)
+        "result-handle": COMPUTE[computeType](
+          Number(xData ?? xInputData),
+          Number(yData ?? yInputData)
         ),
       });
     }
@@ -62,17 +65,16 @@ const MathFloatNode = memo(({ id }: { id: string }) => {
             <LabelHandle
               id="result-handle"
               position={Position.Right}
-              key={uuidv4()}
               label="Result"
             />
             {inputEnable[0] && (
               <div className="text-left">
                 x
                 <NumberInput
-                  value={Number(xData?.data.value)}
+                  value={Number(xData)}
                   setValue={setxInputData}
                   defaultValue={0}
-                  disabled={!!xData?.data}
+                  disabled={typeof xData === "number"}
                 />
                 <BaseHandle
                   id="input-x-handle"
@@ -85,10 +87,10 @@ const MathFloatNode = memo(({ id }: { id: string }) => {
               <div className="text-left">
                 y
                 <NumberInput
-                  value={Number(yData?.data.value)}
+                  value={Number(yData)}
                   setValue={setyInputData}
                   defaultValue={0}
-                  disabled={!!yData?.data}
+                  disabled={typeof yData === "number"}
                 />
                 <BaseHandle
                   id="input-y-handle"
