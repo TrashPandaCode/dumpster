@@ -47,27 +47,31 @@ export default async function initGame(canvas: HTMLCanvasElement) {
     setTime(time);
 
     //Move
-    const x = useDebugStore.getState().xpos;
-    const y = useDebugStore.getState().ypos;
+    const x = useDebugStore.getState().new_xpos;
+    const y = useDebugStore.getState().new_ypos;
 
     bean.pos.x = x;
+    bean.pos.y = y;
 
     //bean.addForce(k.vec2(x, 0)); //scuffed, needs max velocity function
 
     //Jump
-    if (y > 0 && beanState.canJump == true) {
-      //Provisionary input until we have proper export nodes
-      bean.jump(beanState.jumpForce);
-      beanState.canJump = false;
-      beanState.isGrounded = false;
-    }
+    // if (y > 0 && beanState.canJump == true) {
+    //   //Provisionary input until we have proper export nodes
+    //   bean.jump(beanState.jumpForce);
+    //   beanState.canJump = false;
+    //   beanState.isGrounded = false;
+    // }
 
-    if (bean.pos.x > k.width()) {
-      bean.pos.x = 0;
-    }
-    if (bean.isColliding(floor)) {
-      beanState.isGrounded = true;
-      beanState.canJump = true;
-    }
+    // if (bean.pos.x > k.width()) {
+    //   bean.pos.x = 0;
+    // }
+    // if (bean.isColliding(floor)) {
+    //   beanState.isGrounded = true;
+    //   beanState.canJump = true;
+    // }
+
+    useDebugStore.getState().setxpos(bean.pos.x);
+    useDebugStore.getState().setypos(bean.pos.y);
   });
 }

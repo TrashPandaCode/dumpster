@@ -6,8 +6,8 @@ import LabelHandle from "../../node-components/LabelHandle";
 import NodeContent from "../../node-components/NodeContent";
 
 const ExportToGameobject = memo(() => {
-  const setXPos = useDebugStore((state) => state.setxpos);
-  const setYPos = useDebugStore((state) => state.setypos);
+  const setXPos = useDebugStore((state) => state.setnew_xpos);
+  const setYPos = useDebugStore((state) => state.setnew_ypos);
 
   const xConnection = useNodeConnections({
     handleId: "x-handle",

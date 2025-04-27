@@ -7,38 +7,20 @@ import NodeContent from "../../node-components/NodeContent";
 import NumberInput from "../../node-components/NumberInput";
 
 const GetFromGameobject = memo(({ id }: { id: string }) => {
-  // const xPos = useDebugStore((state) => state.xpos);
-  const { updateNodeData } = useReactFlow();
-  // const [value, setValue] = useState(0);
+  const xPos = useDebugStore((state) => state.xpos);
+  const yPos = useDebugStore((state) => state.ypos);
 
-  // useEffect(() => {
-  //   setValue(xPos);
-  //   updateNodeData(id, { value: value });
-  // }, [xPos]);
+  const { updateNodeData } = useReactFlow();
 
   useEffect(() => {
-    updateNodeData(id, { "result-handle": 1, "result-two-handle": 2 });
-  }, []);
+    updateNodeData(id, { "result-xpos": xPos, "result-ypos": yPos });
+  }, [xPos, yPos]);
 
   return (
     <div className="min-w-48">
       <NodeContent label="XPOS TEST" type="float">
-        {/* <NumberInput
-            value={value}
-            setValue={setValue}
-            defaultValue={0}
-            disabled
-          /> */}
-        <LabelHandle
-          id="result-handle"
-          position={Position.Right}
-          label="Value"
-        />
-        <LabelHandle
-          id="result-two-handle"
-          position={Position.Right}
-          label="Value"
-        />
+        <LabelHandle id="result-xpos" position={Position.Right} label="XPOS" />
+        <LabelHandle id="result-ypos" position={Position.Right} label="YPOS" />
       </NodeContent>
     </div>
   );

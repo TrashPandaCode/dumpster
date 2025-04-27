@@ -76,7 +76,7 @@ const MathFloatNode = memo(({ id }: { id: string }) => {
                   value={Number(xData)}
                   setValue={setxInputData}
                   defaultValue={0}
-                  disabled={!!xData}
+                  disabled={typeof xData === "number"}
                 />
                 <BaseHandle
                   id="input-x-handle"
@@ -92,7 +92,7 @@ const MathFloatNode = memo(({ id }: { id: string }) => {
                   value={Number(yData)}
                   setValue={setyInputData}
                   defaultValue={0}
-                  disabled={!!yData}
+                  disabled={typeof yData === "number"}
                 />
                 <BaseHandle
                   id="input-y-handle"
