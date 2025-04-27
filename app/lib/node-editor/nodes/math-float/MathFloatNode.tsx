@@ -30,20 +30,24 @@ const MathFloatNode = memo(({ id }: { id: string }) => {
     handleId: "input-x-handle",
     handleType: "target",
   });
-  const xData = useNodesData(xConnection[0]?.source);
+  const xData = useNodesData(xConnection[0]?.source)?.data[
+    xConnection[0]?.sourceHandle ?? ""
+  ];
 
   const yConnection = useNodeConnections({
     handleId: "input-y-handle",
     handleType: "target",
   });
-  const yData = useNodesData(yConnection[0]?.source);
+  const yData = useNodesData(yConnection[0]?.source)?.data[
+    yConnection[0]?.sourceHandle ?? ""
+  ];
 
   useEffect(() => {
     if (computeType) {
       updateNodeData(id, {
-        value: COMPUTE[computeType](
-          Number(xData?.data ? (xData.data.value as number) : xInputData),
-          Number(yData?.data ? (yData.data.value as number) : yInputData)
+        "result-handle": COMPUTE[computeType](
+          Number(xData ? (xData as number) : xInputData),
+          Number(yData ? (yData as number) : yInputData)
         ),
       });
     }
@@ -69,10 +73,10 @@ const MathFloatNode = memo(({ id }: { id: string }) => {
               <div className="text-left">
                 x
                 <NumberInput
-                  value={Number(xData?.data.value)}
+                  value={Number(xData)}
                   setValue={setxInputData}
                   defaultValue={0}
-                  disabled={!!xData?.data}
+                  disabled={!!xData}
                 />
                 <BaseHandle
                   id="input-x-handle"
@@ -85,10 +89,10 @@ const MathFloatNode = memo(({ id }: { id: string }) => {
               <div className="text-left">
                 y
                 <NumberInput
-                  value={Number(yData?.data.value)}
+                  value={Number(yData)}
                   setValue={setyInputData}
                   defaultValue={0}
-                  disabled={!!yData?.data}
+                  disabled={!!yData}
                 />
                 <BaseHandle
                   id="input-y-handle"

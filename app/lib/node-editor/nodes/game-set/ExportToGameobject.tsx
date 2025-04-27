@@ -13,17 +13,21 @@ const ExportToGameobject = memo(() => {
     handleId: "x-handle",
     handleType: "target",
   });
-  const xData = useNodesData(xConnection[0]?.source);
+  const xData = useNodesData(xConnection[0]?.source)?.data[
+    xConnection[0]?.sourceHandle ?? ""
+  ];
 
   const yConnection = useNodeConnections({
     handleId: "y-handle",
     handleType: "target",
   });
-  const yData = useNodesData(yConnection[0]?.source);
+  const yData = useNodesData(yConnection[0]?.source)?.data[
+    yConnection[0]?.sourceHandle ?? ""
+  ];
 
   useEffect(() => {
-    const x = Number(xData?.data.value);
-    const y = Number(yData?.data.value);
+    const x = Number(xData);
+    const y = Number(yData);
     setXPos(!isNaN(x) ? x : 0);
     setYPos(!isNaN(y) ? y : 0);
   }, [xData, yData]);
