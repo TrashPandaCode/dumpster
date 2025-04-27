@@ -5,7 +5,6 @@ import {
   useReactFlow,
 } from "@xyflow/react";
 import { memo, useEffect, useState } from "react";
-import { v4 as uuidv4 } from "uuid";
 
 import BaseHandle from "../../node-components/BaseHandle";
 import LabelHandle from "../../node-components/LabelHandle";
@@ -46,8 +45,8 @@ const MathFloatNode = memo(({ id }: { id: string }) => {
     if (computeType) {
       updateNodeData(id, {
         "result-handle": COMPUTE[computeType](
-          Number(xData ? (xData as number) : xInputData),
-          Number(yData ? (yData as number) : yInputData)
+          Number(xData ?? xInputData),
+          Number(yData ?? yInputData)
         ),
       });
     }
@@ -66,7 +65,6 @@ const MathFloatNode = memo(({ id }: { id: string }) => {
             <LabelHandle
               id="result-handle"
               position={Position.Right}
-              key={uuidv4()}
               label="Result"
             />
             {inputEnable[0] && (

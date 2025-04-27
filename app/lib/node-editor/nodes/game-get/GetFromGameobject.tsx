@@ -1,10 +1,9 @@
 import { Position, useReactFlow } from "@xyflow/react";
-import React, { memo, useEffect, useState } from "react";
+import { memo, useEffect } from "react";
 
 import { useDebugStore } from "~/lib/zustand/debug";
 import LabelHandle from "../../node-components/LabelHandle";
 import NodeContent from "../../node-components/NodeContent";
-import NumberInput from "../../node-components/NumberInput";
 
 const GetFromGameobject = memo(({ id }: { id: string }) => {
   const xPos = useDebugStore((state) => state.xpos);
