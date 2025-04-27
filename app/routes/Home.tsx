@@ -68,7 +68,7 @@ const Home = () => {
           </nav>
         </header>
         <img
-          className="absolute bottom-12 left-1/2 z-1 cursor-pointer transition-transform hover:scale-110"
+          className="absolute w-6 bottom-12 left-1/2 z-1 cursor-pointer transition-transform hover:translate-y-1 text-red-700"
           src={arrowDownIcon}
           onClick={scrollToTarget}
           alt="Scroll down"
