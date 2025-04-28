@@ -56,7 +56,7 @@ const Home = () => {
 
   return (
     <>
-      <div className="flex min-h-screen flex-col">
+      <div className="flex h-screen flex-col overflow-hidden">
         <header className="pl-[5vw]">
           <nav className="flex items-center gap-8 p-4">
             <div className="items-left font-pixel z-1 flex flex-col text-2xl font-bold">
@@ -85,16 +85,16 @@ const Home = () => {
           alt="Scroll down"
         />
 
-        <main className="relative flex flex-grow overflow-hidden">
+        <main className="relative flex h-[100%] overflow-hidden">
           <img
             className="pointer-events-none absolute z-[-1] h-full w-full scale-110 object-cover blur-lg"
             src={currentHoverCard.image}
             alt=""
           />
 
-          <div className="flex-grow overflow-auto p-12">
+          <div className="flex-grow overflow-hidden p-12">
             <div className="grid h-full grid-cols-3 gap-12">
-              <div className="rounded-xl bg-blue-950 p-4 text-white">
+              <div className="h-full overflow-hidden rounded-xl bg-blue-950 p-4 text-white">
                 <h1 className="font-pixel text-4xl font-bold">
                   {currentHoverCard.name}
                 </h1>
@@ -110,7 +110,6 @@ const Home = () => {
                   passages, and more recently with desktop publishing software
                   like Aldus PageMaker including versions of Lorem Ipsum.
                 </p>
-                <br />
                 <br />
                 <br />
                 <p className="text-sm">{currentHoverCard.description}</p>
@@ -153,7 +152,7 @@ const Home = () => {
                 </div>
 
                 <div
-                  className={`transition-all duration-500 ${showAll ? "h-[0%] opacity-0" : "h-[65%] opacity-100"}`}
+                  className={`p-2 transition-all duration-500 ${showAll ? "h-[0%] opacity-0" : "h-[65%] opacity-100"}`}
                 >
                   <h1 className="font-pixel pt-6 text-6xl font-bold text-white">
                     <p className="">Dumpster</p>
