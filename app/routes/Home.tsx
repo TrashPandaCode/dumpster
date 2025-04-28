@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useRef, useState } from "react";
 import { NavLink } from "react-router";
 
 import alleyOne from "../assets/alley_one.jpg";
@@ -59,20 +59,32 @@ const Home = () => {
       <div className="flex min-h-screen flex-col">
         <header className="pl-[5vw]">
           <nav className="flex items-center gap-8 p-4">
-            <div  className="z-1 flex flex-col items-left rotate-358 font-fonm text-2xl font-bold">
-            <p>Dumpster</p>
-            <p>Diving</p>
+            <div className="items-left font-pixel z-1 flex flex-col text-2xl font-bold">
+              <p>Dumpster</p>
+              <p>Diving</p>
             </div>
-            <NavLink to="/docs" className="transition-all duration-300 hover:text-jam-600 hover:scale-105">Docs</NavLink>
-            <NavLink to="/game" className="transition-all duration-300 hover:text-jam-600 hover:scale-105">Game</NavLink>
+            <NavLink
+              to="/docs"
+              className="hover:text-jam-600 transition-all duration-300 hover:scale-105"
+            >
+              Docs
+            </NavLink>
+            <NavLink
+              to="/game"
+              className="hover:text-jam-600 transition-all duration-300 hover:scale-105"
+            >
+              Game
+            </NavLink>
           </nav>
         </header>
+
         <img
-          className="absolute w-6 bottom-12 left-1/2 z-1 cursor-pointer transition-transform hover:translate-y-1 text-red-700"
+          className="absolute bottom-8 left-1/2 z-1 w-6 cursor-pointer text-red-700 transition-transform hover:translate-y-1"
           src={arrowDownIcon}
           onClick={scrollToTarget}
           alt="Scroll down"
         />
+
         <main className="relative flex flex-grow overflow-hidden">
           <img
             className="pointer-events-none absolute z-[-1] h-full w-full scale-110 object-cover blur-lg"
@@ -83,7 +95,7 @@ const Home = () => {
           <div className="flex-grow overflow-auto p-12">
             <div className="grid h-full grid-cols-3 gap-12">
               <div className="rounded-xl bg-blue-950 p-4 text-white">
-                <h1 className="font-fonm text-4xl font-bold">
+                <h1 className="font-pixel text-4xl font-bold">
                   {currentHoverCard.name}
                 </h1>
                 <p className="text-sm">
@@ -107,11 +119,13 @@ const Home = () => {
                 <div
                   className={`relative overflow-hidden transition-all duration-500`}
                   style={{
-                    WebkitMaskImage:
-                      "linear-gradient(to bottom, black 60%, transparent 100%)",
-                    maskImage:
-                      "linear-gradient(to bottom, black 60%, transparent 100%)",
-                    height: showAll ? "70vh" : "35vh",
+                    WebkitMaskImage: showAll
+                      ? ""
+                      : "linear-gradient(to bottom, black 60%, transparent 100%)",
+                    maskImage: showAll
+                      ? ""
+                      : "linear-gradient(to bottom, black 60%, transparent 100%)",
+                    height: showAll ? "85%" : "35%",
                   }}
                 >
                   <div className="grid w-full grid-cols-4 gap-4 p-2">
@@ -129,7 +143,8 @@ const Home = () => {
 
                 <div className="flex items-center justify-center">
                   <div className="mr-[-2px] h-1 w-full rounded-l-full bg-white"></div>
-                  <a className="flex-1/2 rounded-full bg-white px-4 py-2 text-center text-sm font-bold cursor-pointer transition-transform"
+                  <a
+                    className="flex-1/2 cursor-pointer rounded-full bg-white px-4 py-2 text-center text-sm font-bold transition-transform"
                     onClick={() => setShowAll(!showAll)}
                   >
                     {showAll ? "show less" : "show all"}
@@ -138,10 +153,10 @@ const Home = () => {
                 </div>
 
                 <div
-                  className={`transition-all duration-500 ${showAll ? "hidden opacity-0 translate-y-4" :  "block opacity-100 translate-y-0 delay-500"}`}
+                  className={`transition-all duration-500 ${showAll ? "h-[0%] opacity-0" : "h-[65%] opacity-100"}`}
                 >
-                  <h1 className="font-fonm pt-16 text-7xl font-bold text-white">
-                    <p className="pb-2">Dumpster</p>
+                  <h1 className="font-pixel pt-6 text-6xl font-bold text-white">
+                    <p className="">Dumpster</p>
                     <p>Diving</p>
                   </h1>
                   <br />
@@ -149,9 +164,9 @@ const Home = () => {
                     Lorem Ipsum is simply dummy text of the printing and
                     typesetting industry. Lorem Ipsum has been the industry's
                     standard dummy text ever since the 1500s, when an unknown
-                    printer took a galley of type and scrambled it to make a type
-                    specimen book. It has survived not only five centuries, but
-                    also the leap into electronic typesetting, remaining
+                    printer took a galley of type and scrambled it to make a
+                    type specimen book. It has survived not only five centuries,
+                    but also the leap into electronic typesetting, remaining
                     essentially unchanged. It was popularised in the 1960s with
                     the release of Letraset sheets containing Lorem Ipsum
                     passages, and more recently with desktop publishing software
@@ -160,11 +175,11 @@ const Home = () => {
                 </div>
 
                 <NavLink
-                  className="bg-jam-600 font-fonm absolute right-12 bottom-12 flex items-center gap-2 rounded-full px-6 py-3 text-4xl font-bold text-white shadow-lg transition-all duration-300 hover:bg-jam-500 hover:shadow-2xl hover:scale-110"
+                  className="bg-jam-600 font-pixel absolute right-12 bottom-12 flex items-center justify-baseline gap-4 rounded-full px-6 py-3 text-4xl font-bold text-white shadow-lg transition-transform duration-200 hover:scale-110 hover:shadow-2xl"
                   to="/game"
                 >
                   Play
-                  <img src={playIcon} alt="" className="h-5 w-5" />
+                  <img src={playIcon} alt="" width={20} />
                 </NavLink>
               </div>
             </div>
@@ -172,7 +187,10 @@ const Home = () => {
         </main>
       </div>
 
-      <section ref={scrollTargetRef} className="flex items-center justify-center bg-white">
+      <section
+        ref={scrollTargetRef}
+        className="flex items-center justify-center bg-white"
+      >
         <div className="flex h-full w-full flex-col p-12">
           <h1 className="font-fonm pb-12 text-4xl font-bold">
             Learn these skills to become a dumpster diver
@@ -209,7 +227,7 @@ const Home = () => {
           </p>
           <a
             href="https://discord.gg/yourdiscordlink"
-            className="bg-jam-600 rounded-full px-6 py-3 text-lg font-bold text-white transition-all duration-300 hover:bg-jam-500 hover:shadow-2xl hover:scale-105"
+            className="bg-jam-600 hover:bg-jam-500 rounded-full px-6 py-3 text-lg font-bold text-white transition-all duration-300 hover:scale-105 hover:shadow-2xl"
           >
             Join Discord
           </a>
