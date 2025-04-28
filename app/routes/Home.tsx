@@ -85,15 +85,15 @@ const Home = () => {
           alt="Scroll down"
         />
 
-        <main className="relative flex h-[100%] overflow-hidden">
+        <main className="relative flex h-full overflow-hidden">
           <img
             className="pointer-events-none absolute z-[-1] h-full w-full scale-110 object-cover blur-lg"
             src={currentHoverCard.image}
             alt=""
           />
 
-          <div className="flex-grow overflow-hidden p-12">
-            <div className="grid h-full grid-cols-3 gap-12">
+          <div className="h-full overflow-hidden p-12">
+            <div className="grid h-full grid-cols-3 gap-12 overflow-hidden">
               <div className="h-full overflow-hidden rounded-xl bg-blue-950 p-4 text-white">
                 <h1 className="font-pixel text-4xl font-bold">
                   {currentHoverCard.name}
@@ -114,9 +114,9 @@ const Home = () => {
                 <br />
                 <p className="text-sm">{currentHoverCard.description}</p>
               </div>
-              <div className="col-span-2 col-start-2 flex flex-col">
+              <div className="col-span-2 col-start-2 flex h-[calc(100%)] flex-col bg-amber-200">
                 <div
-                  className={`relative overflow-hidden transition-all duration-500`}
+                  className={`relative h-full overflow-hidden transition-all duration-500`}
                   style={{
                     WebkitMaskImage: showAll
                       ? ""
@@ -127,7 +127,7 @@ const Home = () => {
                     height: showAll ? "85%" : "35%",
                   }}
                 >
-                  <div className="grid w-full grid-cols-4 gap-4 p-2">
+                  <div className="grid w-full grid-cols-[repeat(auto-fit,minmax(200px,_1fr))] gap-4 p-2">
                     {CARDS.map((card) => (
                       <LevelCard
                         key={card.id}
@@ -152,7 +152,7 @@ const Home = () => {
                 </div>
 
                 <div
-                  className={`p-2 transition-all duration-500 ${showAll ? "h-[0%] opacity-0" : "h-[65%] opacity-100"}`}
+                  className={`p-2 transition-all duration-500 ${showAll ? "h-[0%] opacity-0" : "h-fit opacity-100"}`}
                 >
                   <h1 className="font-pixel pt-6 text-6xl font-bold text-white">
                     <p className="">Dumpster</p>
