@@ -21,10 +21,11 @@ export async function clientLoader({ params }: Route.LoaderArgs) {
     throw new Response("Not found", { status: 404 });
   }
 
-  const mod = await loader();
+  const mod = (await loader()) as { html: string; attributes: Record<string, any> };
+
   return {
-    html: mod.html, // TODO: fix types
-    metadata: mod.attributes, // TODO: fix types
+    html: mod.html,
+    metadata: mod.attributes,
     category,
     topic,
   };
