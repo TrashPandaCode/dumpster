@@ -16,7 +16,7 @@ const Game = () => {
     }
 
     initGame(canvasRef.current);
-  }, []);
+  }, [canvasRef.current]);
 
   return (
     <PanelGroup direction="horizontal">
