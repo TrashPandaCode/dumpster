@@ -9,17 +9,29 @@ import {
   BreadcrumbSeparator,
 } from "~/lib/core/components/Breadcrumb";
 import type { Route } from "../docs/+types/DocsContent";
-import Navigation from "./Navigation";
+
+const docs = import.meta.glob("/content/docs/**/*.md");
 
 export async function clientLoader({ params }: Route.LoaderArgs) {
-  //TODO: load markdown content
-  console.log("content loader");
+  const { category, topic } = params;
+  const key = `/content/docs/${category}/${topic}.md`;
 
-  return params;
+  const loader = docs[key];
+  if (!loader) {
+    throw new Response("Not found", { status: 404 });
+  }
+
+  const mod = await loader();
+  return {
+    html: mod.html, // TODO: fix types
+    metadata: mod.attributes, // TODO: fix types
+    category,
+    topic,
+  };
 }
 
 const Docs = ({ loaderData }: Route.ComponentProps) => {
-  const { category, topic } = loaderData;
+  const { html, metadata, category, topic } = loaderData;
 
   return (
     <main className="w-full">
@@ -40,61 +52,16 @@ const Docs = ({ loaderData }: Route.ComponentProps) => {
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbPage className="capitalize">{topic}</BreadcrumbPage>
+            <BreadcrumbPage className="capitalize">
+              {metadata?.title || topic}
+            </BreadcrumbPage>
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
-      <div className="prose prose-slate max-w-4xl">
-        <h1 className="capitalize">{topic}</h1>
-        <p>
-          Whatever we wanna explain. Lorem ipsum dolor sit amet, consetetur
-          sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
-          dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam
-          et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea
-          takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit
-          amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor
-          invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
-          At vero eos et accusam et justo duo dolores et ea rebum. Stet clita
-          kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit
-          amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed
-          diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam
-          erat, sed diam voluptua. At vero eos et accusam et justo duo dolores
-          et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est
-          Lorem ipsum dolor sit amet.
-        </p>
-        <p>
-          Whatever we wanna explain. Lorem ipsum dolor sit amet, consetetur
-          sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
-          dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam
-          et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea
-          takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit
-          amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor
-          invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
-          At vero eos et accusam et justo duo dolores et ea rebum. Stet clita
-          kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit
-          amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed
-          diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam
-          erat, sed diam voluptua. At vero eos et accusam et justo duo dolores
-          et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est
-          Lorem ipsum dolor sit amet.
-        </p>
-        <p>
-          Whatever we wanna explain. Lorem ipsum dolor sit amet, consetetur
-          sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
-          dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam
-          et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea
-          takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit
-          amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor
-          invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
-          At vero eos et accusam et justo duo dolores et ea rebum. Stet clita
-          kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit
-          amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed
-          diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam
-          erat, sed diam voluptua. At vero eos et accusam et justo duo dolores
-          et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est
-          Lorem ipsum dolor sit amet.
-        </p>
-      </div>
+      <article
+        className="prose prose-slate max-w-4xl"
+        dangerouslySetInnerHTML={{ __html: html }}
+      />
     </main>
   );
 };

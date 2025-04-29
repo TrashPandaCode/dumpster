@@ -6,6 +6,7 @@ import Collapsible from "./Collapsible";
 
 const Navigation = () => {
   const location = useLocation();
+  
   return (
     <nav className="flex h-96 min-w-3xs flex-col gap-8">
       <div className="relative text-black">
