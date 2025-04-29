@@ -11,11 +11,12 @@ import {
   type OnEdgesChange,
   type OnNodesChange,
 } from "@xyflow/react";
-import React, { useCallback, useState } from "react";
+import { useCallback, useState } from "react";
 
 import "@xyflow/react/dist/style.css";
 
 import AddNodePanel from "./editor-components/AddNode";
+import { useNodeStore } from "./node-store/node-store";
 import { nodeTypes } from "./nodes/node-types";
 import { debugEdges, debugNodes } from "./solutions/debug";
 
@@ -23,16 +24,57 @@ const NodeEditor = () => {
   const [nodes, setNodes] = useState<Node[]>(debugNodes);
   const [edges, setEdges] = useState<Edge[]>(debugEdges);
 
+  const replaceNode = useNodeStore((state) => state.replaceNode);
+  const removeNode = useNodeStore((state) => state.removeNode);
+  const addEdgeStore = useNodeStore((state) => state.addEdge);
+  const removeEdge = useNodeStore((state) => state.removeEdge);
+
   const onNodesChange: OnNodesChange = useCallback(
-    (changes) => setNodes((nds) => applyNodeChanges(changes, nds)),
+    (changes) => {
+      changes.forEach((element) => {
+        switch (element.type) {
+          case "add":
+            // do nothing
+            // nodes without data do not need computation
+            // this only works when all nodes update their internal state when mounting
+            // if we change this behaviour we need to call replaceNode here as well
+            break;
+          case "remove":
+            // recompute
+            removeNode(element.id);
+            break;
+          case "replace":
+            // recompute
+            replaceNode(element.item);
+            break;
+        }
+      });
+
+      setNodes((nds) => applyNodeChanges(changes, nds));
+    },
     [setNodes]
   );
   const onEdgesChange: OnEdgesChange = useCallback(
-    (changes) => setEdges((eds) => applyEdgeChanges(changes, eds)),
+    (changes) => {
+      changes.forEach((element) => {
+        switch (element.type) {
+          case "remove":
+            // reorder
+            removeEdge(element.id);
+            break;
+        }
+      });
+
+      setEdges((eds) => applyEdgeChanges(changes, eds));
+    },
     [setEdges]
   );
   const onConnect: OnConnect = useCallback(
-    (connection) => setEdges((eds) => addEdge(connection, eds)),
+    (connection) => {
+      // reorder
+      addEdgeStore(connection);
+      setEdges((eds) => addEdge(connection, eds));
+    },
     [setEdges]
   );
 
