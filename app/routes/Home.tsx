@@ -64,13 +64,13 @@ const Home = () => {
             </div>
             <NavLink
               to="/docs"
-              className="hover:text-jam-600 transition-all duration-300 hover:scale-105"
+              className="hover:text-jam-600 transition-all duration-300"
             >
               Docs
             </NavLink>
             <NavLink
               to="/game"
-              className="hover:text-jam-600 transition-all duration-300 hover:scale-105"
+              className="hover:text-jam-600 transition-all duration-300"
             >
               Game
             </NavLink>
@@ -153,7 +153,7 @@ const Home = () => {
                 <div
                   className={`p-2 transition-all duration-500 ${showAll ? "h-[0%] opacity-0" : "h-fit opacity-100"}`}
                 >
-                  <h1 className="font-pixel pt-6 text-6xl font-bold text-white">
+                  <h1 className="font-pixel pt-6 text-7xl font-bold text-white">
                     <p className="">Dumpster</p>
                     <p>Diving</p>
                   </h1>
