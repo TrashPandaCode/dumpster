@@ -21,27 +21,46 @@ enum Mark {
   Permanent,
 }
 
-class AppNode {
-  inputs: Map<
-    string,
-    { sourceNode: AppNode; sourceHandleId: string; targetHandleId: string }
-  > = new Map();
+export type nodeInputs = Map<
+  string, // targetHandleId
+  { sourceNode: AppNode; sourceHandleId: string; edgeId: string }
+>;
+
+export type nodeResults = Map<string, number>;
+
+export class AppNode {
+  inputs: nodeInputs = new Map();
   outputs: Map<
-    string,
+    string, // edgeId
     { targetNode: AppNode; targetHandleId: string; sourceHandleId: string }
   > = new Map();
-  values: Map<string, number> = new Map(); // string: handle-id of corresponding output handle
-  compute?: (handleId: string) => number | undefined;
+  data: Map<string, number> = new Map(); //TODO: is this needed?
+  results: nodeResults = new Map(); // string: handle-id of corresponding output handle
   mark: Mark | null = null; // TODO: null or undefined
   nodeId: string;
 
-  constructor(nodeId: string, values: Record<string, unknown>) {
+  compute?: (inputs: nodeInputs, results: nodeResults) => void;
+
+  constructor(nodeId: string, data: Record<string, unknown>) {
     this.nodeId = nodeId;
-    Object.entries(values).forEach(([key, entry]) => {});
+    this.updateData(data);
   }
 
-  getValue(key: string): number | undefined {
-    return this.values.get(key);
+  updateData(data: Record<string, unknown>) {
+    Object.entries(data).forEach(([key, entry]) => {
+      if (key === "compute") {
+        this.compute = entry as (
+          inputs: nodeInputs,
+          results: nodeResults
+        ) => void;
+      }
+    });
+  }
+
+  getResult(key: string): number | undefined {
+    console.log(this.results.has(key));
+
+    return this.results.get(key);
   }
 }
 
@@ -62,12 +81,13 @@ export const useNodeStore = create<NodeStoreState>((set) => ({
   replaceNode: (node: Node) => {
     set((state) => {
       if (state.nodeMap.has(node.id)) {
-        // only replace input value
+        state.nodeMap.get(node.id)?.updateData(node.data);
       } else {
         state.nodeMap.set(node.id, new AppNode(node.id, node.data));
       }
 
-      // computeMap(state.nodeMap);
+      console.log("compute replace");
+      computeMap(state.nodeMap);
 
       return state;
     });
@@ -76,7 +96,8 @@ export const useNodeStore = create<NodeStoreState>((set) => ({
     set((state) => {
       state.nodeMap.delete(nodeId);
 
-      // computeMap(state.nodeMap);
+      console.log("compute remove");
+      computeMap(state.nodeMap);
 
       return state;
     });
@@ -95,10 +116,10 @@ export const useNodeStore = create<NodeStoreState>((set) => ({
           sourceHandleId: edge.sourceHandle,
         });
 
-        target.inputs.set(edgeId, {
+        target.inputs.set(edge.targetHandle, {
           sourceNode: source,
           sourceHandleId: edge.sourceHandle,
-          targetHandleId: edge.targetHandle,
+          edgeId: edgeId,
         });
       }
 
@@ -115,16 +136,19 @@ export const useNodeStore = create<NodeStoreState>((set) => ({
       const target = state.nodeMap.get(edgeTarget);
 
       source?.outputs.delete(edgeId);
-      target?.inputs.delete(edgeId);
+      if (target)
+        Array.from(target.inputs).some(
+          ([key, value]) => value.edgeId === edgeId && target.inputs.delete(key)
+        );
 
-      // computeMap(state.nodeMap);
+      console.log("compute remove edge");
+      computeMap(state.nodeMap);
 
       return state;
     });
   },
   debugPrint: () => {
     set((state) => {
-      // console.log(Array.from(state.nodeMap).reverse());
       state.nodeMap.forEach((node) => {
         console.log(node);
       });
@@ -167,7 +191,13 @@ function connectionToEdgeId(edge: Connection): string {
 }
 
 function computeMap(map: Map<string, AppNode>) {
-  map.forEach((element) => {});
+  const reverseMap = Array.from(map).reverse();
+  reverseMap.forEach(([_, node]) => {
+    if (!node.compute) {
+      throw new Error("Compute is not defined");
+    }
+    node.compute(node.inputs, node.results);
+  });
 }
 
 function orderMap(map: Map<string, AppNode>): Map<string, AppNode> {
@@ -189,7 +219,8 @@ function orderMap(map: Map<string, AppNode>): Map<string, AppNode> {
     });
   }
 
-  // computeMap(sortedMap);
+  console.log("compute order");
+  computeMap(sortedMap);
   return sortedMap;
 }
 

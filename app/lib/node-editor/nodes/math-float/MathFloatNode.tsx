@@ -11,6 +11,11 @@ import LabelHandle from "../../node-components/LabelHandle";
 import NodeContent from "../../node-components/NodeContent";
 import NumberInput from "../../node-components/NumberInput";
 import SelectDropDown from "../../node-components/SelectDropDown";
+import type {
+  AppNode,
+  nodeInputs,
+  nodeResults,
+} from "../../node-store/node-store";
 
 const MathFloatNode = memo(({ id }: { id: string }) => {
   const { updateNodeData } = useReactFlow();
@@ -29,35 +34,31 @@ const MathFloatNode = memo(({ id }: { id: string }) => {
     handleId: "input-x-handle",
     handleType: "target",
   });
-  const xData = useNodesData(xConnection[0]?.source)?.data[
-    xConnection[0]?.sourceHandle ?? ""
-  ];
-
   const yConnection = useNodeConnections({
     handleId: "input-y-handle",
     handleType: "target",
   });
-  const yData = useNodesData(yConnection[0]?.source)?.data[
-    yConnection[0]?.sourceHandle ?? ""
-  ];
 
   useEffect(() => {
     if (computeType) {
       updateNodeData(id, {
-        "result-handle": COMPUTE[computeType](
-          Number(xData ?? xInputData),
-          Number(yData ?? yInputData)
-        ),
+        compute: (inputs: nodeInputs, results: nodeResults) => {
+          const xHandle = inputs.get("input-x-handle");
+          const yHandle = inputs.get("input-y-handle");
+          const x =
+            xHandle?.sourceNode.getResult(xHandle.sourceHandleId) ?? xInputData;
+          const y =
+            yHandle?.sourceNode.getResult(yHandle.sourceHandleId) ?? yInputData;
+
+          results.set("result-handle", x + y);
+        },
       });
     }
-  }, [xInputData, yInputData, xData, yData, computeType]);
+  }, [xInputData, yInputData, computeType]);
 
   return (
     <div className="min-w-3xs">
-      <NodeContent
-        label={computeType ? computeType : "Select Math Type"}
-        type="float"
-      >
+      <NodeContent label={computeType ?? "Select Math Type"} type="float">
         <SelectDropDown items={TYPES} setSelected={setComputeType} />
         {computeType && (
           <>
@@ -71,10 +72,10 @@ const MathFloatNode = memo(({ id }: { id: string }) => {
               <div className="text-left">
                 x
                 <NumberInput
-                  value={Number(xData)}
+                  value={69}
                   setValue={setxInputData}
                   defaultValue={0}
-                  disabled={typeof xData === "number"}
+                  disabled={!!xConnection.length}
                 />
                 <BaseHandle
                   id="input-x-handle"
@@ -87,10 +88,10 @@ const MathFloatNode = memo(({ id }: { id: string }) => {
               <div className="text-left">
                 y
                 <NumberInput
-                  value={Number(yData)}
+                  value={69}
                   setValue={setyInputData}
                   defaultValue={0}
-                  disabled={typeof yData === "number"}
+                  disabled={!!yConnection.length}
                 />
                 <BaseHandle
                   id="input-y-handle"
