@@ -2,6 +2,7 @@ import * as Dialog from "@radix-ui/react-dialog";
 import { Cross2Icon, QuestionMarkCircledIcon } from "@radix-ui/react-icons";
 import classnames from "classnames";
 import { type ReactNode } from "react";
+import { NavLink } from "react-router";
 
 const modules = import.meta.glob('/content/**/*.md');
 
@@ -52,13 +53,15 @@ const NodeContent = ({
             <Dialog.Content className="data-[state=open]:animate-contentShow fixed top-1/2 left-1/2 max-h-[85vh] w-[90vw] max-w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-md border-2 border-blue-300 bg-slate-900 p-[25px] focus:outline-none">
               {/* TODO: Add Dialog.Title for accessibility; fetch from md */}
               
-              <Dialog.Description className="prose prose-slate prose-invert mt-2.5 mb-5">
+              <Dialog.Description className="prose prose-slate prose-invert py-2">
                 {/* TODO: maybe use suspend */}
                 {/* TODO: remove wrapping div from ReactComponent */}
                 {loadMarkdown(`nodes/${name}.md`).then((module) => {
                   const { ReactComponent } = module as any;
                   return <ReactComponent />;
                 })}
+
+                <NavLink className="underline pt-4 text-slate-400" target="_blank" to="/docs/">learn more</NavLink>
               </Dialog.Description>
 
               <Dialog.Close asChild>
