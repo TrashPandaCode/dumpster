@@ -17,10 +17,9 @@ const Docs = () => {
   return (
     <>
       <Header />
-
-      {outlet || (
-        <div className="flex gap-4 px-12">
-          <Navigation />
+      <div className="flex gap-4 px-12">
+        <Navigation />
+        {outlet || (
           <main className="w-full">
             <Breadcrumb className="mb-4">
               <BreadcrumbList>
@@ -53,8 +52,8 @@ const Docs = () => {
               </p>
             </div>
           </main>
-        </div>
-      )}
+        )}
+      </div>
 
       <Footer />
     </>
