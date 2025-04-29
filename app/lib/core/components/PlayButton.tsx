@@ -1,6 +1,6 @@
 import { NavLink } from "react-router";
 
-import playIcon from "@/assets/play.svg";
+import playIcon from "~/assets/play.svg";
 
 const PlayButton = () => {
   return (
