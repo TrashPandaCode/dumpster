@@ -1,9 +1,8 @@
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import { NavLink, useLocation } from "react-router";
 
+import navigation from "~/lib/core/navigation.json";
 import Collapsible from "./Collapsible";
-
-
 
 const Navigation = () => {
   const location = useLocation();
@@ -24,17 +23,36 @@ const Navigation = () => {
         </button>
       </div>
 
-      <p>Kinematics</p>
-      <p>Inverse Kinematics</p>
-      <p>Forward Kinematics</p>
-
-      <Collapsible title="Animation">
-        <NavLink to="/docs/animation/motion capture" className="flex items-center gap-2 hover:underline font-bold">
-          Motion Capture <div className="bg-jam-600 h-[6px] w-[6px] rounded-full" />
-        </NavLink>
-        <NavLink to="/docs/animation/testing" className="hover:underline">Motion Capture</NavLink>
-        <NavLink to="/docs/animation/testing too" className="hover:underline">Motion Capture</NavLink>
-      </Collapsible>
+      {navigation.map((section) =>
+        section.items?.length ? (
+          <Collapsible key={section.title} title={section.title}>
+            {section.items.map((item) =>
+              item.path == location.pathname ? (
+                <NavLink
+                  key={item.path}
+                  to={item.path}
+                  className="flex items-center gap-2 font-bold hover:underline"
+                >
+                  {item.title}
+                  <div className="bg-jam-600 h-[6px] w-[6px] rounded-full" />
+                </NavLink>
+              ) : (
+                <NavLink
+                  key={item.path}
+                  to={item.path}
+                  className="hover:underline"
+                >
+                  {item.title}
+                </NavLink>
+              )
+            )}
+          </Collapsible>
+        ) : (
+          <NavLink key={section.title} to={"/docs"} className="hover:underline">
+            {section.title}
+          </NavLink>
+        )
+      )}
     </nav>
   );
 };
