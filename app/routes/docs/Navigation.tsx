@@ -1,5 +1,5 @@
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
-import { useLocation } from "react-router";
+import { NavLink, useLocation } from "react-router";
 
 import Collapsible from "./Collapsible";
 
@@ -27,11 +27,11 @@ const Navigation = () => {
       <p>Forward Kinematics</p>
 
       <Collapsible title="Animation">
-        <p className="flex items-center gap-2">
-          Motion Capture <div className="bg-jam-600 h-2 w-2 rounded-full" />
-        </p>
-        <p>Motion Capture</p>
-        <p>Motion Capture</p>
+        <NavLink to="/docs/animation/motion capture" className="flex items-center gap-2 hover:underline font-bold">
+          Motion Capture <div className="bg-jam-600 h-[6px] w-[6px] rounded-full" />
+        </NavLink>
+        <NavLink to="/docs/animation/testing" className="hover:underline">Motion Capture</NavLink>
+        <NavLink to="/docs/animation/testing too" className="hover:underline">Motion Capture</NavLink>
       </Collapsible>
     </nav>
   );

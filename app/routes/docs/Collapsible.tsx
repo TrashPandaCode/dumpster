@@ -13,7 +13,7 @@ const Collapsible = ({title, children}: {title: string, children: ReactNode}) =>
       <CollapsibleTrigger className="flex items-baseline">
         {title} {open ? <ChevronDownIcon className="ml-2" /> : <ChevronRightIcon className="ml-2" />}
       </CollapsibleTrigger>
-      <CollapsibleContent className="pl-8">
+      <CollapsibleContent className="pl-8 flex flex-col">
         {children}
       </CollapsibleContent>
     </Root>
