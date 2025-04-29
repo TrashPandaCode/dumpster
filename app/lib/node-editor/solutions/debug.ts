@@ -14,6 +14,12 @@ export const debugNodes: Node[] = [
     position: { x: 0, y: 200 },
     data: {},
   },
+  {
+    id: uuidv4(),
+    type: "Display",
+    position: { x: 0, y: 500 },
+    data: {},
+  },
 ];
 
 export const debugEdges: Edge[] = [];

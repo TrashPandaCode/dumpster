@@ -58,8 +58,6 @@ export class AppNode {
   }
 
   getResult(key: string): number | undefined {
-    console.log(this.results.has(key));
-
     return this.results.get(key);
   }
 }

@@ -9,9 +9,6 @@ const Display = memo(() => {
     handleId: "in-one",
     handleType: "target",
   });
-  const data = useNodesData(connection[0]?.source)?.data[
-    connection[0]?.sourceHandle ?? ""
-  ];
 
   return (
     <div>
@@ -22,7 +19,7 @@ const Display = memo(() => {
             position={Position.Left}
             isConnectable={connection.length < 1}
           />
-          <p>{String(data)}</p>
+          <p>DATA</p>
         </div>
       </NodeContent>
     </div>

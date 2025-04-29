@@ -43,14 +43,20 @@ const MathFloatNode = memo(({ id }: { id: string }) => {
     if (computeType) {
       updateNodeData(id, {
         compute: (inputs: nodeInputs, results: nodeResults) => {
-          const xHandle = inputs.get("input-x-handle");
-          const yHandle = inputs.get("input-y-handle");
-          const x =
-            xHandle?.sourceNode.getResult(xHandle.sourceHandleId) ?? xInputData;
-          const y =
-            yHandle?.sourceNode.getResult(yHandle.sourceHandleId) ?? yInputData;
+          const getInput = (handle: string, fallback: number) => {
+            const input = inputs.get(handle);
+            return (
+              input?.sourceNode.getResult(input.sourceHandleId) ?? fallback
+            );
+          };
 
-          results.set("result-handle", x + y);
+          results.set(
+            "result-handle",
+            COMPUTE[computeType](
+              getInput("input-x-handle", xInputData),
+              getInput("input-y-handle", yInputData)
+            )
+          );
         },
       });
     }
