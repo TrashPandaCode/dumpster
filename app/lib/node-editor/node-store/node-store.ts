@@ -16,26 +16,28 @@ import {
 } from "@xyflow/react";
 import { create } from "zustand";
 
+enum Mark {
+  Temporary,
+  Permanent,
+}
+
 class AppNode {
-  // source
-  // edge id
-  // target node id
-  // target handle id
-  // source handle id
-
-  // target
-  // edge id
-  // source node id
-  // source handle id
-  // target handle id
-  inputs: Map<string, [string, string, string]> = new Map();
-  outputs: Map<string, [string, string, string]> = new Map();
+  inputs: Map<
+    string,
+    { sourceNode: AppNode; sourceHandleId: string; targetHandleId: string }
+  > = new Map();
+  outputs: Map<
+    string,
+    { targetNode: AppNode; targetHandleId: string; sourceHandleId: string }
+  > = new Map();
   values: Map<string, number> = new Map(); // string: handle-id of corresponding output handle
+  compute?: (handleId: string) => number | undefined;
+  mark: Mark | null = null; // TODO: null or undefined
+  nodeId: string;
 
-  constructor(values: Record<string, unknown>) {
-    Object.entries(values).forEach(([key, entry]) => {
-      this.values.set(key, Number(entry)); // TODO: boolean types???
-    });
+  constructor(nodeId: string, values: Record<string, unknown>) {
+    this.nodeId = nodeId;
+    Object.entries(values).forEach(([key, entry]) => {});
   }
 
   getValue(key: string): number | undefined {
@@ -44,11 +46,15 @@ class AppNode {
 }
 
 interface NodeStoreState {
+  /**
+   * sorted in reverse order
+   */
   nodeMap: Map<string, AppNode>;
   replaceNode: (node: Node) => void;
   removeNode: (nodeId: string) => void;
   addEdge: (edge: Connection) => void;
   removeEdge: (edgeId: string) => void;
+  debugPrint: () => void;
 }
 
 export const useNodeStore = create<NodeStoreState>((set) => ({
@@ -57,33 +63,22 @@ export const useNodeStore = create<NodeStoreState>((set) => ({
     set((state) => {
       if (state.nodeMap.has(node.id)) {
         // only replace input value
-        return state;
+      } else {
+        state.nodeMap.set(node.id, new AppNode(node.id, node.data));
       }
-      const newNode = new AppNode(node.data);
-      const newNodeMap = new Map(state.nodeMap);
-      newNodeMap.set(node.id, newNode);
 
-      // console.log("New map: ");
-      // console.log(newNodeMap);
+      // computeMap(state.nodeMap);
 
-      return {
-        ...state,
-        nodeMap: newNodeMap,
-      };
+      return state;
     });
   },
   removeNode: (nodeId: string) => {
     set((state) => {
-      const newNodeMap = new Map(state.nodeMap);
-      newNodeMap.delete(nodeId);
+      state.nodeMap.delete(nodeId);
 
-      // console.log("New map: ");
-      // console.log(newNodeMap);
+      // computeMap(state.nodeMap);
 
-      return {
-        ...state,
-        nodeMap: newNodeMap,
-      };
+      return state;
     });
   },
   addEdge: (edge: Connection) => {
@@ -94,43 +89,57 @@ export const useNodeStore = create<NodeStoreState>((set) => ({
       if (source && target && edge.targetHandle && edge.sourceHandle) {
         const edgeId = connectionToEdgeId(edge);
 
-        source.outputs.set(edgeId, [
-          edge.target,
-          edge.targetHandle,
-          edge.sourceHandle,
-        ]);
-        console.log(target.inputs.has(edgeId));
-        target.inputs.set(edgeId, [
-          edge.source,
-          edge.sourceHandle,
-          edge.targetHandle,
-        ]);
+        source.outputs.set(edgeId, {
+          targetNode: target,
+          targetHandleId: edge.targetHandle,
+          sourceHandleId: edge.sourceHandle,
+        });
+
+        target.inputs.set(edgeId, {
+          sourceNode: source,
+          sourceHandleId: edge.sourceHandle,
+          targetHandleId: edge.targetHandle,
+        });
       }
 
-      console.log(state.nodeMap);
-
-      return state;
+      return {
+        ...state,
+        nodeMap: orderMap(state.nodeMap),
+      };
     });
   },
   removeEdge: (edgeId: string) => {
     set((state) => {
-      const [edgeSource, edgeSourceHandle, edgeTarget, edgeTargetHandle] =
-        edgeIdParser(edgeId);
+      const { edgeSource, edgeTarget } = edgeIdParser(edgeId);
       const source = state.nodeMap.get(edgeSource);
       const target = state.nodeMap.get(edgeTarget);
 
       source?.outputs.delete(edgeId);
       target?.inputs.delete(edgeId);
 
-      console.log(state.nodeMap);
+      // computeMap(state.nodeMap);
 
+      return state;
+    });
+  },
+  debugPrint: () => {
+    set((state) => {
+      // console.log(Array.from(state.nodeMap).reverse());
+      state.nodeMap.forEach((node) => {
+        console.log(node);
+      });
       return state;
     });
   },
 }));
 
 // edge source, edge source handle, edge target, edge target handle
-function edgeIdParser(edgeId: string): [string, string, string, string] {
+function edgeIdParser(edgeId: string): {
+  edgeSource: string;
+  edgeSourceHandle: string;
+  edgeTarget: string;
+  edgeTargetHandle: string;
+} {
   const regex = /^xy-edge__([0-9a-fA-F-]{36})(.*?)-([0-9a-fA-F-]{36})(.*)$/;
   const match = edgeId.match(regex);
 
@@ -138,7 +147,12 @@ function edgeIdParser(edgeId: string): [string, string, string, string] {
     throw new Error("String does not match expected format");
   }
 
-  return [match[1], match[2], match[3], match[4]];
+  return {
+    edgeSource: match[1],
+    edgeSourceHandle: match[2],
+    edgeTarget: match[3],
+    edgeTargetHandle: match[4],
+  };
 }
 
 function connectionToEdgeId(edge: Connection): string {
@@ -150,4 +164,49 @@ function connectionToEdgeId(edge: Connection): string {
     edge.target +
     edge.targetHandle
   );
+}
+
+function computeMap(map: Map<string, AppNode>) {
+  map.forEach((element) => {});
+}
+
+function orderMap(map: Map<string, AppNode>): Map<string, AppNode> {
+  // remove all marks
+  map.forEach((node) => {
+    node.mark = null;
+  });
+
+  // map to contain sorted nodes
+  let sortedMap = new Map<string, AppNode>();
+
+  // TODO: this while loop is inefficient
+  // because it loops over marked nodes
+  while (sortedMap.size != map.size) {
+    map.forEach((node) => {
+      if (!node.mark) {
+        visit(node, sortedMap);
+      }
+    });
+  }
+
+  // computeMap(sortedMap);
+  return sortedMap;
+}
+
+function visit(node: AppNode, sortedMap: Map<string, AppNode>) {
+  if (node.mark == Mark.Permanent) {
+    return;
+  }
+  if (node.mark == Mark.Temporary) {
+    throw new Error("Cycle");
+  }
+
+  node.mark = Mark.Temporary;
+
+  node.outputs.forEach(({ targetNode }) => {
+    visit(targetNode, sortedMap);
+  });
+
+  node.mark = Mark.Permanent;
+  sortedMap.set(node.nodeId, node);
 }

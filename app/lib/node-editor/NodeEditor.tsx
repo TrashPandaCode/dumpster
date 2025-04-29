@@ -4,6 +4,7 @@ import {
   applyNodeChanges,
   Background,
   Controls,
+  Panel,
   ReactFlow,
   type Edge,
   type Node,
@@ -28,23 +29,18 @@ const NodeEditor = () => {
   const removeNode = useNodeStore((state) => state.removeNode);
   const addEdgeStore = useNodeStore((state) => state.addEdge);
   const removeEdge = useNodeStore((state) => state.removeEdge);
+  const nodeStateDebugPrint = useNodeStore((state) => state.debugPrint);
 
   const onNodesChange: OnNodesChange = useCallback(
     (changes) => {
       changes.forEach((element) => {
         switch (element.type) {
           case "add":
-            // do nothing
-            // nodes without data do not need computation
-            // this only works when all nodes update their internal state when mounting
-            // if we change this behaviour we need to call replaceNode here as well
             break;
           case "remove":
-            // recompute
             removeNode(element.id);
             break;
           case "replace":
-            // recompute
             replaceNode(element.item);
             break;
         }
@@ -59,7 +55,6 @@ const NodeEditor = () => {
       changes.forEach((element) => {
         switch (element.type) {
           case "remove":
-            // reorder
             removeEdge(element.id);
             break;
         }
@@ -71,7 +66,6 @@ const NodeEditor = () => {
   );
   const onConnect: OnConnect = useCallback(
     (connection) => {
-      // reorder
       addEdgeStore(connection);
       setEdges((eds) => addEdge(connection, eds));
     },
@@ -94,6 +88,11 @@ const NodeEditor = () => {
         <Background bgColor="#14141d" color="#a7abc2" />
         {/* <Controls className="text-white !bg-slate-800" /> sind kacke zu stylen */}
         <AddNodePanel />
+        <Panel position="top-right">
+          <button onClick={nodeStateDebugPrint} className="bg-white p-2">
+            Print Map
+          </button>
+        </Panel>
       </ReactFlow>
     </div>
   );

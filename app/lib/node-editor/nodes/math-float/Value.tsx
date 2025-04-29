@@ -13,11 +13,6 @@ const Value = memo(({ id }: { id: string }) => {
     updateNodeData(id, { "result-handle": value });
   }, [value]);
 
-  // TODO: this remove unnecessary rerender but initial value has to be set when spawing node
-  // const setValue = (val: number) => {
-  //   updateNodeData(id, { value: val });
-  // };
-
   return (
     <div className="min-w-48">
       <NodeContent label="Value" type="float">
