@@ -57,11 +57,10 @@ const Home = () => {
   return (
     <>
       <div className="flex h-screen flex-col overflow-hidden">
-        <header className="pl-[5vw]">
+        <header className="px-8">
           <nav className="flex items-center gap-8 p-4">
             <div className="items-left font-pixel z-1 flex flex-col text-2xl font-bold">
-              <p>Dumpster</p>
-              <p>Diving</p>
+              Dumpster Diving
             </div>
             <NavLink
               to="/docs"
@@ -114,7 +113,7 @@ const Home = () => {
                 <br />
                 <p className="text-sm">{currentHoverCard.description}</p>
               </div>
-              <div className="col-span-2 col-start-2 flex h-[calc(100%)] flex-col bg-amber-200">
+              <div className="col-span-2 col-start-2 flex h-[calc(100%)] flex-col">
                 <div
                   className={`relative h-full overflow-hidden transition-all duration-500`}
                   style={{
