@@ -190,7 +190,7 @@ const Home = () => {
         className="flex items-center justify-center bg-white"
       >
         <div className="flex h-full w-full flex-col p-12">
-          <h1 className="font-fonm pb-12 text-4xl font-bold">
+          <h1 className="font-pixel pb-12 text-4xl font-bold">
             Learn these skills to become a dumpster diver
           </h1>
           <div className="flex items-start justify-center gap-32">
@@ -214,7 +214,7 @@ const Home = () => {
       </section>
       <section className="flex h-96 items-center justify-center bg-blue-950">
         <div className="flex h-full w-full max-w-2xl flex-col items-center justify-center gap-4">
-          <h1 className="font-fonm text-4xl font-bold text-white">
+          <h1 className="font-pixel text-4xl font-bold text-white">
             Join the community
           </h1>
           <p className="text-center text-sm text-white">
@@ -232,7 +232,7 @@ const Home = () => {
         </div>
       </section>
       <section className="p-12">
-        <h1 className="font-fonm text-4xl font-bold">About</h1>
+        <h1 className="font-pixel text-4xl font-bold">About</h1>
         <p className="text-sm">
           Lorem Ipsum is simply dummy text of the printing and typesetting
           industry. Lorem Ipsum has been the industry's standard dummy text ever
@@ -241,7 +241,7 @@ const Home = () => {
         </p>
       </section>
       <section className="bg-blue-950 p-12 text-white">
-        <h1 className="font-fonm text-4xl font-bold">About</h1>
+        <h1 className="font-pixel text-4xl font-bold">About</h1>
         <p className="text-sm">
           Lorem Ipsum is simply dummy text of the printing and typesetting
           industry. Lorem Ipsum has been the industry's standard dummy text ever
