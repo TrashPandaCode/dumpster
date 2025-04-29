@@ -24,15 +24,21 @@ const ContextMenu: React.FC<ContextMenuProps> = ({ x, y, onClose }) => {
   const height = useStore((s) => s.height);
 
   const handleAddNode = (type: string) => {
-    // Node gets spawned with its upper left corner at the center of the screen
-    const centerX = (width / 2 - offsetX) / zoom;
-    const centerY = (height / 2 - offsetY) / zoom;
+    const canvasElement = document.getElementById("node-editor");
+    if (!canvasElement) {
+      console.error("Canvas element with ID 'node-editor' not found.");
+      return;
+    }
+    const canvasRect = canvasElement?.getBoundingClientRect();
+
+    const nodeX = (x - offsetX) / zoom - canvasRect.left / zoom;
+    const nodeY = (y - offsetY) / zoom - canvasRect.top / zoom;
 
     addNodes([
       {
         id: uuidv4(),
         type,
-        position: { x: centerX, y: centerY },
+        position: { x: nodeX, y: nodeY },
         data: {},
       },
     ]);

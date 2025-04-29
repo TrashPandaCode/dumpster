@@ -46,8 +46,8 @@ const NodeEditor = () => {
   const handlePaneContextMenu = (event: MouseEvent | React.MouseEvent) => {
     event.preventDefault();
     setContextMenu({
-      x: (event as React.MouseEvent).clientX,
-      y: (event as React.MouseEvent).clientY,
+      x: (event as React.MouseEvent).clientX - 20,
+      y: (event as React.MouseEvent).clientY - 20,
     });
   };
   const handleClick = () => {
@@ -58,6 +58,7 @@ const NodeEditor = () => {
     <div style={{ height: "100%" }} onClick={handleClick}>
       <ReactFlowProvider>
         <ReactFlow
+          id="node-editor"
           nodeTypes={nodeTypes}
           nodes={nodes}
           edges={edges}
