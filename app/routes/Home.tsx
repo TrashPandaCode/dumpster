@@ -115,7 +115,7 @@ const Home = () => {
               </div>
               <div className="col-span-2 col-start-2 flex h-[calc(100%)] flex-col">
                 <div
-                  className={`relative h-full overflow-hidden transition-all duration-500`}
+                  className={`relative overflow-hidden transition-all duration-500`}
                   style={{
                     WebkitMaskImage: showAll
                       ? ""
@@ -126,7 +126,7 @@ const Home = () => {
                     height: showAll ? "85%" : "35%",
                   }}
                 >
-                  <div className="grid w-full grid-cols-[repeat(auto-fit,minmax(200px,_1fr))] gap-4 p-2">
+                  <div className="grid w-full grid-cols-[repeat(auto-fit,minmax(200px,_1fr))] gap-4 overflow-hidden p-2">
                     {CARDS.map((card) => (
                       <LevelCard
                         key={card.id}
@@ -339,7 +339,7 @@ const LevelCard: React.FC<{ img: string; onMouseEnter: () => void }> = ({
   onMouseEnter,
 }) => (
   <div
-    className="outline-jam-600 relative aspect-square h-full w-full cursor-pointer overflow-hidden rounded-xl hover:outline-5"
+    className="outline-jam-600 relative h-full w-full cursor-pointer overflow-hidden rounded-xl hover:outline-5"
     onMouseEnter={onMouseEnter}
   >
     <img className="h-full w-full scale-110 object-cover" src={img} alt="" />
