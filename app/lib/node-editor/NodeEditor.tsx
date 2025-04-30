@@ -19,8 +19,8 @@ import { useCallback, useState } from "react";
 import "@xyflow/react/dist/style.css";
 
 import AddNodePanel from "./editor-components/AddNode";
-import { useNodeStore } from "./node-store/node-store";
 import ContextMenu from "./editor-components/ContextMenu";
+import { useNodeStore } from "./node-store/node-store";
 import { nodeTypes } from "./nodes/node-types";
 import { debugEdges, debugNodes } from "./solutions/debug";
 
@@ -109,10 +109,10 @@ const NodeEditor = () => {
           {/* <Controls className="text-white !bg-slate-800" /> sind kacke zu stylen */}
           <AddNodePanel />
           <Panel position="top-right">
-          <button onClick={nodeStateDebugPrint} className="bg-white p-2">
-            Print Map
-          </button>
-        </Panel>
+            <button onClick={nodeStateDebugPrint} className="bg-white p-2">
+              Print Map
+            </button>
+          </Panel>
         </ReactFlow>
         {contextMenu && (
           <ContextMenu
