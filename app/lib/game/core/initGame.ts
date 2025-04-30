@@ -53,10 +53,13 @@ export default async function initGame(canvas: HTMLCanvasElement) {
   k.onKeyPress("w", () => {});
 
   //Game Loop, runs at 60 frames per second
+  const setTime = useTimeStore.getState().setTime;
+  const setDeltaTime = useTimeStore.getState().setDeltaTime;
   k.onFixedUpdate(() => {
-    const setTime = useTimeStore.getState().setTime;
     const time = k.time();
+    const deltaTime = k.dt();
     setTime(time);
+    setDeltaTime(deltaTime);
 
     //Move
     const x = useDebugStore.getState().new_xpos;
