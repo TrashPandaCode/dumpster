@@ -116,6 +116,7 @@ const TYPES = {
   Rounding: ["Round", "Floor", "Ceil", "Modulo"],
   Trigonometric: ["Sine", "Cosine", "Tangent"],
   Conversion: ["To Radians", "To Degrees"],
+  Compare: ["Equals", "Greater Than", "Less Than"],
 };
 
 const INPUTS: { [key: string]: boolean[] } = {
@@ -138,6 +139,10 @@ const INPUTS: { [key: string]: boolean[] } = {
 
   "To Radians": [true, false],
   "To Degrees": [true, false],
+
+  Equals: [true, true],
+  "Greater Than": [true, true],
+  "Less Than": [true, true],
 };
 
 const COMPUTE: { [key: string]: (x: number, y: number) => number } = {
@@ -160,4 +165,8 @@ const COMPUTE: { [key: string]: (x: number, y: number) => number } = {
 
   "To Radians": (x, _) => x * (Math.PI / 180),
   "To Degree": (x, _) => x * (180 / Math.PI),
+
+  Equals: (x, y) => +(x == y),
+  "Greater Than": (x, y) => +(x > y),
+  "Less Than": (x, y) => +(x < y),
 };
