@@ -23,7 +23,7 @@ const KeyPress = memo(({ id }: { id: string }) => {
 
   return (
     <div className="min-w-48">
-      <NodeContent label="KeyPress" type="float" highlight={keyPressed}>
+      <NodeContent label="KeyPress" type="float" active={keyPressed}>
         <div className="flex w-full justify-end gap-2">
           <SelectDropDown
             setSelected={setCurKey}
