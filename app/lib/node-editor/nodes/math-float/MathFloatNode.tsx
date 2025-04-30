@@ -8,6 +8,7 @@ import NumberInput from "../../node-components/NumberInput";
 import SelectDropDown from "../../node-components/SelectDropDown";
 import { type nodeData, type nodeInputs } from "../../node-store/node-store";
 import { getInput } from "../../node-store/utils";
+import { IN_HANDLE_1, IN_HANDLE_2, OUT_HANDLE_1 } from "../constants";
 
 const MathFloatNode = memo(({ id }: { id: string }) => {
   const { updateNodeData } = useReactFlow();
@@ -25,11 +26,11 @@ const MathFloatNode = memo(({ id }: { id: string }) => {
   const [yInputData, setyInputData] = useState(0);
 
   const xConnection = useNodeConnections({
-    handleId: "input-handle-x",
+    handleId: IN_HANDLE_1,
     handleType: "target",
   });
   const yConnection = useNodeConnections({
-    handleId: "input-handle-y",
+    handleId: IN_HANDLE_2,
     handleType: "target",
   });
 
@@ -37,13 +38,13 @@ const MathFloatNode = memo(({ id }: { id: string }) => {
     if (computeType) {
       updateNodeData(id, {
         compute: (inputs: nodeInputs, results: nodeData) => {
-          const x = getInput(inputs, "input-handle-x", xInputData);
-          const y = getInput(inputs, "input-handle-y", yInputData);
+          const x = getInput(inputs, IN_HANDLE_1, xInputData);
+          const y = getInput(inputs, IN_HANDLE_2, yInputData);
 
           setxDisplayData(x);
           setyDisplayData(y);
 
-          results.set("result-handle", COMPUTE[computeType](x, y));
+          results.set(OUT_HANDLE_1, COMPUTE[computeType](x, y));
         },
       });
     }
@@ -57,7 +58,7 @@ const MathFloatNode = memo(({ id }: { id: string }) => {
           <>
             <br />
             <LabelHandle
-              id="result-handle"
+              id={OUT_HANDLE_1}
               position={Position.Right}
               label="Result"
             />
@@ -71,7 +72,7 @@ const MathFloatNode = memo(({ id }: { id: string }) => {
                   disabled={!!xConnection.length}
                 />
                 <BaseHandle
-                  id="input-handle-x"
+                  id={IN_HANDLE_1}
                   position={Position.Left}
                   isConnectable={xConnection.length < 1}
                 />
@@ -87,7 +88,7 @@ const MathFloatNode = memo(({ id }: { id: string }) => {
                   disabled={!!yConnection.length}
                 />
                 <BaseHandle
-                  id="input-handle-y"
+                  id={IN_HANDLE_2}
                   position={Position.Left}
                   isConnectable={yConnection.length < 1}
                 />

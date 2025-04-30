@@ -5,6 +5,7 @@ import LabelHandle from "../../node-components/LabelHandle";
 import NodeContent from "../../node-components/NodeContent";
 import NumberInput from "../../node-components/NumberInput";
 import type { nodeData, nodeInputs } from "../../node-store/node-store";
+import { OUT_HANDLE_1 } from "../constants";
 
 const Value = memo(({ id }: { id: string }) => {
   const { updateNodeData } = useReactFlow();
@@ -12,8 +13,8 @@ const Value = memo(({ id }: { id: string }) => {
 
   useEffect(() => {
     updateNodeData(id, {
-      compute: (inputs: nodeInputs, results: nodeData) => {
-        results.set("result-handle", value);
+      compute: (_: nodeInputs, results: nodeData) => {
+        results.set(OUT_HANDLE_1, value);
       },
     });
   }, [value]);
@@ -24,7 +25,7 @@ const Value = memo(({ id }: { id: string }) => {
         <div className="flex w-full justify-end gap-2">
           <NumberInput setValue={setValue} defaultValue={0} />
           <LabelHandle
-            id="result-handle"
+            id={OUT_HANDLE_1}
             position={Position.Right}
             label="Value"
           />

@@ -5,16 +5,19 @@ import { useTimeStore } from "~/lib/zustand/time";
 import LabelHandle from "../../node-components/LabelHandle";
 import NodeContent from "../../node-components/NodeContent";
 import NumberInput from "../../node-components/NumberInput";
+import type { nodeData, nodeInputs } from "../../node-store/node-store";
+import { OUT_HANDLE_1 } from "../constants";
 
 const Time = memo(({ id }: { id: string }) => {
   const { updateNodeData } = useReactFlow();
-  const [value, setValue] = useState(0);
-
   const time = useTimeStore((state) => state.time);
 
   useEffect(() => {
-    setValue(time);
-    updateNodeData(id, { "result-handle": value });
+    updateNodeData(id, {
+      compute: (_: nodeInputs, results: nodeData) => {
+        results.set(OUT_HANDLE_1, time);
+      },
+    });
   }, [time]);
 
   return (
@@ -22,13 +25,13 @@ const Time = memo(({ id }: { id: string }) => {
       <NodeContent label="Time" type="float">
         <div className="flex w-full justify-end gap-2">
           <NumberInput
-            value={value}
-            setValue={setValue}
+            value={time}
+            setValue={() => {}}
             defaultValue={0}
             disabled
           />
           <LabelHandle
-            id="result-handle"
+            id={OUT_HANDLE_1}
             position={Position.Right}
             label="Value"
           />

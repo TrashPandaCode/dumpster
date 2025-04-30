@@ -5,20 +5,21 @@ import LabelHandle from "../../node-components/LabelHandle";
 import NodeContent from "../../node-components/NodeContent";
 import type { nodeData, nodeInputs } from "../../node-store/node-store";
 import { getInput } from "../../node-store/utils";
+import { IN_HANDLE_1 } from "../constants";
 
 const Display = memo(({ id }: { id: string }) => {
   const { updateNodeData } = useReactFlow();
   const [displaNumber, setDisplayNumber] = useState(0);
 
   const connection = useNodeConnections({
-    handleId: "input-handle",
+    handleId: IN_HANDLE_1,
     handleType: "target",
   });
 
   useEffect(() => {
     updateNodeData(id, {
-      compute: (inputs: nodeInputs, results: nodeData) => {
-        setDisplayNumber(getInput(inputs, "input-handle", 0));
+      compute: (inputs: nodeInputs, _: nodeData) => {
+        setDisplayNumber(getInput(inputs, IN_HANDLE_1, 0));
       },
     });
   }, []);
@@ -28,7 +29,7 @@ const Display = memo(({ id }: { id: string }) => {
       <NodeContent label="Debug-Display" type="float">
         <div className="flex gap-2">
           <LabelHandle
-            id="input-handle"
+            id={IN_HANDLE_1}
             position={Position.Left}
             isConnectable={connection.length < 1}
           />

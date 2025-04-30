@@ -4,6 +4,8 @@ import { memo, useEffect, useState } from "react";
 import LabelHandle from "../../node-components/LabelHandle";
 import NodeContent from "../../node-components/NodeContent";
 import SelectDropDown from "../../node-components/SelectDropDown";
+import type { nodeData, nodeInputs } from "../../node-store/node-store";
+import { OUT_HANDLE_1 } from "../constants";
 
 const KeyPress = memo(({ id }: { id: string }) => {
   const { updateNodeData } = useReactFlow();
@@ -11,7 +13,11 @@ const KeyPress = memo(({ id }: { id: string }) => {
   const keyPressed = useKeyPress(curKey);
 
   useEffect(() => {
-    updateNodeData(id, { "result-handle": +keyPressed });
+    updateNodeData(id, {
+      compute: (_: nodeInputs, results: nodeData) => {
+        results.set(OUT_HANDLE_1, +keyPressed);
+      },
+    });
   }, [keyPressed]);
 
   return (
@@ -23,7 +29,7 @@ const KeyPress = memo(({ id }: { id: string }) => {
             items={{ keys: ["w", "a", "s", "d"], other: ["Space", "Enter"] }}
           />
           <LabelHandle
-            id="result-handle"
+            id={OUT_HANDLE_1}
             position={Position.Right}
             label="Value"
           />
