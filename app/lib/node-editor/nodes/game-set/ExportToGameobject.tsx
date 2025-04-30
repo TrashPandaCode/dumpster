@@ -1,48 +1,48 @@
-import { Position, useNodeConnections, useNodesData } from "@xyflow/react";
+import { Position, useNodeConnections, useReactFlow } from "@xyflow/react";
 import { memo, useEffect } from "react";
 
 import { useDebugStore } from "~/lib/zustand/debug";
 import LabelHandle from "../../node-components/LabelHandle";
 import NodeContent from "../../node-components/NodeContent";
+import type { nodeData, nodeInputs } from "../../node-store/node-store";
+import { getInput } from "../../node-store/utils";
+import { IN_HANDLE_1, IN_HANDLE_2 } from "../constants";
 
-const ExportToGameobject = memo(() => {
+const ExportToGameobject = memo(({ id }: { id: string }) => {
+  const { updateNodeData } = useReactFlow();
   const setXPos = useDebugStore((state) => state.setnew_xpos);
   const setYPos = useDebugStore((state) => state.setnew_ypos);
 
   const xConnection = useNodeConnections({
-    handleId: "x-handle",
+    handleId: IN_HANDLE_1,
     handleType: "target",
   });
-  const xData = useNodesData(xConnection[0]?.source)?.data[
-    xConnection[0]?.sourceHandle ?? ""
-  ];
 
   const yConnection = useNodeConnections({
-    handleId: "y-handle",
+    handleId: IN_HANDLE_2,
     handleType: "target",
   });
-  const yData = useNodesData(yConnection[0]?.source)?.data[
-    yConnection[0]?.sourceHandle ?? ""
-  ];
 
   useEffect(() => {
-    const x = Number(xData);
-    const y = Number(yData);
-    setXPos(!isNaN(x) ? x : 0);
-    setYPos(!isNaN(y) ? y : 0);
-  }, [xData, yData]);
+    updateNodeData(id, {
+      compute: (inputs: nodeInputs, _: nodeData) => {
+        setXPos(getInput(inputs, IN_HANDLE_1, 0));
+        setYPos(getInput(inputs, IN_HANDLE_2, 0));
+      },
+    });
+  }, []);
 
   return (
     <div>
       <NodeContent label="Export To Gameobject" type="export">
         <LabelHandle
-          id="x-handle"
+          id={IN_HANDLE_1}
           position={Position.Left}
           label="x position"
           isConnectable={xConnection.length < 1}
         />
         <LabelHandle
-          id="y-handle"
+          id={IN_HANDLE_2}
           position={Position.Left}
           label="y position"
           isConnectable={yConnection.length < 1}

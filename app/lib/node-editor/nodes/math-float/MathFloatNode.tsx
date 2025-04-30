@@ -1,9 +1,4 @@
-import {
-  Position,
-  useNodeConnections,
-  useNodesData,
-  useReactFlow,
-} from "@xyflow/react";
+import { Position, useNodeConnections, useReactFlow } from "@xyflow/react";
 import { memo, useEffect, useState } from "react";
 
 import BaseHandle from "../../node-components/BaseHandle";
@@ -11,11 +6,16 @@ import LabelHandle from "../../node-components/LabelHandle";
 import NodeContent from "../../node-components/NodeContent";
 import NumberInput from "../../node-components/NumberInput";
 import SelectDropDown from "../../node-components/SelectDropDown";
+import { type nodeData, type nodeInputs } from "../../node-store/node-store";
+import { getInput } from "../../node-store/utils";
+import { IN_HANDLE_1, IN_HANDLE_2, OUT_HANDLE_1 } from "../constants";
 
 const MathFloatNode = memo(({ id }: { id: string }) => {
   const { updateNodeData } = useReactFlow();
   const [computeType, _setComputeType] = useState<string | null>(null);
   const [inputEnable, setInputEnable] = useState([true, true]);
+  const [xDisplayData, setxDisplayData] = useState(0);
+  const [yDisplayData, setyDisplayData] = useState(0);
 
   function setComputeType(type: string): void {
     _setComputeType(type);
@@ -26,44 +26,39 @@ const MathFloatNode = memo(({ id }: { id: string }) => {
   const [yInputData, setyInputData] = useState(0);
 
   const xConnection = useNodeConnections({
-    handleId: "input-x-handle",
+    handleId: IN_HANDLE_1,
     handleType: "target",
   });
-  const xData = useNodesData(xConnection[0]?.source)?.data[
-    xConnection[0]?.sourceHandle ?? ""
-  ];
-
   const yConnection = useNodeConnections({
-    handleId: "input-y-handle",
+    handleId: IN_HANDLE_2,
     handleType: "target",
   });
-  const yData = useNodesData(yConnection[0]?.source)?.data[
-    yConnection[0]?.sourceHandle ?? ""
-  ];
 
   useEffect(() => {
     if (computeType) {
       updateNodeData(id, {
-        "result-handle": COMPUTE[computeType](
-          Number(xData ?? xInputData),
-          Number(yData ?? yInputData)
-        ),
+        compute: (inputs: nodeInputs, results: nodeData) => {
+          const x = getInput(inputs, IN_HANDLE_1, xInputData);
+          const y = getInput(inputs, IN_HANDLE_2, yInputData);
+
+          setxDisplayData(x);
+          setyDisplayData(y);
+
+          results.set(OUT_HANDLE_1, COMPUTE[computeType](x, y));
+        },
       });
     }
-  }, [xInputData, yInputData, xData, yData, computeType]);
+  }, [xInputData, yInputData, computeType]);
 
   return (
     <div className="min-w-3xs">
-      <NodeContent
-        label={computeType ? computeType : "Select Math Type"}
-        type="float"
-      >
+      <NodeContent label={computeType ?? "Select Math Type"} type="float">
         <SelectDropDown items={TYPES} setSelected={setComputeType} />
         {computeType && (
           <>
             <br />
             <LabelHandle
-              id="result-handle"
+              id={OUT_HANDLE_1}
               position={Position.Right}
               label="Result"
             />
@@ -71,13 +66,13 @@ const MathFloatNode = memo(({ id }: { id: string }) => {
               <div className="text-left">
                 x
                 <NumberInput
-                  value={Number(xData)}
+                  value={xDisplayData}
                   setValue={setxInputData}
                   defaultValue={0}
-                  disabled={typeof xData === "number"}
+                  disabled={!!xConnection.length}
                 />
                 <BaseHandle
-                  id="input-x-handle"
+                  id={IN_HANDLE_1}
                   position={Position.Left}
                   isConnectable={xConnection.length < 1}
                 />
@@ -87,13 +82,13 @@ const MathFloatNode = memo(({ id }: { id: string }) => {
               <div className="text-left">
                 y
                 <NumberInput
-                  value={Number(yData)}
+                  value={yDisplayData}
                   setValue={setyInputData}
                   defaultValue={0}
-                  disabled={typeof yData === "number"}
+                  disabled={!!yConnection.length}
                 />
                 <BaseHandle
-                  id="input-y-handle"
+                  id={IN_HANDLE_2}
                   position={Position.Left}
                   isConnectable={yConnection.length < 1}
                 />
