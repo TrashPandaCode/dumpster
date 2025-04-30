@@ -104,8 +104,18 @@ const MathFloatNode = memo(({ id }: { id: string }) => {
 export default MathFloatNode;
 
 const TYPES = {
-  Functions: ["Addition", "Substraction", "Multiply", "Divide"],
-  Trigonometric: ["Sine"],
+  Functions: [
+    "Addition",
+    "Substraction",
+    "Multiply",
+    "Divide",
+    "Power",
+    "Logarithm",
+    "Absolute",
+  ],
+  Rounding: ["Round", "Floor", "Ceil", "Modulo"],
+  Trigonometric: ["Sine", "Cosine", "Tangent"],
+  Conversion: ["To Radians", "To Degrees"],
 };
 
 const INPUTS: { [key: string]: boolean[] } = {
@@ -113,7 +123,21 @@ const INPUTS: { [key: string]: boolean[] } = {
   Substraction: [true, true],
   Multiply: [true, true],
   Divide: [true, true],
+  Power: [true, true],
+  Logarithm: [true, false],
+  Absolute: [true, false],
+
+  Round: [true, false],
+  Floor: [true, false],
+  Ceil: [true, false],
+  Modulo: [true, true],
+
   Sine: [true, false],
+  Cosine: [true, false],
+  Tangent: [true, false],
+
+  "To Radians": [true, false],
+  "To Degrees": [true, false],
 };
 
 const COMPUTE: { [key: string]: (x: number, y: number) => number } = {
@@ -121,5 +145,19 @@ const COMPUTE: { [key: string]: (x: number, y: number) => number } = {
   Substraction: (x, y) => x - y,
   Multiply: (x, y) => x * y,
   Divide: (x, y) => x / y,
+  Power: (x, y) => Math.pow(x, y),
+  Logarithm: (x, _) => Math.log(x),
+  Absolute: (x, _) => Math.abs(x),
+
+  Round: (x, _) => Math.round(x),
+  Floor: (x, _) => Math.floor(x),
+  Ceil: (x, _) => Math.ceil(x),
+  Modulo: (x, y) => x % y,
+
   Sine: (x, _) => Math.sin(x),
+  Cosine: (x, _) => Math.cos(x),
+  Tangent: (x, _) => Math.tan(x),
+
+  "To Radians": (x, _) => x * (Math.PI / 180),
+  "To Degree": (x, _) => x * (180 / Math.PI),
 };
