@@ -86,7 +86,7 @@ const Home = () => {
 
         <main className="relative flex h-full overflow-hidden">
           <img
-            className="pointer-events-none absolute z-[-1] h-full w-full scale-110 object-cover blur-lg"
+            className="pointer-events-none absolute z-[-1] h-full w-full scale-110 object-cover blur-md"
             src={currentHoverCard.image}
             alt=""
           />
@@ -151,7 +151,7 @@ const Home = () => {
                 </div>
 
                 <div
-                  className={`p-2 transition-all duration-500 ${showAll ? "h-[0%] opacity-0" : "h-fit opacity-100"}`}
+                  className={`p-2 transition-all duration-500 ${showAll ? "h-fit opacity-0" : "h-fit opacity-100"}`}
                 >
                   <h1 className="font-pixel pt-6 text-7xl font-bold text-white">
                     <p className="">Dumpster</p>
@@ -173,7 +173,7 @@ const Home = () => {
                 </div>
 
                 <NavLink
-                  className="bg-jam-600 font-pixel absolute right-12 bottom-12 flex items-center justify-baseline gap-4 rounded-full px-6 py-3 text-4xl font-bold text-white shadow-lg transition-transform duration-200 hover:scale-110 hover:shadow-2xl"
+                  className="bg-jam-600 font-pixel absolute right-12 bottom-12 flex items-center justify-baseline gap-4 rounded-full px-6 py-3 text-4xl font-bold text-white shadow-lg transition-transform duration-200 hover:scale-103 hover:bg-jam-700"
                   to="/game"
                 >
                   Play
