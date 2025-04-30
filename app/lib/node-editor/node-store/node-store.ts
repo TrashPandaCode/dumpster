@@ -1,6 +1,10 @@
 import { type Connection, type Node } from "@xyflow/react";
 import { create } from "zustand";
 
+type MapErrors = {
+  cycle: boolean;
+};
+
 enum Mark {
   Temporary,
   Permanent,
@@ -48,6 +52,7 @@ interface NodeStoreState {
    * sorted in reverse order
    */
   nodeMap: Map<string, AppNode>;
+  mapErrors: MapErrors;
   replaceNode: (node: Node) => void;
   removeNode: (nodeId: string) => void;
   addEdge: (edge: Connection) => void;
@@ -57,6 +62,7 @@ interface NodeStoreState {
 
 export const useNodeStore = create<NodeStoreState>((set) => ({
   nodeMap: new Map<string, AppNode>(),
+  mapErrors: { cycle: false },
   replaceNode: (node: Node) => {
     set((state) => {
       if (state.nodeMap.has(node.id)) {
@@ -66,7 +72,7 @@ export const useNodeStore = create<NodeStoreState>((set) => ({
       }
 
       console.log("compute replace");
-      computeMap(state.nodeMap);
+      computeMap(state.mapErrors, state.nodeMap);
 
       return state;
     });
@@ -76,7 +82,7 @@ export const useNodeStore = create<NodeStoreState>((set) => ({
       state.nodeMap.delete(nodeId);
 
       console.log("compute remove");
-      computeMap(state.nodeMap);
+      computeMap(state.mapErrors, state.nodeMap);
 
       return state;
     });
@@ -104,7 +110,7 @@ export const useNodeStore = create<NodeStoreState>((set) => ({
 
       return {
         ...state,
-        nodeMap: orderMap(state.nodeMap),
+        nodeMap: orderMap(state.mapErrors, state.nodeMap),
       };
     });
   },
@@ -120,14 +126,16 @@ export const useNodeStore = create<NodeStoreState>((set) => ({
           ([key, value]) => value.edgeId === edgeId && target.inputs.delete(key)
         );
 
-      console.log("compute remove edge");
-      computeMap(state.nodeMap);
-
-      return state;
+      return {
+        ...state,
+        nodeMap: orderMap(state.mapErrors, state.nodeMap),
+      };
     });
   },
   debugPrint: () => {
     set((state) => {
+      console.log(state.mapErrors.cycle);
+
       state.nodeMap.forEach((node) => {
         console.log(node);
       });
@@ -169,7 +177,12 @@ function connectionToEdgeId(edge: Connection): string {
   );
 }
 
-function computeMap(map: Map<string, AppNode>) {
+function computeMap(mapErrors: MapErrors, map: Map<string, AppNode>) {
+  if (mapErrors.cycle) {
+    console.log("Cannot compute because of cycle");
+    return;
+  }
+
   const reverseMap = Array.from(map).reverse();
   reverseMap.forEach(([_, node]) => {
     if (!node.compute) {
@@ -179,7 +192,11 @@ function computeMap(map: Map<string, AppNode>) {
   });
 }
 
-function orderMap(map: Map<string, AppNode>): Map<string, AppNode> {
+function orderMap(
+  mapErrors: MapErrors,
+  map: Map<string, AppNode>
+): Map<string, AppNode> {
+  mapErrors.cycle = false;
   // remove all marks
   map.forEach((node) => {
     node.mark = null;
@@ -190,31 +207,36 @@ function orderMap(map: Map<string, AppNode>): Map<string, AppNode> {
 
   // TODO: this while loop is inefficient
   // because it loops over marked nodes
-  while (sortedMap.size != map.size) {
-    map.forEach((node) => {
-      if (!node.mark) {
-        visit(node, sortedMap);
-      }
-    });
-  }
+  map.forEach((node) => {
+    if (!node.mark) {
+      visit(node, sortedMap, mapErrors);
+    }
+  });
 
   console.log("compute order");
-  computeMap(sortedMap);
-  return sortedMap;
+
+  computeMap(mapErrors, sortedMap);
+  return mapErrors.cycle ? map : sortedMap;
 }
 
-function visit(node: AppNode, sortedMap: Map<string, AppNode>) {
+function visit(
+  node: AppNode,
+  sortedMap: Map<string, AppNode>,
+  mapErrors: MapErrors
+) {
   if (node.mark == Mark.Permanent) {
     return;
   }
   if (node.mark == Mark.Temporary) {
-    throw new Error("Cycle");
+    console.log("Found cycle");
+    mapErrors.cycle = true;
+    return;
   }
 
   node.mark = Mark.Temporary;
 
   node.outputs.forEach(({ targetNode }) => {
-    visit(targetNode, sortedMap);
+    visit(targetNode, sortedMap, mapErrors);
   });
 
   node.mark = Mark.Permanent;
