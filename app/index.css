@@ -20,8 +20,12 @@
   --font-mono: "Iosevka Web", ui-monospace, monospace;
 }
 
+:root {
+  --tailwind-border-radius: 4px;
+}
+
 .react-flow__nodesselection-rect {
-  border-radius: 5px !important;
+  border-radius: var(--tailwind-border-radius) !important;
   border: 1px dotted var(--color-blue-300) !important;
 }
 
@@ -30,12 +34,12 @@
 */
 .react-flow__node.selected {
   background-color: var(--color-slate-600) !important;
-  border-radius: 5px !important;
+  border-radius: var(--tailwind-border-radius) !important;
 }
 
 .react-flow__node {
   background-color: var(--color-slate-800) !important;
-  border-radius: 5px !important;
+  border-radius: var(--tailwind-border-radius) !important;
 }
 
 /* html,
