@@ -4,19 +4,20 @@ import { memo, useEffect, useMemo, useState } from "react";
 import LabelHandle from "../../node-components/LabelHandle";
 import NodeContent from "../../node-components/NodeContent";
 import NumberInput from "../../node-components/NumberInput";
+import type { nodeData, nodeInputs } from "../../node-store/node-store";
+import { OUT_HANDLE_1 } from "../constants";
 
 const Value = memo(({ id }: { id: string }) => {
   const { updateNodeData } = useReactFlow();
   const [value, setValue] = useState(0);
 
   useEffect(() => {
-    updateNodeData(id, { "result-handle": value });
+    updateNodeData(id, {
+      compute: (_: nodeInputs, results: nodeData) => {
+        results.set(OUT_HANDLE_1, value);
+      },
+    });
   }, [value]);
-
-  // TODO: this remove unnecessary rerender but initial value has to be set when spawing node
-  // const setValue = (val: number) => {
-  //   updateNodeData(id, { value: val });
-  // };
 
   return (
     <div className="min-w-48">
@@ -24,7 +25,7 @@ const Value = memo(({ id }: { id: string }) => {
         <div className="flex w-full justify-end gap-2">
           <NumberInput setValue={setValue} defaultValue={0} />
           <LabelHandle
-            id="result-handle"
+            id={OUT_HANDLE_1}
             position={Position.Right}
             label="Value"
           />

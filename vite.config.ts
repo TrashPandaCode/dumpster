@@ -3,7 +3,7 @@ import tailwindcss from "@tailwindcss/vite";
 import { reactRouterDevTools } from "react-router-devtools";
 import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
-import { plugin as mdPlugin, Mode } from 'vite-plugin-markdown';
+import { plugin as mdPlugin, Mode } from "vite-plugin-markdown";
 
 export default defineConfig({
   plugins: [
