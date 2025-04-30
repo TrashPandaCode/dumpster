@@ -1,4 +1,5 @@
 import { useDebugStore } from "~/lib/zustand/debug";
+import { useKeyStore } from "~/lib/zustand/key";
 import { useTimeStore } from "~/lib/zustand/time";
 import { getKaplayCtx } from "./kaplayCtx";
 
@@ -9,7 +10,7 @@ export default async function initGame(canvas: HTMLCanvasElement) {
   first = false; //TODO: remove just for react strict mode
 
   const k = getKaplayCtx(canvas);
-  const setKeyPressed = useDebugStore.getState().setKeyPressed;
+  const setKeyPressed = useKeyStore.getState().setKeyPressed;
 
   k.setBackground(100, 100, 100);
 

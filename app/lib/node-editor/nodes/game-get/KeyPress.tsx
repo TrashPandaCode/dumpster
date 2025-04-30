@@ -1,7 +1,7 @@
 import { Position, useKeyPress, useReactFlow } from "@xyflow/react";
 import { memo, useEffect, useState } from "react";
 
-import { useDebugStore } from "~/lib/zustand/debug";
+import { useKeyStore } from "~/lib/zustand/key";
 import LabelHandle from "../../node-components/LabelHandle";
 import NodeContent from "../../node-components/NodeContent";
 import SelectDropDown from "../../node-components/SelectDropDown";
@@ -11,9 +11,7 @@ import { OUT_HANDLE_1 } from "../constants";
 const KeyPress = memo(({ id }: { id: string }) => {
   const { updateNodeData } = useReactFlow();
   const [curKey, setCurKey] = useState("");
-  const keyPressed = useDebugStore(
-    (state) => state.keysPressed[curKey] ?? false
-  );
+  const keyPressed = useKeyStore((state) => state.keysPressed[curKey] ?? false);
 
   useEffect(() => {
     updateNodeData(id, {
@@ -29,7 +27,7 @@ const KeyPress = memo(({ id }: { id: string }) => {
         <div className="flex w-full justify-end gap-2">
           <SelectDropDown
             setSelected={setCurKey}
-            items={{ keys: ["w", "a", "s", "d"], other: ["Space", "Enter"] }}
+            items={{ keys: ["w", "a", "s", "d"], other: ["space", "enter"] }}
           />
           <LabelHandle
             id={OUT_HANDLE_1}
