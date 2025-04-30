@@ -4,7 +4,7 @@ import { memo, useEffect, useMemo, useState } from "react";
 import LabelHandle from "../../node-components/LabelHandle";
 import NodeContent from "../../node-components/NodeContent";
 import NumberInput from "../../node-components/NumberInput";
-import type { nodeInputs, nodeResults } from "../../node-store/node-store";
+import type { nodeData, nodeInputs } from "../../node-store/node-store";
 
 const Value = memo(({ id }: { id: string }) => {
   const { updateNodeData } = useReactFlow();
@@ -12,7 +12,7 @@ const Value = memo(({ id }: { id: string }) => {
 
   useEffect(() => {
     updateNodeData(id, {
-      compute: (inputs: nodeInputs, results: nodeResults) => {
+      compute: (inputs: nodeInputs, results: nodeData) => {
         results.set("result-handle", value);
       },
     });

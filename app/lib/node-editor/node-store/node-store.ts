@@ -1,19 +1,4 @@
-import {
-  addEdge,
-  applyEdgeChanges,
-  applyNodeChanges,
-  Background,
-  Controls,
-  ReactFlow,
-  type Connection,
-  type Edge,
-  type EdgeChange,
-  type Node,
-  type NodeChange,
-  type OnConnect,
-  type OnEdgesChange,
-  type OnNodesChange,
-} from "@xyflow/react";
+import { type Connection, type Node } from "@xyflow/react";
 import { create } from "zustand";
 
 enum Mark {
@@ -26,7 +11,7 @@ export type nodeInputs = Map<
   { sourceNode: AppNode; sourceHandleId: string; edgeId: string }
 >;
 
-export type nodeResults = Map<string, number>;
+export type nodeData = Map<string, number>;
 
 export class AppNode {
   inputs: nodeInputs = new Map();
@@ -34,12 +19,11 @@ export class AppNode {
     string, // edgeId
     { targetNode: AppNode; targetHandleId: string; sourceHandleId: string }
   > = new Map();
-  data: Map<string, number> = new Map(); //TODO: is this needed?
-  results: nodeResults = new Map(); // string: handle-id of corresponding output handle
+  results: nodeData = new Map(); // string: handle-id of corresponding output handle
   mark: Mark | null = null; // TODO: null or undefined
   nodeId: string;
 
-  compute?: (inputs: nodeInputs, results: nodeResults) => void;
+  compute?: (inputs: nodeInputs, results: nodeData) => void;
 
   constructor(nodeId: string, data: Record<string, unknown>) {
     this.nodeId = nodeId;
@@ -49,10 +33,7 @@ export class AppNode {
   updateData(data: Record<string, unknown>) {
     Object.entries(data).forEach(([key, entry]) => {
       if (key === "compute") {
-        this.compute = entry as (
-          inputs: nodeInputs,
-          results: nodeResults
-        ) => void;
+        this.compute = entry as (inputs: nodeInputs, results: nodeData) => void;
       }
     });
   }
