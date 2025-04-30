@@ -1,3 +1,4 @@
+import { useNodeStore } from "~/lib/node-editor/node-store/node-store";
 import { useDebugStore } from "~/lib/zustand/debug";
 import { useKeyStore } from "~/lib/zustand/key";
 import { useTimeStore } from "~/lib/zustand/time";
@@ -60,6 +61,9 @@ export default async function initGame(canvas: HTMLCanvasElement) {
     const deltaTime = k.dt();
     setTime(time);
     setDeltaTime(deltaTime);
+
+    // compute node map
+    useNodeStore.getState().compute();
 
     //Move
     const x = useDebugStore.getState().new_xpos;

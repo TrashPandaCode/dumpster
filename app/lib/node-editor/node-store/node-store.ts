@@ -57,6 +57,7 @@ interface NodeStoreState {
   removeNode: (nodeId: string) => void;
   addEdge: (edge: Connection) => void;
   removeEdge: (edgeId: string) => void;
+  compute: () => void;
   debugPrint: () => void;
 }
 
@@ -70,20 +71,12 @@ export const useNodeStore = create<NodeStoreState>((set) => ({
       } else {
         state.nodeMap.set(node.id, new AppNode(node.id, node.data));
       }
-
-      console.log("compute replace");
-      computeMap(state.mapErrors, state.nodeMap);
-
       return state;
     });
   },
   removeNode: (nodeId: string) => {
     set((state) => {
       state.nodeMap.delete(nodeId);
-
-      console.log("compute remove");
-      computeMap(state.mapErrors, state.nodeMap);
-
       return state;
     });
   },
@@ -130,6 +123,12 @@ export const useNodeStore = create<NodeStoreState>((set) => ({
         ...state,
         nodeMap: orderMap(state.mapErrors, state.nodeMap),
       };
+    });
+  },
+  compute: () => {
+    set((state) => {
+      computeMap(state.mapErrors, state.nodeMap);
+      return state;
     });
   },
   debugPrint: () => {
@@ -185,6 +184,7 @@ function computeMap(mapErrors: MapErrors, map: Map<string, AppNode>) {
 
   const reverseMap = Array.from(map).reverse();
   reverseMap.forEach(([_, node]) => {
+    //TODO: this needs to be more efficient (precalc this reversed array)
     if (!node.compute) {
       throw new Error("Compute is not defined");
     }
@@ -212,10 +212,6 @@ function orderMap(
       visit(node, sortedMap, mapErrors);
     }
   });
-
-  console.log("compute order");
-
-  computeMap(mapErrors, sortedMap);
   return mapErrors.cycle ? map : sortedMap;
 }
 
