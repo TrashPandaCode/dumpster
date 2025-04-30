@@ -52,6 +52,7 @@ interface NodeStoreState {
    * sorted in reverse order
    */
   nodeMap: Map<string, AppNode>;
+  sortedNodes: [string, AppNode][];
   mapErrors: MapErrors;
   replaceNode: (node: Node) => void;
   removeNode: (nodeId: string) => void;
@@ -63,6 +64,7 @@ interface NodeStoreState {
 
 export const useNodeStore = create<NodeStoreState>((set) => ({
   nodeMap: new Map<string, AppNode>(),
+  sortedNodes: [],
   mapErrors: { cycle: false },
   replaceNode: (node: Node) => {
     set((state) => {
@@ -103,7 +105,7 @@ export const useNodeStore = create<NodeStoreState>((set) => ({
 
       return {
         ...state,
-        nodeMap: orderMap(state.mapErrors, state.nodeMap),
+        sortedNodes: orderMap(state.mapErrors, state.nodeMap),
       };
     });
   },
@@ -121,13 +123,13 @@ export const useNodeStore = create<NodeStoreState>((set) => ({
 
       return {
         ...state,
-        nodeMap: orderMap(state.mapErrors, state.nodeMap),
+        sortedNodes: orderMap(state.mapErrors, state.nodeMap),
       };
     });
   },
   compute: () => {
     set((state) => {
-      computeMap(state.mapErrors, state.nodeMap);
+      computeMap(state.mapErrors, state.sortedNodes);
       return state;
     });
   },
@@ -176,15 +178,13 @@ function connectionToEdgeId(edge: Connection): string {
   );
 }
 
-function computeMap(mapErrors: MapErrors, map: Map<string, AppNode>) {
+function computeMap(mapErrors: MapErrors, sortedNodes: [string, AppNode][]) {
   if (mapErrors.cycle) {
     console.log("Cannot compute because of cycle");
     return;
   }
 
-  const reverseMap = Array.from(map).reverse();
-  reverseMap.forEach(([_, node]) => {
-    //TODO: this needs to be more efficient (precalc this reversed array)
+  sortedNodes.forEach(([_, node]) => {
     if (!node.compute) {
       throw new Error("Compute is not defined");
     }
@@ -195,7 +195,7 @@ function computeMap(mapErrors: MapErrors, map: Map<string, AppNode>) {
 function orderMap(
   mapErrors: MapErrors,
   map: Map<string, AppNode>
-): Map<string, AppNode> {
+): [string, AppNode][] {
   mapErrors.cycle = false;
   // remove all marks
   map.forEach((node) => {
@@ -212,7 +212,8 @@ function orderMap(
       visit(node, sortedMap, mapErrors);
     }
   });
-  return mapErrors.cycle ? map : sortedMap;
+
+  return mapErrors.cycle ? [] : Array.from(sortedMap).reverse();
 }
 
 function visit(

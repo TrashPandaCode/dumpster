@@ -56,7 +56,7 @@ export default async function initGame(canvas: HTMLCanvasElement) {
   //Game Loop, runs at 60 frames per second
   const setTime = useTimeStore.getState().setTime;
   const setDeltaTime = useTimeStore.getState().setDeltaTime;
-  k.onFixedUpdate(() => {
+  k.onUpdate(() => {
     const time = k.time();
     const deltaTime = k.dt();
     setTime(time);
