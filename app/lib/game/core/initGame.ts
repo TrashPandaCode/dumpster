@@ -1,4 +1,5 @@
 import { useDebugStore } from "~/lib/zustand/debug";
+import { useKeyStore } from "~/lib/zustand/key";
 import { useTimeStore } from "~/lib/zustand/time";
 import { getKaplayCtx } from "./kaplayCtx";
 
@@ -9,6 +10,7 @@ export default async function initGame(canvas: HTMLCanvasElement) {
   first = false; //TODO: remove just for react strict mode
 
   const k = getKaplayCtx(canvas);
+  const setKeyPressed = useKeyStore.getState().setKeyPressed;
 
   k.setBackground(100, 100, 100);
 
@@ -29,6 +31,14 @@ export default async function initGame(canvas: HTMLCanvasElement) {
     canJump: true,
     jumpForce: 500,
   };
+  // Key Presses for multiple keys at once. Maybe better in another file or at another place?
+  k.onKeyDown((key) => {
+    setKeyPressed(key, true);
+  });
+
+  k.onKeyRelease((key) => {
+    setKeyPressed(key, false);
+  });
 
   //Create "Floor" Component
   const floor = k.add([
@@ -39,6 +49,8 @@ export default async function initGame(canvas: HTMLCanvasElement) {
     k.body({ isStatic: true }),
     "floor",
   ]);
+
+  k.onKeyPress("w", () => {});
 
   //Game Loop, runs at 60 frames per second
   k.onFixedUpdate(() => {

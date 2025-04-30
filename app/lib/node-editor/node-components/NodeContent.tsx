@@ -20,20 +20,22 @@ const NodeContent = ({
   label,
   type,
   name = "value",
-  highlight = false,
+  active = false,
   children,
 }: {
   label: string;
   type: string;
   name?: string;
-  highlight?: boolean;
+  active?: boolean;
   children: ReactNode;
 }) => {
   return (
     <div
       className={classnames(
-        "flex flex-col justify-around rounded-sm border-1 border-blue-300 pb-3 font-mono text-white",
-        highlight ? "bg-slate-700" : "bg-slate-800"
+        "flex flex-col justify-around rounded-sm border-1 pb-3 font-mono text-white",
+        active
+          ? "border-emerald-400 outline-2 outline-emerald-400"
+          : "border-blue-300"
       )}
     >
       <div className="flex items-start justify-between p-3">

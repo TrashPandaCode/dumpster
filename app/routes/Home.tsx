@@ -64,13 +64,13 @@ const Home = () => {
             </div>
             <NavLink
               to="/docs"
-              className="hover:text-jam-600 transition-all duration-300 hover:scale-105"
+              className="hover:text-jam-600 transition-all duration-300"
             >
               Docs
             </NavLink>
             <NavLink
               to="/game"
-              className="hover:text-jam-600 transition-all duration-300 hover:scale-105"
+              className="hover:text-jam-600 transition-all duration-300"
             >
               Game
             </NavLink>
@@ -115,7 +115,7 @@ const Home = () => {
               </div>
               <div className="col-span-2 col-start-2 flex h-[calc(100%)] flex-col">
                 <div
-                  className={`relative h-full overflow-hidden transition-all duration-500`}
+                  className={`relative overflow-hidden transition-all duration-500`}
                   style={{
                     WebkitMaskImage: showAll
                       ? ""
@@ -126,7 +126,7 @@ const Home = () => {
                     height: showAll ? "85%" : "35%",
                   }}
                 >
-                  <div className="grid w-full grid-cols-[repeat(auto-fit,minmax(200px,_1fr))] gap-4 p-2">
+                  <div className="grid w-full grid-cols-[repeat(auto-fit,minmax(200px,_1fr))] gap-4 overflow-hidden p-2">
                     {CARDS.map((card) => (
                       <LevelCard
                         key={card.id}
@@ -153,7 +153,7 @@ const Home = () => {
                 <div
                   className={`p-2 transition-all duration-500 ${showAll ? "h-[0%] opacity-0" : "h-fit opacity-100"}`}
                 >
-                  <h1 className="font-pixel pt-6 text-6xl font-bold text-white">
+                  <h1 className="font-pixel pt-6 text-7xl font-bold text-white">
                     <p className="">Dumpster</p>
                     <p>Diving</p>
                   </h1>
@@ -190,7 +190,7 @@ const Home = () => {
         className="flex items-center justify-center bg-white"
       >
         <div className="flex h-full w-full flex-col p-12">
-          <h1 className="font-fonm pb-12 text-4xl font-bold">
+          <h1 className="font-pixel pb-12 text-4xl font-bold">
             Learn these skills to become a dumpster diver
           </h1>
           <div className="flex items-start justify-center gap-32">
@@ -214,7 +214,7 @@ const Home = () => {
       </section>
       <section className="flex h-96 items-center justify-center bg-blue-950">
         <div className="flex h-full w-full max-w-2xl flex-col items-center justify-center gap-4">
-          <h1 className="font-fonm text-4xl font-bold text-white">
+          <h1 className="font-pixel text-4xl font-bold text-white">
             Join the community
           </h1>
           <p className="text-center text-sm text-white">
@@ -232,7 +232,7 @@ const Home = () => {
         </div>
       </section>
       <section className="p-12">
-        <h1 className="font-fonm text-4xl font-bold">About</h1>
+        <h1 className="font-pixel text-4xl font-bold">About</h1>
         <p className="text-sm">
           Lorem Ipsum is simply dummy text of the printing and typesetting
           industry. Lorem Ipsum has been the industry's standard dummy text ever
@@ -241,7 +241,7 @@ const Home = () => {
         </p>
       </section>
       <section className="bg-blue-950 p-12 text-white">
-        <h1 className="font-fonm text-4xl font-bold">About</h1>
+        <h1 className="font-pixel text-4xl font-bold">About</h1>
         <p className="text-sm">
           Lorem Ipsum is simply dummy text of the printing and typesetting
           industry. Lorem Ipsum has been the industry's standard dummy text ever
@@ -339,7 +339,7 @@ const LevelCard: React.FC<{ img: string; onMouseEnter: () => void }> = ({
   onMouseEnter,
 }) => (
   <div
-    className="outline-jam-600 relative aspect-square h-full w-full cursor-pointer overflow-hidden rounded-xl hover:outline-5"
+    className="outline-jam-600 relative h-full w-full cursor-pointer overflow-hidden rounded-xl hover:outline-5"
     onMouseEnter={onMouseEnter}
   >
     <img className="h-full w-full scale-110 object-cover" src={img} alt="" />

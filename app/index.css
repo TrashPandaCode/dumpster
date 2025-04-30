@@ -2,12 +2,12 @@
 @plugin "@tailwindcss/typography";
 
 @font-face {
-  font-family: 'FreaksOfNatureMassive';
-  src: url(./assets/FREAKSOFNATUREMASSIVE.ttf) format('truetype');
+  font-family: "FreaksOfNatureMassive";
+  src: url(./assets/FREAKSOFNATUREMASSIVE.ttf) format("truetype");
 }
 @font-face {
-  font-family: 'FreaksOfNature';
-  src: url(./assets/FREAKSOFNATURE.ttf) format('truetype');
+  font-family: "FreaksOfNature";
+  src: url(./assets/FREAKSOFNATURE.ttf) format("truetype");
 }
 
 @theme {
@@ -21,7 +21,27 @@
   --font-mono: "Iosevka Web", ui-monospace, monospace;
 }
 
+:root {
+  --tailwind-border-radius: 4px;
+}
 
+.react-flow__nodesselection-rect {
+  border-radius: var(--tailwind-border-radius) !important;
+  border: 1px dotted var(--color-blue-300) !important;
+}
+
+/*
+* important actually important
+*/
+.react-flow__node.selected {
+  background-color: var(--color-slate-600) !important;
+  border-radius: var(--tailwind-border-radius) !important;
+}
+
+.react-flow__node {
+  background-color: var(--color-slate-800) !important;
+  border-radius: var(--tailwind-border-radius) !important;
+}
 
 /* html,
 body {
