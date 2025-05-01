@@ -15,7 +15,7 @@ const MathFloat = memo(({ id, data }: { id: string; data: any }) => {
   const [computeType, _setComputeType] = useState<string | null>(
     data.initialComputeType ?? null
   );
-  const [inputEnable, setInputEnable] = useState<NumberInputType[]>(
+  const [inputState, setInputState] = useState<NumberInputType[]>(
     INPUTS[computeType ?? "Addition"]
   );
   const [xDisplayData, setxDisplayData] = useState(0);
@@ -23,7 +23,7 @@ const MathFloat = memo(({ id, data }: { id: string; data: any }) => {
 
   function setComputeType(type: string): void {
     _setComputeType(type);
-    setInputEnable(INPUTS[type]);
+    setInputState(INPUTS[type]);
   }
 
   const [xInputData, setxInputData] = useState(0);
@@ -70,15 +70,15 @@ const MathFloat = memo(({ id, data }: { id: string; data: any }) => {
               position={Position.Right}
               label="Result"
             />
-            {inputEnable[0] && (
+            {inputState[0].enable && (
               <div className="text-left">
-                x
+                {inputState[0].label}
                 <NumberInput
                   value={xDisplayData}
                   setValue={setxInputData}
                   defaultValue={0}
                   disabled={!!xConnection.length}
-                  type={inputEnable[0]}
+                  type={inputState[0].type}
                 />
                 <BaseHandle
                   id={IN_HANDLE_1}
@@ -87,15 +87,15 @@ const MathFloat = memo(({ id, data }: { id: string; data: any }) => {
                 />
               </div>
             )}
-            {inputEnable[1] && (
+            {inputState[1].enable && (
               <div className="text-left">
-                y
+                {inputState[1].label}
                 <NumberInput
                   value={yDisplayData}
                   setValue={setyInputData}
                   defaultValue={0}
                   disabled={!!yConnection.length}
-                  type={inputEnable[1]}
+                  type={inputState[1].type}
                 />
                 <BaseHandle
                   id={IN_HANDLE_2}
@@ -113,7 +113,11 @@ const MathFloat = memo(({ id, data }: { id: string; data: any }) => {
 
 export default MathFloat;
 
-export type NumberInputType = undefined | "float" | "int";
+export type NumberInputType = {
+  enable: boolean;
+  type: undefined | "float" | "int";
+  label: string;
+};
 
 const TYPES = {
   Functions: [
@@ -131,30 +135,31 @@ const TYPES = {
   Compare: ["Equals", "Greater Than", "Less Than"],
 };
 
+// prettier-ignore
 const INPUTS: { [key: string]: NumberInputType[] } = {
-  Addition: ["float", "float"],
-  Substraction: ["float", "float"],
-  Multiply: ["float", "float"],
-  Divide: ["float", "float"],
-  Power: ["float", "float"],
-  Logarithm: ["float", "float"],
-  Absolute: ["float", undefined],
+  Addition: [{enable: true, type: "float", label: "x"}, {enable: true, type: "float", label: "y"}],
+  Substraction: [{enable: true, type: "float", label: "x"}, {enable: true, type: "float", label: "y"}],
+  Multiply: [{enable: true, type: "float", label: "x"}, {enable: true, type: "float", label: "y"}],
+  Divide: [{enable: true, type: "float", label: "x"}, {enable: true, type: "float", label: "y"}],
+  Power: [{enable: true, type: "float", label: "base"}, {enable: true, type: "float", label: "exponent"}],
+  Logarithm: [{enable: true, type: "float", label: "x"}, {enable: true, type: "float", label: "y"}],
+  Absolute: [{enable: true, type: "float", label: "x"}, {enable: false, type: undefined, label: ""}],
 
-  Round: ["float", "int"],
-  Floor: ["float", undefined],
-  Ceil: ["float", undefined],
-  Modulo: ["float", "float"],
+  Round: [{enable: true, type: "float", label: "x"}, {enable: true, type: "int", label: "decimal places"}],
+  Floor: [{enable: true, type: "float", label: "x"}, {enable: false, type: undefined, label: ""}],
+  Ceil: [{enable: true, type: "float", label: "x"}, {enable: false, type: undefined, label: ""}],
+  Modulo: [{enable: true, type: "float", label: "x"}, {enable: true, type: "float", label: "y"}],
 
-  Sine: ["float", undefined],
-  Cosine: ["float", undefined],
-  Tangent: ["float", undefined],
+  Sine: [{enable: true, type: "float", label: "t"}, {enable: false, type: undefined, label: ""}],
+  Cosine: [{enable: true, type: "float", label: "t"}, {enable: false, type: undefined, label: ""}],
+  Tangent: [{enable: true, type: "float", label: "t"}, {enable: false, type: undefined, label: ""}],
 
-  "To Radians": ["float", undefined],
-  "To Degrees": ["float", undefined],
+  "To Radians": [{enable: true, type: "float", label: "deg"}, {enable: false, type: undefined, label: ""}],
+  "To Degrees": [{enable: true, type: "float", label: "rad"}, {enable: false, type: undefined, label: ""}],
 
-  Equals: ["float", "float"],
-  "Greater Than": ["float", "float"],
-  "Less Than": ["float", "float"],
+  Equals: [{enable: true, type: "float", label: "x"}, {enable: true, type: "float", label: "y"}],
+  "Greater Than": [{enable: true, type: "float", label: "x"}, {enable: true, type: "float", label: "y"}],
+  "Less Than": [{enable: true, type: "float", label: "x"}, {enable: true, type: "float", label: "y"}],
 };
 
 const COMPUTE: { [key: string]: (x: number, y: number) => number } = {

@@ -60,7 +60,7 @@ categorizedNodeTypes.set("Math Float", {
     {
       name: "Value",
       type: "Value",
-      description: "Store a float value.",
+      description: "Output a float value.",
     },
   ],
 });

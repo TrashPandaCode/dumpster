@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 
-import type { NumberInputType } from "../nodes/math-float/MathFloat";
-
 const NumberInput = ({
   value,
   setValue,
@@ -14,7 +12,7 @@ const NumberInput = ({
   setValue(input: number): void;
   defaultValue: number;
   disabled?: boolean;
-  type?: NumberInputType;
+  type?: "float" | "int";
 }) => {
   const [rawValue, setRawValue] = useState(String(defaultValue));
 
