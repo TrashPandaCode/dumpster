@@ -8,7 +8,7 @@ const Navigation = () => {
   const location = useLocation();
   
   return (
-    <nav className="flex h-96 min-w-3xs flex-col gap-8">
+    <nav className="flex h-96 min-w-3xs flex-col gap-4">
       <div className="relative text-black">
         <input
           className="h-10 w-full rounded-lg border-2 border-slate-300 bg-white px-5 pr-16 text-sm focus:outline-none"
