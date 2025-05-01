@@ -57,7 +57,7 @@ const ContextMenu: React.FC<ContextMenuProps> = ({ x, y, onClose }) => {
       style={{ position: "absolute", top: y, left: x, zIndex: 1000 }}
       onClick={onClose}
     >
-      <Panel className="space-y-2 rounded bg-slate-800 p-2 shadow-lg pt-2 pb-2  w-65 outline-1 outline-solid outline-slate-700">
+      <Panel className="space-y-2 rounded bg-slate-800 p-2 shadow-lg pt-2 pb-2 w-65 outline-1 outline-solid outline-slate-700">
         <div className="pr-4 shadow w-64 ">
         <input
           ref={inputRef}
