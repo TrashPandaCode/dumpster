@@ -25,7 +25,7 @@ const Display = memo(({ id }: { id: string }) => {
   }, []);
 
   return (
-    <div>
+    <div className="min-w-48">
       <NodeContent label="Debug-Display" type="float">
         <div className="flex gap-2">
           <LabelHandle

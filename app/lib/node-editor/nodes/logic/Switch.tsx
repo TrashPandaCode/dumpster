@@ -14,7 +14,7 @@ import {
   OUT_HANDLE_1,
 } from "../constants";
 
-const IfNode = memo(({ id }: { id: string }) => {
+const Switch = memo(({ id }: { id: string }) => {
   const { updateNodeData } = useReactFlow();
   const [yDisplayData, setyDisplayData] = useState(0);
   const [zDisplayData, setzDisplayData] = useState(0);
@@ -52,7 +52,7 @@ const IfNode = memo(({ id }: { id: string }) => {
 
   return (
     <div className="min-w-3xs">
-      <NodeContent label="If Node" type="float">
+      <NodeContent label="Switch" type="float">
         <LabelHandle
           id={OUT_HANDLE_1}
           position={Position.Right}
@@ -65,7 +65,7 @@ const IfNode = memo(({ id }: { id: string }) => {
           isConnectable={xConnection.length < 1}
         />
         <div className="text-left">
-          y
+          False
           <NumberInput
             value={yDisplayData}
             setValue={setyInputData}
@@ -79,7 +79,7 @@ const IfNode = memo(({ id }: { id: string }) => {
           />
         </div>
         <div className="text-left">
-          z
+          True
           <NumberInput
             value={zDisplayData}
             setValue={setzInputData}
@@ -97,4 +97,4 @@ const IfNode = memo(({ id }: { id: string }) => {
   );
 });
 
-export default IfNode;
+export default Switch;
