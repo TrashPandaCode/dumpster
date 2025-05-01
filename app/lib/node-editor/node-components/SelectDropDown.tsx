@@ -7,6 +7,8 @@ import * as SelectPrimitive from "@radix-ui/react-select";
 import classnames from "classnames";
 import React from "react";
 
+import CustomDropDown from "./CustomDropDown";
+
 type Items = {
   [key: string]: string[];
 };
@@ -38,16 +40,13 @@ const SelectDropDown = ({
           <SelectPrimitive.SelectViewport className="p-1">
             <SelectPrimitive.SelectGroup>
               {Object.entries(items).map(([category, items]) => (
-                <div key={category}>
-                  <SelectPrimitive.Label className="px-2 font-mono text-xs text-white">
-                    {category}
-                  </SelectPrimitive.Label>
+                <CustomDropDown key={category} category={category}>
                   {items.map((item) => (
-                    <SelectItem value={item} key={item}>
+                    <SelectItem value={item} key={item} className="w-full">
                       {item}
                     </SelectItem>
                   ))}
-                </div>
+                </CustomDropDown>
               ))}
             </SelectPrimitive.SelectGroup>
           </SelectPrimitive.SelectViewport>
