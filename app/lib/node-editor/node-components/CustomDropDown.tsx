@@ -26,7 +26,7 @@ const CustomDropDown = ({
             "flex flex-col items-start justify-start rounded-sm bg-slate-900 text-white transition-all duration-200 ease-in-out" +
             (open
               ? " h-fit border-1 border-slate-700 p-2"
-              : " h-0 overflow-hidden p-0")
+              : " h-0 overflow-hidden border-1 border-transparent p-0")
           }
         >
           <div className="flex w-full flex-col">{children}</div>
