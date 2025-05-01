@@ -15,7 +15,9 @@ const MathFloat = memo(({ id, data }: { id: string; data: any }) => {
   const [computeType, _setComputeType] = useState<string | null>(
     data.initialComputeType ?? null
   );
-  const [inputEnable, setInputEnable] = useState([true, true]);
+  const [inputEnable, setInputEnable] = useState<NumberInputType[]>(
+    INPUTS[computeType ?? "Addition"]
+  );
   const [xDisplayData, setxDisplayData] = useState(0);
   const [yDisplayData, setyDisplayData] = useState(0);
 
@@ -76,6 +78,7 @@ const MathFloat = memo(({ id, data }: { id: string; data: any }) => {
                   setValue={setxInputData}
                   defaultValue={0}
                   disabled={!!xConnection.length}
+                  type={inputEnable[0]}
                 />
                 <BaseHandle
                   id={IN_HANDLE_1}
@@ -92,6 +95,7 @@ const MathFloat = memo(({ id, data }: { id: string; data: any }) => {
                   setValue={setyInputData}
                   defaultValue={0}
                   disabled={!!yConnection.length}
+                  type={inputEnable[1]}
                 />
                 <BaseHandle
                   id={IN_HANDLE_2}
@@ -109,6 +113,8 @@ const MathFloat = memo(({ id, data }: { id: string; data: any }) => {
 
 export default MathFloat;
 
+export type NumberInputType = undefined | "float" | "int";
+
 const TYPES = {
   Functions: [
     "Addition",
@@ -125,30 +131,30 @@ const TYPES = {
   Compare: ["Equals", "Greater Than", "Less Than"],
 };
 
-const INPUTS: { [key: string]: boolean[] } = {
-  Addition: [true, true],
-  Substraction: [true, true],
-  Multiply: [true, true],
-  Divide: [true, true],
-  Power: [true, true],
-  Logarithm: [true, false],
-  Absolute: [true, false],
+const INPUTS: { [key: string]: NumberInputType[] } = {
+  Addition: ["float", "float"],
+  Substraction: ["float", "float"],
+  Multiply: ["float", "float"],
+  Divide: ["float", "float"],
+  Power: ["float", "float"],
+  Logarithm: ["float", undefined],
+  Absolute: ["float", undefined],
 
-  Round: [true, false],
-  Floor: [true, false],
-  Ceil: [true, false],
-  Modulo: [true, true],
+  Round: ["float", "int"],
+  Floor: ["float", undefined],
+  Ceil: ["float", undefined],
+  Modulo: ["float", "float"],
 
-  Sine: [true, false],
-  Cosine: [true, false],
-  Tangent: [true, false],
+  Sine: ["float", undefined],
+  Cosine: ["float", undefined],
+  Tangent: ["float", undefined],
 
-  "To Radians": [true, false],
-  "To Degrees": [true, false],
+  "To Radians": ["float", undefined],
+  "To Degrees": ["float", undefined],
 
-  Equals: [true, true],
-  "Greater Than": [true, true],
-  "Less Than": [true, true],
+  Equals: ["float", "float"],
+  "Greater Than": ["float", "float"],
+  "Less Than": ["float", "float"],
 };
 
 const COMPUTE: { [key: string]: (x: number, y: number) => number } = {
@@ -160,7 +166,8 @@ const COMPUTE: { [key: string]: (x: number, y: number) => number } = {
   Logarithm: (x, _) => Math.log(x),
   Absolute: (x, _) => Math.abs(x),
 
-  Round: (x, _) => Math.round(x),
+  Round: (x, y) =>
+    Math.round((x + Number.EPSILON) * Math.pow(10, y)) / Math.pow(10, y),
   Floor: (x, _) => Math.floor(x),
   Ceil: (x, _) => Math.ceil(x),
   Modulo: (x, y) => x % y,

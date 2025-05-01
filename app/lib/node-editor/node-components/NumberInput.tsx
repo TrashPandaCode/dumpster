@@ -1,20 +1,24 @@
 import React, { useState } from "react";
 
+import type { NumberInputType } from "../nodes/math-float/MathFloat";
+
 const NumberInput = ({
   value,
   setValue,
   defaultValue,
   disabled = false,
+  type = "float",
   ...props
 }: {
   value?: number | string;
   setValue(input: number): void;
   defaultValue: number;
   disabled?: boolean;
+  type?: NumberInputType;
 }) => {
   const [rawValue, setRawValue] = useState(String(defaultValue));
 
-  const parseNumber = (evt: React.ChangeEvent<HTMLInputElement>) => {
+  const parseFloatNumber = (evt: React.ChangeEvent<HTMLInputElement>) => {
     if (disabled && value) return;
 
     const input = evt.target.value.replace(",", ".");
@@ -29,11 +33,31 @@ const NumberInput = ({
     }
   };
 
+  const parseIntNumber = (evt: React.ChangeEvent<HTMLInputElement>) => {
+    if (disabled && value) return;
+
+    const input = evt.target.value;
+
+    if (/^(-?)\d*$/.test(input)) {
+      setRawValue(input);
+      setValue(Number(input));
+    }
+  };
+
   return (
     <input
       type="text"
       inputMode="decimal"
-      onChange={parseNumber}
+      onChange={(evt) => {
+        switch (type) {
+          case "float":
+            parseFloatNumber(evt);
+            break;
+          case "int":
+            parseIntNumber(evt);
+            break;
+        }
+      }}
       className="nodrag ml-3 w-12 rounded-sm border-1 border-slate-700 bg-slate-900 px-1 focus:border-slate-500 focus:outline-none disabled:text-slate-500"
       value={value && disabled ? value : rawValue}
       disabled={disabled}
