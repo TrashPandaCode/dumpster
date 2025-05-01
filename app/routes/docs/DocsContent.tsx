@@ -21,7 +21,10 @@ export async function clientLoader({ params }: Route.LoaderArgs) {
     throw new Response("Not found", { status: 404 });
   }
 
-  const mod = (await loader()) as { html: string; attributes: Record<string, any> };
+  const mod = (await loader()) as {
+    html: string;
+    attributes: Record<string, any>;
+  };
 
   return {
     html: mod.html,
@@ -44,13 +47,7 @@ const Docs = ({ loaderData }: Route.ComponentProps) => {
             </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbLink asChild>
-              <NavLink className="capitalize" to={`/docs/${category}`}>
-                {category}
-              </NavLink>
-            </BreadcrumbLink>
-          </BreadcrumbItem>
+          <BreadcrumbItem className="capitalize">{category}</BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
             <BreadcrumbPage className="capitalize">
