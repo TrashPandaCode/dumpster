@@ -17,11 +17,11 @@ const Docs = () => {
   return (
     <>
       <Header />
-      <div className="flex gap-4 px-12">
+      <div className="flex gap-8 px-12 pt-4">
         <Navigation />
         {outlet || (
           <main className="w-full">
-            <Breadcrumb className="mb-4">
+            <Breadcrumb className="mb-8 mt-[10px]">
               <BreadcrumbList>
                 <BreadcrumbItem>Docs</BreadcrumbItem>
                 <BreadcrumbSeparator />

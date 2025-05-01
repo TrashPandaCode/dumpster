@@ -39,7 +39,7 @@ const Docs = ({ loaderData }: Route.ComponentProps) => {
 
   return (
     <main className="w-full">
-      <Breadcrumb className="mb-4">
+      <Breadcrumb className="mb-8 mt-[10px]">
         <BreadcrumbList>
           <BreadcrumbItem>
             <BreadcrumbLink asChild>
