@@ -1,11 +1,14 @@
 import React, { useRef, useState } from "react";
 import { NavLink } from "react-router";
 
+import Footer from "~/lib/core/components/Footer";
+import Header from "~/lib/core/components/Header";
+import PlayButton from "~/lib/core/components/PlayButton";
 import alleyOne from "../assets/alley_one.jpg";
 import alleyTwo from "../assets/alley_two.png";
 import arrowDownIcon from "../assets/arrow_down.svg";
 import houseImage from "../assets/house.png";
-import playIcon from "../assets/play.svg";
+
 
 const CARDS = [
   {
@@ -57,25 +60,7 @@ const Home = () => {
   return (
     <>
       <div className="flex h-screen flex-col overflow-hidden">
-        <header className="px-8">
-          <nav className="flex items-center gap-8 p-4">
-            <div className="items-left font-pixel z-1 flex flex-col text-2xl font-bold">
-              Dumpster Diving
-            </div>
-            <NavLink
-              to="/docs"
-              className="hover:text-jam-600 transition-all duration-300"
-            >
-              Docs
-            </NavLink>
-            <NavLink
-              to="/game"
-              className="hover:text-jam-600 transition-all duration-300"
-            >
-              Game
-            </NavLink>
-          </nav>
-        </header>
+        <Header />
 
         <img
           className="absolute bottom-8 left-1/2 z-1 w-6 cursor-pointer text-red-700 transition-transform hover:translate-y-1"
@@ -172,13 +157,7 @@ const Home = () => {
                   </p>
                 </div>
 
-                <NavLink
-                  className="bg-jam-600 font-pixel absolute right-12 bottom-12 flex items-center justify-baseline gap-4 rounded-full px-6 py-3 text-4xl font-bold text-white shadow-lg transition-transform duration-200 hover:scale-103 hover:bg-jam-700"
-                  to="/game"
-                >
-                  Play
-                  <img src={playIcon} alt="" width={20} />
-                </NavLink>
+                <PlayButton />
               </div>
             </div>
           </div>
@@ -249,87 +228,7 @@ const Home = () => {
           scrambled it to make a type specimen book.
         </p>
       </section>
-      <footer className="grid grid-cols-3 gap-12 p-12">
-        <div className="flex flex-col">
-          <h1 className="pb-4 text-lg font-bold">About</h1>
-          <a
-            href=""
-            target="_blank"
-            className="self-start text-sm hover:underline"
-          >
-            Team
-          </a>
-          <a
-            href=""
-            target="_blank"
-            className="self-start text-sm hover:underline"
-          >
-            Source Code
-          </a>
-          <a
-            href=""
-            target="_blank"
-            className="self-start text-sm hover:underline"
-          >
-            Literature
-          </a>
-        </div>
-        <div className="flex flex-col">
-          <h1 className="pb-4 text-lg font-bold">Legal & Policies</h1>
-          <a
-            href=""
-            target="_blank"
-            className="self-start text-sm hover:underline"
-          >
-            Imprint
-          </a>
-          <a
-            href=""
-            target="_blank"
-            className="self-start text-sm hover:underline"
-          >
-            Privacy policy
-          </a>
-          <a
-            href=""
-            target="_blank"
-            className="self-start text-sm hover:underline"
-          >
-            Cookie policy
-          </a>
-          <a
-            href=""
-            target="_blank"
-            className="self-start text-sm hover:underline"
-          >
-            Code of conduct
-          </a>
-        </div>
-        <div className="flex flex-col">
-          <h1 className="pb-4 text-lg font-bold">Get Help</h1>
-          <a
-            href=""
-            target="_blank"
-            className="self-start text-sm hover:underline"
-          >
-            FAQs
-          </a>
-          <a
-            href=""
-            target="_blank"
-            className="self-start text-sm hover:underline"
-          >
-            Getting Started
-          </a>
-          <a
-            href=""
-            target="_blank"
-            className="self-start text-sm hover:underline"
-          >
-            Dumpster Docs
-          </a>
-        </div>
-      </footer>
+      <Footer />
     </>
   );
 };

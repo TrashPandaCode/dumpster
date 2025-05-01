@@ -12,7 +12,12 @@ export default defineConfig({
     reactRouter(),
     tsconfigPaths(),
     mdPlugin({
-      mode: [Mode.REACT],
+      mode: [Mode.REACT, Mode.HTML],
+      markdownIt: {
+        html: true,
+        linkify: true,
+        typographer: true
+      }
     }),
   ],
 });
