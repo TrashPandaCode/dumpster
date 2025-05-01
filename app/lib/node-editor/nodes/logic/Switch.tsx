@@ -14,7 +14,7 @@ import {
   OUT_HANDLE_1,
 } from "../constants";
 
-const IfNode = memo(({ id }: { id: string }) => {
+const Switch = memo(({ id }: { id: string }) => {
   const { updateNodeData } = useReactFlow();
   const [yDisplayData, setyDisplayData] = useState(0);
   const [zDisplayData, setzDisplayData] = useState(0);
@@ -97,4 +97,4 @@ const IfNode = memo(({ id }: { id: string }) => {
   );
 });
 
-export default IfNode;
+export default Switch;

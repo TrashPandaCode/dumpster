@@ -3,8 +3,8 @@ import GetFromGameobject from "./game-get/GetFromGameobject";
 import KeyPress from "./game-get/KeyPress";
 import Time from "./game-get/Time";
 import ExportToGameobject from "./game-set/ExportToGameobject";
-import IfNode from "./logic/IfNode";
-import MathFloatNode from "./math-float/MathFloatNode";
+import Switch from "./logic/Switch";
+import MathFloat from "./math-float/MathFloat";
 import Value from "./math-float/Value";
 
 export const nodeTypes = {
@@ -12,13 +12,16 @@ export const nodeTypes = {
   Display,
   Time,
   KeyPress,
-  MathFloatNode,
+  MathFloat,
   ExportToGameobject,
   GetFromGameobject,
-  IfNode,
+  Switch,
 };
 
-export const categorizedNodeTypes = new Map<string, { nodes: { name: string; type: string; description: string }[] }>();
+export const categorizedNodeTypes = new Map<
+  string,
+  { nodes: { name: string; type: string; description: string }[] }
+>();
 categorizedNodeTypes.set("Game Get", {
   nodes: [
     {
@@ -50,8 +53,8 @@ categorizedNodeTypes.set("Game Set", {
 categorizedNodeTypes.set("Math Float", {
   nodes: [
     {
-      name: "Math Float Node",
-      type: "MathFloatNode",
+      name: "Math Float",
+      type: "MathFloat",
       description: "Perform mathematical operations on float values.",
     },
     {
@@ -64,8 +67,8 @@ categorizedNodeTypes.set("Math Float", {
 categorizedNodeTypes.set("Logic", {
   nodes: [
     {
-      name: "If Node",
-      type: "IfNode",
+      name: "Switch",
+      type: "Switch",
       description: "Conditional logic node.",
     },
   ],
