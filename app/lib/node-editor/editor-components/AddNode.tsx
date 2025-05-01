@@ -44,14 +44,13 @@ const AddNodePanel = memo(() => {
         </DropdownMenuTrigger>
 
         <DropdownMenuPortal>
-          <DropdownMenuContent className="space-y-2 rounded rounded-tl-none bg-slate-800 p-2 shadow-lg pl-4 pr-4 pt-2 pb-2  w-65
-              outline-5 outline-solid outline-slate-700"
+          <DropdownMenuContent className="flex flex-col items-center space-y-2 rounded rounded-tl-none   bg-slate-800 p-2 shadow-lg pt-2 pb-2  w-65 outline-5 outline-solid outline-slate-700"
               sideOffset={0} align={"start"}>
             {Object.keys(nodeTypes).map((name, index) => {
               return index === 0 ?[
-                  <DropdownMenuItem key={"add_node_dropdown_" + index}>
+                  <DropdownMenuItem key={"add_node_dropdown_" + index} className="hover:bg-slate-700 rounded pl-2 pr-4 w-62">
                     <button
-                      className="text-white text-sm"
+                      className="text-white text-sm text-left"
                       onClick={() => {
                         addNodes({
                           id: uuidv4(),
@@ -66,10 +65,10 @@ const AddNodePanel = memo(() => {
                   </DropdownMenuItem>
               ]
               : [
-                <DropdownMenuSeparator className="bg-slate-700 h-px"key={`sep-${index}`} />,
-                <DropdownMenuItem key={"add_node_dropdown_" + index}>
+                <DropdownMenuSeparator className="bg-slate-700 w-[95%] h-px"key={`sep-${index}`} />,
+                <DropdownMenuItem key={"add_node_dropdown_" + index} className="hover:bg-slate-700 rounded pl-2 pr-4 w-62">
                 <button
-                  className="text-white text-sm"
+                  className="text-white text-sm text-left"
                   onClick={() => {
                     addNodes({
                       id: uuidv4(),

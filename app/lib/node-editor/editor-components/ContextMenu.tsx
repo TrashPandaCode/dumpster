@@ -5,7 +5,7 @@ import {
   type Edge,
   type Node,
 } from "@xyflow/react";
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
 import { nodeTypes } from "../nodes/node-types";
@@ -18,10 +18,16 @@ type ContextMenuProps = {
 
 const ContextMenu: React.FC<ContextMenuProps> = ({ x, y, onClose }) => {
   const { addNodes } = useReactFlow<Node, Edge>();
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [nodeSearch, setNodeSearch] = useState("");
 
   const [offsetX, offsetY, zoom] = useStore((s) => s.transform);
   const width = useStore((s) => s.width);
   const height = useStore((s) => s.height);
+
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, []);
 
   const handleAddNode = (type: string) => {
     const canvasElement = document.getElementById("node-editor");
@@ -51,16 +57,29 @@ const ContextMenu: React.FC<ContextMenuProps> = ({ x, y, onClose }) => {
       style={{ position: "absolute", top: y, left: x, zIndex: 1000 }}
       onClick={onClose}
     >
-      <Panel className="space-y-2 rounded bg-slate-800 p-2 shadow-lg">
-        {Object.keys(nodeTypes).map((type, index) => (
-          <button
-            key={`add_node_${type}_${index}`}
-            className="w-full rounded bg-slate-600 px-4 py-2 text-white hover:bg-slate-700"
-            onClick={() => handleAddNode(type)}
-          >
-            {type}
-          </button>
-        ))}
+      <Panel className="space-y-2 rounded bg-slate-800 p-2 shadow-lg pt-2 pb-2  w-65 outline-1 outline-solid outline-slate-700">
+        <div className="pr-4 shadow w-64 ">
+        <input
+          ref={inputRef}
+          type="text"
+          placeholder="Search"
+          className="p-2 w-full rounded bg-slate-900 text-white text-sm focus:outline-none focus:ring-0 focus:border-gray-300"
+          onChange={(e) => setNodeSearch(e.target.value)}
+          />
+        </div>
+        {nodeSearch.trim() === "" && (
+          <div>
+            {Object.keys(nodeTypes).map((type, index) => (
+              <button
+                key={`add_node_${type}_${index}`}
+                className="w-full rounded text-sm text-white text-left hover:bg-slate-700 pl-2 pr-4"
+                onClick={() => handleAddNode(type)}
+              >
+                {type}
+              </button>
+            ))}
+          </div>
+        )}
       </Panel>
     </div>
   );
