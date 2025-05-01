@@ -18,7 +18,6 @@ const loadMarkdown = async (filename: string) => {
 const NodeContent = ({
   label,
   type,
-  name = "value",
   active = false,
   children,
 }: {
@@ -43,9 +42,9 @@ const NodeContent = ({
           <p className="text-xs italic">{type}</p>
         </div>
 
-        <NavLink target="_blank" to={`/docs/nodes/${type}`}>
+        {label !== "Select Math Type" && <NavLink target="_blank" to={`/docs/nodes/${label.toLowerCase()}`}>
           <QuestionMarkCircledIcon className="cursor-pointer text-slate-400" />
-        </NavLink>
+        </NavLink>}
       </div>
       {children}
     </div>
