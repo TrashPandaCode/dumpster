@@ -22,10 +22,6 @@ const Switch = memo(({ id }: { id: string }) => {
   const [yInputData, setyInputData] = useState(0);
   const [zInputData, setzInputData] = useState(0);
 
-  const xConnection = useNodeConnections({
-    handleId: IN_HANDLE_1,
-    handleType: "target",
-  });
   const yConnection = useNodeConnections({
     handleId: IN_HANDLE_2,
     handleType: "target",
@@ -58,12 +54,7 @@ const Switch = memo(({ id }: { id: string }) => {
           position={Position.Right}
           label="Result"
         />
-        <LabelHandle
-          label="bool"
-          id={IN_HANDLE_1}
-          position={Position.Left}
-          isConnectable={xConnection.length < 1}
-        />
+        <LabelHandle label="bool" id={IN_HANDLE_1} position={Position.Left} />
         <div className="text-left">
           False
           <NumberInput
@@ -72,11 +63,7 @@ const Switch = memo(({ id }: { id: string }) => {
             defaultValue={0}
             disabled={!!yConnection.length}
           />
-          <BaseHandle
-            id={IN_HANDLE_2}
-            position={Position.Left}
-            isConnectable={yConnection.length < 1}
-          />
+          <BaseHandle id={IN_HANDLE_2} position={Position.Left} />
         </div>
         <div className="text-left">
           True
@@ -86,11 +73,7 @@ const Switch = memo(({ id }: { id: string }) => {
             defaultValue={0}
             disabled={!!zConnection.length}
           />
-          <BaseHandle
-            id={IN_HANDLE_3}
-            position={Position.Left}
-            isConnectable={zConnection.length < 1}
-          />
+          <BaseHandle id={IN_HANDLE_3} position={Position.Left} />
         </div>
       </NodeContent>
     </div>

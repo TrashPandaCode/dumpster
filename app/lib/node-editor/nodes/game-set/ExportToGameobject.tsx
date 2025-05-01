@@ -36,12 +36,6 @@ const ExportToGameobject = memo(({ id }: { id: string }) => {
             id={handle}
             position={Position.Left}
             label={value}
-            isConnectable={
-              useNodeConnections({
-                handleId: handle,
-                handleType: "target",
-              }).length < 1
-            }
           />
         ))}
       </NodeContent>

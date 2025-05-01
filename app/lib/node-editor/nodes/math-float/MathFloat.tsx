@@ -80,11 +80,7 @@ const MathFloat = memo(({ id, data }: { id: string; data: any }) => {
                   disabled={!!xConnection.length}
                   type={inputState[0].type}
                 />
-                <BaseHandle
-                  id={IN_HANDLE_1}
-                  position={Position.Left}
-                  isConnectable={xConnection.length < 1}
-                />
+                <BaseHandle id={IN_HANDLE_1} position={Position.Left} />
               </div>
             )}
             {inputState[1].enable && (
@@ -97,11 +93,7 @@ const MathFloat = memo(({ id, data }: { id: string; data: any }) => {
                   disabled={!!yConnection.length}
                   type={inputState[1].type}
                 />
-                <BaseHandle
-                  id={IN_HANDLE_2}
-                  position={Position.Left}
-                  isConnectable={yConnection.length < 1}
-                />
+                <BaseHandle id={IN_HANDLE_2} position={Position.Left} />
               </div>
             )}
           </>
