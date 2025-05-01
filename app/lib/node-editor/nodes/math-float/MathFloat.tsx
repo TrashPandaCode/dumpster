@@ -10,7 +10,7 @@ import { type nodeData, type nodeInputs } from "../../node-store/node-store";
 import { getInput } from "../../node-store/utils";
 import { IN_HANDLE_1, IN_HANDLE_2, OUT_HANDLE_1 } from "../constants";
 
-const MathFloatNode = memo(({ id }: { id: string }) => {
+const MathFloat = memo(({ id }: { id: string }) => {
   const { updateNodeData } = useReactFlow();
   const [computeType, _setComputeType] = useState<string | null>(null);
   const [inputEnable, setInputEnable] = useState([true, true]);
@@ -101,7 +101,7 @@ const MathFloatNode = memo(({ id }: { id: string }) => {
   );
 });
 
-export default MathFloatNode;
+export default MathFloat;
 
 const TYPES = {
   Functions: [
