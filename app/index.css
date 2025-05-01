@@ -18,6 +18,7 @@
   --font-fonm: "FreaksOfNatureMassive", system-ui, sans-serif;
   --font-fon: "FreaksOfNature", system-ui, sans-serif;
   --color-jam-600: #ff4242;
+  --color-jam-700: #ff2929;
   --font-mono: "Iosevka Web", ui-monospace, monospace;
 }
 
@@ -34,7 +35,7 @@
 * important actually important
 */
 .react-flow__node.selected {
-  background-color: var(--color-slate-600) !important;
+  background-color: var(--color-slate-700) !important;
   border-radius: var(--tailwind-border-radius) !important;
 }
 

@@ -13,7 +13,7 @@ import {
   DropdownMenuSub,
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
-  DropdownMenuTrigger,
+  DropdownMenuTrigger
 } from "@radix-ui/react-dropdown-menu";
 import {
   CheckIcon,
@@ -35,7 +35,8 @@ const AddNodePanel = memo(() => {
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <button
-            className="inline-flex size-[35px] items-center justify-center rounded-full border-2 bg-white hover:cursor-pointer focus:outline-hidden"
+            className="inline-flex size-[35px] items-center justify-center rounded border-2 bg-white hover:cursor-pointer focus: border-none
+            data-[state=open]:bg-slate-800 data-[state=open]:text-white data-[state=open]:rounded-b-none"
             aria-label="Customise options"
           >
             <HamburgerMenuIcon />
@@ -43,25 +44,45 @@ const AddNodePanel = memo(() => {
         </DropdownMenuTrigger>
 
         <DropdownMenuPortal>
-          <DropdownMenuContent sideOffset={5}>
+          <DropdownMenuContent className="space-y-2 rounded rounded-tl-none bg-slate-800 p-2 shadow-lg pl-4 pr-4 pt-2 pb-2  w-65
+              outline-5 outline-solid outline-slate-700"
+              sideOffset={0} align={"start"}>
             {Object.keys(nodeTypes).map((name, index) => {
-              return (
+              return index === 0 ?[
+                  <DropdownMenuItem key={"add_node_dropdown_" + index}>
+                    <button
+                      className="text-white text-sm"
+                      onClick={() => {
+                        addNodes({
+                          id: uuidv4(),
+                          type: name,
+                          position: { x: 0, y: 0 },
+                          data: {},
+                        });
+                      }}
+                    >
+                      {name}
+                    </button>
+                  </DropdownMenuItem>
+              ]
+              : [
+                <DropdownMenuSeparator className="bg-slate-700 h-px"key={`sep-${index}`} />,
                 <DropdownMenuItem key={"add_node_dropdown_" + index}>
-                  <button
-                    className="text-white"
-                    onClick={() => {
-                      addNodes({
-                        id: uuidv4(),
-                        type: name,
-                        position: { x: 0, y: 0 },
-                        data: {},
-                      });
-                    }}
-                  >
-                    {name}
-                  </button>
-                </DropdownMenuItem>
-              );
+                <button
+                  className="text-white text-sm"
+                  onClick={() => {
+                    addNodes({
+                      id: uuidv4(),
+                      type: name,
+                      position: { x: 0, y: 0 },
+                      data: {},
+                    });
+                  }}
+                >
+                  {name}
+                </button>
+              </DropdownMenuItem>
+              ];
             })}
           </DropdownMenuContent>
         </DropdownMenuPortal>
