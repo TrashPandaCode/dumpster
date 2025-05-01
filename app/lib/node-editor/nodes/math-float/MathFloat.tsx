@@ -10,9 +10,11 @@ import { type nodeData, type nodeInputs } from "../../node-store/node-store";
 import { getInput } from "../../node-store/utils";
 import { IN_HANDLE_1, IN_HANDLE_2, OUT_HANDLE_1 } from "../constants";
 
-const MathFloat = memo(({ id }: { id: string }) => {
+const MathFloat = memo(({ id, data }: { id: string; data: any }) => {
   const { updateNodeData } = useReactFlow();
-  const [computeType, _setComputeType] = useState<string | null>(null);
+  const [computeType, _setComputeType] = useState<string | null>(
+    data.initialComputeType ?? null
+  );
   const [inputEnable, setInputEnable] = useState([true, true]);
   const [xDisplayData, setxDisplayData] = useState(0);
   const [yDisplayData, setyDisplayData] = useState(0);
@@ -53,7 +55,11 @@ const MathFloat = memo(({ id }: { id: string }) => {
   return (
     <div className="min-w-3xs">
       <NodeContent label={computeType ?? "Select Math Type"} type="float">
-        <SelectDropDown items={TYPES} setSelected={setComputeType} />
+        <SelectDropDown
+          items={TYPES}
+          setSelected={setComputeType}
+          defaultValue={computeType ?? ""}
+        />
         {computeType && (
           <>
             <br />

@@ -16,12 +16,17 @@ type Items = {
 const SelectDropDown = ({
   setSelected,
   items,
+  defaultValue = "",
 }: {
   setSelected(key: string): void;
   items: Items;
+  defaultValue?: string;
 }) => {
   return (
-    <SelectPrimitive.Select onValueChange={(key) => setSelected(key)}>
+    <SelectPrimitive.Select
+      onValueChange={(key) => setSelected(key)}
+      defaultValue={defaultValue}
+    >
       <SelectPrimitive.SelectTrigger
         className="nodrag text-md mx-3 flex flex-1 items-baseline rounded-sm border border-slate-700 bg-slate-900 px-1 text-white focus:border-slate-500 focus:outline-none"
         aria-label="Key"

@@ -12,7 +12,7 @@ export const debugNodes: Node[] = [
     id: uuidv4(),
     type: "MathFloat",
     position: { x: 0, y: 200 },
-    data: {},
+    data: { initialComputeType: "Addition" },
   },
   {
     id: uuidv4(),
