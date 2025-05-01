@@ -6,7 +6,7 @@ import { getKaplayCtx } from "./kaplayCtx";
 
 let first = true; //TODO: remove just for react strict mode
 
-export default async function initGame(canvas: HTMLCanvasElement) {
+export default function initGame(canvas: HTMLCanvasElement) {
   if (!first) return; //TODO: remove just for react strict mode
   first = false; //TODO: remove just for react strict mode
 
@@ -93,4 +93,6 @@ export default async function initGame(canvas: HTMLCanvasElement) {
     useDebugStore.getState().setxpos(bean.pos.x);
     useDebugStore.getState().setypos(bean.pos.y);
   });
+
+  return k;
 }
