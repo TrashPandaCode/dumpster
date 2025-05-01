@@ -10,18 +10,13 @@ import { IN_HANDLE_1, IN_HANDLE_2 } from "../constants";
 
 const ExportToGameobject = memo(({ id }: { id: string }) => {
   const { updateNodeData } = useReactFlow();
+
+  const handles: Map<string, string> = new Map([
+    [IN_HANDLE_1, "xpos"],
+    [IN_HANDLE_2, "ypos"],
+  ]); //TODO: load this level based
   const setXPos = useDebugStore((state) => state.setnew_xpos);
   const setYPos = useDebugStore((state) => state.setnew_ypos);
-
-  const xConnection = useNodeConnections({
-    handleId: IN_HANDLE_1,
-    handleType: "target",
-  });
-
-  const yConnection = useNodeConnections({
-    handleId: IN_HANDLE_2,
-    handleType: "target",
-  });
 
   useEffect(() => {
     updateNodeData(id, {
@@ -35,18 +30,20 @@ const ExportToGameobject = memo(({ id }: { id: string }) => {
   return (
     <div>
       <NodeContent label="Export To Gameobject" type="export">
-        <LabelHandle
-          id={IN_HANDLE_1}
-          position={Position.Left}
-          label="x position"
-          isConnectable={xConnection.length < 1}
-        />
-        <LabelHandle
-          id={IN_HANDLE_2}
-          position={Position.Left}
-          label="y position"
-          isConnectable={yConnection.length < 1}
-        />
+        {Array.from(handles).map(([handle, value]) => (
+          <LabelHandle
+            key={handle}
+            id={handle}
+            position={Position.Left}
+            label={value}
+            isConnectable={
+              useNodeConnections({
+                handleId: handle,
+                handleType: "target",
+              }).length < 1
+            }
+          />
+        ))}
       </NodeContent>
     </div>
   );
