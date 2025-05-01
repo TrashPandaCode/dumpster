@@ -81,9 +81,15 @@ const NodeEditor = () => {
   const handlePaneContextMenu = (event: MouseEvent | React.MouseEvent) => {
     event.preventDefault();
     setContextMenu({
-      x: (event as React.MouseEvent).clientX - 20,
-      y: (event as React.MouseEvent).clientY - 20,
+      x: (event as React.MouseEvent).clientX - 15,
+      y: (event as React.MouseEvent).clientY - 15,
     });
+    if((event as React.MouseEvent).clientY > window.innerHeight * 0.75){ // Number might need to be changed if ContextMenu height changes
+      setContextMenu({
+        x: (event as React.MouseEvent).clientX - 15,
+        y: (event as React.MouseEvent).clientY - 15 - ((event as React.MouseEvent).clientY - (window.innerHeight * 0.75)),
+      });
+    };
   };
   const handleClick = () => {
     setContextMenu(null);
