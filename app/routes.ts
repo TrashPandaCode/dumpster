@@ -6,4 +6,5 @@ export default [
   route("/docs", "routes/docs/Overview.tsx", [
     route(":category/:topic", "routes/docs/DocsContent.tsx"),
   ]),
+  route("*", "routes/NotFound.tsx"),
 ] satisfies RouteConfig;
