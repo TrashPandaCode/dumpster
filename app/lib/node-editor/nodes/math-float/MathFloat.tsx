@@ -137,7 +137,7 @@ const INPUTS: { [key: string]: NumberInputType[] } = {
   Multiply: ["float", "float"],
   Divide: ["float", "float"],
   Power: ["float", "float"],
-  Logarithm: ["float", undefined],
+  Logarithm: ["float", "float"],
   Absolute: ["float", undefined],
 
   Round: ["float", "int"],
@@ -163,7 +163,7 @@ const COMPUTE: { [key: string]: (x: number, y: number) => number } = {
   Multiply: (x, y) => x * y,
   Divide: (x, y) => x / y,
   Power: (x, y) => Math.pow(x, y),
-  Logarithm: (x, _) => Math.log(x),
+  Logarithm: (x, y) => Math.log(x) / Math.log(y),
   Absolute: (x, _) => Math.abs(x),
 
   Round: (x, y) =>
