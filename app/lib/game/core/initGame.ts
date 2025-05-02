@@ -6,6 +6,12 @@ import { getKaplayCtx } from "./kaplayCtx";
 
 let first = true; //TODO: remove just for react strict mode
 
+/**
+ * Initializes the game with a canvas element and sets up the game loop.
+ * Is ALWAYS called before a level is loaded.
+ * @param canvas The canvas element to use for rendering the game.
+ * @returns Kaplay context
+ */
 export default function initGame(canvas: HTMLCanvasElement) {
   if (!first) return; //TODO: remove just for react strict mode
   first = false; //TODO: remove just for react strict mode

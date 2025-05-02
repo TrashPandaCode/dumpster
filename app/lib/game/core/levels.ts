@@ -1,6 +1,9 @@
 import type { Edge, Node } from "@xyflow/react";
 import { initializePlayground } from "../levels/playground";
 
+/**
+ * The Level type represents a game level.
+ */
 type Level = {
     name: string;
     description: string;
@@ -16,6 +19,11 @@ type Level = {
     hints: string[];
 };
 
+/**
+ * The LEVELS object contains all the levels of the game.
+ * Each level has a name, description, category, image, nodes, edges,
+ * initial state function, solution, and hints.
+ */
 export const LEVELS: Record<string, Level> = {
     "playground": {
         name: "Playground",
