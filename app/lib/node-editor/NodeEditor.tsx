@@ -14,7 +14,7 @@ import {
   type OnEdgesChange,
   type OnNodesChange,
 } from "@xyflow/react";
-import { useCallback, useState } from "react";
+import React, { useCallback, useState } from "react";
 
 import "@xyflow/react/dist/style.css";
 
@@ -24,8 +24,8 @@ import { useNodeStore } from "./node-store/node-store";
 import { nodeTypes } from "./nodes/node-types";
 import { debugEdges, debugNodes } from "./solutions/debug";
 
-const NodeEditor = () => {
-  const [nodes, setNodes] = useState<Node[]>(debugNodes);
+const NodeEditor: React.FC<{ level: string }> = ({ level }) => {
+  const [nodes, setNodes] = useState<Node[]>(debugNodes); // TODO: load nodes based on level
   const [edges, setEdges] = useState<Edge[]>(debugEdges);
   const [contextMenu, setContextMenu] = useState<{
     x: number;
@@ -81,8 +81,14 @@ const NodeEditor = () => {
   const handlePaneContextMenu = (event: MouseEvent | React.MouseEvent) => {
     event.preventDefault();
     //Specific numbers for ContextMenu size might need to be changed later depending on if the ContextMenu receives any changes
-    let x = (event as React.MouseEvent).clientX > window.innerWidth - 274 ? window.innerWidth - 274 : (event as React.MouseEvent).clientX;
-    let y = (event as React.MouseEvent).clientY > window.innerHeight -266 ? window.innerHeight - 266 : (event as React.MouseEvent).clientY;
+    let x =
+      (event as React.MouseEvent).clientX > window.innerWidth - 274
+        ? window.innerWidth - 274
+        : (event as React.MouseEvent).clientX;
+    let y =
+      (event as React.MouseEvent).clientY > window.innerHeight - 266
+        ? window.innerHeight - 266
+        : (event as React.MouseEvent).clientY;
     setContextMenu({
       x: x - 15,
       y: y - 15,
@@ -109,7 +115,6 @@ const NodeEditor = () => {
           deleteKeyCode={["Delete", "Backspace"]}
         >
           <Background bgColor="#14141d" color="#a7abc2" />
-          {/* <Controls className="text-white !bg-slate-800" /> sind kacke zu stylen */}
           <AddNodePanel />
           <Panel position="top-right">
             <button onClick={nodeStateDebugPrint} className="bg-white p-2">

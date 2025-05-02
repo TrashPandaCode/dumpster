@@ -15,10 +15,6 @@ export default function initGame(canvas: HTMLCanvasElement) {
 
   k.setBackground(100, 100, 100);
 
-  //Set Gravity and define Gravity direction
-  k.setGravity(980);
-  k.setGravityDirection(k.vec2(0, 1));
-
   k.loadBean(); //Load Bean sprite
   const bean = k.add([
     k.sprite("bean"),
@@ -32,6 +28,7 @@ export default function initGame(canvas: HTMLCanvasElement) {
     canJump: true,
     jumpForce: 500,
   };
+
   // Key Presses for multiple keys at once. Maybe better in another file or at another place?
   k.onKeyDown((key) => {
     setKeyPressed(key, true);
@@ -41,17 +38,6 @@ export default function initGame(canvas: HTMLCanvasElement) {
     setKeyPressed(key, false);
   });
 
-  //Create "Floor" Component
-  const floor = k.add([
-    k.rect(k.width(), 5),
-    k.pos(0, k.height() - 5),
-    k.color(255, 200, 200),
-    k.area(),
-    k.body({ isStatic: true }),
-    "floor",
-  ]);
-
-  k.onKeyPress("w", () => {});
 
   //Game Loop, runs at 60 frames per second
   const setTime = useTimeStore.getState().setTime;
