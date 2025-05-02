@@ -17,6 +17,9 @@ type Level = {
         edges: Edge[];
     };
     hints: string[];
+    // TODO
+    // allowedNodes
+    // modifiableGameObjects: { name: string, connections: string[] }[];
 };
 
 /**
