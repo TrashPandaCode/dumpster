@@ -3,11 +3,9 @@ import {
   applyEdgeChanges,
   applyNodeChanges,
   Background,
-  Controls,
   Panel,
   ReactFlow,
   ReactFlowProvider,
-  useReactFlow,
   type Edge,
   type Node,
   type OnConnect,
@@ -20,6 +18,7 @@ import "@xyflow/react/dist/style.css";
 
 import AddNodePanel from "./editor-components/AddNode";
 import ContextMenu from "./editor-components/ContextMenu";
+import NodeContextMenu from "./editor-components/NodeContextMenu";
 import { useNodeStore } from "./node-store/node-store";
 import { nodeTypes } from "./nodes/node-types";
 import { debugEdges, debugNodes } from "./solutions/debug";
@@ -28,6 +27,11 @@ const NodeEditor: React.FC<{ level: string }> = ({ level }) => {
   const [nodes, setNodes] = useState<Node[]>(debugNodes); // TODO: load nodes based on level
   const [edges, setEdges] = useState<Edge[]>(debugEdges);
   const [contextMenu, setContextMenu] = useState<{
+    x: number;
+    y: number;
+  } | null>(null);
+  const [nodeContextMenu, setNodeContextMenu] = useState<{
+    nodeId: string;
     x: number;
     y: number;
   } | null>(null);
@@ -78,24 +82,36 @@ const NodeEditor: React.FC<{ level: string }> = ({ level }) => {
     },
     [setEdges]
   );
-  const handlePaneContextMenu = (event: MouseEvent | React.MouseEvent) => {
-    event.preventDefault();
-    //Specific numbers for ContextMenu size might need to be changed later depending on if the ContextMenu receives any changes
-    let x =
-      (event as React.MouseEvent).clientX > window.innerWidth - 274
-        ? window.innerWidth - 274
-        : (event as React.MouseEvent).clientX;
-    let y =
-      (event as React.MouseEvent).clientY > window.innerHeight - 266
-        ? window.innerHeight - 266
-        : (event as React.MouseEvent).clientY;
-    setContextMenu({
-      x: x - 15,
-      y: y - 15,
-    });
-  };
 
-  const onPaneClick = useCallback(() => setContextMenu(null), [contextMenu]);
+  const handlePaneContextMenu = useCallback(
+    (event: MouseEvent | React.MouseEvent) => {
+      event.preventDefault();
+      const position = getContextMenuPosition(event);
+      setContextMenu({
+        x: position.x,
+        y: position.y,
+      });
+    },
+    [setContextMenu]
+  );
+
+  const handleNodeContextMenu = useCallback(
+    (event: MouseEvent | React.MouseEvent, node: Node) => {
+      event.preventDefault();
+      const position = getContextMenuPosition(event);
+      setNodeContextMenu({
+        nodeId: node.id,
+        x: position.x,
+        y: position.y,
+      });
+    },
+    [setNodeContextMenu]
+  );
+
+  const onPaneClick = useCallback(() => {
+    setContextMenu(null);
+    setNodeContextMenu(null);
+  }, [contextMenu, nodeContextMenu]);
 
   return (
     <ReactFlowProvider>
@@ -107,6 +123,7 @@ const NodeEditor: React.FC<{ level: string }> = ({ level }) => {
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         onPaneContextMenu={handlePaneContextMenu}
+        onNodeContextMenu={handleNodeContextMenu}
         onConnect={onConnect}
         onPaneClick={onPaneClick}
         fitView
@@ -128,8 +145,32 @@ const NodeEditor: React.FC<{ level: string }> = ({ level }) => {
           onClose={() => setContextMenu(null)}
         />
       )}
+      {nodeContextMenu && (
+        <NodeContextMenu
+          nodeId={nodeContextMenu.nodeId}
+          x={nodeContextMenu.x}
+          y={nodeContextMenu.y}
+          onClose={() => setNodeContextMenu(null)}
+        />
+      )}
     </ReactFlowProvider>
   );
 };
 
 export default NodeEditor;
+
+function getContextMenuPosition(event: MouseEvent | React.MouseEvent): {
+  x: number;
+  y: number;
+} {
+  //Specific numbers for ContextMenu size might need to be changed later depending on if the ContextMenu receives any changes
+  const x =
+    (event as React.MouseEvent).clientX > window.innerWidth - 274
+      ? window.innerWidth - 274
+      : (event as React.MouseEvent).clientX;
+  const y =
+    (event as React.MouseEvent).clientY > window.innerHeight - 266
+      ? window.innerHeight - 266
+      : (event as React.MouseEvent).clientY;
+  return { x: x - 15, y: y - 15 };
+}

@@ -22,8 +22,6 @@ const ContextMenu: React.FC<ContextMenuProps> = ({ x, y, onClose }) => {
   const [nodeSearch, setNodeSearch] = useState("");
 
   const [offsetX, offsetY, zoom] = useStore((s) => s.transform);
-  const width = useStore((s) => s.width);
-  const height = useStore((s) => s.height);
 
   useEffect(() => {
     inputRef.current?.focus();
@@ -40,23 +38,18 @@ const ContextMenu: React.FC<ContextMenuProps> = ({ x, y, onClose }) => {
     const nodeX = (x - offsetX) / zoom - canvasRect.left / zoom;
     const nodeY = (y - offsetY) / zoom - canvasRect.top / zoom;
 
-    addNodes([
-      {
-        id: uuidv4(),
-        type,
-        position: { x: nodeX, y: nodeY },
-        data: {},
-      },
-    ]);
+    addNodes({
+      id: uuidv4(),
+      type,
+      position: { x: nodeX, y: nodeY },
+      data: {},
+    });
 
     onClose();
   };
 
   return (
-    <div
-      style={{ position: "absolute", top: y, left: x, zIndex: 1000 }}
-      onClick={onClose}
-    >
+    <div style={{ position: "absolute", top: y, left: x, zIndex: 1000 }}>
       <Panel className="w-65 space-y-2 rounded bg-slate-800 p-2 pt-2 pb-2 shadow-lg outline-1 outline-slate-700 outline-solid">
         <div className="w-64 pr-4 shadow">
           <input
