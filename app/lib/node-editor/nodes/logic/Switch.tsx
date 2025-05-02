@@ -41,7 +41,7 @@ const Switch = memo(({ id }: { id: string }) => {
         setyDisplayData(y);
         setzDisplayData(z);
 
-        results.set(OUT_HANDLE_1, x == 0 ? z : y);
+        results.set(OUT_HANDLE_1, x == 0 ? y : z);
       },
     });
   }, [yInputData, zInputData]);
