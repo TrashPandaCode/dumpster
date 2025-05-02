@@ -68,19 +68,21 @@ const ContextMenu: React.FC<ContextMenuProps> = ({ x, y, onClose }) => {
           />
         </div>
 
-        {Object.keys(nodeTypes)
-          .filter((type) =>
-            type.toLowerCase().includes(nodeSearch.toLowerCase())
-          )
-          .map((type, index) => (
-            <button
-              key={`add_node_${type}_${index}`}
-              className="w-full rounded pr-4 pl-2 text-left text-sm text-white hover:bg-slate-700"
-              onClick={() => handleAddNode(type)}
-            >
-              {type}
-            </button>
-          ))}
+        <div>
+          {Object.keys(nodeTypes)
+            .filter((type) =>
+              type.toLowerCase().includes(nodeSearch.toLowerCase())
+            )
+            .map((type, index) => (
+              <button
+                key={`add_node_${type}_${index}`}
+                className="w-full rounded pr-4 pl-2 text-left text-sm text-white hover:bg-slate-700"
+                onClick={() => handleAddNode(type)}
+              >
+                {type}
+              </button>
+            ))}
+        </div>
       </Panel>
     </div>
   );
