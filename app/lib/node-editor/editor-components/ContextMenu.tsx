@@ -57,29 +57,30 @@ const ContextMenu: React.FC<ContextMenuProps> = ({ x, y, onClose }) => {
       style={{ position: "absolute", top: y, left: x, zIndex: 1000 }}
       onClick={onClose}
     >
-      <Panel className="space-y-2 rounded bg-slate-800 p-2 shadow-lg pt-2 pb-2 w-65 outline-1 outline-solid outline-slate-700">
-        <div className="pr-4 shadow w-64 ">
-        <input
-          ref={inputRef}
-          type="text"
-          placeholder="Search"
-          className="p-2 w-full rounded bg-slate-900 text-white text-sm focus:outline-none focus:ring-0 focus:border-gray-300"
-          onChange={(e) => setNodeSearch(e.target.value)}
+      <Panel className="w-65 space-y-2 rounded bg-slate-800 p-2 pt-2 pb-2 shadow-lg outline-1 outline-slate-700 outline-solid">
+        <div className="w-64 pr-4 shadow">
+          <input
+            ref={inputRef}
+            type="text"
+            placeholder="Search"
+            className="w-full rounded bg-slate-900 p-2 text-sm text-white focus:border-gray-300 focus:ring-0 focus:outline-none"
+            onChange={(e) => setNodeSearch(e.target.value)}
           />
         </div>
-        {nodeSearch.trim() === "" && (
-          <div>
-            {Object.keys(nodeTypes).map((type, index) => (
-              <button
-                key={`add_node_${type}_${index}`}
-                className="w-full rounded text-sm text-white text-left hover:bg-slate-700 pl-2 pr-4"
-                onClick={() => handleAddNode(type)}
-              >
-                {type}
-              </button>
-            ))}
-          </div>
-        )}
+
+        {Object.keys(nodeTypes)
+          .filter((type) =>
+            type.toLowerCase().includes(nodeSearch.toLowerCase())
+          )
+          .map((type, index) => (
+            <button
+              key={`add_node_${type}_${index}`}
+              className="w-full rounded pr-4 pl-2 text-left text-sm text-white hover:bg-slate-700"
+              onClick={() => handleAddNode(type)}
+            >
+              {type}
+            </button>
+          ))}
       </Panel>
     </div>
   );
