@@ -1,5 +1,6 @@
 import type { Edge, Node } from "@xyflow/react";
 import { initializePlayground } from "../levels/playground";
+import { initialize1_1 } from "../levels/1.1";
 
 /**
  * The Level type represents a game level.
@@ -49,7 +50,7 @@ export const LEVELS: Record<string, Level> = {
         image: "",
         nodes: [],
         edges: [],
-        initialState: () => { },
+        initialState: initialize1_1,
         solution: {
             nodes: [],
             edges: [],
