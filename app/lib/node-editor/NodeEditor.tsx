@@ -94,43 +94,41 @@ const NodeEditor: React.FC<{ level: string }> = ({ level }) => {
       y: y - 15,
     });
   };
-  const handleClick = () => {
-    setContextMenu(null);
-  };
+
+  const onPaneClick = useCallback(() => setContextMenu(null), [contextMenu]);
 
   return (
-    <div style={{ height: "100%" }} onClick={handleClick}>
-      <ReactFlowProvider>
-        <ReactFlow
-          id="node-editor"
-          nodeTypes={nodeTypes}
-          nodes={nodes}
-          edges={edges}
-          onNodesChange={onNodesChange}
-          onEdgesChange={onEdgesChange}
-          onPaneContextMenu={handlePaneContextMenu}
-          onConnect={onConnect}
-          fitView
-          proOptions={{ hideAttribution: true }}
-          deleteKeyCode={["Delete", "Backspace"]}
-        >
-          <Background bgColor="#14141d" color="#a7abc2" />
-          <AddNodePanel />
-          <Panel position="top-right">
-            <button onClick={nodeStateDebugPrint} className="bg-white p-2">
-              Print Map
-            </button>
-          </Panel>
-        </ReactFlow>
-        {contextMenu && (
-          <ContextMenu
-            x={contextMenu.x}
-            y={contextMenu.y}
-            onClose={() => setContextMenu(null)}
-          />
-        )}
-      </ReactFlowProvider>
-    </div>
+    <ReactFlowProvider>
+      <ReactFlow
+        id="node-editor"
+        nodeTypes={nodeTypes}
+        nodes={nodes}
+        edges={edges}
+        onNodesChange={onNodesChange}
+        onEdgesChange={onEdgesChange}
+        onPaneContextMenu={handlePaneContextMenu}
+        onConnect={onConnect}
+        onPaneClick={onPaneClick}
+        fitView
+        proOptions={{ hideAttribution: true }}
+        deleteKeyCode={["Delete", "Backspace"]}
+      >
+        <Background bgColor="#14141d" color="#a7abc2" />
+        <AddNodePanel />
+        <Panel position="top-right">
+          <button onClick={nodeStateDebugPrint} className="bg-white p-2">
+            Print Map
+          </button>
+        </Panel>
+      </ReactFlow>
+      {contextMenu && (
+        <ContextMenu
+          x={contextMenu.x}
+          y={contextMenu.y}
+          onClose={() => setContextMenu(null)}
+        />
+      )}
+    </ReactFlowProvider>
   );
 };
 
