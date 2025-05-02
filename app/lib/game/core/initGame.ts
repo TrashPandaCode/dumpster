@@ -66,8 +66,8 @@ export default function initGame(canvas: HTMLCanvasElement) {
     useNodeStore.getState().compute();
 
     //Move
-    const x = useDebugStore.getState().new_xpos;
-    const y = useDebugStore.getState().new_ypos;
+    const x = useDebugStore.getState().nodeData.get("xpos")?.value ?? 0;
+    const y = useDebugStore.getState().nodeData.get("ypos")?.value ?? 0;
 
     bean.pos.x = x;
     bean.pos.y = y;
@@ -90,8 +90,8 @@ export default function initGame(canvas: HTMLCanvasElement) {
     //   beanState.canJump = true;
     // }
 
-    useDebugStore.getState().setxpos(bean.pos.x);
-    useDebugStore.getState().setypos(bean.pos.y);
+    // transfer all node data to game data
+    useDebugStore.getState().transferData();
   });
 
   return k;

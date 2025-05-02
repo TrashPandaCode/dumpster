@@ -5,28 +5,32 @@ import { useDebugStore } from "~/lib/zustand/debug";
 import LabelHandle from "../../node-components/LabelHandle";
 import NodeContent from "../../node-components/NodeContent";
 import type { nodeData, nodeInputs } from "../../node-store/node-store";
-import { OUT_HANDLE_1, OUT_HANDLE_2 } from "../constants";
 
 const GetFromGameobject = memo(({ id }: { id: string }) => {
-  const xPos = useDebugStore((state) => state.xpos);
-  const yPos = useDebugStore((state) => state.ypos);
-
+  const gameData = useDebugStore((state) => state.gameData);
   const { updateNodeData } = useReactFlow();
 
   useEffect(() => {
     updateNodeData(id, {
       compute: (_: nodeInputs, results: nodeData) => {
-        results.set(OUT_HANDLE_1, xPos);
-        results.set(OUT_HANDLE_2, yPos);
+        gameData.forEach(({ handleId, value }) => {
+          results.set(handleId, value);
+        });
       },
     });
-  }, [xPos, yPos]);
+  }, [gameData]);
 
   return (
     <div className="min-w-48">
       <NodeContent label="XPOS TEST" type="float">
-        <LabelHandle id={OUT_HANDLE_1} position={Position.Right} label="XPOS" />
-        <LabelHandle id={OUT_HANDLE_2} position={Position.Right} label="YPOS" />
+        {Array.from(gameData).map(([label, { handleId }]) => (
+          <LabelHandle
+            key={handleId}
+            id={handleId}
+            position={Position.Right}
+            label={label}
+          />
+        ))}
       </NodeContent>
     </div>
   );
