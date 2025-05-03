@@ -17,8 +17,9 @@ import React, { useCallback, useState } from "react";
 import "@xyflow/react/dist/style.css";
 
 import AddNodePanel from "./editor-components/AddNode";
-import ContextMenu from "./editor-components/ContextMenu";
 import NodeContextMenu from "./editor-components/NodeContextMenu";
+import PaneContextMenu from "./editor-components/PaneContextMenu";
+import SelectionContextMenu from "./editor-components/SelectionContextMenu";
 import { useNodeStore } from "./node-store/node-store";
 import { nodeTypes } from "./nodes/node-types";
 import { debugEdges, debugNodes } from "./solutions/debug";
@@ -26,7 +27,7 @@ import { debugEdges, debugNodes } from "./solutions/debug";
 const NodeEditor: React.FC<{ level: string }> = ({ level }) => {
   const [nodes, setNodes] = useState<Node[]>(debugNodes); // TODO: load nodes based on level
   const [edges, setEdges] = useState<Edge[]>(debugEdges);
-  const [contextMenu, setContextMenu] = useState<{
+  const [paneContextMenu, setPaneContextMenu] = useState<{
     x: number;
     y: number;
   } | null>(null);
@@ -52,6 +53,7 @@ const NodeEditor: React.FC<{ level: string }> = ({ level }) => {
       changes.forEach((element) => {
         switch (element.type) {
           case "add":
+            replaceNode(element.item);
             break;
           case "remove":
             removeNode(element.id);
@@ -73,6 +75,9 @@ const NodeEditor: React.FC<{ level: string }> = ({ level }) => {
           case "remove":
             removeEdge(element.id);
             break;
+          case "add":
+            addEdgeStore(element.item);
+            break;
         }
       });
 
@@ -92,12 +97,12 @@ const NodeEditor: React.FC<{ level: string }> = ({ level }) => {
     (event: MouseEvent | React.MouseEvent) => {
       event.preventDefault();
       const position = getContextMenuPosition(event);
-      setContextMenu({
+      setPaneContextMenu({
         x: position.x,
         y: position.y,
       });
     },
-    [setContextMenu]
+    [setPaneContextMenu]
   );
 
   const handleNodeContextMenu = useCallback(
@@ -113,11 +118,27 @@ const NodeEditor: React.FC<{ level: string }> = ({ level }) => {
     [setNodeContextMenu]
   );
 
+  const handleSelectionContextMenu = useCallback(
+    (event: MouseEvent | React.MouseEvent, nodes: Node[]) => {
+      event.preventDefault();
+
+      if (nodes.length === 0) return;
+
+      const position = getContextMenuPosition(event);
+      setSelectionContextMenu({
+        nodeIds: nodes.map((n) => n.id),
+        x: position.x,
+        y: position.y,
+      });
+    },
+    [setSelectionContextMenu]
+  );
+
   const onPaneClick = useCallback(() => {
-    setContextMenu(null);
+    setPaneContextMenu(null);
     setNodeContextMenu(null);
     setSelectionContextMenu(null);
-  }, [contextMenu, nodeContextMenu, selectionContextMenu]);
+  }, [paneContextMenu, nodeContextMenu, selectionContextMenu]);
 
   return (
     <ReactFlowProvider>
@@ -130,6 +151,7 @@ const NodeEditor: React.FC<{ level: string }> = ({ level }) => {
         onEdgesChange={onEdgesChange}
         onPaneContextMenu={handlePaneContextMenu}
         onNodeContextMenu={handleNodeContextMenu}
+        onSelectionContextMenu={handleSelectionContextMenu}
         onConnect={onConnect}
         onPaneClick={onPaneClick}
         fitView
@@ -144,11 +166,11 @@ const NodeEditor: React.FC<{ level: string }> = ({ level }) => {
           </button>
         </Panel>
       </ReactFlow>
-      {contextMenu && (
-        <ContextMenu
-          x={contextMenu.x}
-          y={contextMenu.y}
-          onClose={() => setContextMenu(null)}
+      {paneContextMenu && (
+        <PaneContextMenu
+          x={paneContextMenu.x}
+          y={paneContextMenu.y}
+          onClose={() => setPaneContextMenu(null)}
         />
       )}
       {nodeContextMenu && (
@@ -157,6 +179,14 @@ const NodeEditor: React.FC<{ level: string }> = ({ level }) => {
           x={nodeContextMenu.x}
           y={nodeContextMenu.y}
           onClose={() => setNodeContextMenu(null)}
+        />
+      )}
+      {selectionContextMenu && (
+        <SelectionContextMenu
+          nodeIds={selectionContextMenu.nodeIds}
+          x={selectionContextMenu.x}
+          y={selectionContextMenu.y}
+          onClose={() => setSelectionContextMenu(null)}
         />
       )}
     </ReactFlowProvider>

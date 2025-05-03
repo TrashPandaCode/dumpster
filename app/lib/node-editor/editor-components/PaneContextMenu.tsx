@@ -10,13 +10,13 @@ import { v4 as uuidv4 } from "uuid";
 
 import { nodeTypes } from "../nodes/node-types";
 
-type ContextMenuProps = {
+type PaneContextMenuProps = {
   x: number;
   y: number;
   onClose: () => void;
 };
 
-const ContextMenu: React.FC<ContextMenuProps> = ({ x, y, onClose }) => {
+const PaneContextMenu: React.FC<PaneContextMenuProps> = ({ x, y, onClose }) => {
   const { addNodes } = useReactFlow<Node, Edge>();
   const inputRef = useRef<HTMLInputElement>(null);
   const [nodeSearch, setNodeSearch] = useState("");
@@ -81,4 +81,4 @@ const ContextMenu: React.FC<ContextMenuProps> = ({ x, y, onClose }) => {
   );
 };
 
-export default ContextMenu;
+export default PaneContextMenu;

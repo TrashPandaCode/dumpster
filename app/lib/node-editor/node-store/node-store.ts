@@ -1,4 +1,4 @@
-import { type Connection, type Node } from "@xyflow/react";
+import { type Connection, type Edge, type Node } from "@xyflow/react";
 import { create } from "zustand";
 
 type MapErrors = {
@@ -56,7 +56,7 @@ interface NodeStoreState {
   mapErrors: MapErrors;
   replaceNode: (node: Node) => void;
   removeNode: (nodeId: string) => void;
-  addEdge: (edge: Connection) => void;
+  addEdge: (edge: Connection | Edge) => void;
   removeEdge: (edgeId: string) => void;
   compute: () => void;
   debugPrint: () => void;
@@ -82,13 +82,18 @@ export const useNodeStore = create<NodeStoreState>((set) => ({
       return state;
     });
   },
-  addEdge: (edge: Connection) => {
+  addEdge: (edge: Connection | Edge) => {
     set((state) => {
       const source = state.nodeMap.get(edge.source);
       const target = state.nodeMap.get(edge.target);
 
       if (source && target && edge.targetHandle && edge.sourceHandle) {
-        const edgeId = connectionToEdgeId(edge);
+        let edgeId = null;
+        if ("id" in edge) {
+          edgeId = edge.id;
+        } else {
+          edgeId = connectionToEdgeId(edge);
+        }
 
         source.outputs.set(edgeId, {
           targetNode: target,
