@@ -50,7 +50,7 @@ const ContextMenu: React.FC<ContextMenuProps> = ({ x, y, onClose }) => {
 
   return (
     <div style={{ position: "absolute", top: y, left: x, zIndex: 1000 }}>
-      <Panel className="w-65 space-y-2 rounded bg-slate-800 p-2 pt-2 pb-2 shadow-lg outline-1 outline-slate-700 outline-solid">
+      <Panel className="w-65 space-y-2 rounded bg-slate-800 p-2 py-2 font-mono shadow-lg outline-1 outline-slate-700 outline-solid">
         <div className="w-64 pr-4 shadow">
           <input
             ref={inputRef}
@@ -69,7 +69,7 @@ const ContextMenu: React.FC<ContextMenuProps> = ({ x, y, onClose }) => {
             .map((type, index) => (
               <button
                 key={`add_node_${type}_${index}`}
-                className="w-full rounded pr-4 pl-2 text-left text-sm text-white hover:bg-slate-700"
+                className="w-full rounded px-2 py-1 text-left text-sm text-white hover:bg-slate-700"
                 onClick={() => handleAddNode(type)}
               >
                 {type}
