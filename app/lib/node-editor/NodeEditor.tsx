@@ -18,6 +18,7 @@ import "@xyflow/react/dist/style.css";
 
 import AddNodePanel from "./editor-components/AddNode";
 import ContextMenu from "./editor-components/ContextMenu";
+import MultiNodeContextMenu from "./editor-components/MultiNodeContextMenu";
 import NodeContextMenu from "./editor-components/NodeContextMenu";
 import { useNodeStore } from "./node-store/node-store";
 import { nodeTypes } from "./nodes/node-types";
@@ -32,6 +33,11 @@ const NodeEditor: React.FC<{ level: string }> = ({ level }) => {
   } | null>(null);
   const [nodeContextMenu, setNodeContextMenu] = useState<{
     nodeId: string;
+    x: number;
+    y: number;
+  } | null>(null);
+  const [selectionContextMenu, setMultiNodeContextMenu] = useState<{
+    nodeIds: string[];
     x: number;
     y: number;
   } | null>(null);
@@ -107,6 +113,22 @@ const NodeEditor: React.FC<{ level: string }> = ({ level }) => {
     },
     [setNodeContextMenu]
   );
+  const handleMultiNodeContextMenu = useCallback(
+    (event: React.MouseEvent, nodes: Node[]) => {
+      event.preventDefault();
+
+      if (nodes.length === 0) return;
+
+      const position = getContextMenuPosition(event);
+
+      setMultiNodeContextMenu({
+        nodeIds: nodes.map((n) => n.id),
+        x: position.x,
+        y: position.y,
+      });
+    },
+    []
+  );
 
   const onPaneClick = useCallback(() => {
     setContextMenu(null);
@@ -124,11 +146,15 @@ const NodeEditor: React.FC<{ level: string }> = ({ level }) => {
         onEdgesChange={onEdgesChange}
         onPaneContextMenu={handlePaneContextMenu}
         onNodeContextMenu={handleNodeContextMenu}
+        onSelectionContextMenu={handleMultiNodeContextMenu}
         onConnect={onConnect}
         onPaneClick={onPaneClick}
         fitView
         proOptions={{ hideAttribution: true }}
         deleteKeyCode={["Delete", "Backspace"]}
+        onClick={() => {
+          setMultiNodeContextMenu(null); // oder wie auch immer du es nennst
+        }}
       >
         <Background bgColor="#14141d" color="#a7abc2" />
         <AddNodePanel />
@@ -151,6 +177,14 @@ const NodeEditor: React.FC<{ level: string }> = ({ level }) => {
           x={nodeContextMenu.x}
           y={nodeContextMenu.y}
           onClose={() => setNodeContextMenu(null)}
+        />
+      )}
+      {selectionContextMenu && (
+        <MultiNodeContextMenu
+          nodeIds={selectionContextMenu.nodeIds}
+          x={selectionContextMenu.x}
+          y={selectionContextMenu.y}
+          onClose={() => setMultiNodeContextMenu(null)}
         />
       )}
     </ReactFlowProvider>
