@@ -35,7 +35,7 @@ const NodeEditor: React.FC<{ level: string }> = ({ level }) => {
     x: number;
     y: number;
   } | null>(null);
-  const [selectionContextMenu, setMultiNodeContextMenu] = useState<{
+  const [selectionContextMenu, setSelectionContextMenu] = useState<{
     nodeIds: string[];
     x: number;
     y: number;
@@ -116,7 +116,8 @@ const NodeEditor: React.FC<{ level: string }> = ({ level }) => {
   const onPaneClick = useCallback(() => {
     setContextMenu(null);
     setNodeContextMenu(null);
-  }, [contextMenu, nodeContextMenu]);
+    setSelectionContextMenu(null);
+  }, [contextMenu, nodeContextMenu, selectionContextMenu]);
 
   return (
     <ReactFlowProvider>
@@ -134,9 +135,6 @@ const NodeEditor: React.FC<{ level: string }> = ({ level }) => {
         fitView
         proOptions={{ hideAttribution: true }}
         deleteKeyCode={["Delete", "Backspace"]}
-        onClick={() => {
-          setMultiNodeContextMenu(null); // oder wie auch immer du es nennst
-        }}
       >
         <Background bgColor="#14141d" color="#a7abc2" />
         <AddNodePanel />
