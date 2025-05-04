@@ -8,6 +8,7 @@ import {
 import React, { useEffect, useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
+import { TYPES } from "../nodes/math-float/MathFloat";
 import { nodeTypes } from "../nodes/node-types";
 
 type PaneContextMenuProps = {
@@ -17,6 +18,8 @@ type PaneContextMenuProps = {
 };
 
 const PaneContextMenu: React.FC<PaneContextMenuProps> = ({ x, y, onClose }) => {
+  const MathFloatComputeTypes = Object.values(TYPES).flat();
+
   const { addNodes } = useReactFlow<Node, Edge>();
   const inputRef = useRef<HTMLInputElement>(null);
   const [nodeSearch, setNodeSearch] = useState("");
@@ -27,7 +30,7 @@ const PaneContextMenu: React.FC<PaneContextMenuProps> = ({ x, y, onClose }) => {
     inputRef.current?.focus();
   }, []);
 
-  const handleAddNode = (type: string) => {
+  const handleAddNode = (type: string, computeType?: string) => {
     const canvasElement = document.getElementById("node-editor");
     if (!canvasElement) {
       console.error("Canvas element with ID 'node-editor' not found.");
@@ -42,7 +45,7 @@ const PaneContextMenu: React.FC<PaneContextMenuProps> = ({ x, y, onClose }) => {
       id: uuidv4(),
       type,
       position: { x: nodeX, y: nodeY },
-      data: {},
+      data: { initialComputeType: computeType },
     });
 
     onClose();
@@ -58,6 +61,21 @@ const PaneContextMenu: React.FC<PaneContextMenuProps> = ({ x, y, onClose }) => {
             placeholder="Search"
             className="w-full rounded bg-slate-900 p-2 text-sm text-white focus:border-gray-300 focus:ring-0 focus:outline-none"
             onChange={(e) => setNodeSearch(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                const filteredTypes = Object.keys(nodeTypes).filter((type) =>
+                  type.toLowerCase().includes(nodeSearch.toLowerCase())
+                );
+                if (filteredTypes.length > 0) {
+                  handleAddNode(filteredTypes[0]);
+                } else if (
+                  MathFloatComputeTypes.some((type) => type === nodeSearch)
+                ) {
+                  handleAddNode("MathFloat", nodeSearch);
+                }
+                e.preventDefault(); // Prevent form submission or other default actions
+              }
+            }}
           />
         </div>
 

@@ -111,7 +111,7 @@ export type NumberInputType = {
   label: string;
 };
 
-const TYPES = {
+export const TYPES = {
   Functions: [
     "Addition",
     "Substraction",
