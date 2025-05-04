@@ -1,9 +1,0 @@
-import{v as e}from"./chunk-AYJ5UCUI-BvwBlbwa.js";const i={title:"Debug-Display"},o=`<h1>Debug-Display</h1>
-<p>The Debug-Display node displays any value connected to it from another node. It is useful for debugging purposes, allowing you to see the values you’re trying to manipulate and check if they resemble your targeted behaviours. Additionally, it can help identify discrepancies in data flow and logic errors in your application.</p>
-<p><img src="/nodes/debug-display.png" alt="Image of the Debug Display Node"></p>
-<h2>Properties</h2>
-<ul>
-<li><strong>Input</strong>: This is the Connection point for the input value. It can be connected to any node that outputs a value.</li>
-<li><strong>Display</strong>: This is where the value will be shown on the interface, allowing users to visualize the data being processed.</li>
-</ul>
-`,s=function(t){return Object.keys(t).forEach(function(n){t[n]}),e.createElement("div",null,e.createElement("h1",null,"Debug-Display"),e.createElement("p",null,"The Debug-Display node displays any value connected to it from another node. It is useful for debugging purposes, allowing you to see the values you’re trying to manipulate and check if they resemble your targeted behaviours. Additionally, it can help identify discrepancies in data flow and logic errors in your application."),e.createElement("p",null,e.createElement("img",{src:"/nodes/debug-display.png",alt:"Image of the Debug Display Node"})),e.createElement("h2",null,"Properties"),e.createElement("ul",null,e.createElement("li",null,e.createElement("strong",null,"Input"),": This is the Connection point for the input value. It can be connected to any node that outputs a value."),e.createElement("li",null,e.createElement("strong",null,"Display"),": This is where the value will be shown on the interface, allowing users to visualize the data being processed.")))};export{s as ReactComponent,i as attributes,o as html};
