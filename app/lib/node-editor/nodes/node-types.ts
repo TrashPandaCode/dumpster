@@ -1,4 +1,4 @@
-import Display from "./--debug/Display";
+import Display from "./debug/Display";
 import GetFromGameobject from "./game-get/GetFromGameobject";
 import Time from "./game-get/Time";
 import ExportToGameobject from "./game-set/ExportToGameobject";
