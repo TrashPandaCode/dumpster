@@ -54,47 +54,43 @@ const MathFloat = memo(({ id, data }: { id: string; data: any }) => {
 
   return (
     <div className="min-w-3xs">
-      <NodeContent label={computeType ?? "Select Math Type"} type="float">
+      <NodeContent label={computeType} type="float">
         <SelectDropDown
           items={TYPES}
           setSelected={setComputeType}
-          defaultValue={computeType ?? ""}
+          defaultValue={computeType}
         />
-        {computeType && (
-          <>
-            <br />
-            <LabelHandle
-              id={OUT_HANDLE_1}
-              position={Position.Right}
-              label="Result"
+        <br />
+        <LabelHandle
+          id={OUT_HANDLE_1}
+          position={Position.Right}
+          label="Result"
+        />
+        {inputState[0].enable && (
+          <div className="text-left">
+            {inputState[0].label}
+            <NumberInput
+              value={xDisplayData}
+              setValue={setxInputData}
+              defaultValue={0}
+              disabled={!!xConnection.length}
+              type={inputState[0].type}
             />
-            {inputState[0].enable && (
-              <div className="text-left">
-                {inputState[0].label}
-                <NumberInput
-                  value={xDisplayData}
-                  setValue={setxInputData}
-                  defaultValue={0}
-                  disabled={!!xConnection.length}
-                  type={inputState[0].type}
-                />
-                <BaseHandle id={IN_HANDLE_1} position={Position.Left} />
-              </div>
-            )}
-            {inputState[1].enable && (
-              <div className="text-left">
-                {inputState[1].label}
-                <NumberInput
-                  value={yDisplayData}
-                  setValue={setyInputData}
-                  defaultValue={0}
-                  disabled={!!yConnection.length}
-                  type={inputState[1].type}
-                />
-                <BaseHandle id={IN_HANDLE_2} position={Position.Left} />
-              </div>
-            )}
-          </>
+            <BaseHandle id={IN_HANDLE_1} position={Position.Left} />
+          </div>
+        )}
+        {inputState[1].enable && (
+          <div className="text-left">
+            {inputState[1].label}
+            <NumberInput
+              value={yDisplayData}
+              setValue={setyInputData}
+              defaultValue={0}
+              disabled={!!yConnection.length}
+              type={inputState[1].type}
+            />
+            <BaseHandle id={IN_HANDLE_2} position={Position.Left} />
+          </div>
         )}
       </NodeContent>
     </div>
