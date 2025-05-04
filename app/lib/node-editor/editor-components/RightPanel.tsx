@@ -26,7 +26,7 @@ const RightPanel = memo(() => {
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <button
-            className="cursor-pointer rounded bg-slate-800 p-2 outline outline-slate-500 hover:bg-slate-900 data-[state=open]:rounded-b-none data-[state=open]:bg-slate-800 data-[state=open]:text-white"
+            className="cursor-pointer rounded bg-slate-800 p-2 outline outline-slate-500 hover:bg-slate-900 data-[state=open]:rounded-b-none data-[state=open]:bg-slate-800 data-[state=open]:outline-none"
             aria-label="Customise options"
           >
             <HamburgerMenuIcon className="text-white" />
@@ -35,9 +35,8 @@ const RightPanel = memo(() => {
 
         <DropdownMenuPortal>
           <DropdownMenuContent
-            className="flex w-65 flex-col items-center space-y-2 rounded rounded-tl-none bg-slate-800 p-2 pt-2 pb-2 shadow-lg outline-5 outline-slate-700 outline-solid"
-            sideOffset={0}
-            align={"start"}
+            className="flex w-65 flex-col items-center space-y-2 rounded rounded-tr-none bg-slate-800 p-2 pt-2 pb-2 shadow-lg outline outline-slate-500 outline-solid"
+            align="end"
           >
             {Object.keys(nodeTypes).map((name, index) => {
               return index === 0
