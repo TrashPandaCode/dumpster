@@ -6,7 +6,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@radix-ui/react-dropdown-menu";
-import { HamburgerMenuIcon } from "@radix-ui/react-icons";
+import { CubeIcon, HamburgerMenuIcon } from "@radix-ui/react-icons";
 import { Panel, useReactFlow } from "@xyflow/react";
 import { memo } from "react";
 import { v4 as uuidv4 } from "uuid";
@@ -94,7 +94,7 @@ const RightPanel = memo(() => {
         onClick={nodeStateDebugPrint}
         className="cursor-pointer rounded bg-slate-800 p-2 text-white outline outline-slate-500 hover:bg-slate-900"
       >
-        Print Map
+        <CubeIcon className="text-white" />
       </button>
     </Panel>
   );
