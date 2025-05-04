@@ -18,25 +18,30 @@ const KeyPress = memo(({ id }: { id: string }) => {
 
   const keyDown = useKeyStore((state) => state.isKeyDown);
   const keyPressed = useKeyStore((state) => state.isKeyPressed);
+  const [active, setActive] = useState(false);
 
   useEffect(() => {
     updateNodeData(id, {
       compute: (_: nodeInputs, results: nodeData) => {
+        let active = false;
         switch (keyPressType) {
           case "down":
-            results.set(OUT_HANDLE_1, +keyDown(curKey));
+            active = keyDown(curKey);
+            results.set(OUT_HANDLE_1, +active);
             break;
           case "press":
-            results.set(OUT_HANDLE_1, +keyPressed(curKey));
+            active = keyPressed(curKey);
+            results.set(OUT_HANDLE_1, +active);
             break;
         }
+        setActive(active);
       },
     });
   }, [curKey, keyPressType]);
 
   return (
     <div className="min-w-48">
-      <NodeContent label="KeyPress" type="float">
+      <NodeContent label="KeyPress" type="float" active={active}>
         <div className="mb-2 flex w-full flex-row">
           <button
             className={classnames(
