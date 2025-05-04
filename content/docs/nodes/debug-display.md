@@ -6,7 +6,7 @@ title: Debug-Display
 
 The Debug-Display node displays any value connected to it from another node. It is useful for debugging purposes, allowing you to see the values you're trying to manipulate and check if they resemble your targeted behaviours. Additionally, it can help identify discrepancies in data flow and logic errors in your application.
 
-![Image of the Debug Display Node](debug-display.png)
+![Image of the Debug Display Node](/nodes/debug-display.png)
 
 ## Properties
 

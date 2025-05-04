@@ -1,3 +1,4 @@
+import { useGameStore } from "~/lib/zustand/game";
 import { getKaplayCtx } from "../core/kaplayCtx"
 import { useDebugStore } from "~/lib/zustand/debug";
 
@@ -22,6 +23,8 @@ export const initializePlayground = () => {
     ]);
 
     k.onUpdate(() => {
+        if (useGameStore.getState().isPaused) return;
+
         //Move
         const x = useDebugStore.getState().nodeData.get("xpos")?.value ?? 0;
         const y = useDebugStore.getState().nodeData.get("ypos")?.value ?? 0;

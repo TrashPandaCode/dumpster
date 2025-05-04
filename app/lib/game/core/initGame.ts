@@ -2,6 +2,7 @@ import { useNodeStore } from "~/lib/node-editor/node-store/node-store";
 import { useKeyStore } from "~/lib/zustand/key";
 import { useTimeStore } from "~/lib/zustand/time";
 import { getKaplayCtx } from "./kaplayCtx";
+import { useGameStore } from "~/lib/zustand/game";
 
 let first = true; //TODO: remove just for react strict mode
 
@@ -24,6 +25,8 @@ export default function initGame(canvas: HTMLCanvasElement) {
   const setTime = useTimeStore.getState().setTime;
   const setDeltaTime = useTimeStore.getState().setDeltaTime;
   k.onUpdate(() => {
+    if (useGameStore.getState().isPaused) return;
+
     const time = k.time();
     const deltaTime = k.dt();
     setTime(time);
