@@ -20,8 +20,8 @@ const RightPanel = memo(() => {
 
   return (
     <Panel
-      position="top-center" // for some reason "right" moves elements out of the screen
-      className="!right-0 flex flex-col items-end justify-center gap-2"
+      position="top-right"
+      className="flex flex-col items-end justify-center gap-2"
     >
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
