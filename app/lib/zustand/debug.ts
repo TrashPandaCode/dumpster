@@ -1,5 +1,7 @@
 import { create } from "zustand";
 
+import { IN_HANDLE_1, IN_HANDLE_2 } from "../node-editor/nodes/constants";
+
 interface DebugState {
   nodeData: Map<string, { handleId: string; value: number }>;
   gameData: Map<string, { handleId: string; value: number }>;
@@ -8,7 +10,10 @@ interface DebugState {
 }
 
 export const useDebugStore = create<DebugState>((set) => ({
-  nodeData: new Map(),
+  nodeData: new Map([
+    ["xpos", { handleId: IN_HANDLE_1, value: 0 }],
+    ["ypos", { handleId: IN_HANDLE_2, value: 0 }],
+  ]), // this needs to be set level based
   gameData: new Map(),
   setNodeData: (label, handleId, value) =>
     set((state) => {

@@ -16,17 +16,9 @@ export default function initGame(canvas: HTMLCanvasElement) {
   first = false; //TODO: remove just for react strict mode
 
   const k = getKaplayCtx(canvas);
-  const setKeyPressed = useKeyStore.getState().setKeyPressed;
 
-  // Key Presses for multiple keys at once. Maybe better in another file or at another place?
-  k.onKeyDown((key) => {
-    setKeyPressed(key, true);
-  });
-
-  k.onKeyRelease((key) => {
-    setKeyPressed(key, false);
-  });
-
+  useKeyStore.getState().setKeyDownFunction((key) => k.isKeyDown(key));
+  useKeyStore.getState().setKeyPressedFunction((key) => k.isKeyPressed(key));
 
   //Game Loop, runs at 60 frames per second
   const setTime = useTimeStore.getState().setTime;
