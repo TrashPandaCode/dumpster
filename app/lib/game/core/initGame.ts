@@ -1,8 +1,8 @@
 import { useNodeStore } from "~/lib/node-editor/node-store/node-store";
+import { useGameStore } from "~/lib/zustand/game";
 import { useKeyStore } from "~/lib/zustand/key";
 import { useTimeStore } from "~/lib/zustand/time";
 import { getKaplayCtx } from "./kaplayCtx";
-import { useGameStore } from "~/lib/zustand/game";
 
 let first = true; //TODO: remove just for react strict mode
 
@@ -20,6 +20,7 @@ export default function initGame(canvas: HTMLCanvasElement) {
 
   useKeyStore.getState().setKeyDownFunction((key) => k.isKeyDown(key));
   useKeyStore.getState().setKeyPressedFunction((key) => k.isKeyPressed(key));
+  useKeyStore.getState().setKeyReleasedFunction((key) => k.isKeyReleased(key));
 
   //Game Loop, runs at 60 frames per second
   const setTime = useTimeStore.getState().setTime;

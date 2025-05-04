@@ -5,6 +5,8 @@ interface KeyState {
   setKeyDownFunction: (keyFunction: (key: string) => boolean) => void;
   isKeyPressed: (key: string) => boolean;
   setKeyPressedFunction: (keyFunction: (key: string) => boolean) => void;
+  isKeyReleased: (key: string) => boolean;
+  setKeyReleasedFunction: (keyFunction: (key: string) => boolean) => void;
 }
 
 export const useKeyStore = create<KeyState>((set) => ({
@@ -12,4 +14,6 @@ export const useKeyStore = create<KeyState>((set) => ({
   setKeyDownFunction: (keyFunction) => set({ isKeyDown: keyFunction }),
   isKeyPressed: () => false,
   setKeyPressedFunction: (keyFunction) => set({ isKeyPressed: keyFunction }),
+  isKeyReleased: () => false,
+  setKeyReleasedFunction: (keyFunction) => set({ isKeyReleased: keyFunction }),
 }));

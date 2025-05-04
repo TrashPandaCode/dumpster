@@ -18,6 +18,7 @@ const KeyPress = memo(({ id }: { id: string }) => {
 
   const keyDown = useKeyStore((state) => state.isKeyDown);
   const keyPressed = useKeyStore((state) => state.isKeyPressed);
+  const keyReleased = useKeyStore((state) => state.isKeyReleased);
   const [active, setActive] = useState(false);
 
   useEffect(() => {
@@ -31,6 +32,10 @@ const KeyPress = memo(({ id }: { id: string }) => {
             break;
           case "press":
             active = keyPressed(curKey);
+            results.set(OUT_HANDLE_1, +active);
+            break;
+          case "release":
+            active = keyReleased(curKey);
             results.set(OUT_HANDLE_1, +active);
             break;
         }
@@ -64,6 +69,17 @@ const KeyPress = memo(({ id }: { id: string }) => {
             }}
           >
             Press
+          </button>
+          <button
+            className={classnames(
+              "nodrag m-auto rounded px-2 hover:cursor-pointer",
+              keyPressType == "release" ? "bg-slate-600" : "bg-slate-900"
+            )}
+            onClick={() => {
+              setKeyPressType("release");
+            }}
+          >
+            Release
           </button>
         </div>
         <div className="flex w-full justify-end gap-2">
