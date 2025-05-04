@@ -1,3 +1,4 @@
+import { useGameStore } from "~/lib/zustand/game";
 import { getKaplayCtx } from "../core/kaplayCtx"
 import { useDebugStore } from "~/lib/zustand/debug";
 
@@ -35,6 +36,8 @@ export const initialize1_1 = () => {
     });
 
     k.onUpdate(() => {
+        if (useGameStore.getState().isPaused) return;
+        
         racoon.move(RACOON_SPEED * k.dt(), 0);
 
         //Move
