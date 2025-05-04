@@ -68,12 +68,14 @@ const PaneContextMenu: React.FC<PaneContextMenuProps> = ({ x, y, onClose }) => {
                 );
                 if (filteredTypes.length > 0) {
                   handleAddNode(filteredTypes[0]);
-                } else if (
-                  MathFloatComputeTypes.some((type) => type === nodeSearch)
-                ) {
-                  handleAddNode("MathFloat", nodeSearch);
+                } else {
+                  const matchedType = MathFloatComputeTypes.find(
+                    (type) => type.toLowerCase() === nodeSearch.toLowerCase()
+                  );
+                  if (matchedType) {
+                    handleAddNode("MathFloat", matchedType);
+                  }
                 }
-                e.preventDefault(); // Prevent form submission or other default actions
               }
             }}
           />
