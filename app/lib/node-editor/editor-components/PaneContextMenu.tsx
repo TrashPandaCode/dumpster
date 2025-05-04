@@ -36,7 +36,7 @@ const PaneContextMenu: React.FC<PaneContextMenuProps> = ({ x, y, onClose }) => {
       console.error("Canvas element with ID 'node-editor' not found.");
       return;
     }
-    const canvasRect = canvasElement?.getBoundingClientRect();
+    const canvasRect = canvasElement.getBoundingClientRect();
 
     const nodeX = (x - offsetX) / zoom - canvasRect.left / zoom;
     const nodeY = (y - offsetY) / zoom - canvasRect.top / zoom;
