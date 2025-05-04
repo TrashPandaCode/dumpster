@@ -26,14 +26,15 @@
   --tailwind-border-radius: 4px;
 }
 
+/*
+* !important needed here to override react-flow styles
+*/
+
 .react-flow__nodesselection-rect {
   border-radius: var(--tailwind-border-radius) !important;
   border: 1px dotted var(--color-blue-300) !important;
 }
 
-/*
-* important actually important
-*/
 .react-flow__node.selected {
   background-color: var(--color-slate-700) !important;
   border-radius: var(--tailwind-border-radius) !important;
@@ -43,12 +44,3 @@
   background-color: var(--color-slate-800) !important;
   border-radius: var(--tailwind-border-radius) !important;
 }
-
-/* html,
-body {
-  @apply bg-white dark:bg-gray-950;
-
-  @media (prefers-color-scheme: dark) {
-    color-scheme: dark;
-  }
- } */
