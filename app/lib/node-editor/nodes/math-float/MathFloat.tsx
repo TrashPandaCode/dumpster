@@ -12,8 +12,8 @@ import { IN_HANDLE_1, IN_HANDLE_2, OUT_HANDLE_1 } from "../constants";
 
 const MathFloat = memo(({ id, data }: { id: string; data: any }) => {
   const { updateNodeData } = useReactFlow();
-  const [computeType, _setComputeType] = useState<string | null>(
-    data.initialComputeType ?? null
+  const [computeType, _setComputeType] = useState<string>(
+    data.initialComputeType ?? "Addition"
   );
   const [inputState, setInputState] = useState<NumberInputType[]>(
     INPUTS[computeType ?? "Addition"]
@@ -39,19 +39,17 @@ const MathFloat = memo(({ id, data }: { id: string; data: any }) => {
   });
 
   useEffect(() => {
-    if (computeType) {
-      updateNodeData(id, {
-        compute: (inputs: nodeInputs, results: nodeData) => {
-          const x = getInput(inputs, IN_HANDLE_1, xInputData);
-          const y = getInput(inputs, IN_HANDLE_2, yInputData);
+    updateNodeData(id, {
+      compute: (inputs: nodeInputs, results: nodeData) => {
+        const x = getInput(inputs, IN_HANDLE_1, xInputData);
+        const y = getInput(inputs, IN_HANDLE_2, yInputData);
 
-          setxDisplayData(x);
-          setyDisplayData(y);
+        setxDisplayData(x);
+        setyDisplayData(y);
 
-          results.set(OUT_HANDLE_1, COMPUTE[computeType](x, y));
-        },
-      });
-    }
+        results.set(OUT_HANDLE_1, COMPUTE[computeType](x, y));
+      },
+    });
   }, [xInputData, yInputData, computeType]);
 
   return (
