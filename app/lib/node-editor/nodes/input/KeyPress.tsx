@@ -45,13 +45,13 @@ const KeyPress = memo(({ id }: { id: string }) => {
   }, [curKey, keyPressType]);
 
   return (
-    <div className="min-w-48">
+    <div className="min-w-60">
       <NodeContent label="KeyPress" type="float" active={active}>
         <div className="mb-2 flex w-full flex-row">
           <button
             className={classnames(
               "nodrag m-auto rounded px-2 hover:cursor-pointer",
-              keyPressType == "down" ? "bg-slate-600" : "bg-slate-900"
+              keyPressType == "down" ? "outline outline-blue-300" : "bg-slate-900"
             )}
             onClick={() => {
               setKeyPressType("down");
@@ -62,7 +62,7 @@ const KeyPress = memo(({ id }: { id: string }) => {
           <button
             className={classnames(
               "nodrag m-auto rounded px-2 hover:cursor-pointer",
-              keyPressType == "press" ? "bg-slate-600" : "bg-slate-900"
+              keyPressType == "press" ? "outline outline-blue-300" : "bg-slate-900"
             )}
             onClick={() => {
               setKeyPressType("press");
@@ -73,7 +73,7 @@ const KeyPress = memo(({ id }: { id: string }) => {
           <button
             className={classnames(
               "nodrag m-auto rounded px-2 hover:cursor-pointer",
-              keyPressType == "release" ? "bg-slate-600" : "bg-slate-900"
+              keyPressType == "release" ? "outline outline-blue-300" : "bg-slate-900"
             )}
             onClick={() => {
               setKeyPressType("release");
