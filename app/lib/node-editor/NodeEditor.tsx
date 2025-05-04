@@ -6,9 +6,11 @@ import {
   Panel,
   ReactFlow,
   ReactFlowProvider,
+  useReactFlow,
   type Edge,
   type Node,
   type OnConnect,
+  type OnConnectEnd,
   type OnEdgesChange,
   type OnNodesChange,
 } from "@xyflow/react";
@@ -16,6 +18,7 @@ import React, { useCallback, useState } from "react";
 
 import "@xyflow/react/dist/style.css";
 
+import LeftPanel from "./editor-components/LeftPanel";
 import NodeContextMenu from "./editor-components/NodeContextMenu";
 import PaneContextMenu from "./editor-components/PaneContextMenu";
 import RightPanel from "./editor-components/RightPanel";
@@ -23,9 +26,8 @@ import SelectionContextMenu from "./editor-components/SelectionContextMenu";
 import { useNodeStore } from "./node-store/node-store";
 import { nodeTypes } from "./nodes/node-types";
 import { debugEdges, debugNodes } from "./solutions/debug";
-import LeftPanel from "./editor-components/LeftPanel";
 
-const NodeEditor: React.FC<{ level: string }> = ({ level }) => {
+const _Editor: React.FC<{ level: string }> = ({ level }) => {
   const [nodes, setNodes] = useState<Node[]>(debugNodes); // TODO: load nodes based on level
   const [edges, setEdges] = useState<Edge[]>(debugEdges);
   const [paneContextMenu, setPaneContextMenu] = useState<{
@@ -42,6 +44,8 @@ const NodeEditor: React.FC<{ level: string }> = ({ level }) => {
     x: number;
     y: number;
   } | null>(null);
+
+  const { screenToFlowPosition } = useReactFlow();
 
   const replaceNode = useNodeStore((state) => state.replaceNode);
   const removeNode = useNodeStore((state) => state.removeNode);
@@ -93,6 +97,23 @@ const NodeEditor: React.FC<{ level: string }> = ({ level }) => {
     [setEdges]
   );
 
+  const onConnectEnd: OnConnectEnd = useCallback(
+    (event, connectionState) => {
+      if (!connectionState.isValid) {        
+        const { clientX, clientY } =
+          "changedTouches" in event ? event.changedTouches[0] : event;
+        const position = screenToFlowPosition({ x: clientX, y: clientY });
+        setPaneContextMenu({
+          x: position.x,
+          y: position.y,
+        });
+        console.log(paneContextMenu);
+        
+      }
+    },
+    [screenToFlowPosition]
+  );
+
   const handlePaneContextMenu = useCallback(
     (event: MouseEvent | React.MouseEvent) => {
       event.preventDefault();
@@ -141,7 +162,7 @@ const NodeEditor: React.FC<{ level: string }> = ({ level }) => {
   }, [paneContextMenu, nodeContextMenu, selectionContextMenu]);
 
   return (
-    <ReactFlowProvider>
+    <>
       <ReactFlow
         id="node-editor"
         nodeTypes={nodeTypes}
@@ -153,6 +174,7 @@ const NodeEditor: React.FC<{ level: string }> = ({ level }) => {
         onNodeContextMenu={handleNodeContextMenu}
         onSelectionContextMenu={handleSelectionContextMenu}
         onConnect={onConnect}
+        onConnectEnd={onConnectEnd}
         onPaneClick={onPaneClick}
         fitView
         proOptions={{ hideAttribution: true }}
@@ -185,6 +207,14 @@ const NodeEditor: React.FC<{ level: string }> = ({ level }) => {
           onClose={() => setSelectionContextMenu(null)}
         />
       )}
+    </>
+  );
+};
+
+const NodeEditor: React.FC<{ level: string }> = ({ level }) => {
+  return (
+    <ReactFlowProvider>
+      <_Editor level={level} />
     </ReactFlowProvider>
   );
 };
