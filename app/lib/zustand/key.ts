@@ -1,14 +1,15 @@
 import { create } from "zustand";
 
 interface KeyState {
-  keysPressed: Record<string, boolean>;
-  setKeyPressed: (key: string, value: boolean) => void;
+  isKeyDown: (key: string) => boolean;
+  setKeyDownFunction: (keyFunction: (key: string) => boolean) => void;
+  isKeyPressed: (key: string) => boolean;
+  setKeyPressedFunction: (keyFunction: (key: string) => boolean) => void;
 }
 
 export const useKeyStore = create<KeyState>((set) => ({
-  keysPressed: {},
-  setKeyPressed: (key, pressed) =>
-    set((state) => ({
-      keysPressed: { ...state.keysPressed, [key]: pressed },
-    })),
+  isKeyDown: () => false,
+  setKeyDownFunction: (keyFunction) => set({ isKeyDown: keyFunction }),
+  isKeyPressed: () => false,
+  setKeyPressedFunction: (keyFunction) => set({ isKeyPressed: keyFunction }),
 }));
