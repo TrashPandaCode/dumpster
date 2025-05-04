@@ -8,13 +8,12 @@ import {
 } from "@radix-ui/react-dropdown-menu";
 import { CubeIcon, HamburgerMenuIcon } from "@radix-ui/react-icons";
 import { Panel, useReactFlow } from "@xyflow/react";
-import { memo } from "react";
 import { v4 as uuidv4 } from "uuid";
 
 import { useNodeStore } from "../node-store/node-store";
 import { nodeTypes } from "../nodes/node-types";
 
-const RightPanel = memo(() => {
+const RightPanel = () => {
   const { addNodes } = useReactFlow();
   const nodeStateDebugPrint = useNodeStore((state) => state.debugPrint);
 
@@ -98,6 +97,6 @@ const RightPanel = memo(() => {
       </button>
     </Panel>
   );
-});
+};
 
 export default RightPanel;
