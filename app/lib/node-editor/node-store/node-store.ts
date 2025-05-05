@@ -134,7 +134,7 @@ export const useNodeStore = create<NodeStoreState>((set) => ({
   },
   compute: () => {
     set((state) => {
-      computeMap(state.mapErrors, state.sortedNodes);
+      computeMap(state.sortedNodes);
       return state;
     });
   },
@@ -183,12 +183,7 @@ function connectionToEdgeId(edge: Connection): string {
   );
 }
 
-function computeMap(mapErrors: MapErrors, sortedNodes: [string, AppNode][]) {
-  if (mapErrors.cycle) {
-    console.log("Cannot compute because of cycle");
-    return;
-  }
-
+function computeMap(sortedNodes: [string, AppNode][]) {
   sortedNodes.forEach(([_, node]) => {
     if (!node.compute) {
       throw new Error("Compute is not defined");
