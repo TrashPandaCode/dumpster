@@ -69,8 +69,8 @@ const PaneContextMenu: React.FC<PaneContextMenuProps> = ({ x, y, onClose }) => {
                 if (filteredTypes.length > 0) {
                   handleAddNode(filteredTypes[0]);
                 } else {
-                  const matchedType = MathFloatComputeTypes.find(
-                    (type) => type.toLowerCase() === nodeSearch.toLowerCase()
+                  const matchedType = MathFloatComputeTypes.find((type) =>
+                    type.toLowerCase().includes(nodeSearch.toLowerCase())
                   );
                   if (matchedType) {
                     handleAddNode("MathFloat", matchedType);
