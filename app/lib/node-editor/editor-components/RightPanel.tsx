@@ -8,6 +8,7 @@ import {
 } from "@radix-ui/react-dropdown-menu";
 import { CubeIcon, HamburgerMenuIcon } from "@radix-ui/react-icons";
 import { Panel, useReactFlow } from "@xyflow/react";
+import { Fragment } from "react/jsx-runtime";
 import { v4 as uuidv4 } from "uuid";
 
 import { useNodeStore } from "../node-store/node-store";
@@ -37,53 +38,24 @@ const RightPanel = () => {
             className="flex w-65 flex-col items-center space-y-2 rounded rounded-tr-none bg-slate-800 p-2 pt-2 pb-2 shadow-lg outline outline-slate-500 outline-solid"
             align="end"
           >
-            {Object.keys(nodeTypes).map((name, index) => {
-              return index === 0
-                ? [
-                    <DropdownMenuItem
-                      key={"add_node_dropdown_" + index}
-                      className="w-62 rounded pr-4 pl-2 hover:bg-slate-700"
-                    >
-                      <button
-                        className="text-left text-sm text-white"
-                        onClick={() => {
-                          addNodes({
-                            id: uuidv4(),
-                            type: name,
-                            position: { x: 0, y: 0 },
-                            data: {},
-                          });
-                        }}
-                      >
-                        {name}
-                      </button>
-                    </DropdownMenuItem>,
-                  ]
-                : [
-                    <DropdownMenuSeparator
-                      className="h-px w-[95%] bg-slate-700"
-                      key={`sep-${index}`}
-                    />,
-                    <DropdownMenuItem
-                      key={"add_node_dropdown_" + index}
-                      className="w-62 rounded pr-4 pl-2 hover:bg-slate-700"
-                    >
-                      <button
-                        className="text-left text-sm text-white"
-                        onClick={() => {
-                          addNodes({
-                            id: uuidv4(),
-                            type: name,
-                            position: { x: 0, y: 0 },
-                            data: {},
-                          });
-                        }}
-                      >
-                        {name}
-                      </button>
-                    </DropdownMenuItem>,
-                  ];
-            })}
+            {Object.keys(nodeTypes).map((name) => (
+              <Fragment key={name}>
+                <DropdownMenuItem
+                  className="w-62 rounded px-2 py-1 text-white hover:cursor-pointer hover:bg-slate-700 focus:outline-0"
+                  onClick={() => {
+                    addNodes({
+                      id: uuidv4(),
+                      type: name,
+                      position: { x: 0, y: 0 },
+                      data: {},
+                    });
+                  }}
+                >
+                  {name}
+                </DropdownMenuItem>
+                <DropdownMenuSeparator className="h-px w-[95%] bg-slate-700" />
+              </Fragment>
+            ))}
           </DropdownMenuContent>
         </DropdownMenuPortal>
       </DropdownMenu>
