@@ -16,6 +16,7 @@ import React, { useCallback, useState } from "react";
 
 import "@xyflow/react/dist/style.css";
 
+import LeftPanel from "./editor-components/LeftPanel";
 import NodeContextMenu from "./editor-components/NodeContextMenu";
 import PaneContextMenu from "./editor-components/PaneContextMenu";
 import RightPanel from "./editor-components/RightPanel";
@@ -23,7 +24,6 @@ import SelectionContextMenu from "./editor-components/SelectionContextMenu";
 import { useNodeStore } from "./node-store/node-store";
 import { nodeTypes } from "./nodes/node-types";
 import { debugEdges, debugNodes } from "./solutions/debug";
-import LeftPanel from "./editor-components/LeftPanel";
 
 const NodeEditor: React.FC<{ level: string }> = ({ level }) => {
   const [nodes, setNodes] = useState<Node[]>(debugNodes); // TODO: load nodes based on level
