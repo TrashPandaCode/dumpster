@@ -27,7 +27,7 @@ export class AppNode {
   mark: Mark | null = null; // TODO: null or undefined
   nodeId: string;
 
-  compute?: (inputs: nodeInputs, results: nodeData) => void;
+  compute(inputs: nodeInputs, results: nodeData): void {}
 
   constructor(nodeId: string, data: Record<string, unknown>) {
     this.nodeId = nodeId;
@@ -71,7 +71,9 @@ export const useNodeStore = create<NodeStoreState>((set) => ({
       if (state.nodeMap.has(node.id)) {
         state.nodeMap.get(node.id)?.updateData(node.data);
       } else {
-        state.nodeMap.set(node.id, new AppNode(node.id, node.data));
+        const newNode = new AppNode(node.id, node.data);
+        state.nodeMap.set(node.id, newNode);
+        state.sortedNodes.push([node.id, newNode]);
       }
       return state;
     });
@@ -185,9 +187,6 @@ function connectionToEdgeId(edge: Connection): string {
 
 function computeMap(sortedNodes: [string, AppNode][]) {
   sortedNodes.forEach(([_, node]) => {
-    if (!node.compute) {
-      throw new Error("Compute is not defined");
-    }
     node.compute(node.inputs, node.results);
   });
 }

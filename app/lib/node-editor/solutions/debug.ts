@@ -16,7 +16,6 @@ export const debugNodes: Node[] = [
   },
   {
     id: uuidv4(),
-    parentId: "2",
     type: "Display",
     position: { x: 0, y: 500 },
     data: {},
