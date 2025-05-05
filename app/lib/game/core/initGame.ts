@@ -22,16 +22,12 @@ export default function initGame(canvas: HTMLCanvasElement) {
   useKeyStore.getState().setKeyPressedFunction((key) => k.isKeyPressed(key));
   useKeyStore.getState().setKeyReleasedFunction((key) => k.isKeyReleased(key));
 
+  useTimeStore.getState().setTimeFunction(() => k.time());
+  useTimeStore.getState().setDeltaTimeFunction(() => k.dt());
+
   //Game Loop, runs at 60 frames per second
-  const setTime = useTimeStore.getState().setTime;
-  const setDeltaTime = useTimeStore.getState().setDeltaTime;
   k.onUpdate(() => {
     if (useGameStore.getState().isPaused) return;
-
-    const time = k.time();
-    const deltaTime = k.dt();
-    setTime(time);
-    setDeltaTime(deltaTime);
 
     // compute node map
     useNodeStore.getState().compute();

@@ -1,20 +1,15 @@
 import { create } from "zustand";
 
 interface TimeState {
-  time: number;
-  deltaTime: number;
-  setTime: (time: number) => void;
-  setDeltaTime: (deltaTime: number) => void;
+  getTime: () => number;
+  setTimeFunction: (timeFunction: () => number) => void;
+  getDeltaTime: () => number;
+  setDeltaTimeFunction: (timeFunction: () => number) => void;
 }
 
 export const useTimeStore = create<TimeState>((set) => ({
-  time: 0,
-  deltaTime: 0,
-  setTime: (time: number) => {
-    time = Math.round(time * 1000) / 1000;
-    return set({ time });
-  },
-  setDeltaTime: (deltaTime: number) => {
-    return set({ deltaTime });
-  },
+  getTime: () => 0,
+  setTimeFunction: (timeFunction) => set({ getTime: timeFunction }),
+  getDeltaTime: () => 0,
+  setDeltaTimeFunction: (timeFunction) => set({ getDeltaTime: timeFunction }),
 }));
