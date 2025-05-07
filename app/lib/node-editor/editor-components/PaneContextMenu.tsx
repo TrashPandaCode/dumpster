@@ -8,7 +8,7 @@ import {
 import React, { useEffect, useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
-import { TYPES } from "../nodes/math-float/MathFloat";
+import { TYPES } from "../nodes/math-float/types";
 import { nodeTypes } from "../nodes/node-types";
 
 type PaneContextMenuProps = {
