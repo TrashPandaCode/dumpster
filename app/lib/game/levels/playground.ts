@@ -1,38 +1,35 @@
-import { useGameStore } from "~/lib/zustand/game";
-import { getKaplayCtx } from "../core/kaplayCtx"
 import { useDebugStore } from "~/lib/zustand/debug";
+import { useGameStore } from "~/lib/zustand/game";
+import { getKaplayCtx } from "../core/kaplayCtx";
 
 export const initializePlayground = () => {
-    const k = getKaplayCtx();
+  const k = getKaplayCtx();
 
-    k.loadBean();
-    const bean = k.add([
-        k.sprite("bean"),
-        k.color(0, 0, 255),
-        k.pos(100, k.height() - 100),
-    ]);
+  k.loadBean();
+  const bean = k.add([
+    k.sprite("bean"),
+    k.color(0, 0, 255),
+    k.pos(100, k.height() - 100),
+  ]);
 
-    //Create "Floor" Component
-    const floor = k.add([
-        k.rect(k.width(), 5),
-        k.pos(0, k.height() - 5),
-        k.color(255, 200, 200),
-        k.area(),
-        k.body({ isStatic: true }),
-        "floor",
-    ]);
+  //Create "Floor" Component
+  const floor = k.add([
+    k.rect(k.width(), 5),
+    k.pos(0, k.height() - 5),
+    k.color(255, 200, 200),
+    k.area(),
+    k.body({ isStatic: true }),
+    "floor",
+  ]);
 
-    k.onUpdate(() => {
-        if (useGameStore.getState().isPaused) return;
+  k.onUpdate(() => {
+    if (useGameStore.getState().isPaused) return;
 
-        //Move
-        const x = useDebugStore.getState().nodeData.get("xpos")?.value ?? 0;
-        const y = useDebugStore.getState().nodeData.get("ypos")?.value ?? 0;
+    //Move
+    const x = useDebugStore.getState().data.get("xpos")?.value ?? 0;
+    const y = useDebugStore.getState().data.get("ypos")?.value ?? 0;
 
-        bean.pos.x = x;
-        bean.pos.y = y;
-
-        // transfer all node data to game data
-        useDebugStore.getState().transferData();
-    });
-}
+    bean.pos.x = x;
+    bean.pos.y = y;
+  });
+};

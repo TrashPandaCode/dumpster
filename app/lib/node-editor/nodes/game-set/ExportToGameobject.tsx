@@ -19,13 +19,13 @@ const ExportToGameobject = memo(({ id }: { id: string }) => {
       ["ypos", IN_HANDLE_2],
     ])
   ); //TODO: load this level based
-  const setNodeData = useDebugStore((state) => state.setNodeData);
+  const setData = useDebugStore((state) => state.setData);
 
   useEffect(() => {
     updateNodeData(id, {
       compute: (inputs: nodeInputs, _: nodeData) => {
         handles.forEach((handleId, label) => {
-          setNodeData(label, handleId, getInput(inputs, handleId, 0));
+          setData(label, handleId, getInput(inputs, handleId, 0));
         });
       },
     });

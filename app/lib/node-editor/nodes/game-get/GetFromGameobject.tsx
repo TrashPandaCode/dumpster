@@ -7,23 +7,23 @@ import NodeContent from "../../node-components/NodeContent";
 import type { nodeData, nodeInputs } from "../../node-store/node-store";
 
 const GetFromGameobject = memo(({ id }: { id: string }) => {
-  const gameData = useDebugStore((state) => state.gameData);
+  const data = useDebugStore((state) => state.data);
   const { updateNodeData } = useReactFlow();
 
   useEffect(() => {
     updateNodeData(id, {
       compute: (_: nodeInputs, results: nodeData) => {
-        gameData.forEach(({ handleId, value }) => {
+        data.forEach(({ handleId, value }) => {
           results.set(handleId, value);
         });
       },
     });
-  }, [gameData]);
+  }, [data]);
 
   return (
     <div className="min-w-48">
       <NodeContent label="XPOS TEST" type="float">
-        {Array.from(gameData).map(([label, { handleId }]) => (
+        {Array.from(data).map(([label, { handleId }]) => (
           <LabelHandle
             key={handleId}
             id={handleId}
