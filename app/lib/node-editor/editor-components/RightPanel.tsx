@@ -40,20 +40,22 @@ const RightPanel = () => {
           >
             {Object.keys(nodeTypes).map((name) => (
               <Fragment key={name}>
-                <DropdownMenuItem
-                  className="w-62 rounded px-2 py-1 text-white hover:cursor-pointer hover:bg-slate-700 focus:outline-0"
-                  onClick={() => {
-                    addNodes({
-                      id: uuidv4(),
-                      type: name,
-                      position: { x: 0, y: 0 },
-                      data: {},
-                    });
-                  }}
-                >
-                  {name}
+                <DropdownMenuItem asChild>
+                  <button
+                    className="w-62 rounded px-2 py-1 text-left text-white hover:cursor-pointer hover:bg-slate-700 focus:outline-0"
+                    onClick={() => {
+                      addNodes({
+                        id: uuidv4(),
+                        type: name,
+                        position: { x: 0, y: 0 },
+                        data: {},
+                      });
+                    }}
+                  >
+                    {name}
+                  </button>
                 </DropdownMenuItem>
-                <DropdownMenuSeparator className="h-px w-[95%] bg-slate-700" />
+                <DropdownMenuSeparator className="h-px w-[95%] bg-slate-700 last:hidden" />
               </Fragment>
             ))}
           </DropdownMenuContent>
