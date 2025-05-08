@@ -28,10 +28,14 @@ const PaneContextMenu: React.FC<PaneContextMenuProps> = ({ x, y, onClose }) => {
     })
   );
 
+  // focus the input field when the component mounts
   useEffect(() => {
     inputRef.current?.focus();
   }, []);
 
+  // filter node types based on search input
+  // if the search input is empty, only show node types
+  // if the search input is not empty, include math sub-types as well
   useEffect(() => {
     const types = Object.keys(nodeTypes)
       .filter((type) => type.toLowerCase().includes(nodeSearch.toLowerCase()))
@@ -41,13 +45,13 @@ const PaneContextMenu: React.FC<PaneContextMenuProps> = ({ x, y, onClose }) => {
 
     if (nodeSearch === "") return setFilteredTypes(types);
 
-    const matchedTypes = MathFloatComputeTypes.filter((type) =>
+    const mathTypes = MathFloatComputeTypes.filter((type) =>
       type.toLowerCase().includes(nodeSearch.toLowerCase())
     ).map((t) => {
       return { parent: "Math", nodeType: "MathFloat", computeType: t };
     });
 
-    const combined = [...types, ...matchedTypes];
+    const combined = [...types, ...mathTypes];
     setFilteredTypes(combined);
     setSelectedIndex(0);
   }, [nodeSearch]);
@@ -63,6 +67,7 @@ const PaneContextMenu: React.FC<PaneContextMenuProps> = ({ x, y, onClose }) => {
     onClose();
   };
 
+  // handle keyboard navigation
   const handleKeyDown = (e: KeyboardEvent) => {
     if (e.key === "ArrowDown") {
       e.preventDefault();
@@ -81,6 +86,7 @@ const PaneContextMenu: React.FC<PaneContextMenuProps> = ({ x, y, onClose }) => {
     }
   };
 
+  // attach event listener to the window to handle keyboard navigation
   useEffect(() => {
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
