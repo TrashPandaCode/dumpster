@@ -19,6 +19,7 @@ interface DebugState {
     handleId: string,
     value: number
   ) => void;
+  setHandles: (gameObject: string, label: string, handleId: string) => void;
 }
 
 export const useDebugStore = create<DebugState>((set) => ({
@@ -37,5 +38,16 @@ export const useDebugStore = create<DebugState>((set) => ({
         .get(gameObject)!
         .set(label, { handleId: handleId, value: value });
       return state;
+    }),
+  setHandles: (gameObject, label, handleId) =>
+    set((state) => {
+      if (state.gameObjects.get(gameObject)!.has(label)) return state;
+
+      const newGameObjectsMap = new Map(state.gameObjects);
+      newGameObjectsMap
+        .get(gameObject)!
+        .set(label, { handleId: handleId, value: 0 });
+
+      return { ...state, gameObjects: newGameObjectsMap };
     }),
 }));

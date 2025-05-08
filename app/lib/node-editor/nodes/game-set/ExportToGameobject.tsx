@@ -16,12 +16,21 @@ const ExportToGameobject = memo(({ id }: { id: string }) => {
   const gameObjects = useDebugStore((state) => state.gameObjects);
   const [gameObject, setGameObject] = useState("bean"); // TODO: load default gameobject level based
 
-  const [handles, setHandles] = useState<Map<string, string>>(
+  const [handles, _setHandles] = useState<Map<string, string>>(
     new Map([
       ["xpos", IN_HANDLE_1],
       ["ypos", IN_HANDLE_2],
     ])
   ); //TODO: load this level based
+
+  const setStoreHandles = useDebugStore((state) => state.setHandles);
+  function setHandles(handles: Map<string, string>) {
+    handles.forEach((handleId, label) => {
+      setStoreHandles(gameObject, label, handleId);
+    });
+    _setHandles(handles);
+  }
+
   const setData = useDebugStore((state) => state.setData);
 
   useEffect(() => {
