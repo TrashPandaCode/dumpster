@@ -7,8 +7,6 @@ import * as SelectPrimitive from "@radix-ui/react-select";
 import classnames from "classnames";
 import React from "react";
 
-import CustomDropDown from "./CustomDropDown";
-
 type Items = {
   [key: string]: string[];
 };
@@ -42,18 +40,19 @@ const SelectDropDown = ({
           <SelectPrimitive.SelectScrollUpButton className="flex h-[25px] items-center justify-center bg-slate-900 text-white">
             <ChevronUpIcon />
           </SelectPrimitive.SelectScrollUpButton>
-          <SelectPrimitive.SelectViewport className="p-1">
-            <SelectPrimitive.SelectGroup>
-              {Object.entries(items).map(([category, items]) => (
-                <CustomDropDown key={category} category={category}>
-                  {items.map((item) => (
-                    <SelectItem value={item} key={item} className="w-full">
-                      {item}
-                    </SelectItem>
-                  ))}
-                </CustomDropDown>
-              ))}
-            </SelectPrimitive.SelectGroup>
+          <SelectPrimitive.SelectViewport className="flex flex-row gap-4 p-2">
+            {Object.entries(items).map(([category, items]) => (
+              <SelectPrimitive.SelectGroup key={category}>
+                <SelectPrimitive.Label className="font-mono text-xs text-white">
+                  {category}
+                </SelectPrimitive.Label>
+                {items.map((item) => (
+                  <SelectItem value={item} key={item} className="w-40">
+                    {item}
+                  </SelectItem>
+                ))}
+              </SelectPrimitive.SelectGroup>
+            ))}
           </SelectPrimitive.SelectViewport>
           <SelectPrimitive.SelectScrollDownButton className="flex h-[25px] items-center justify-center bg-slate-900 text-white">
             <ChevronDownIcon />

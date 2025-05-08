@@ -51,7 +51,9 @@ const KeyPress = memo(({ id }: { id: string }) => {
           <button
             className={classnames(
               "nodrag m-auto rounded px-2 hover:cursor-pointer",
-              keyPressType == "down" ? "outline outline-blue-300" : "bg-slate-900"
+              keyPressType == "down"
+                ? "outline outline-blue-300"
+                : "bg-slate-900"
             )}
             onClick={() => {
               setKeyPressType("down");
@@ -62,7 +64,9 @@ const KeyPress = memo(({ id }: { id: string }) => {
           <button
             className={classnames(
               "nodrag m-auto rounded px-2 hover:cursor-pointer",
-              keyPressType == "press" ? "outline outline-blue-300" : "bg-slate-900"
+              keyPressType == "press"
+                ? "outline outline-blue-300"
+                : "bg-slate-900"
             )}
             onClick={() => {
               setKeyPressType("press");
@@ -73,7 +77,9 @@ const KeyPress = memo(({ id }: { id: string }) => {
           <button
             className={classnames(
               "nodrag m-auto rounded px-2 hover:cursor-pointer",
-              keyPressType == "release" ? "outline outline-blue-300" : "bg-slate-900"
+              keyPressType == "release"
+                ? "outline outline-blue-300"
+                : "bg-slate-900"
             )}
             onClick={() => {
               setKeyPressType("release");
@@ -85,7 +91,7 @@ const KeyPress = memo(({ id }: { id: string }) => {
         <div className="flex w-full justify-end gap-2">
           <SelectDropDown
             setSelected={setCurKey}
-            items={{ keys: ["w", "a", "s", "d"], other: ["space", "enter"] }}
+            items={{ Keys: ["w", "a", "s", "d"], Other: ["space", "enter"] }}
           />
           <LabelHandle
             id={OUT_HANDLE_1}
