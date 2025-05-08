@@ -7,6 +7,8 @@ import { loadLevel } from "~/lib/game/core/loadLevel";
 import NodeEditor from "~/lib/node-editor/NodeEditor";
 import type { Route } from "./+types/Game";
 
+import "./game.css";
+
 const Game = ({ params }: Route.ComponentProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const level = params.id || "playground";
