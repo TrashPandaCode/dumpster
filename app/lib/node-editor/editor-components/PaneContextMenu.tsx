@@ -1,3 +1,4 @@
+import { ChevronRightIcon } from "@radix-ui/react-icons";
 import { Panel, useReactFlow, type Edge, type Node } from "@xyflow/react";
 import React, { useEffect, useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
@@ -24,6 +25,31 @@ const PaneContextMenu: React.FC<PaneContextMenuProps> = ({ x, y, onClose }) => {
     inputRef.current?.focus();
   }, []);
 
+  const [filteredTypes, setFilteredTypes] = useState<
+    { parent: string; data: string; computeType?: string }[]
+  >(
+    Object.keys(nodeTypes).map((t) => {
+      return { parent: "", data: t };
+    })
+  );
+  useEffect(() => {
+    const types = Object.keys(nodeTypes)
+      .filter((type) => type.toLowerCase().includes(nodeSearch.toLowerCase()))
+      .map((t) => {
+        return { parent: "", data: t };
+      });
+
+    if (nodeSearch === "") return setFilteredTypes(types);
+
+    const matchedTypes = MathFloatComputeTypes.filter((type) =>
+      type.toLowerCase().includes(nodeSearch.toLowerCase())
+    ).map((t) => {
+      return { parent: "Math", data: "MathFloat", computeType: t };
+    });
+
+    setFilteredTypes([...types, ...matchedTypes]);
+  }, [nodeSearch]);
+
   const handleAddNode = (type: string, computeType?: string) => {
     addNodes({
       id: uuidv4(),
@@ -42,6 +68,7 @@ const PaneContextMenu: React.FC<PaneContextMenuProps> = ({ x, y, onClose }) => {
           <input
             ref={inputRef}
             type="text"
+            spellCheck="false"
             placeholder="Search"
             className="w-full rounded bg-slate-900 p-2 text-sm text-white focus:border-gray-300 focus:ring-0 focus:outline-none"
             onChange={(e) => setNodeSearch(e.target.value)}
@@ -66,19 +93,23 @@ const PaneContextMenu: React.FC<PaneContextMenuProps> = ({ x, y, onClose }) => {
         </div>
 
         <div>
-          {Object.keys(nodeTypes)
-            .filter((type) =>
-              type.toLowerCase().includes(nodeSearch.toLowerCase())
-            )
-            .map((type, index) => (
-              <button
-                key={`add_node_${type}_${index}`}
-                className="w-full rounded px-2 py-1 text-left text-sm text-white hover:bg-slate-700"
-                onClick={() => handleAddNode(type)}
-              >
-                {type}
-              </button>
-            ))}
+          {filteredTypes.map((type, index) => (
+            <button
+              key={`add_node_${type}_${index}`}
+              className="w-full rounded px-2 py-1 text-left text-sm text-white hover:bg-slate-700"
+              onClick={() => handleAddNode(type.data, type.computeType)}
+            >
+              {type.computeType ? (
+                <span>
+                  <span className="text-slate-400">{type.data}</span>
+                  <ChevronRightIcon className="inline-block h-4 w-4" />
+                  <span className="">{type.computeType}</span>
+                </span>
+              ) : (
+                <>{type.data}</>
+              )}
+            </button>
+          ))}
         </div>
       </Panel>
     </div>
