@@ -3,18 +3,39 @@ import { create } from "zustand";
 import { IN_HANDLE_1, IN_HANDLE_2 } from "../node-editor/nodes/constants";
 
 interface DebugState {
-  data: Map<string, { handleId: string; value: number }>;
-  setData: (label: string, handleId: string, value: number) => void;
+  gameObjects: Map<
+    string, // gameobject label
+    Map<
+      string, // handle display name
+      {
+        handleId: string;
+        value: number;
+      }
+    >
+  >;
+  setData: (
+    gameObject: string,
+    label: string,
+    handleId: string,
+    value: number
+  ) => void;
 }
 
 export const useDebugStore = create<DebugState>((set) => ({
-  data: new Map([
-    ["xpos", { handleId: IN_HANDLE_1, value: 0 }],
-    ["ypos", { handleId: IN_HANDLE_2, value: 0 }],
-  ]), // this needs to be set level based
-  setData: (label, handleId, value) =>
+  gameObjects: new Map([
+    [
+      "bean",
+      new Map([
+        ["xpos", { handleId: IN_HANDLE_1, value: 0 }],
+        ["ypos", { handleId: IN_HANDLE_2, value: 0 }],
+      ]), // this needs to be set level based
+    ],
+  ]),
+  setData: (gameObject, label, handleId, value) =>
     set((state) => {
-      state.data.set(label, { handleId: handleId, value: value });
+      state.gameObjects
+        .get(gameObject)!
+        .set(label, { handleId: handleId, value: value });
       return state;
     }),
 }));
