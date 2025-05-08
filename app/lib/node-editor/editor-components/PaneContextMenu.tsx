@@ -1,10 +1,4 @@
-import {
-  Panel,
-  useReactFlow,
-  useStore,
-  type Edge,
-  type Node,
-} from "@xyflow/react";
+import { Panel, useReactFlow, type Edge, type Node } from "@xyflow/react";
 import React, { useEffect, useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
@@ -24,27 +18,17 @@ const PaneContextMenu: React.FC<PaneContextMenuProps> = ({ x, y, onClose }) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [nodeSearch, setNodeSearch] = useState("");
 
-  const [offsetX, offsetY, zoom] = useStore((s) => s.transform);
+  const { screenToFlowPosition } = useReactFlow();
 
   useEffect(() => {
     inputRef.current?.focus();
   }, []);
 
   const handleAddNode = (type: string, computeType?: string) => {
-    const canvasElement = document.getElementById("node-editor");
-    if (!canvasElement) {
-      console.error("Canvas element with ID 'node-editor' not found.");
-      return;
-    }
-    const canvasRect = canvasElement.getBoundingClientRect();
-
-    const nodeX = (x - offsetX) / zoom - canvasRect.left / zoom;
-    const nodeY = (y - offsetY) / zoom - canvasRect.top / zoom;
-
     addNodes({
       id: uuidv4(),
       type,
-      position: { x: nodeX, y: nodeY },
+      position: screenToFlowPosition({ x, y }),
       data: { initialComputeType: computeType },
     });
 
