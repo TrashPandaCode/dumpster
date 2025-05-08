@@ -19,19 +19,11 @@ interface DebugState {
     handleId: string,
     value: number
   ) => void;
-  setHandles: (gameObject: string, label: string, handleId: string) => void;
+  addHandle: (gameObject: string, label: string, handleId: string) => void;
 }
 
 export const useDebugStore = create<DebugState>((set) => ({
-  gameObjects: new Map([
-    [
-      "bean",
-      new Map([
-        ["xpos", { handleId: IN_HANDLE_1, value: 0 }],
-        ["ypos", { handleId: IN_HANDLE_2, value: 0 }],
-      ]), // this needs to be set level based
-    ],
-  ]),
+  gameObjects: new Map(),
   setData: (gameObject, label, handleId, value) =>
     set((state) => {
       state.gameObjects
@@ -39,9 +31,9 @@ export const useDebugStore = create<DebugState>((set) => ({
         .set(label, { handleId: handleId, value: value });
       return state;
     }),
-  setHandles: (gameObject, label, handleId) =>
+  addHandle: (gameObject, label, handleId) =>
     set((state) => {
-      if (state.gameObjects.get(gameObject)!.has(label)) return state;
+      if (state.gameObjects.get(gameObject)!.has(label)) return state; // this is just a fail safe, because we also test for this to happen in the export node
 
       const newGameObjectsMap = new Map(state.gameObjects);
       newGameObjectsMap
