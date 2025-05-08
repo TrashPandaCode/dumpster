@@ -154,6 +154,7 @@ const NodeEditor: React.FC<{ level: string }> = ({ level }) => {
         onSelectionContextMenu={handleSelectionContextMenu}
         onConnect={onConnect}
         onPaneClick={onPaneClick}
+        disableKeyboardA11y={true}
         fitView
         proOptions={{ hideAttribution: true }}
         deleteKeyCode={["Delete", "Backspace"]}
