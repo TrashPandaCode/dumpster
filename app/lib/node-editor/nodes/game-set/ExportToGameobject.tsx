@@ -2,26 +2,32 @@ import { Position, useReactFlow } from "@xyflow/react";
 import { memo, useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
+import { LEVELS } from "~/lib/game/core/levels";
 import { useDebugStore } from "~/lib/zustand/debug";
+import { useGameStore } from "~/lib/zustand/game";
 import LabelHandle from "../../node-components/LabelHandle";
 import NodeContent from "../../node-components/NodeContent";
 import SelectDropDown from "../../node-components/SelectDropDown";
 import type { nodeData, nodeInputs } from "../../node-store/node-store";
 import { getInput } from "../../node-store/utils";
-import { IN_HANDLE_1, IN_HANDLE_2 } from "../constants";
+import { IN_HANDLE_X } from "../constants";
 
 const ExportToGameobject = memo(({ id }: { id: string }) => {
+  const level = useGameStore((state) => state.currentLevel);
+  const modifiableGameObjects = LEVELS[level].modifiableGameObjects;
+
   const { updateNodeData } = useReactFlow();
   const [curLabel, setCurLabel] = useState("");
   const gameObjects = useDebugStore((state) => state.gameObjects);
-  const [gameObject, setGameObject] = useState("bean"); // TODO: load default gameobject level based
+  const [gameObject, setGameObject] = useState(modifiableGameObjects[0].id); // we assume there is at least one game object editable if this node is enabled
 
   const [handles, _setHandles] = useState<Map<string, string>>(
-    new Map([
-      ["xpos", IN_HANDLE_1],
-      ["ypos", IN_HANDLE_2],
-    ])
-  ); //TODO: load this level based
+    new Map(
+      modifiableGameObjects.find((obj) => obj.id === gameObject)?.connections.map((label, index) => {
+        return [label, IN_HANDLE_X(index + 1)];
+      })
+    )
+  );
 
   const setStoreHandles = useDebugStore((state) => state.setHandles);
   function setHandles(handles: Map<string, string>) {

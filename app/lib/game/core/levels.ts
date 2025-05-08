@@ -18,9 +18,9 @@ type Level = {
         edges: Edge[];
     };
     hints: string[];
+    modifiableGameObjects: { id: string, connections: string[] }[];
     // TODO
     // allowedNodes
-    // modifiableGameObjects: { name: string, connections: string[] }[];
 };
 
 /**
@@ -28,7 +28,7 @@ type Level = {
  * Each level has a name, description, category, image, nodes, edges,
  * initial state function, solution, and hints.
  */
-export const LEVELS: Record<string, Level> = {
+export const LEVELS = {
     "playground": {
         name: "Playground",
         description: "This is a playground level where you can test your game mechanics.",
@@ -42,6 +42,8 @@ export const LEVELS: Record<string, Level> = {
             edges: [],
         },
         hints: [],
+        modifiableGameObjects: [{ id: "bean", connections: ["xpos", "zpos"] }],
+
     },
     "1.1": {
         name: "Level 1.1",
@@ -56,5 +58,7 @@ export const LEVELS: Record<string, Level> = {
             edges: [],
         },
         hints: [],
+        modifiableGameObjects: [{ id: "bean", connections: ["xpos", "ypos"] }],
+
     },
 }

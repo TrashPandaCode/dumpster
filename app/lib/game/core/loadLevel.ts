@@ -8,5 +8,5 @@ export const loadLevel = (level: string) => {
     if (!(level in LEVELS)) {
         throw new Error(`Level ${level} not found`);
     }
-    LEVELS[level].initialState();
+    LEVELS[level as keyof typeof LEVELS].initialState();
 }
