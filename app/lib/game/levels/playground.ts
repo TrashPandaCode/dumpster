@@ -26,8 +26,10 @@ export const initializePlayground = () => {
     if (useGameStore.getState().isPaused) return;
 
     //Move
-    const x = useDebugStore.getState().data.get("xpos")?.value ?? 0;
-    const y = useDebugStore.getState().data.get("ypos")?.value ?? 0;
+    const x =
+      useDebugStore.getState().gameObjects.get("bean")?.get("xpos")?.value ?? 0;
+    const y =
+      useDebugStore.getState().gameObjects.get("bean")?.get("ypos")?.value ?? 0;
 
     bean.pos.x = x;
     bean.pos.y = y;

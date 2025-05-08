@@ -38,8 +38,10 @@ export const initialize1_1 = () => {
     racoon.move(RACOON_SPEED * k.dt(), 0);
 
     //Move
-    const x = useDebugStore.getState().data.get("xpos")?.value ?? 0;
-    const y = useDebugStore.getState().data.get("ypos")?.value ?? 0;
+    const x =
+      useDebugStore.getState().gameObjects.get("bean")?.get("xpos")?.value ?? 0;
+    const y =
+      useDebugStore.getState().gameObjects.get("bean")?.get("ypos")?.value ?? 0;
 
     trashCan.pos.x = x;
     trashCan.pos.y = y;

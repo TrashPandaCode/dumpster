@@ -5,6 +5,7 @@ import { v4 as uuidv4 } from "uuid";
 import { useDebugStore } from "~/lib/zustand/debug";
 import LabelHandle from "../../node-components/LabelHandle";
 import NodeContent from "../../node-components/NodeContent";
+import SelectDropDown from "../../node-components/SelectDropDown";
 import type { nodeData, nodeInputs } from "../../node-store/node-store";
 import { getInput } from "../../node-store/utils";
 import { IN_HANDLE_1, IN_HANDLE_2 } from "../constants";
@@ -12,6 +13,8 @@ import { IN_HANDLE_1, IN_HANDLE_2 } from "../constants";
 const ExportToGameobject = memo(({ id }: { id: string }) => {
   const { updateNodeData } = useReactFlow();
   const [curLabel, setCurLabel] = useState("");
+  const gameObjects = useDebugStore((state) => state.gameObjects);
+  const [gameObject, setGameObject] = useState("bean"); // TODO: load default gameobject level based
 
   const [handles, setHandles] = useState<Map<string, string>>(
     new Map([
@@ -25,7 +28,7 @@ const ExportToGameobject = memo(({ id }: { id: string }) => {
     updateNodeData(id, {
       compute: (inputs: nodeInputs, _: nodeData) => {
         handles.forEach((handleId, label) => {
-          setData(label, handleId, getInput(inputs, handleId, 0));
+          setData(gameObject, label, handleId, getInput(inputs, handleId, 0));
         });
       },
     });
@@ -34,6 +37,11 @@ const ExportToGameobject = memo(({ id }: { id: string }) => {
   return (
     <div>
       <NodeContent label="Export To Gameobject" type="export">
+        <SelectDropDown
+          items={{ "Game objects": Array.from(gameObjects.keys()) }}
+          setSelected={setGameObject}
+          defaultValue={gameObject}
+        />
         {Array.from(handles).map(([label, handleId]) => (
           <LabelHandle
             key={handleId}
