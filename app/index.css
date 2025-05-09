@@ -1,22 +1,11 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
-@font-face {
-  font-family: "FreaksOfNatureMassive";
-  src: url(./assets/FREAKSOFNATUREMASSIVE.ttf) format("truetype");
-}
-@font-face {
-  font-family: "FreaksOfNature";
-  src: url(./assets/FREAKSOFNATURE.ttf) format("truetype");
-}
-
 @theme {
   --font-sans:
     "Noto Sans", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
     "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   --font-pixel: "Pixelify Sans", system-ui, sans-serif;
-  --font-fonm: "FreaksOfNatureMassive", system-ui, sans-serif;
-  --font-fon: "FreaksOfNature", system-ui, sans-serif;
   --color-jam-600: #ff4242;
   --color-jam-700: #ff2929;
   --font-mono: "Iosevka Web", ui-monospace, monospace;
