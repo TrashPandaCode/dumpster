@@ -8,7 +8,6 @@ import {
 } from "@radix-ui/react-dropdown-menu";
 import { CubeIcon, HamburgerMenuIcon } from "@radix-ui/react-icons";
 import { Panel, useReactFlow } from "@xyflow/react";
-import { Fragment } from "react/jsx-runtime";
 import { v4 as uuidv4 } from "uuid";
 
 import { useNodeStore } from "../node-store/node-store";
@@ -26,7 +25,7 @@ const RightPanel = () => {
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <button
-            className="cursor-pointer rounded bg-slate-800 p-2 outline outline-slate-500 hover:bg-slate-900 data-[state=open]:rounded-b-none data-[state=open]:bg-slate-800 data-[state=open]:outline-none"
+            className="cursor-pointer rounded bg-slate-800 p-2 outline outline-slate-500 hover:bg-slate-900 data-[state=open]:bg-slate-900"
             aria-label="Customise options"
           >
             <HamburgerMenuIcon className="text-white" />
@@ -35,28 +34,25 @@ const RightPanel = () => {
 
         <DropdownMenuPortal>
           <DropdownMenuContent
-            className="flex w-65 flex-col items-center space-y-2 rounded rounded-tr-none bg-slate-800 p-2 pt-2 pb-2 shadow-lg outline outline-slate-500 outline-solid"
+            className="flex w-65 flex-col items-center gap-1 rounded bg-slate-800 p-2 font-mono shadow-lg !outline-1 !outline-slate-700"
             align="end"
           >
             {Object.keys(nodeTypes).map((name) => (
-              <Fragment key={name}>
-                <DropdownMenuItem asChild>
-                  <button
-                    className="w-62 rounded px-2 py-1 text-left text-white hover:cursor-pointer hover:bg-slate-700 focus:outline-0"
-                    onClick={() => {
-                      addNodes({
-                        id: uuidv4(),
-                        type: name,
-                        position: { x: 0, y: 0 },
-                        data: {},
-                      });
-                    }}
-                  >
-                    {name}
-                  </button>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator className="h-px w-[95%] bg-slate-700 last:hidden" />
-              </Fragment>
+              <DropdownMenuItem asChild key={name}>
+                <button
+                  className="w-full cursor-pointer rounded px-2 py-1 text-left text-sm text-white hover:bg-slate-700"
+                  onClick={() => {
+                    addNodes({
+                      id: uuidv4(),
+                      type: name,
+                      position: { x: 0, y: 0 },
+                      data: {},
+                    });
+                  }}
+                >
+                  {name}
+                </button>
+              </DropdownMenuItem>
             ))}
           </DropdownMenuContent>
         </DropdownMenuPortal>
