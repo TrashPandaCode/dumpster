@@ -1,56 +1,16 @@
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { NavLink } from "react-router";
 
 import Footer from "~/lib/core/components/Footer";
 import Header from "~/lib/core/components/Header";
 import PlayButton from "~/lib/core/components/PlayButton";
-import alleyOne from "../assets/alley_one.jpg";
-import alleyTwo from "../assets/alley_two.png";
+import { LEVELS, type Level } from "~/lib/game/core/levels";
 import arrowDownIcon from "../assets/arrow_down.svg";
-import houseImage from "../assets/house.png";
-
-
-const CARDS = [
-  {
-    id: 1,
-    name: "Level 1",
-    description: "This is level 1",
-    image: houseImage,
-  },
-  {
-    id: 2,
-    name: "Level 2",
-    description: "This is level 2",
-    image: alleyOne,
-  },
-  {
-    id: 3,
-    name: "Level 3",
-    description: "This is level 3",
-    image: alleyTwo,
-  },
-  {
-    id: 4,
-    name: "Level 4",
-    description: "This is level 4",
-    image: houseImage,
-  },
-  {
-    id: 5,
-    name: "Level 5",
-    description: "This is level 5",
-    image: alleyOne,
-  },
-  {
-    id: 6,
-    name: "Level 6",
-    description: "This is level 6",
-    image: alleyTwo,
-  },
-];
 
 const Home = () => {
-  const [currentHoverCard, setCurrentHoverCard] = useState(CARDS[0]);
+  const [currentHoverCard, setCurrentHoverCard] = useState(LEVELS["1.1"]); // Default to the first level
+  const CARDS = Object.values(LEVELS).slice(0, 6); // Get the first 6 levels for the cards
+
   const [showAll, setShowAll] = useState(false);
   const scrollTargetRef = useRef<HTMLDivElement>(null);
   const scrollToTarget = () => {
@@ -82,19 +42,6 @@ const Home = () => {
                 <h1 className="font-pixel text-4xl font-bold">
                   {currentHoverCard.name}
                 </h1>
-                <p className="text-sm">
-                  Lorem Ipsum is simply dummy text of the printing and
-                  typesetting industry. Lorem Ipsum has been the industry's
-                  standard dummy text ever since the 1500s, when an unknown
-                  printer took a galley of type and scrambled it to make a type
-                  specimen book. It has survived not only five centuries, but
-                  also the leap into electronic typesetting, remaining
-                  essentially unchanged. It was popularised in the 1960s with
-                  the release of Letraset sheets containing Lorem Ipsum
-                  passages, and more recently with desktop publishing software
-                  like Aldus PageMaker including versions of Lorem Ipsum.
-                </p>
-                <br />
                 <br />
                 <p className="text-sm">{currentHoverCard.description}</p>
               </div>
@@ -112,12 +59,12 @@ const Home = () => {
                   }}
                 >
                   <div className="grid w-full grid-cols-[repeat(auto-fit,minmax(200px,_1fr))] gap-4 overflow-hidden p-2">
-                    {CARDS.map((card) => (
+                    {CARDS.map((level) => (
                       <LevelCard
-                        key={card.id}
-                        img={card.image}
+                        key={level.name}
+                        level={level}
                         onMouseEnter={() => {
-                          setCurrentHoverCard(card);
+                          setCurrentHoverCard(level);
                         }}
                       />
                     ))}
@@ -233,16 +180,21 @@ const Home = () => {
   );
 };
 
-const LevelCard: React.FC<{ img: string; onMouseEnter: () => void }> = ({
-  img,
+const LevelCard: React.FC<{ level: Level; onMouseEnter: () => void }> = ({
+  level,
   onMouseEnter,
 }) => (
-  <div
+  <NavLink
+    to={`/game/${level.id}`}
     className="outline-jam-600 relative h-full w-full cursor-pointer overflow-hidden rounded-xl hover:outline-5"
     onMouseEnter={onMouseEnter}
   >
-    <img className="h-full w-full scale-110 object-cover" src={img} alt="" />
-  </div>
+    <img
+      className="h-full w-full scale-110 object-cover"
+      src={level.image}
+      alt=""
+    />
+  </NavLink>
 );
 
 export default Home;
