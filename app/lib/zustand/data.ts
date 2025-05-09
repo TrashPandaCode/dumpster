@@ -33,7 +33,7 @@ export const useDataStore = create<DataState>((set) => ({
     }),
   addHandle: (gameObject, label, handleId) =>
     set((state) => {
-      if (state.gameObjects.get(gameObject)!.has(label)) return state; // this is just a fail safe, because we also test for this to happen in the export node
+      if (state.gameObjects.get(gameObject)!.has(label)) return state;
 
       const newGameObjectsMap = new Map(state.gameObjects);
       newGameObjectsMap

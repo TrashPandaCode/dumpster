@@ -61,7 +61,6 @@ const ExportToGameobject = memo(({ id }: { id: string }) => {
           <button
             className="ml-2 hover:cursor-pointer"
             onClick={() => {
-              if (gameObjects.get(gameObject)!.has(curLabel)) return;
               addHandle(gameObject, curLabel, uuidv4());
             }}
           >
