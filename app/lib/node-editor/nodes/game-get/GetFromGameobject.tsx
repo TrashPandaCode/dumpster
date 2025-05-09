@@ -1,4 +1,4 @@
-import { Position, useReactFlow } from "@xyflow/react";
+import { Position, useReactFlow, useUpdateNodeInternals } from "@xyflow/react";
 import { memo, useEffect, useState } from "react";
 
 import { LEVELS } from "~/lib/game/core/levels";
@@ -17,6 +17,7 @@ const GetFromGameobject = memo(({ id }: { id: string }) => {
   const [gameObject, setGameObject] = useState(modifiableGameObjects[0].id); // we assume there is at least one game object editable if this node is enabled
 
   const { updateNodeData } = useReactFlow();
+  const updateNodeInternals = useUpdateNodeInternals();
 
   useEffect(() => {
     updateNodeData(id, {
@@ -33,7 +34,10 @@ const GetFromGameobject = memo(({ id }: { id: string }) => {
       <NodeContent label="Import From Gameobject" type="import">
         <SelectDropDown
           items={{ "Game objects": Array.from(gameObjects.keys()) }}
-          setSelected={setGameObject}
+          setSelected={(selected: string) => {
+            setGameObject(selected);
+            updateNodeInternals(id);
+          }}
           defaultValue={gameObject}
         />
         {Array.from(gameObjects.get(gameObject) ?? []).map(

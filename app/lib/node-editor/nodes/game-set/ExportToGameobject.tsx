@@ -19,7 +19,6 @@ const ExportToGameobject = memo(({ id }: { id: string }) => {
   const updateNodeInternals = useUpdateNodeInternals();
 
   const [gameObject, setGameObject] = useState(modifiableGameObjects[0].id); // we assume there is at least one game object editable if this node is enabled
-
   const gameObjects = useDataStore((state) => state.gameObjects);
 
   const setData = useDataStore((state) => state.setData);
