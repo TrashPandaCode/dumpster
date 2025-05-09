@@ -1,4 +1,4 @@
-import { Position, useReactFlow } from "@xyflow/react";
+import { Position, useReactFlow, useUpdateNodeInternals } from "@xyflow/react";
 import { memo, useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
@@ -16,8 +16,10 @@ const ExportToGameobject = memo(({ id }: { id: string }) => {
   const modifiableGameObjects = LEVELS[level].modifiableGameObjects;
 
   const { updateNodeData } = useReactFlow();
+  const updateNodeInternals = useUpdateNodeInternals();
 
   const [gameObject, setGameObject] = useState(modifiableGameObjects[0].id); // we assume there is at least one game object editable if this node is enabled
+
   const gameObjects = useDataStore((state) => state.gameObjects);
 
   const setData = useDataStore((state) => state.setData);
@@ -39,7 +41,10 @@ const ExportToGameobject = memo(({ id }: { id: string }) => {
       <NodeContent label="Export To Gameobject" type="export">
         <SelectDropDown
           items={{ "Game objects": Array.from(gameObjects.keys()) }}
-          setSelected={setGameObject}
+          setSelected={(selected: string) => {
+            setGameObject(selected);
+            updateNodeInternals(id);
+          }}
           defaultValue={gameObject}
         />
         {Array.from(gameObjects.get(gameObject) ?? []).map(

@@ -44,7 +44,10 @@ export const LEVELS = {
       edges: [],
     },
     hints: [],
-    modifiableGameObjects: [{ id: "bean", connections: ["xpos", "ypos"] }],
+    modifiableGameObjects: [
+      { id: "bean", connections: ["xpos", "ypos"] },
+      { id: "bean2", connections: ["xpos", "ypos"] },
+    ],
   },
   "1.1": {
     name: "Level 1.1",
