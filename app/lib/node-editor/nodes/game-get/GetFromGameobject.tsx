@@ -30,7 +30,7 @@ const GetFromGameobject = memo(({ id }: { id: string }) => {
 
   return (
     <div className="min-w-48">
-      <NodeContent label="XPOS TEST" type="float">
+      <NodeContent label="Import From Gameobject" type="import">
         <SelectDropDown
           items={{ "Game objects": Array.from(gameObjects.keys()) }}
           setSelected={setGameObject}
