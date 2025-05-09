@@ -1,4 +1,4 @@
-import { useDebugStore } from "~/lib/zustand/debug";
+import { useDataStore } from "~/lib/zustand/data";
 import { useGameStore } from "~/lib/zustand/game";
 import { getKaplayCtx } from "../core/kaplayCtx";
 
@@ -27,9 +27,9 @@ export const initializePlayground = () => {
 
     //Move
     const x =
-      useDebugStore.getState().gameObjects.get("bean")?.get("xpos")?.value ?? 0;
+      useDataStore.getState().gameObjects.get("bean")?.get("xpos")?.value ?? 0;
     const y =
-      useDebugStore.getState().gameObjects.get("bean")?.get("ypos")?.value ?? 0;
+      useDataStore.getState().gameObjects.get("bean")?.get("ypos")?.value ?? 0;
 
     bean.pos.x = x;
     bean.pos.y = y;

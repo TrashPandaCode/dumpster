@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
 
-import { useDebugStore } from "~/lib/zustand/debug";
+import { useDataStore } from "~/lib/zustand/data";
 import { LEVELS } from "./levels";
 
 /**
@@ -14,7 +14,7 @@ export const loadLevel = (level: string) => {
 
   const curLevel = LEVELS[level as keyof typeof LEVELS];
 
-  useDebugStore.setState(() => {
+  useDataStore.setState(() => {
     const result = new Map<
       string,
       Map<

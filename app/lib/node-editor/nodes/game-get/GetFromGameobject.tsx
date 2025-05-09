@@ -2,7 +2,7 @@ import { Position, useReactFlow } from "@xyflow/react";
 import { memo, useEffect, useState } from "react";
 
 import { LEVELS } from "~/lib/game/core/levels";
-import { useDebugStore } from "~/lib/zustand/debug";
+import { useDataStore } from "~/lib/zustand/data";
 import { useGameStore } from "~/lib/zustand/game";
 import LabelHandle from "../../node-components/LabelHandle";
 import NodeContent from "../../node-components/NodeContent";
@@ -13,7 +13,7 @@ const GetFromGameobject = memo(({ id }: { id: string }) => {
   const level = useGameStore((state) => state.currentLevel);
   const modifiableGameObjects = LEVELS[level].modifiableGameObjects;
 
-  const gameObjects = useDebugStore((state) => state.gameObjects);
+  const gameObjects = useDataStore((state) => state.gameObjects);
   const [gameObject, setGameObject] = useState(modifiableGameObjects[0].id); // we assume there is at least one game object editable if this node is enabled
 
   const { updateNodeData } = useReactFlow();

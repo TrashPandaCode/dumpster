@@ -3,7 +3,7 @@ import { memo, useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
 import { LEVELS } from "~/lib/game/core/levels";
-import { useDebugStore } from "~/lib/zustand/debug";
+import { useDataStore } from "~/lib/zustand/data";
 import { useGameStore } from "~/lib/zustand/game";
 import LabelHandle from "../../node-components/LabelHandle";
 import NodeContent from "../../node-components/NodeContent";
@@ -16,11 +16,11 @@ const ExportToGameobject = memo(({ id }: { id: string }) => {
   const modifiableGameObjects = LEVELS[level].modifiableGameObjects;
 
   const { updateNodeData } = useReactFlow();
-  const setData = useDebugStore((state) => state.setData);
+  const setData = useDataStore((state) => state.setData);
   const [curLabel, setCurLabel] = useState("");
-  const gameObjects = useDebugStore((state) => state.gameObjects);
+  const gameObjects = useDataStore((state) => state.gameObjects);
   const [gameObject, setGameObject] = useState(modifiableGameObjects[0].id); // we assume there is at least one game object editable if this node is enabled
-  const addHandle = useDebugStore((state) => state.addHandle);
+  const addHandle = useDataStore((state) => state.addHandle);
 
   useEffect(() => {
     updateNodeData(id, {

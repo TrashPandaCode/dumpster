@@ -1,8 +1,6 @@
 import { create } from "zustand";
 
-import { IN_HANDLE_1, IN_HANDLE_2 } from "../node-editor/nodes/constants";
-
-interface DebugState {
+interface DataState {
   gameObjects: Map<
     string, // gameobject label
     Map<
@@ -22,7 +20,7 @@ interface DebugState {
   addHandle: (gameObject: string, label: string, handleId: string) => void;
 }
 
-export const useDebugStore = create<DebugState>((set) => ({
+export const useDataStore = create<DataState>((set) => ({
   gameObjects: new Map(),
   setData: (gameObject, label, handleId, value) =>
     set((state) => {
