@@ -6,10 +6,12 @@ import {
   Panel,
   ReactFlow,
   ReactFlowProvider,
+  useReactFlow,
   type Edge,
   type Node,
   type OnConnect,
   type OnEdgesChange,
+  type OnNodeDrag,
   type OnNodesChange,
 } from "@xyflow/react";
 import React, { useCallback, useState } from "react";
@@ -65,6 +67,18 @@ const NodeEditor: React.FC<{ level: string }> = ({ level }) => {
       });
 
       setNodes((nds) => applyNodeChanges(changes, nds));
+
+      // sort nodes to ensure that group nodes are before any other nodes
+      // this is important for nodes that have been spawned before the group to be addable into the group
+      setNodes((nds) => {
+        const sorted = [...nds].sort((a, b) => {
+          if (a.type === b.type) return 0;
+          if (a.type === "Group") return -1;
+          if (b.type === "Group") return 1;
+          return 0;
+        });
+        return sorted;
+      });
     },
     [setNodes]
   );
@@ -140,8 +154,91 @@ const NodeEditor: React.FC<{ level: string }> = ({ level }) => {
     setSelectionContextMenu(null);
   }, [paneContextMenu, nodeContextMenu, selectionContextMenu]);
 
+  const { getIntersectingNodes, screenToFlowPosition } = useReactFlow();
+
+  const onNodeDragStop: OnNodeDrag = (event, node) => {
+    const overlappingNode = getIntersectingNodes(node)?.[0];
+
+    // if there are no overlapping nodes but node has a parentid or
+    // if the overlapping node is not a group, remove the node from the group it is in
+    if (
+      (!overlappingNode ||
+        (overlappingNode && overlappingNode.type !== "Group")) &&
+      node.parentId
+    ) {
+      setNodes((nds) =>
+        nds.map((n) => {
+          const parent = nds.find((p) => p.id === node.parentId);
+
+          // if parent is not found, return the noder unmodified
+          if (!parent) return n;
+
+          const position = {
+            x: n.position.x + parent.position.x,
+            y: n.position.y + parent.position.y,
+          };
+
+          if (n.id === node.id) {
+            console.log("Node removed from group");
+            return {
+              ...n,
+              position,
+              parentId: undefined,
+            };
+          }
+          return n;
+        })
+      );
+      return;
+    }
+
+    // if there are no overlapping nodes, return
+    if (!overlappingNode) return;
+
+    // if overlapping node is not a group, return
+    if (overlappingNode.type !== "Group") return;
+
+    // if node is already in the group, return
+    if (node.parentId === overlappingNode.id) return;
+
+    // if node is not in the group, add it to the group or move it to the group from its previous group
+    setNodes((nds) =>
+      nds.map((n) => {
+        let position;
+        if (n.parentId && n.parentId !== overlappingNode.id) {
+          const prevParent = nds.find((p) => p.id === n.parentId);
+          if (!prevParent) return n;
+
+          position = {
+            x:
+              n.position.x + prevParent.position.x - overlappingNode.position.x,
+            y:
+              n.position.y + prevParent.position.y - overlappingNode.position.y,
+          };
+        } else if (!n.parentId) {
+          position = {
+            x: n.position.x - overlappingNode.position.x,
+            y: n.position.y - overlappingNode.position.y,
+          };
+        }
+
+        if (n.id === node.id) {
+          return {
+            ...n,
+            parentId: overlappingNode.id,
+            ...((!n.parentId || n.parentId !== overlappingNode.id) && {
+              position,
+            }),
+          };
+        }
+        return n;
+      })
+    );
+    console.log("Node added to group");
+  };
+
   return (
-    <ReactFlowProvider>
+    <>
       <ReactFlow
         id="node-editor"
         nodeTypes={nodeTypes}
@@ -158,6 +255,8 @@ const NodeEditor: React.FC<{ level: string }> = ({ level }) => {
         fitView
         proOptions={{ hideAttribution: true }}
         deleteKeyCode={["Delete", "Backspace"]}
+        // onNodeDrag={onNodeDrag}
+        onNodeDragStop={onNodeDragStop}
       >
         <Background bgColor="#14141d" color="#a7abc2" />
         <RightPanel />
@@ -186,7 +285,7 @@ const NodeEditor: React.FC<{ level: string }> = ({ level }) => {
           onClose={() => setSelectionContextMenu(null)}
         />
       )}
-    </ReactFlowProvider>
+    </>
   );
 };
 

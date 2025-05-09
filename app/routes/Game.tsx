@@ -1,4 +1,5 @@
 import { DragHandleDots2Icon } from "@radix-ui/react-icons";
+import { ReactFlowProvider } from "@xyflow/react";
 import { useEffect, useRef } from "react";
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 
@@ -38,7 +39,9 @@ const Game = ({ params }: Route.ComponentProps) => {
         />
       </PanelResizeHandle>
       <Panel id="nodes-panel" minSize={25} order={2}>
-        <NodeEditor level={level} />
+        <ReactFlowProvider>
+          <NodeEditor level={level} />
+        </ReactFlowProvider>
       </Panel>
     </PanelGroup>
   );
