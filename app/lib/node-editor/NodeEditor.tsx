@@ -3,7 +3,6 @@ import {
   applyEdgeChanges,
   applyNodeChanges,
   Background,
-  Panel,
   ReactFlow,
   ReactFlowProvider,
   type Edge,
@@ -25,7 +24,7 @@ import { useNodeStore } from "./node-store/node-store";
 import { nodeTypes } from "./nodes/node-types";
 import { debugEdges, debugNodes } from "./solutions/debug";
 
-const NodeEditor: React.FC<{ level: string }> = ({ level }) => {
+const NodeEditor = () => {
   const [nodes, setNodes] = useState<Node[]>(debugNodes); // TODO: load nodes based on level
   const [edges, setEdges] = useState<Edge[]>(debugEdges);
   const [paneContextMenu, setPaneContextMenu] = useState<{

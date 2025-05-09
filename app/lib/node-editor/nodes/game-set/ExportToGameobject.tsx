@@ -2,46 +2,37 @@ import { Position, useReactFlow } from "@xyflow/react";
 import { memo, useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
-import { useDebugStore } from "~/lib/zustand/debug";
+import { LEVELS } from "~/lib/game/core/levels";
+import { useDataStore } from "~/lib/zustand/data";
+import { useGameStore } from "~/lib/zustand/game";
 import LabelHandle from "../../node-components/LabelHandle";
 import NodeContent from "../../node-components/NodeContent";
 import SelectDropDown from "../../node-components/SelectDropDown";
 import type { nodeData, nodeInputs } from "../../node-store/node-store";
 import { getInput } from "../../node-store/utils";
-import { IN_HANDLE_1, IN_HANDLE_2 } from "../constants";
 
 const ExportToGameobject = memo(({ id }: { id: string }) => {
+  const level = useGameStore((state) => state.currentLevel);
+  const modifiableGameObjects = LEVELS[level].modifiableGameObjects;
+
   const { updateNodeData } = useReactFlow();
+
+  const [gameObject, setGameObject] = useState(modifiableGameObjects[0].id); // we assume there is at least one game object editable if this node is enabled
+  const gameObjects = useDataStore((state) => state.gameObjects);
+
+  const setData = useDataStore((state) => state.setData);
+  const addHandle = useDataStore((state) => state.addHandle);
   const [curLabel, setCurLabel] = useState("");
-  const gameObjects = useDebugStore((state) => state.gameObjects);
-  const [gameObject, setGameObject] = useState("bean"); // TODO: load default gameobject level based
-
-  const [handles, _setHandles] = useState<Map<string, string>>(
-    new Map([
-      ["xpos", IN_HANDLE_1],
-      ["ypos", IN_HANDLE_2],
-    ])
-  ); //TODO: load this level based
-
-  const setStoreHandles = useDebugStore((state) => state.setHandles);
-  function setHandles(handles: Map<string, string>) {
-    handles.forEach((handleId, label) => {
-      setStoreHandles(gameObject, label, handleId);
-    });
-    _setHandles(handles);
-  }
-
-  const setData = useDebugStore((state) => state.setData);
 
   useEffect(() => {
     updateNodeData(id, {
       compute: (inputs: nodeInputs, _: nodeData) => {
-        handles.forEach((handleId, label) => {
+        gameObjects.get(gameObject)!.forEach(({ handleId }, label) => {
           setData(gameObject, label, handleId, getInput(inputs, handleId, 0));
         });
       },
     });
-  }, [handles]);
+  }, [gameObjects, gameObject]);
 
   return (
     <div>
@@ -51,14 +42,16 @@ const ExportToGameobject = memo(({ id }: { id: string }) => {
           setSelected={setGameObject}
           defaultValue={gameObject}
         />
-        {Array.from(handles).map(([label, handleId]) => (
-          <LabelHandle
-            key={handleId}
-            id={handleId}
-            position={Position.Left}
-            label={label}
-          />
-        ))}
+        {Array.from(gameObjects.get(gameObject) ?? []).map(
+          ([label, { handleId }]) => (
+            <LabelHandle
+              key={handleId}
+              id={handleId}
+              position={Position.Left}
+              label={label}
+            />
+          )
+        )}
         <div>
           <input
             type="text"
@@ -70,10 +63,7 @@ const ExportToGameobject = memo(({ id }: { id: string }) => {
           <button
             className="ml-2 hover:cursor-pointer"
             onClick={() => {
-              if (handles.has(curLabel)) return;
-              const newHandles = new Map(handles);
-              newHandles.set(curLabel, uuidv4());
-              setHandles(newHandles);
+              addHandle(gameObject, curLabel, uuidv4());
             }}
           >
             +
