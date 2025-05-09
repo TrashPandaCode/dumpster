@@ -20,7 +20,7 @@ const ExportToGameobject = memo(({ id }: { id: string }) => {
   const [curLabel, setCurLabel] = useState("");
   const gameObjects = useDebugStore((state) => state.gameObjects);
   const [gameObject, setGameObject] = useState(modifiableGameObjects[0].id); // we assume there is at least one game object editable if this node is enabled
-  const addStoreHandles = useDebugStore((state) => state.addHandle);
+  const addHandle = useDebugStore((state) => state.addHandle);
 
   useEffect(() => {
     updateNodeData(id, {
@@ -30,7 +30,7 @@ const ExportToGameobject = memo(({ id }: { id: string }) => {
         });
       },
     });
-  }, [gameObjects]);
+  }, [gameObjects, gameObject]);
 
   return (
     <div>
@@ -62,7 +62,7 @@ const ExportToGameobject = memo(({ id }: { id: string }) => {
             className="ml-2 hover:cursor-pointer"
             onClick={() => {
               if (gameObjects.get(gameObject)!.has(curLabel)) return;
-              addStoreHandles(gameObject, curLabel, uuidv4());
+              addHandle(gameObject, curLabel, uuidv4());
             }}
           >
             +
