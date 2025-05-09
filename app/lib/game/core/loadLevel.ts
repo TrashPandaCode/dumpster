@@ -14,28 +14,20 @@ export const loadLevel = (level: string) => {
 
   const curLevel = LEVELS[level as keyof typeof LEVELS];
 
+  // load initial gameobjects data
   useDataStore.setState(() => {
-    const result = new Map<
-      string,
-      Map<
-        string,
-        {
-          handleId: string;
-          value: number;
-        }
-      >
-    >();
+    const result = new Map(
+      curLevel.modifiableGameObjects.map((item) => [
+        item.id,
+        new Map(
+          item.connections.map((conn) => [
+            conn,
+            { handleId: uuidv4(), value: 0 },
+          ])
+        ),
+      ])
+    );
 
-    for (const item of curLevel.modifiableGameObjects) {
-      const innerMap = new Map<string, { handleId: string; value: number }>();
-      for (const conn of item.connections) {
-        innerMap.set(conn, {
-          handleId: uuidv4(),
-          value: 0,
-        });
-      }
-      result.set(item.id, innerMap);
-    }
     return { gameObjects: result };
   });
 

@@ -1,16 +1,18 @@
 import { create } from "zustand";
 
+type GameObjectsData = Map<
+  string, // gameobject label
+  Map<
+    string, // handle display name
+    {
+      handleId: string;
+      value: number;
+    }
+  >
+>;
+
 interface DataState {
-  gameObjects: Map<
-    string, // gameobject label
-    Map<
-      string, // handle display name
-      {
-        handleId: string;
-        value: number;
-      }
-    >
-  >;
+  gameObjects: GameObjectsData;
   setData: (
     gameObject: string,
     label: string,
