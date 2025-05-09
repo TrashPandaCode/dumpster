@@ -36,7 +36,7 @@ const GetFromGameobject = memo(({ id }: { id: string }) => {
           setSelected={setGameObject}
           defaultValue={gameObject}
         />
-        {Array.from(gameObjects.get(gameObject)!).map(
+        {Array.from(gameObjects.get(gameObject) ?? []).map(
           ([label, { handleId }]) => (
             <LabelHandle
               key={handleId}

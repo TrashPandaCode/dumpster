@@ -16,11 +16,13 @@ const ExportToGameobject = memo(({ id }: { id: string }) => {
   const modifiableGameObjects = LEVELS[level].modifiableGameObjects;
 
   const { updateNodeData } = useReactFlow();
-  const setData = useDataStore((state) => state.setData);
-  const [curLabel, setCurLabel] = useState("");
-  const gameObjects = useDataStore((state) => state.gameObjects);
+
   const [gameObject, setGameObject] = useState(modifiableGameObjects[0].id); // we assume there is at least one game object editable if this node is enabled
+  const gameObjects = useDataStore((state) => state.gameObjects);
+
+  const setData = useDataStore((state) => state.setData);
   const addHandle = useDataStore((state) => state.addHandle);
+  const [curLabel, setCurLabel] = useState("");
 
   useEffect(() => {
     updateNodeData(id, {
@@ -40,7 +42,7 @@ const ExportToGameobject = memo(({ id }: { id: string }) => {
           setSelected={setGameObject}
           defaultValue={gameObject}
         />
-        {Array.from(gameObjects.get(gameObject)!).map(
+        {Array.from(gameObjects.get(gameObject) ?? []).map(
           ([label, { handleId }]) => (
             <LabelHandle
               key={handleId}
