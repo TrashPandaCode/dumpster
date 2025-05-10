@@ -141,9 +141,9 @@ const NodeEditor = () => {
     setSelectionContextMenu(null);
   }, [paneContextMenu, nodeContextMenu, selectionContextMenu]);
 
-  const { getIntersectingNodes, screenToFlowPosition } = useReactFlow();
+  const { getIntersectingNodes } = useReactFlow();
 
-  const onNodeDragStop: OnNodeDrag = (event, node) => {
+  const onNodeDragStop: OnNodeDrag = (_, node) => {
     // if the node is a group, return
     // node nesting cant work because of weird react flow behavior
     // "parent nodes need to be in front of child nodes in node array"
@@ -154,8 +154,7 @@ const NodeEditor = () => {
     // if there are no overlapping nodes but node has a parentid or
     // if the overlapping node is not a group, remove the node from the group it is in
     if (
-      (!overlappingNode ||
-        (overlappingNode && overlappingNode.type !== "Group")) &&
+      (!overlappingNode || overlappingNode.type !== "Group") &&
       node.parentId
     ) {
       setNodes((nds) =>
@@ -261,7 +260,6 @@ const NodeEditor = () => {
         fitView
         proOptions={{ hideAttribution: true }}
         deleteKeyCode={["Delete", "Backspace"]}
-        // onNodeDrag={onNodeDrag}
         onNodeDragStop={onNodeDragStop}
       >
         <Background bgColor="#14141d" color="#a7abc2" />
