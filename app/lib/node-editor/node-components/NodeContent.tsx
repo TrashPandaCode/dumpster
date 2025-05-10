@@ -1,6 +1,6 @@
 import { QuestionMarkCircledIcon } from "@radix-ui/react-icons";
 import classnames from "classnames";
-import { type ReactNode } from "react";
+import React, { type ReactNode } from "react";
 import { NavLink } from "react-router";
 
 const modules = import.meta.glob("/content/**/*.md");
@@ -19,15 +19,15 @@ const NodeContent = ({
   label,
   type,
   active = false,
-  isGroup = false,
   children,
+  className,
 }: {
   label: string;
   type: string;
   name?: string;
   active?: boolean;
-  isGroup?: boolean;
   children?: ReactNode;
+  className?: string;
 }) => {
   return (
     <div
@@ -36,7 +36,7 @@ const NodeContent = ({
         active
           ? "border-emerald-400 outline-2 outline-emerald-400"
           : "border-blue-300",
-        isGroup && "h-full bg-slate-900"
+        className
       )}
     >
       <div className="flex items-start justify-between p-3">
