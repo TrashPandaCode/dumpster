@@ -47,9 +47,7 @@ const Game = ({ params }: Route.ComponentProps) => {
         />
       </PanelResizeHandle>
       <Panel id="nodes-panel" minSize={25} order={2}>
-        <ReactFlowProvider>
-          <NodeEditor />
-        </ReactFlowProvider>
+        <NodeEditor />
       </Panel>
     </PanelGroup>
   );
