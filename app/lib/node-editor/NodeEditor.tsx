@@ -1,7 +1,6 @@
 import {
   addEdge,
   applyEdgeChanges,
-  applyNodeChanges,
   Background,
   ReactFlow,
   ReactFlowProvider,
@@ -25,6 +24,7 @@ import SelectionContextMenu from "./editor-components/SelectionContextMenu";
 import { useNodeStore } from "./node-store/node-store";
 import { nodeTypes } from "./nodes/node-types";
 import { debugEdges, debugNodes } from "./solutions/debug";
+import { applyNodeChanges } from "./utils";
 
 const NodeEditor = () => {
   const [nodes, setNodes] = useState<Node[]>(debugNodes); // TODO: load nodes based on level
@@ -66,18 +66,6 @@ const NodeEditor = () => {
       });
 
       setNodes((nds) => applyNodeChanges(changes, nds));
-
-      // sort nodes to ensure that group nodes are before any other nodes
-      // this is important for nodes that have been spawned before the group to be addable into the group
-      setNodes((nds) => {
-        const sorted = [...nds].sort((a, b) => {
-          if (a.type === b.type) return 0;
-          if (a.type === "Group") return -1;
-          if (b.type === "Group") return 1;
-          return 0;
-        });
-        return sorted;
-      });
     },
     [setNodes]
   );
