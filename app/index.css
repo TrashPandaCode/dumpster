@@ -35,7 +35,7 @@
 }
 
 .react-flow__node-group {
-  background: var(--color-red-600) 50% !important;
+  background: var(--color-slate-900) 50% !important;
 }
 .react-flow__node-group.selected {
   background: var(--color-slate-800) !important;

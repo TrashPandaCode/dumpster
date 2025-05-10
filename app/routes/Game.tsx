@@ -1,4 +1,5 @@
 import { DragHandleDots2Icon } from "@radix-ui/react-icons";
+import { ReactFlowProvider } from "@xyflow/react";
 import { useEffect, useRef } from "react";
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 

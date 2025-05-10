@@ -1,14 +1,15 @@
 import {
   addEdge,
   applyEdgeChanges,
-  applyNodeChanges,
   Background,
   ReactFlow,
   ReactFlowProvider,
+  useReactFlow,
   type Edge,
   type Node,
   type OnConnect,
   type OnEdgesChange,
+  type OnNodeDrag,
   type OnNodesChange,
 } from "@xyflow/react";
 import React, { useCallback, useState } from "react";
@@ -23,6 +24,7 @@ import SelectionContextMenu from "./editor-components/SelectionContextMenu";
 import { useNodeStore } from "./node-store/node-store";
 import { nodeTypes } from "./nodes/node-types";
 import { debugEdges, debugNodes } from "./solutions/debug";
+import { applyNodeChanges } from "./utils";
 
 const NodeEditor = () => {
   const [nodes, setNodes] = useState<Node[]>(debugNodes); // TODO: load nodes based on level
@@ -139,8 +141,104 @@ const NodeEditor = () => {
     setSelectionContextMenu(null);
   }, [paneContextMenu, nodeContextMenu, selectionContextMenu]);
 
+  const { getIntersectingNodes, getNode } = useReactFlow();
+
+  const onNodeDragStop: OnNodeDrag = (_, node) => {
+    // if the node is a group, return
+    // node nesting cant work because of weird react flow behavior
+    // "parent nodes need to be in front of child nodes in node array"
+    if (node.type === "Group") return;
+
+    const overlappingNode = getIntersectingNodes(node)?.[0];
+
+    // if there are no overlapping nodes but node has a parentid or
+    // if the overlapping node is not a group, remove the node from the group it is in
+    if (
+      (!overlappingNode || overlappingNode.type !== "Group") &&
+      node.parentId
+    ) {
+      setNodes((nds) =>
+        nds.map((n) => {
+          // look for and update the corresponding node with the new position and remove the parentId
+          if (n.id === node.id) {
+            const parent = nds.find((p) => p.id === node.parentId);
+
+            // if parent is not found, return the node unmodified
+            // ... highly unlikely
+            if (!parent) return n;
+
+            // add the parent position to the node position so the node position is relative to the editor again
+            const position = {
+              x: n.position.x + parent.position.x,
+              y: n.position.y + parent.position.y,
+            };
+
+            // return the modified node
+            return {
+              ...n,
+              position,
+              parentId: undefined,
+            };
+          }
+
+          // return all other nodes unmodified
+          return n;
+        })
+      );
+      return;
+    }
+
+    // if there are no overlapping nodes, return
+    if (!overlappingNode) return;
+
+    // if overlapping node is not a group, return
+    if (overlappingNode.type !== "Group") return;
+
+    // if node is already in the group, return
+    if (node.parentId === overlappingNode.id) return; //TODO: set size of overlapping node here as well??
+
+    // new node position
+    let position;
+    // if the node has a parentId use the parents group's position as an offset to move it to the new group
+    // otherwise if there is no prev parent use no offset
+    const hasParent = !!node.parentId;
+
+    const offsetX = hasParent ? getNode(node.parentId!)!.position.x : 0;
+    const offsetY = hasParent ? getNode(node.parentId!)!.position.y : 0;
+
+    position = {
+      x: node.position.x + offsetX - overlappingNode.position.x,
+      y: node.position.y + offsetY - overlappingNode.position.y,
+    };
+
+    // if node is not in the group, add it to the group or move it to the group from its previous group
+    setNodes((nds) =>
+      nds.map((n) => {
+        // apply changes to the node
+        if (n.id === node.id) {
+          return {
+            ...n,
+            parentId: overlappingNode.id,
+            position,
+          };
+        } else if (n.id === overlappingNode.id) {
+          const width = position.x + node.measured!.width! + 20;
+          const height = position.y + node.measured!.height! + 20;
+          return {
+            ...n,
+            data: { ...n.data, isParent: true }, // TODO: if group doesn't need any more data, we can remove the spreading
+            width: width > n.measured!.width! ? width : n.measured!.width!, // TODO: i am not fully convinced i like this
+            height: height > n.measured!.height! ? height : n.measured!.height!,
+          };
+        }
+        // return all other nodes unmodified
+        return n;
+      })
+    );
+  };
+
   return (
-    <ReactFlowProvider>
+    <>
       <ReactFlow
         id="node-editor"
         nodeTypes={nodeTypes}
@@ -157,6 +255,7 @@ const NodeEditor = () => {
         fitView
         proOptions={{ hideAttribution: true }}
         deleteKeyCode={["Delete", "Backspace"]}
+        onNodeDragStop={onNodeDragStop}
       >
         <Background bgColor="#14141d" color="#a7abc2" />
         <RightPanel />
@@ -185,11 +284,15 @@ const NodeEditor = () => {
           onClose={() => setSelectionContextMenu(null)}
         />
       )}
-    </ReactFlowProvider>
+    </>
   );
 };
 
-export default NodeEditor;
+export default () => (
+  <ReactFlowProvider>
+    <NodeEditor />
+  </ReactFlowProvider>
+);
 
 function getContextMenuPosition(event: MouseEvent | React.MouseEvent): {
   x: number;
