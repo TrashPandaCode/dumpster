@@ -306,8 +306,12 @@ const NodeEditor = () => {
     </>
   );
 };
-export default () => <ReactFlowProvider><NodeEditor /></ReactFlowProvider>;
-export default NodeEditor;
+
+export default () => (
+  <ReactFlowProvider>
+    <NodeEditor />
+  </ReactFlowProvider>
+);
 
 function getContextMenuPosition(event: MouseEvent | React.MouseEvent): {
   x: number;
