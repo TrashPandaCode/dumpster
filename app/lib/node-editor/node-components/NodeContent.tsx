@@ -1,7 +1,9 @@
 import { QuestionMarkCircledIcon } from "@radix-ui/react-icons";
 import classnames from "classnames";
-import React, { type ReactNode } from "react";
+import { type ReactNode } from "react";
 import { NavLink } from "react-router";
+
+import EditLabel from "./EditLabel";
 
 const modules = import.meta.glob("/content/**/*.md");
 
@@ -39,9 +41,13 @@ const NodeContent = ({
         className
       )}
     >
-      <div className="flex items-start justify-between p-3">
+      <div className="flex items-start justify-between gap-5 p-3">
         <div>
-          <h2 className="font-bold">{label}</h2>
+          {type === "group" ? (
+            <EditLabel label={label} />
+          ) : (
+            <h2 className="font-bold">{label}</h2>
+          )}
           <p className="text-xs italic">{type}</p>
         </div>
 
