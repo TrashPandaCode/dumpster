@@ -19,21 +19,24 @@ const NodeContent = ({
   label,
   type,
   active = false,
+  isGroup = false,
   children,
 }: {
   label: string;
   type: string;
   name?: string;
   active?: boolean;
+  isGroup?: boolean;
   children?: ReactNode;
 }) => {
   return (
     <div
       className={classnames(
-        "flex flex-col justify-around rounded-sm border-1 pb-3 font-mono text-white",
+        "flex flex-col rounded-sm border-1 pb-3 font-mono text-white",
         active
           ? "border-emerald-400 outline-2 outline-emerald-400"
-          : "border-blue-300"
+          : "border-blue-300",
+        isGroup && "h-full bg-slate-900"
       )}
     >
       <div className="flex items-start justify-between p-3">
@@ -42,11 +45,15 @@ const NodeContent = ({
           <p className="text-xs italic">{type}</p>
         </div>
 
-        {label !== "Select Math Type" && <NavLink target="_blank" to={`/docs/nodes/${label.toLowerCase()}`}>
-          <QuestionMarkCircledIcon className="cursor-pointer text-slate-400" />
-        </NavLink>}
+        {label !== "Select Math Type" && (
+          <NavLink target="_blank" to={`/docs/nodes/${label.toLowerCase()}`}>
+            <QuestionMarkCircledIcon className="cursor-pointer text-slate-400" />
+          </NavLink>
+        )}
       </div>
-      {children}
+      <div className="flex h-full w-full flex-col justify-center">
+        {children}
+      </div>
     </div>
   );
 };
