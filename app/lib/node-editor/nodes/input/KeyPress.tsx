@@ -1,6 +1,6 @@
 import { Position, useReactFlow } from "@xyflow/react";
 import classnames from "classnames";
-import { memo, useEffect, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 
 import { useKeyStore } from "~/lib/zustand/key";
 import LabelHandle from "../../node-components/LabelHandle";
@@ -9,12 +9,12 @@ import SelectDropDown from "../../node-components/SelectDropDown";
 import type { nodeData, nodeInputs } from "../../node-store/node-store";
 import { OUT_HANDLE_1 } from "../constants";
 
+type KeyState = "down" | "press" | "release";
+
 const KeyPress = memo(({ id }: { id: string }) => {
   const { updateNodeData } = useReactFlow();
-  const [curKey, setCurKey] = useState("");
-  const [keyPressType, setKeyPressType] = useState<
-    "down" | "press" | "release"
-  >("down");
+  const curKey = useRef("");
+  const [keyPressType, setKeyPressType] = useState<KeyState>("down");
 
   const keyDown = useKeyStore((state) => state.isKeyDown);
   const keyPressed = useKeyStore((state) => state.isKeyPressed);
@@ -27,22 +27,22 @@ const KeyPress = memo(({ id }: { id: string }) => {
         let active = false;
         switch (keyPressType) {
           case "down":
-            active = keyDown(curKey);
+            active = keyDown(curKey.current);
             results.set(OUT_HANDLE_1, +active);
             break;
           case "press":
-            active = keyPressed(curKey);
+            active = keyPressed(curKey.current);
             results.set(OUT_HANDLE_1, +active);
             break;
           case "release":
-            active = keyReleased(curKey);
+            active = keyReleased(curKey.current);
             results.set(OUT_HANDLE_1, +active);
             break;
         }
         setActive(active);
       },
     });
-  }, [curKey, keyPressType]);
+  }, [keyPressType]);
 
   return (
     <div className="min-w-60">
@@ -90,7 +90,7 @@ const KeyPress = memo(({ id }: { id: string }) => {
         </div>
         <div className="flex w-full justify-end gap-2">
           <SelectDropDown
-            setSelected={setCurKey}
+            setSelected={(v) => (curKey.current = v)}
             items={{ Keys: ["w", "a", "s", "d"], Other: ["space", "enter"] }}
           />
           <LabelHandle

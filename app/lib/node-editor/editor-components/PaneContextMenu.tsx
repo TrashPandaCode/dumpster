@@ -94,8 +94,8 @@ const PaneContextMenu: React.FC<PaneContextMenuProps> = ({ x, y, onClose }) => {
 
   return (
     <div style={{ position: "absolute", top: y, left: x, zIndex: 1000 }}>
-      <Panel className="w-65 space-y-2 rounded bg-slate-800 p-2 py-2 font-mono shadow-lg outline-1 outline-slate-700 outline-solid">
-        <div className="w-64 pr-4 shadow">
+      <Panel className="flex w-65 flex-col gap-2 rounded bg-slate-800 p-2 font-mono shadow-lg outline-1 outline-slate-700 outline-solid">
+        <div className="shadow">
           <input
             ref={inputRef}
             type="text"
@@ -106,7 +106,7 @@ const PaneContextMenu: React.FC<PaneContextMenuProps> = ({ x, y, onClose }) => {
           />
         </div>
 
-        <div>
+        <div className="flex flex-col gap-1">
           {filteredTypes.map((type, index) => (
             <button
               key={`add_node_${type}_${index}`}

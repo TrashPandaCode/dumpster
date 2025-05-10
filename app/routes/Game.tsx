@@ -10,9 +10,17 @@ import type { Route } from "./+types/Game";
 
 import "./game.css";
 
+import type { LEVELS } from "~/lib/game/core/levels";
+import { useGameStore } from "~/lib/zustand/game";
+
 const Game = ({ params }: Route.ComponentProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  // load current level from params
+  // also set the current level in the game store
+  const setCurrentLevel = useGameStore((state) => state.setCurrentLevel);
   const level = params.id || "playground";
+  setCurrentLevel(level as keyof typeof LEVELS); // we can cast confidently here since we know the params.id is a valid level id, because loading the level will fail if it is not
 
   useEffect(() => {
     if (!canvasRef.current) {
@@ -40,7 +48,7 @@ const Game = ({ params }: Route.ComponentProps) => {
       </PanelResizeHandle>
       <Panel id="nodes-panel" minSize={25} order={2}>
         <ReactFlowProvider>
-          <NodeEditor level={level} />
+          <NodeEditor />
         </ReactFlowProvider>
       </Panel>
     </PanelGroup>
