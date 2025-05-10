@@ -30,9 +30,9 @@ const Group: React.FC<GroupProps> = ({ selected }) => {
         type="group"
         className="-z-10 h-full bg-slate-900"
       >
-        <div className="flex flex-col items-center justify-center p-2 opacity-60">
-          <p className="text-xs italic">Drag and drop nodes here,</p>
-          <p className="text-xs italic">to group them together.</p>
+        <div className="flex flex-col items-center justify-center p-2 text-xs italic opacity-60">
+          <p>Drag and drop nodes here,</p>
+          <p>to group them together.</p>
         </div>
       </NodeContent>
     </>
