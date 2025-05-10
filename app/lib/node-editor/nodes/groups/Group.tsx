@@ -22,7 +22,7 @@ const Group: React.FC<GroupProps> = ({ selected }) => {
         minHeight={150}
         className="relative"
       >
-        <SizeIcon className="absolute right-2 bottom-2 rotate-90 cursor-pointer text-slate-400" />
+        <SizeIcon className="absolute right-2 bottom-2 rotate-90 cursor-nw-resize text-slate-400" />
       </NodeResizeControl>
 
       <NodeContent label="Group" type="group" className="h-full bg-slate-900">
