@@ -6,7 +6,7 @@ const EditLabel = ({ label }: { label: string }) => {
   return (
     <>
       <input
-        className="nodrag rounded font-bold focus:outline-1 focus:outline-slate-500"
+        className="nodrag w-full rounded font-bold focus:outline-1 focus:outline-slate-500"
         value={text}
         onChange={(e) => {
           setText(e.target.value);
