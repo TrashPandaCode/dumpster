@@ -141,7 +141,7 @@ const NodeEditor = () => {
     setSelectionContextMenu(null);
   }, [paneContextMenu, nodeContextMenu, selectionContextMenu]);
 
-  const { getIntersectingNodes } = useReactFlow();
+  const { getIntersectingNodes, getNode } = useReactFlow();
 
   const onNodeDragStop: OnNodeDrag = (_, node) => {
     // if the node is a group, return
@@ -195,45 +195,40 @@ const NodeEditor = () => {
     if (overlappingNode.type !== "Group") return;
 
     // if node is already in the group, return
-    if (node.parentId === overlappingNode.id) return;
+    if (node.parentId === overlappingNode.id) return; //TODO: set size of overlapping node here as well??
+
+    // new node position
+    let position;
+    // if the node has a parentId use the parents group's position as an offset to move it to the new group
+    // otherwise if there is no prev parent use no offset
+    const hasParent = !!node.parentId;
+
+    const offsetX = hasParent ? getNode(node.parentId!)!.position.x : 0;
+    const offsetY = hasParent ? getNode(node.parentId!)!.position.y : 0;
+
+    position = {
+      x: node.position.x + offsetX - overlappingNode.position.x,
+      y: node.position.y + offsetY - overlappingNode.position.y,
+    };
 
     // if node is not in the group, add it to the group or move it to the group from its previous group
     setNodes((nds) =>
       nds.map((n) => {
-        let position;
-        // if the node has a parentId and the overlappingNode isn't already it's parent, move it to the new group
-        if (n.parentId && n.parentId !== overlappingNode.id) {
-          // get the previous parent node
-          const prevParent = nds.find((p) => p.id === n.parentId);
-
-          // if parent is not found, return the node unmodified
-          // ... highly unlikely
-          if (!prevParent) return n;
-
-          // set the nodes reactivation scope back to the editor by adding the previous parents position
-          // then relate the node position to the new group by subtracting the overlapping node position
-          position = {
-            x:
-              n.position.x + prevParent.position.x - overlappingNode.position.x,
-            y:
-              n.position.y + prevParent.position.y - overlappingNode.position.y,
-          };
-        } else if (!n.parentId) {
-          // if there is no previous group, directly relate the node position to the new group
-          position = {
-            x: n.position.x - overlappingNode.position.x,
-            y: n.position.y - overlappingNode.position.y,
-          };
-        }
-
         // apply changes to the node
         if (n.id === node.id) {
           return {
             ...n,
             parentId: overlappingNode.id,
-            ...((!n.parentId || n.parentId !== overlappingNode.id) && {
-              position,
-            }),
+            position,
+          };
+        } else if (n.id === overlappingNode.id) {
+          const width = position.x + node.measured!.width! + 20;
+          const height = position.y + node.measured!.height! + 20;
+          return {
+            ...n,
+            data: { ...n.data, isParent: true }, // TODO: if group doesn't need any more data, we can remove the spreading
+            width: width > n.measured!.width! ? width : n.measured!.width!, // TODO: i am not fully convinced i like this
+            height: height > n.measured!.height! ? height : n.measured!.height!,
           };
         }
         // return all other nodes unmodified
