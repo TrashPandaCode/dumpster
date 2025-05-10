@@ -1,5 +1,5 @@
 import { Position, useNodeConnections, useReactFlow } from "@xyflow/react";
-import { memo, useEffect, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 
 import BaseHandle from "../../node-components/BaseHandle";
 import LabelHandle from "../../node-components/LabelHandle";
@@ -19,8 +19,8 @@ const Switch = memo(({ id }: { id: string }) => {
   const [yDisplayData, setyDisplayData] = useState(0);
   const [zDisplayData, setzDisplayData] = useState(0);
 
-  const [yInputData, setyInputData] = useState(0);
-  const [zInputData, setzInputData] = useState(0);
+  const yInputData = useRef(0);
+  const zInputData = useRef(0);
 
   const yConnection = useNodeConnections({
     handleId: IN_HANDLE_2,
@@ -35,8 +35,8 @@ const Switch = memo(({ id }: { id: string }) => {
     updateNodeData(id, {
       compute: (inputs: nodeInputs, results: nodeData) => {
         const x = getInput(inputs, IN_HANDLE_1, 0);
-        const y = getInput(inputs, IN_HANDLE_2, yInputData);
-        const z = getInput(inputs, IN_HANDLE_3, zInputData);
+        const y = getInput(inputs, IN_HANDLE_2, yInputData.current);
+        const z = getInput(inputs, IN_HANDLE_3, zInputData.current);
 
         setyDisplayData(y);
         setzDisplayData(z);
@@ -44,7 +44,7 @@ const Switch = memo(({ id }: { id: string }) => {
         results.set(OUT_HANDLE_1, x == 0 ? y : z);
       },
     });
-  }, [yInputData, zInputData]);
+  }, []);
 
   return (
     <div className="min-w-3xs">
@@ -59,7 +59,7 @@ const Switch = memo(({ id }: { id: string }) => {
           False
           <NumberInput
             value={yDisplayData}
-            setValue={setyInputData}
+            setValue={(v) => (yInputData.current = v)}
             defaultValue={0}
             disabled={!!yConnection.length}
           />
@@ -69,7 +69,7 @@ const Switch = memo(({ id }: { id: string }) => {
           True
           <NumberInput
             value={zDisplayData}
-            setValue={setzInputData}
+            setValue={(v) => (zInputData.current = v)}
             defaultValue={0}
             disabled={!!zConnection.length}
           />
