@@ -157,6 +157,11 @@ const NodeEditor: React.FC<{ level: string }> = ({ level }) => {
   const { getIntersectingNodes, screenToFlowPosition } = useReactFlow();
 
   const onNodeDragStop: OnNodeDrag = (event, node) => {
+    // if the node is a group, return
+    // node nesting cant work because of weird react flow behavior
+    // "parent nodes need to be in front of child nodes in node array"
+    if (node.type === "Group") return;
+
     const overlappingNode = getIntersectingNodes(node)?.[0];
 
     // if there are no overlapping nodes but node has a parentid or
@@ -168,24 +173,29 @@ const NodeEditor: React.FC<{ level: string }> = ({ level }) => {
     ) {
       setNodes((nds) =>
         nds.map((n) => {
-          const parent = nds.find((p) => p.id === node.parentId);
-
-          // if parent is not found, return the noder unmodified
-          if (!parent) return n;
-
-          const position = {
-            x: n.position.x + parent.position.x,
-            y: n.position.y + parent.position.y,
-          };
-
+          // look for and update the corresponding node with the new position and remove the parentId
           if (n.id === node.id) {
-            console.log("Node removed from group");
+            const parent = nds.find((p) => p.id === node.parentId);
+
+            // if parent is not found, return the node unmodified
+            // ... highly unlikely
+            if (!parent) return n;
+
+            // add the parent position to the node position so the node position is relative to the editor again
+            const position = {
+              x: n.position.x + parent.position.x,
+              y: n.position.y + parent.position.y,
+            };
+
+            // return the modified node
             return {
               ...n,
               position,
               parentId: undefined,
             };
           }
+
+          // return all other nodes unmodified
           return n;
         })
       );
@@ -205,10 +215,17 @@ const NodeEditor: React.FC<{ level: string }> = ({ level }) => {
     setNodes((nds) =>
       nds.map((n) => {
         let position;
+        // if the node has a parentId and the overlappingNode isn't already it's parent, move it to the new group
         if (n.parentId && n.parentId !== overlappingNode.id) {
+          // get the previous parent node
           const prevParent = nds.find((p) => p.id === n.parentId);
+
+          // if parent is not found, return the node unmodified
+          // ... highly unlikely
           if (!prevParent) return n;
 
+          // set the nodes reactivation scope back to the editor by adding the previous parents position
+          // then relate the node position to the new group by subtracting the overlapping node position
           position = {
             x:
               n.position.x + prevParent.position.x - overlappingNode.position.x,
@@ -216,12 +233,14 @@ const NodeEditor: React.FC<{ level: string }> = ({ level }) => {
               n.position.y + prevParent.position.y - overlappingNode.position.y,
           };
         } else if (!n.parentId) {
+          // if there is no previous group, directly relate the node position to the new group
           position = {
             x: n.position.x - overlappingNode.position.x,
             y: n.position.y - overlappingNode.position.y,
           };
         }
 
+        // apply changes to the node
         if (n.id === node.id) {
           return {
             ...n,
@@ -231,10 +250,10 @@ const NodeEditor: React.FC<{ level: string }> = ({ level }) => {
             }),
           };
         }
+        // return all other nodes unmodified
         return n;
       })
     );
-    console.log("Node added to group");
   };
 
   return (
