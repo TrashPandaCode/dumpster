@@ -1,6 +1,5 @@
 import { Position, useReactFlow, useUpdateNodeInternals } from "@xyflow/react";
 import { memo, useEffect, useState } from "react";
-import { v4 as uuidv4 } from "uuid";
 
 import { LEVELS } from "~/lib/game/core/levels";
 import { useDataStore } from "~/lib/zustand/data";
@@ -28,8 +27,9 @@ const ExportToGameobject = memo(({ id }: { id: string }) => {
   useEffect(() => {
     updateNodeData(id, {
       compute: (inputs: nodeInputs, _: nodeData) => {
-        gameObjects.get(gameObject)!.forEach(({ handleId }, label) => {
-          setData(gameObject, label, handleId, getInput(inputs, handleId, 0));
+        gameObjects.get(gameObject)!.forEach(({ handleId, access }, label) => {
+          if (access === "get") return;
+          setData(gameObject, label, getInput(inputs, handleId, 0));
         });
       },
     });
@@ -47,14 +47,17 @@ const ExportToGameobject = memo(({ id }: { id: string }) => {
           defaultValue={gameObject}
         />
         {Array.from(gameObjects.get(gameObject) ?? []).map(
-          ([label, { handleId }]) => (
-            <LabelHandle
-              key={handleId}
-              id={handleId}
-              position={Position.Left}
-              label={label}
-            />
-          )
+          ([label, { handleId, access }]) =>
+            access === "get" ? (
+              <></>
+            ) : (
+              <LabelHandle
+                key={handleId}
+                id={handleId}
+                position={Position.Left}
+                label={label}
+              />
+            )
         )}
         <div>
           <input
@@ -67,7 +70,7 @@ const ExportToGameobject = memo(({ id }: { id: string }) => {
           <button
             className="ml-2 hover:cursor-pointer"
             onClick={() => {
-              addHandle(gameObject, curLabel, uuidv4());
+              addHandle(gameObject, curLabel);
             }}
           >
             +

@@ -1,11 +1,12 @@
 import type { Edge, Node } from "@xyflow/react";
 
-import { initialize1_1 } from "../levels/1.1";
-import { initializePlayground } from "../levels/playground";
-
 import alleyOne from "~/assets/alley_one.jpg";
 import alleyTwo from "~/assets/alley_two.png";
 import houseImage from "~/assets/house.png";
+import { initialize1_1 } from "../levels/1.1";
+import { initializePlayground } from "../levels/playground";
+
+export type ConnectionAccess = "set" | "get" | "all";
 
 /**
  * The Level type represents a game level.
@@ -24,7 +25,10 @@ export type Level = {
     edges: Edge[];
   };
   hints: string[];
-  modifiableGameObjects: { id: string; connections: string[] }[];
+  modifiableGameObjects: {
+    id: string;
+    connections: { label: string; access: ConnectionAccess }[];
+  }[];
   // TODO
   // allowedNodes
 };
@@ -51,8 +55,20 @@ export const LEVELS = {
     },
     hints: [],
     modifiableGameObjects: [
-      { id: "bean", connections: ["xpos", "ypos"] },
-      { id: "bean2", connections: ["xpos", "ypos"] },
+      {
+        id: "bean",
+        connections: [
+          { label: "xpos", access: "all" },
+          { label: "ypos", access: "all" },
+        ],
+      },
+      {
+        id: "bean2",
+        connections: [
+          { label: "xpos", access: "set" },
+          { label: "ypos", access: "set" },
+        ],
+      },
     ],
   },
   "1.1": {
@@ -70,7 +86,7 @@ export const LEVELS = {
       edges: [],
     },
     hints: [],
-    modifiableGameObjects: [{ id: "bean", connections: ["xpos", "ypos"] }],
+    modifiableGameObjects: [],
   },
   "1.2": {
     id: "1.2",
@@ -87,6 +103,6 @@ export const LEVELS = {
       edges: [],
     },
     hints: [],
-    modifiableGameObjects: [{ id: "bean", connections: ["xpos", "ypos"] }],
+    modifiableGameObjects: [],
   },
 } satisfies Record<string, Level>;

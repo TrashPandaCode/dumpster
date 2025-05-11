@@ -41,14 +41,17 @@ const GetFromGameobject = memo(({ id }: { id: string }) => {
           defaultValue={gameObject}
         />
         {Array.from(gameObjects.get(gameObject) ?? []).map(
-          ([label, { handleId }]) => (
-            <LabelHandle
-              key={handleId}
-              id={handleId}
-              position={Position.Right}
-              label={label}
-            />
-          )
+          ([label, { handleId, access }]) =>
+            access === "set" ? (
+              <></>
+            ) : (
+              <LabelHandle
+                key={handleId}
+                id={handleId}
+                position={Position.Right}
+                label={label}
+              />
+            )
         )}
       </NodeContent>
     </div>

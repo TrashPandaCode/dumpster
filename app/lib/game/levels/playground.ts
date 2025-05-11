@@ -10,24 +10,23 @@ export const initializePlayground = () => {
     sliceX: 3,
     sliceY: 3,
     anims: {
-        idle: { from: 0, to: 0, loop: false },
-        walk: { from: 1, to: 6, loop: true},
-    }
+      idle: { from: 0, to: 0, loop: false },
+      walk: { from: 1, to: 6, loop: true },
+    },
   });
   const raccoon = k.add([
     k.sprite("raccoon", {
-       anim: "walk",
+      anim: "walk",
     }),
     k.pos(100, k.height() - 100),
-    k.scale(10)
+    k.scale(10),
   ]);
-  
-  /*
+
   const bean2 = k.add([
     k.sprite("bean"),
     k.color(0, 255, 0),
     k.pos(100, k.height() - 100),
-  ]);*/
+  ]);
 
   //Create "Floor" Component
   const floor = k.add([
@@ -48,11 +47,9 @@ export const initializePlayground = () => {
     raccoon.pos.y =
       useDataStore.getState().gameObjects.get("bean")?.get("ypos")?.value ?? 0;
 
-      /*
     bean2.pos.x =
       useDataStore.getState().gameObjects.get("bean2")?.get("xpos")?.value ?? 0;
     bean2.pos.y =
       useDataStore.getState().gameObjects.get("bean2")?.get("ypos")?.value ?? 0;
-      */
   });
 };
