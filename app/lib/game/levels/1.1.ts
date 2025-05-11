@@ -37,7 +37,8 @@ export const initialize1_1 = () => {
 
     const gameObjects = useDataStore.getState().gameObjects;
 
-    racoon.move(RACOON_SPEED * k.dt(), 0);
+    // racoon.move(RACOON_SPEED * k.dt(), 0);
+    racoon.pos.x = (racoon.pos.x + 1) % 1000;
     // Write racoon position to store
     const { handleId, access } = gameObjects.get("racoon")!.get("xpos")!;
     gameObjects.get("racoon")!.set("xpos", {
