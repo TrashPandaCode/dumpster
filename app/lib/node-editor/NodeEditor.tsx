@@ -143,25 +143,22 @@ const NodeEditor = () => {
     setSelectionContextMenu(null);
   }, [paneContextMenu, nodeContextMenu, selectionContextMenu]);
 
-  const onNodeDragStop: OnNodeDrag = (_, node) => {
+  const onNodeDragStop: OnNodeDrag = (_, childNode) => {
     // if the node is a group, return
     // node nesting cant work because of weird react flow behavior
     // "parent nodes need to be in front of child nodes in node array"
-    if (node.type === "Group") return;
+    if (childNode.type === "Group") return;
 
-    const overlappingNode = getIntersectingNodes(node)?.[0];
+    const parentNode = getIntersectingNodes(childNode)?.[0];
 
     // if there are no overlapping nodes but node has a parentid or
     // if the overlapping node is not a group, remove the node from the group it is in
-    if (
-      (!overlappingNode || overlappingNode.type !== "Group") &&
-      node.parentId
-    ) {
+    if ((!parentNode || parentNode.type !== "Group") && childNode.parentId) {
       setNodes((nds) =>
         nds.map((n) => {
           // look for and update the corresponding node with the new position and remove the parentId
-          if (n.id === node.id) {
-            const parent = nds.find((p) => p.id === node.parentId);
+          if (n.id === childNode.id) {
+            const parent = nds.find((p) => p.id === childNode.parentId);
 
             // if parent is not found, return the node unmodified
             // ... highly unlikely
@@ -189,43 +186,68 @@ const NodeEditor = () => {
     }
 
     // if there are no overlapping nodes, return
-    if (!overlappingNode) return;
+    if (!parentNode) return;
 
     // if overlapping node is not a group, return
-    if (overlappingNode.type !== "Group") return;
+    if (parentNode.type !== "Group") return;
 
-    // new node position
-    let position;
-    // if the node has a parentId use the parents group's position as an offset to move it to the new group
-    // otherwise if there is no prev parent use no offset
-    const hasParent = !!node.parentId;
+    // get child node position in global coords
+    let childNodeGlobalPosition = childNode.position;
+    if (childNode.parentId) {
+      const parent =
+        childNode.parentId === parentNode.id
+          ? parentNode
+          : getNode(childNode.parentId)!;
 
-    const offsetX = hasParent ? getNode(node.parentId!)!.position.x : 0;
-    const offsetY = hasParent ? getNode(node.parentId!)!.position.y : 0;
+      childNodeGlobalPosition = {
+        x: childNode.position.x + parent.position.x,
+        y: childNode.position.y + parent.position.y,
+      };
+    }
 
-    position = {
-      x: node.position.x + offsetX - overlappingNode.position.x,
-      y: node.position.y + offsetY - overlappingNode.position.y,
+    // new parent node position
+    const offset = 20;
+    const offsetX = parentNode.position.x - childNodeGlobalPosition.x + offset;
+    const offsetY = parentNode.position.y - childNodeGlobalPosition.y + offset;
+
+    const parentPosition = {
+      x: parentNode.position.x - Math.max(offsetX, 0),
+      y: parentNode.position.y - Math.max(offsetY, 0),
     };
 
-    // if node is not in the group, add it to the group or move it to the group from its previous group
+    let parentWidth = parentNode.measured!.width! + Math.max(offsetX, 0);
+    let parentHeight = parentNode.measured!.height! + Math.max(offsetY, 0);
+
+    // new child position
+    const childPosition = {
+      x: childNodeGlobalPosition.x - parentPosition.x,
+      y: childNodeGlobalPosition.y - parentPosition.y,
+    };
+
+    // new parent width based on child position
+    const widthChild = childPosition.x + childNode.measured!.width! + 20;
+    const heightChild = childPosition.y + childNode.measured!.height! + 20;
+
+    // expand parent if new width is greater
+    parentWidth = Math.max(widthChild, parentWidth);
+    parentHeight = Math.max(heightChild, parentHeight);
+
     setNodes((nds) =>
       nds.map((n) => {
-        // apply changes to the node
-        if (n.id === node.id) {
+        // apply changes to the child and parent node
+        if (n.id === childNode.id) {
           return {
             ...n,
-            parentId: overlappingNode.id,
-            position,
+            parentId: parentNode.id,
+            position: childPosition,
           };
-        } else if (n.id === overlappingNode.id) {
-          const width = position.x + node.measured!.width! + 20;
-          const height = position.y + node.measured!.height! + 20;
+        } else if (n.id === parentNode.id) {
           return {
             ...n,
-            data: { ...n.data, isParent: true }, // TODO: if group doesn't need any more data, we can remove the spreading
-            width: width > n.measured!.width! ? width : n.measured!.width!, // TODO: i am not fully convinced i like this
-            height: height > n.measured!.height! ? height : n.measured!.height!,
+            position: parentPosition,
+            width: parentWidth,
+            height: parentHeight,
+            data: { isParent: true },
           };
         }
         // return all other nodes unmodified
