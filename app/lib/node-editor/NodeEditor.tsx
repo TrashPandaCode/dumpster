@@ -248,6 +248,7 @@ const NodeEditor = () => {
             width: parentWidth,
             height: parentHeight,
             data: { isParent: true },
+            zIndex: -1,
           };
         }
         // return all other nodes unmodified

@@ -27,6 +27,7 @@
 .react-flow__node.selected {
   background-color: var(--color-slate-700) !important;
   border-radius: var(--tailwind-border-radius) !important;
+  z-index: -1 !important;
 }
 
 .react-flow__node {
