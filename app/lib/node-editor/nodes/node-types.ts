@@ -6,6 +6,7 @@ import KeyPress from "./input/KeyPress";
 import Switch from "./logic/Switch";
 import MathFloat from "./math-float/MathFloat";
 import Value from "./math-float/Value";
+import Group from "./groups/Group";
 
 export const nodeTypes = {
   Value,
@@ -16,6 +17,7 @@ export const nodeTypes = {
   ExportToGameobject,
   GetFromGameobject,
   Switch,
+  Group,
 };
 
 export const categorizedNodeTypes = new Map<
