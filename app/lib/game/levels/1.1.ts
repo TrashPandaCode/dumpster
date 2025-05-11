@@ -35,15 +35,19 @@ export const initialize1_1 = () => {
   k.onUpdate(() => {
     if (useGameStore.getState().isPaused) return;
 
+    const gameObjects = useDataStore.getState().gameObjects;
+
     racoon.move(RACOON_SPEED * k.dt(), 0);
+    // Write racoon position to store
+    const { handleId, access } = gameObjects.get("racoon")!.get("xpos")!;
+    gameObjects.get("racoon")!.set("xpos", {
+      handleId,
+      access,
+      value: racoon.pos.x,
+    });
 
-    //Move
-    const x =
-      useDataStore.getState().gameObjects.get("bean")?.get("xpos")?.value ?? 0;
-    const y =
-      useDataStore.getState().gameObjects.get("bean")?.get("ypos")?.value ?? 0;
-
-    trashCan.pos.x = x;
-    trashCan.pos.y = y;
+    //Move TrashCan
+    trashCan.pos.x = gameObjects.get("trashCan")?.get("xpos")?.value ?? 0;
+    trashCan.pos.y = gameObjects.get("trashCan")?.get("ypos")?.value ?? 0;
   });
 };

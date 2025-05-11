@@ -86,7 +86,19 @@ export const LEVELS = {
       edges: [],
     },
     hints: [],
-    modifiableGameObjects: [],
+    modifiableGameObjects: [
+      {
+        id: "racoon",
+        connections: [{ label: "xpos", access: "get" }],
+      },
+      {
+        id: "trashCan",
+        connections: [
+          { label: "xpos", access: "set" },
+          { label: "ypos", access: "set" },
+        ],
+      },
+    ],
   },
   "1.2": {
     id: "1.2",
