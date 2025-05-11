@@ -4,10 +4,6 @@ import { memo } from "react";
 
 import NodeContent from "../../node-components/NodeContent";
 
-interface GroupProps {
-  selected: boolean;
-}
-
 const controlStyle = {
   background: "transparent",
   border: "none",
