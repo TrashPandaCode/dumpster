@@ -14,13 +14,13 @@ import {
   OUT_HANDLE_1,
 } from "../constants";
 
-const Switch = memo(({ id }: { id: string }) => {
+const Switch = memo(({ id, data }: { id: string; data: any }) => {
   const { updateNodeData } = useReactFlow();
   const [yDisplayData, setyDisplayData] = useState(0);
   const [zDisplayData, setzDisplayData] = useState(0);
 
-  const yInputData = useRef(0);
-  const zInputData = useRef(0);
+  const yInputData = useRef(data.yInputData ? data.yInputData.current : 0);
+  const zInputData = useRef(data.zInputData ? data.zInputData.current : 0);
 
   const yConnection = useNodeConnections({
     handleId: IN_HANDLE_2,
@@ -43,6 +43,8 @@ const Switch = memo(({ id }: { id: string }) => {
 
         results.set(OUT_HANDLE_1, x == 0 ? y : z);
       },
+      yInputData,
+      zInputData,
     });
   }, []);
 
@@ -60,7 +62,7 @@ const Switch = memo(({ id }: { id: string }) => {
           <NumberInput
             value={yDisplayData}
             setValue={(v) => (yInputData.current = v)}
-            defaultValue={0}
+            defaultValue={yInputData.current}
             disabled={!!yConnection.length}
           />
           <BaseHandle id={IN_HANDLE_2} position={Position.Left} />
@@ -70,7 +72,7 @@ const Switch = memo(({ id }: { id: string }) => {
           <NumberInput
             value={zDisplayData}
             setValue={(v) => (zInputData.current = v)}
-            defaultValue={0}
+            defaultValue={zInputData.current}
             disabled={!!zConnection.length}
           />
           <BaseHandle id={IN_HANDLE_3} position={Position.Left} />

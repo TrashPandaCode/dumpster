@@ -50,8 +50,8 @@ const MathFloat = memo(({ id, data }: { id: string; data: any }) => {
 
         results.set(OUT_HANDLE_1, COMPUTE[computeType.current](x, y));
       },
-      xInputData: xInputData,
-      yInputData: yInputData,
+      xInputData,
+      yInputData,
     });
   }, []);
 
