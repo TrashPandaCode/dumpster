@@ -27,6 +27,8 @@ import { debugEdges, debugNodes } from "./solutions/debug";
 import { applyNodeChanges } from "./utils";
 
 const NodeEditor = () => {
+  const { getIntersectingNodes, getNode } = useReactFlow();
+
   const [nodes, setNodes] = useState<Node[]>(debugNodes); // TODO: load nodes based on level
   const [edges, setEdges] = useState<Edge[]>(debugEdges);
   const [paneContextMenu, setPaneContextMenu] = useState<{
@@ -141,8 +143,6 @@ const NodeEditor = () => {
     setSelectionContextMenu(null);
   }, [paneContextMenu, nodeContextMenu, selectionContextMenu]);
 
-  const { getIntersectingNodes, getNode } = useReactFlow();
-
   const onNodeDragStop: OnNodeDrag = (_, node) => {
     // if the node is a group, return
     // node nesting cant work because of weird react flow behavior
@@ -193,9 +193,6 @@ const NodeEditor = () => {
 
     // if overlapping node is not a group, return
     if (overlappingNode.type !== "Group") return;
-
-    // if node is already in the group, return
-    if (node.parentId === overlappingNode.id) return; //TODO: set size of overlapping node here as well??
 
     // new node position
     let position;
