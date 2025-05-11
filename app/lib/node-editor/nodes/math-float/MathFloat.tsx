@@ -20,14 +20,15 @@ const MathFloat = memo(({ id, data }: { id: string; data: any }) => {
   );
   function setComputeType(type: string): void {
     computeType.current = type;
+    updateNodeData(id, { initialComputeType: type });
     setInputState(INPUTS[type]);
   }
 
   const [xDisplayData, setxDisplayData] = useState(0);
   const [yDisplayData, setyDisplayData] = useState(0);
 
-  const xInputData = useRef(0);
-  const yInputData = useRef(0);
+  const xInputData = useRef(data.xInputData ? data.xInputData.current : 0);
+  const yInputData = useRef(data.yInputData ? data.yInputData.current : 0);
 
   const xConnection = useNodeConnections({
     handleId: IN_HANDLE_1,
@@ -49,6 +50,8 @@ const MathFloat = memo(({ id, data }: { id: string; data: any }) => {
 
         results.set(OUT_HANDLE_1, COMPUTE[computeType.current](x, y));
       },
+      xInputData: xInputData,
+      yInputData: yInputData,
     });
   }, []);
 
@@ -72,7 +75,7 @@ const MathFloat = memo(({ id, data }: { id: string; data: any }) => {
             <NumberInput
               value={xDisplayData}
               setValue={(v) => (xInputData.current = v)}
-              defaultValue={0}
+              defaultValue={xInputData.current}
               disabled={!!xConnection.length}
               type={inputState[0].type}
             />
@@ -85,7 +88,7 @@ const MathFloat = memo(({ id, data }: { id: string; data: any }) => {
             <NumberInput
               value={yDisplayData}
               setValue={(v) => (yInputData.current = v)}
-              defaultValue={0}
+              defaultValue={yInputData.current}
               disabled={!!yConnection.length}
               type={inputState[1].type}
             />
