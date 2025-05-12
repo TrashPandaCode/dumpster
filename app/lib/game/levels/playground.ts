@@ -4,28 +4,53 @@ import { getKaplayCtx } from "../core/kaplayCtx";
 
 export const initializePlayground = () => {
   const k = getKaplayCtx();
-
-  k.loadBean();
+ 
   k.loadSprite("raccoon", "app/assets/game/sprites/raccoon_spritesheet.png", {
-    sliceX: 3,
-    sliceY: 3,
+    sliceX: 4,
+    sliceY: 4,
     anims: {
       idle: { from: 0, to: 0, loop: false },
-      walk: { from: 1, to: 6, loop: true },
+      idleHolding: { from: 1, to: 1, loop: false },
+      walk: { from: 2, to: 7, loop: true },
+      walkHolding: { from: 8, to: 13, loop: true },
     },
   });
+  k.loadSprite("trashcan", "app/assets/game/sprites/trashcan_spritesheet.png", {
+    sliceX: 2,
+    sliceY: 1,
+    anims: {
+      empty: { from: 0, to: 0, loop: false },
+      filled: { from: 1, to: 1, loop: false },
+    },
+  });
+    k.loadSprite("flag", "app/assets/game/sprites/flag_spritesheet.png", {
+    sliceX: 2,
+    sliceY: 2,
+    anims: {
+      default: { from: 0, to: 3, loop: true },
+    },
+  });
+
   const raccoon = k.add([
     k.sprite("raccoon", {
-      anim: "walk",
+      anim: "walkHolding",
     }),
     k.pos(100, k.height() - 100),
-    k.scale(10),
+    k.scale(5),
   ]);
-
-  const bean2 = k.add([
-    k.sprite("bean"),
-    k.color(0, 255, 0),
-    k.pos(100, k.height() - 100),
+  const trashcan = k.add([
+    k.sprite("trashcan", {
+      anim: "filled",
+    }),
+    k.pos(200, 200),
+    k.scale(5),
+  ]);
+  const flag = k.add([
+    k.sprite("flag", {
+      anim: "default",
+    }),
+    k.pos(200, 200),
+    k.scale(5),
   ]);
 
   //Create "Floor" Component
@@ -47,9 +72,9 @@ export const initializePlayground = () => {
     raccoon.pos.y =
       useDataStore.getState().gameObjects.get("bean")?.get("ypos")?.value ?? 0;
 
-    bean2.pos.x =
+    trashcan.pos.x =
       useDataStore.getState().gameObjects.get("bean2")?.get("xpos")?.value ?? 0;
-    bean2.pos.y =
+    trashcan.pos.y =
       useDataStore.getState().gameObjects.get("bean2")?.get("ypos")?.value ?? 0;
   });
 };
