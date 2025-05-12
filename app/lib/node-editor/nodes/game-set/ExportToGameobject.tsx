@@ -1,5 +1,5 @@
 import { Position, useReactFlow, useUpdateNodeInternals } from "@xyflow/react";
-import { memo, useEffect, useRef } from "react";
+import React, { memo, useEffect, useRef } from "react";
 
 import { LEVELS } from "~/lib/game/core/levels";
 import { useDataStore } from "~/lib/zustand/data";
@@ -55,7 +55,7 @@ const ExportToGameobject = memo(({ id, data }: { id: string; data: any }) => {
         {Array.from(gameObjects.get(gameObject.current) ?? []).map(
           ([label, { handleId, access }]) =>
             access === "get" ? (
-              <></>
+              <React.Fragment key={handleId}></React.Fragment>
             ) : (
               <LabelHandle
                 key={handleId}
