@@ -30,9 +30,6 @@ import { applyNodeChanges } from "./utils";
 
 const NodeEditor = () => {
   const { getIntersectingNodes, getNode } = useReactFlow();
-
-  const [nodes, setNodes] = useState<Node[]>(debugNodes); // TODO: load nodes based on level
-  const [edges, setEdges] = useState<Edge[]>(debugEdges);
   const [paneContextMenu, setPaneContextMenu] = useState<{
     x: number;
     y: number;
@@ -80,18 +77,13 @@ const NodeEditor = () => {
         }
       });
 
-      setNodes((nds) => {
-        const newNodes = applyNodeChanges(changes, nds);
-        // Nur bei Drag-Ende oder echter Änderung speichern
-        if (changes.some((c) => c.type !== "position")) {
-          setGraph({ nodes: newNodes, edges });
-        }
-        return newNodes;
-      });
+      setGraph((nds) => ({
+        ...nds,
+        nodes: applyNodeChanges(changes, nds.nodes),
+      }));
     },
-    [setNodes, edges]
+    [setGraph]
   );
-
   const onEdgesChange: OnEdgesChange = useCallback(
     (changes) => {
       changes.forEach((element) => {
@@ -105,20 +97,22 @@ const NodeEditor = () => {
         }
       });
 
-      setEdges((eds) => {
-        const newEdges = applyEdgeChanges(changes, eds);
-        setGraph({ nodes, edges: newEdges });
-        return newEdges;
-      });
+      setGraph((eds) => ({
+        ...eds,
+        edges: applyEdgeChanges(changes, eds.edges),
+      }));
     },
-    [setEdges, nodes]
+    [setGraph]
   );
   const onConnect: OnConnect = useCallback(
     (connection) => {
       addEdgeStore(connection);
-      setEdges((eds) => addEdge(connection, eds));
+      setGraph((eds) => ({
+        ...eds,
+        edges: addEdge(connection, eds.edges),
+      }));
     },
-    [setEdges]
+    [setGraph]
   );
 
   const handlePaneContextMenu = useCallback(
@@ -172,18 +166,37 @@ const NodeEditor = () => {
     // if the node is a group, return
     // node nesting cant work because of weird react flow behavior
     // "parent nodes need to be in front of child nodes in node array"
+
     if (childNode.type === "Group") return;
 
     const parentNode = getIntersectingNodes(childNode)?.[0];
+    setGraph((els) => ({
+      ...els,
+      nodes: els.nodes.map((e) => {
+        if (e.id === childNode.id) {
+          let n = {
+            ...graph.nodes.filter((e) => e.id === childNode.id)[0],
+            position: childNode.position,
+          };
+
+          return n;
+        }
+
+        return e;
+      }),
+    }));
 
     // if there are no overlapping nodes but node has a parentid or
     // if the overlapping node is not a group, remove the node from the group it is in
     if ((!parentNode || parentNode.type !== "Group") && childNode.parentId) {
-      setNodes((nds) =>
-        nds.map((n) => {
+      setGraph((nds) => ({
+        ...nds,
+        nodes: nds.nodes.map((n: Node) => {
           // look for and update the corresponding node with the new position and remove the parentId
           if (n.id === childNode.id) {
-            const parent = nds.find((p) => p.id === childNode.parentId);
+            const parent = nds.nodes.find(
+              (p: Node) => p.id === childNode.parentId
+            );
 
             // if parent is not found, return the node unmodified
             // ... highly unlikely
@@ -205,8 +218,8 @@ const NodeEditor = () => {
 
           // return all other nodes unmodified
           return n;
-        })
-      );
+        }),
+      }));
       return;
     }
 
@@ -257,8 +270,9 @@ const NodeEditor = () => {
     parentWidth = Math.max(widthChild, parentWidth);
     parentHeight = Math.max(heightChild, parentHeight);
 
-    setNodes((nds) =>
-      nds.map((n) => {
+    setGraph((nds) => ({
+      ...nds,
+      nodes: nds.nodes.map((n: Node) => {
         // apply changes to the child and parent node
         if (n.id === childNode.id) {
           return {
@@ -278,8 +292,8 @@ const NodeEditor = () => {
         }
         // return all other nodes unmodified
         return n;
-      })
-    );
+      }),
+    }));
   };
 
   return (
