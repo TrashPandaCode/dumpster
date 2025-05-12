@@ -3,7 +3,14 @@ import { Panel } from "@xyflow/react";
 
 import { useGameStore } from "~/lib/zustand/game";
 
-const LeftPanel = () => {
+type LeftPanelProps = {
+  undo: () => void;
+  redo: () => void;
+  canUndo: boolean;
+  canRedo: boolean;
+};
+
+const LeftPanel = ({ undo, redo, canUndo, canRedo }: LeftPanelProps) => {
   const isPaused = useGameStore((state) => state.isPaused);
   const play = useGameStore((state) => state.play);
   const pause = useGameStore((state) => state.pause);
@@ -31,6 +38,20 @@ const LeftPanel = () => {
       </button>
       <button className="cursor-pointer rounded bg-slate-800 p-2 outline outline-slate-500 hover:bg-slate-900">
         <ResetIcon className="text-white" />
+      </button>
+      <button
+        className="cursor-pointer rounded bg-slate-800 p-2 outline outline-slate-500 hover:bg-slate-900"
+        onClick={undo}
+        disabled={!canUndo}
+      >
+        Undo
+      </button>
+      <button
+        className="cursor-pointer rounded bg-slate-800 p-2 outline outline-slate-500 hover:bg-slate-900"
+        onClick={redo}
+        disabled={!canRedo}
+      >
+        Redo
       </button>
     </Panel>
   );

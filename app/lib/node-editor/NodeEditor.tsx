@@ -16,6 +16,8 @@ import React, { useCallback, useState } from "react";
 
 import "@xyflow/react/dist/style.css";
 
+import useUndoable from "use-undoable";
+
 import LeftPanel from "./editor-components/LeftPanel";
 import NodeContextMenu from "./editor-components/NodeContextMenu";
 import PaneContextMenu from "./editor-components/PaneContextMenu";
@@ -45,7 +47,18 @@ const NodeEditor = () => {
     x: number;
     y: number;
   } | null>(null);
+  type GraphState = {
+    nodes: Node[];
+    edges: Edge[];
+  };
 
+  const initialGraph: GraphState = {
+    nodes: debugNodes,
+    edges: debugEdges,
+  };
+
+  const [graph, setGraph, { undo, redo, canUndo, canRedo }] =
+    useUndoable<GraphState>(initialGraph);
   const replaceNode = useNodeStore((state) => state.replaceNode);
   const removeNode = useNodeStore((state) => state.removeNode);
   const addEdgeStore = useNodeStore((state) => state.addEdge);
@@ -67,10 +80,18 @@ const NodeEditor = () => {
         }
       });
 
-      setNodes((nds) => applyNodeChanges(changes, nds));
+      setNodes((nds) => {
+        const newNodes = applyNodeChanges(changes, nds);
+        // Nur bei Drag-Ende oder echter Änderung speichern
+        if (changes.some((c) => c.type !== "position")) {
+          setGraph({ nodes: newNodes, edges });
+        }
+        return newNodes;
+      });
     },
-    [setNodes]
+    [setNodes, edges]
   );
+
   const onEdgesChange: OnEdgesChange = useCallback(
     (changes) => {
       changes.forEach((element) => {
@@ -84,9 +105,13 @@ const NodeEditor = () => {
         }
       });
 
-      setEdges((eds) => applyEdgeChanges(changes, eds));
+      setEdges((eds) => {
+        const newEdges = applyEdgeChanges(changes, eds);
+        setGraph({ nodes, edges: newEdges });
+        return newEdges;
+      });
     },
-    [setEdges]
+    [setEdges, nodes]
   );
   const onConnect: OnConnect = useCallback(
     (connection) => {
@@ -262,8 +287,8 @@ const NodeEditor = () => {
       <ReactFlow
         id="node-editor"
         nodeTypes={nodeTypes}
-        nodes={nodes}
-        edges={edges}
+        nodes={graph.nodes}
+        edges={graph.edges}
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         onPaneContextMenu={handlePaneContextMenu}
@@ -279,7 +304,12 @@ const NodeEditor = () => {
       >
         <Background bgColor="#14141d" color="#a7abc2" />
         <RightPanel />
-        <LeftPanel />
+        <LeftPanel
+          undo={undo}
+          redo={redo}
+          canUndo={canUndo}
+          canRedo={canRedo}
+        />
       </ReactFlow>
       {paneContextMenu && (
         <PaneContextMenu
