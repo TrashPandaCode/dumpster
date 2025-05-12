@@ -11,10 +11,12 @@ import { OUT_HANDLE_1 } from "../constants";
 
 type KeyState = "down" | "press" | "release";
 
-const KeyPress = memo(({ id }: { id: string }) => {
+const KeyPress = memo(({ id, data }: { id: string; data: any }) => {
   const { updateNodeData } = useReactFlow();
-  const curKey = useRef("");
-  const [keyPressType, setKeyPressType] = useState<KeyState>("down");
+  const curKey = useRef(data.curKey ? data.curKey.current : "");
+  const [keyPressType, setKeyPressType] = useState<KeyState>(
+    data.keyPressType ?? "down"
+  );
 
   const keyDown = useKeyStore((state) => state.isKeyDown);
   const keyPressed = useKeyStore((state) => state.isKeyPressed);
@@ -41,6 +43,8 @@ const KeyPress = memo(({ id }: { id: string }) => {
         }
         setActive(active);
       },
+      curKey,
+      keyPressType,
     });
   }, [keyPressType]);
 
@@ -92,6 +96,7 @@ const KeyPress = memo(({ id }: { id: string }) => {
           <SelectDropDown
             setSelected={(v) => (curKey.current = v)}
             items={{ Keys: ["w", "a", "s", "d"], Other: ["space", "enter"] }}
+            defaultValue={curKey.current}
           />
           <LabelHandle
             id={OUT_HANDLE_1}

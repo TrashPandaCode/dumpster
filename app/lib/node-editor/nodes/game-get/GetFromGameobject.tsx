@@ -1,5 +1,5 @@
 import { Position, useReactFlow, useUpdateNodeInternals } from "@xyflow/react";
-import { memo, useEffect, useState } from "react";
+import { memo, useEffect, useRef } from "react";
 
 import { LEVELS } from "~/lib/game/core/levels";
 import { useDataStore } from "~/lib/zustand/data";
@@ -9,12 +9,14 @@ import NodeContent from "../../node-components/NodeContent";
 import SelectDropDown from "../../node-components/SelectDropDown";
 import type { nodeData, nodeInputs } from "../../node-store/node-store";
 
-const GetFromGameobject = memo(({ id }: { id: string }) => {
+const GetFromGameobject = memo(({ id, data }: { id: string; data: any }) => {
   const level = useGameStore((state) => state.currentLevel);
   const modifiableGameObjects = LEVELS[level].modifiableGameObjects;
 
   const gameObjects = useDataStore((state) => state.gameObjects);
-  const [gameObject, setGameObject] = useState(modifiableGameObjects[0].id); // we assume there is at least one game object editable if this node is enabled
+  const gameObject = useRef(
+    data.gameObject ? data.gameObject.current : modifiableGameObjects[0].id
+  ); // we assume there is at least one game object editable if this node is enabled
 
   const { updateNodeData } = useReactFlow();
   const updateNodeInternals = useUpdateNodeInternals();
@@ -22,12 +24,12 @@ const GetFromGameobject = memo(({ id }: { id: string }) => {
   useEffect(() => {
     updateNodeData(id, {
       compute: (_: nodeInputs, results: nodeData) => {
-        gameObjects.get(gameObject)!.forEach(({ handleId, value }) => {
+        gameObjects.get(gameObject.current)!.forEach(({ handleId, value }) => {
           results.set(handleId, value);
         });
       },
     });
-  }, [gameObject]);
+  }, []);
 
   return (
     <div className="min-w-48">
@@ -35,12 +37,13 @@ const GetFromGameobject = memo(({ id }: { id: string }) => {
         <SelectDropDown
           items={{ "Game objects": Array.from(gameObjects.keys()) }}
           setSelected={(selected: string) => {
-            setGameObject(selected);
+            gameObject.current = selected;
+            updateNodeData(id, { gameObject });
             updateNodeInternals(id);
           }}
-          defaultValue={gameObject}
+          defaultValue={gameObject.current}
         />
-        {Array.from(gameObjects.get(gameObject) ?? []).map(
+        {Array.from(gameObjects.get(gameObject.current) ?? []).map(
           ([label, { handleId, access }]) =>
             access === "set" ? (
               <></>
