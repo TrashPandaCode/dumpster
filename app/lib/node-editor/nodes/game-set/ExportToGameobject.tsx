@@ -54,9 +54,7 @@ const ExportToGameobject = memo(({ id, data }: { id: string; data: any }) => {
         />
         {Array.from(gameObjects.get(gameObject.current) ?? []).map(
           ([label, { handleId, access }]) =>
-            access === "get" ? (
-              <React.Fragment key={handleId}></React.Fragment>
-            ) : (
+            access !== "get" && (
               <LabelHandle
                 key={handleId}
                 id={handleId}

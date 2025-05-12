@@ -45,9 +45,7 @@ const GetFromGameobject = memo(({ id, data }: { id: string; data: any }) => {
         />
         {Array.from(gameObjects.get(gameObject.current) ?? []).map(
           ([label, { handleId, access }]) =>
-            access === "set" ? (
-              <React.Fragment key={handleId}></React.Fragment>
-            ) : (
+            access !== "set" && (
               <LabelHandle
                 key={handleId}
                 id={handleId}
