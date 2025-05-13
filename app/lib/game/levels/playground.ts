@@ -5,7 +5,7 @@ import { getKaplayCtx } from "../core/kaplayCtx";
 export const initializePlayground = () => {
   const k = getKaplayCtx();
  
-  k.loadSprite("raccoon", "app/assets/game/sprites/raccoon_spritesheet.png", {
+  k.loadSprite("raccoon", "/game/sprites/raccoon_spritesheet.png", {
     sliceX: 4,
     sliceY: 4,
     anims: {
@@ -15,7 +15,7 @@ export const initializePlayground = () => {
       walkHolding: { from: 8, to: 13, loop: true },
     },
   });
-  k.loadSprite("trashcan", "app/assets/game/sprites/trashcan_spritesheet.png", {
+  k.loadSprite("trashcan", "/game/sprites/trashcan_spritesheet.png", {
     sliceX: 2,
     sliceY: 1,
     anims: {
@@ -23,7 +23,7 @@ export const initializePlayground = () => {
       filled: { from: 1, to: 1, loop: false },
     },
   });
-    k.loadSprite("flag", "app/assets/game/sprites/flag_spritesheet.png", {
+    k.loadSprite("flag", "/game/sprites/flag_spritesheet.png", {
     sliceX: 2,
     sliceY: 2,
     anims: {
