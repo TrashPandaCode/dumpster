@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useGameStore } from "~/lib/zustand/game";
 
 const GamePopup = () => {
-    const [isVisbible, setIsVisible] = useState(true);
+    const [isVisible, setIsVisible] = useState(true);
     const [typedText, setTypedText] = useState("");
 
     const currentLevel = useGameStore((state) => state.currentLevel);
@@ -25,7 +25,7 @@ const GamePopup = () => {
             } else {
                 clearInterval(interval);
             }
-        }, 25);
+        }, 10);
 
         return () => {
             clearInterval(interval);
@@ -33,14 +33,14 @@ const GamePopup = () => {
         };
     }, [description]);
 
-    if (!isVisbible) {
+    if (!isVisible) {
         return null;
     }
 
     // Information popup
     return (
         <div className="fixed inset-0 flex items-center justify-center z-50">
-            <div className="flex flex-col w-[50%] h-[50%] rounded-sm border-1 p-5 font-mono text-white bg-gray-800 border-emerald-400 outline-4 outline-emerald-400 opacity-95">
+            <div className="flex flex-col w-[50%] h-[50%] rounded-lg border-3 p-5 font-mono text-white bg-gray-800/95 border-blue-300">
                 <div className="text-center mb-6">
                     <h2 className="font-bold text-3xl">Level: {currentLevel}</h2>
                 </div>
@@ -61,9 +61,7 @@ const GamePopup = () => {
                     {/* Right side: Description text */}
                     <div className="flex items-center w-[70%] text-center">
                         <div className="relative bg-gray-700 text-white p-4 rounded-lg shadow-lg">
-                            {/* Sprechblasen-Pfeil */}
-                            <div
-                                className="absolute w-0 h-0 border-t-[10px] border-t-transparent border-b-[10px] border-b-transparent border-r-[10px] border-r-gray-700"
+                            <div className="absolute w-0 h-0 border-t-[10px] border-t-transparent border-b-[10px] border-b-transparent border-r-[10px] border-r-gray-700"
                                 style={{ top: "50%", left: "-10px", transform: "translateY(-50%)" }}
                             ></div>
                             <p className="text-xs italic">{typedText}</p>
