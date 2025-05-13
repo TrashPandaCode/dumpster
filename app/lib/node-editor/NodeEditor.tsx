@@ -77,10 +77,16 @@ const NodeEditor = () => {
         }
       });
 
-      setGraph((nds) => ({
-        ...nds,
-        nodes: applyNodeChanges(changes, nds.nodes),
-      }));
+      setGraph((currentGraph) => {
+        const newNodes = applyNodeChanges(changes, currentGraph.nodes);
+
+        if (changes.some((c) => c.type !== "position")) {
+          currentGraph.nodes = newNodes;
+          return { nodes: currentGraph.nodes, edges: currentGraph.edges };
+        }
+
+        return { ...currentGraph, nodes: newNodes };
+      });
     },
     [setGraph]
   );

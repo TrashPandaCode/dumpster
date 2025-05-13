@@ -53,7 +53,7 @@ const LeftPanel = ({ undo, redo, canUndo, canRedo }: LeftPanelProps) => {
         onClick={redo}
         disabled={!canRedo}
       >
-        <ReloadIcon className="text-white" />
+        <ResetIcon className="scale-x-[-1] text-white" />
       </button>
     </Panel>
   );
