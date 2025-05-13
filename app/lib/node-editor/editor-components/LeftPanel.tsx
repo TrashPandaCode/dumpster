@@ -1,4 +1,9 @@
-import { PauseIcon, PlayIcon, ResetIcon } from "@radix-ui/react-icons";
+import {
+  PauseIcon,
+  PlayIcon,
+  ReloadIcon,
+  ResetIcon,
+} from "@radix-ui/react-icons";
 import { Panel } from "@xyflow/react";
 
 import { useGameStore } from "~/lib/zustand/game";
@@ -36,22 +41,19 @@ const LeftPanel = ({ undo, redo, canUndo, canRedo }: LeftPanelProps) => {
           <PauseIcon className="text-white" />
         )}
       </button>
-      <button className="cursor-pointer rounded bg-slate-800 p-2 outline outline-slate-500 hover:bg-slate-900">
-        <ResetIcon className="text-white" />
-      </button>
       <button
         className="cursor-pointer rounded bg-slate-800 p-2 outline outline-slate-500 hover:bg-slate-900"
         onClick={undo}
         disabled={!canUndo}
       >
-        Undo
+        <ResetIcon className="text-white" />
       </button>
       <button
         className="cursor-pointer rounded bg-slate-800 p-2 outline outline-slate-500 hover:bg-slate-900"
         onClick={redo}
         disabled={!canRedo}
       >
-        Redo
+        <ReloadIcon className="text-white" />
       </button>
     </Panel>
   );
