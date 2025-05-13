@@ -4,7 +4,9 @@ import { useKeyStore } from "~/lib/zustand/key";
 import { useTimeStore } from "~/lib/zustand/time";
 import { getKaplayCtx } from "./kaplayCtx";
 
-let first = true; //TODO: remove just for react strict mode
+export let state = {
+  first: true
+}; //TODO: remove just for react strict mode
 
 /**
  * Initializes the game with a canvas element and sets up basic game-node interactions.
@@ -13,8 +15,8 @@ let first = true; //TODO: remove just for react strict mode
  * @returns Kaplay context
  */
 export default function initGame(canvas: HTMLCanvasElement) {
-  if (!first) return; //TODO: remove just for react strict mode
-  first = false; //TODO: remove just for react strict mode
+  if (!state.first) return; //TODO: remove just for react strict mode
+  state.first = false; //TODO: remove just for react strict mode
 
   const k = getKaplayCtx(canvas);
 

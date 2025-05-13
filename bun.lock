@@ -14,7 +14,7 @@
         "@xyflow/react": "^12.5.5",
         "classnames": "^2.5.1",
         "isbot": "^5",
-        "kaplay": "^3001.0.16",
+        "kaplay": "github:ecrax/kaplay#master",
         "react": "^19.0.0",
         "react-dom": "^19.0.0",
         "react-resizable-panels": "^2.1.8",
@@ -1098,7 +1098,7 @@
 
     "jsonfile": ["jsonfile@6.1.0", "", { "dependencies": { "universalify": "^2.0.0" }, "optionalDependencies": { "graceful-fs": "^4.1.6" } }, "sha512-5dgndWOriYSm5cnYaJNhalLNDKOqFwyDB/rr1E9ZsGciGvKPs8R2xYGCacuf3z6K1YKDz182fd+fY3cn3pMqXQ=="],
 
-    "kaplay": ["kaplay@3001.0.16", "", {}, "sha512-BEPuOqIO81hVaeMmUdvpfl4ZmXtta5PiYrht4tLn46+57MuwP8KNTffCI0yFCqloJA3MNa1Ju2gXzKR/wJWGVQ=="],
+    "kaplay": ["kaplay@github:ecrax/kaplay#4199ec2", {}, "ecrax-kaplay-4199ec2"],
 
     "keyv": ["keyv@4.5.4", "", { "dependencies": { "json-buffer": "3.0.1" } }, "sha512-oxVHkHR/EJf2CNXnWxRLW6mg7JyCCUcG0DtEGmL2ctUo1PNTin1PUil+r/+4r5MpVgC/fn1kjsx7mjSujKqIpw=="],
 

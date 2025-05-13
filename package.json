@@ -23,7 +23,7 @@
     "@xyflow/react": "^12.5.5",
     "classnames": "^2.5.1",
     "isbot": "^5",
-    "kaplay": "^3001.0.16",
+    "kaplay": "github:ecrax/kaplay#master",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-resizable-panels": "^2.1.8",
