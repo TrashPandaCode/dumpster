@@ -1,3 +1,3 @@
-import{v as e}from"./chunk-AYJ5UCUI-BvwBlbwa.js";const l={title:"Value"},u=`<h1>Value</h1>
+import{t as e}from"./chunk-AYJ5UCUI-Ci7WLVY7.js";const l={title:"Value"},u=`<h1>Value</h1>
 <p>The Value Node outputs a single float value. It is used to represent a constant value in the graph. The value can be set in the node’s properties.</p>
 `,s=function(t){return Object.keys(t).forEach(function(n){t[n]}),e.createElement("div",null,e.createElement("h1",null,"Value"),e.createElement("p",null,"The Value Node outputs a single float value. It is used to represent a constant value in the graph. The value can be set in the node’s properties."))};export{s as ReactComponent,l as attributes,u as html};

@@ -1,4 +1,4 @@
-import{v as e}from"./chunk-AYJ5UCUI-BvwBlbwa.js";const a={title:"Display"},s=`<h1>Display</h1>
+import{t as e}from"./chunk-AYJ5UCUI-Ci7WLVY7.js";const a={title:"Display"},s=`<h1>Display</h1>
 <p>The Display node displays any value connected to it from another node. It is useful for debugging purposes, allowing you to see computed values.</p>
 <p><img src="/nodes/display.png" alt="Image of the Display Node"></p>
 <h2>Properties</h2>

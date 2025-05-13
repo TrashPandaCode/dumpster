@@ -1,4 +1,4 @@
-import{v as e}from"./chunk-AYJ5UCUI-BvwBlbwa.js";const s={title:"Time"},i=`<h1>Time</h1>
+import{t as e}from"./chunk-AYJ5UCUI-Ci7WLVY7.js";const s={title:"Time"},i=`<h1>Time</h1>
 <p>The Time node displays and provides the current game time as well as the Delta time. It can be used to trigger events based on the time of day or to perform actions at regular intervals. It can also be used to measure the time taken for certain actions or events in the game. The Time node is useful for creating time-based events, such as day/night cycles, timed challenges, or cooldowns for abilities.</p>
 <p><img src="/nodes/time.png" alt="Image of the Time Node"></p>
 <h2>Properties</h2>
