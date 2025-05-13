@@ -62,27 +62,22 @@ interface NodeStoreState {
   debugPrint: () => void;
 }
 
-export const useNodeStore = create<NodeStoreState>((set) => ({
+export const useNodeStore = create<NodeStoreState>((set, get) => ({
   nodeMap: new Map<string, AppNode>(),
   sortedNodes: [],
   mapErrors: { cycle: false },
   replaceNode: (node: Node) => {
-    set((state) => {
-      if (state.nodeMap.has(node.id)) {
-        state.nodeMap.get(node.id)?.updateData(node.data);
-      } else {
-        const newNode = new AppNode(node.id, node.data);
-        state.nodeMap.set(node.id, newNode);
-        state.sortedNodes.push([node.id, newNode]);
-      }
-      return state;
-    });
+    const nodeMap = get().nodeMap;
+    if (nodeMap.has(node.id)) {
+      nodeMap.get(node.id)?.updateData(node.data);
+    } else {
+      const newNode = new AppNode(node.id, node.data);
+      nodeMap.set(node.id, newNode);
+      get().sortedNodes.push([node.id, newNode]);
+    }
   },
   removeNode: (nodeId: string) => {
-    set((state) => {
-      state.nodeMap.delete(nodeId);
-      return state;
-    });
+    get().nodeMap.delete(nodeId);
   },
   addEdge: (edge: Connection | Edge) => {
     set((state) => {
@@ -135,19 +130,13 @@ export const useNodeStore = create<NodeStoreState>((set) => ({
     });
   },
   compute: () => {
-    set((state) => {
-      computeMap(state.sortedNodes);
-      return state;
-    });
+    computeMap(get().sortedNodes);
   },
   debugPrint: () => {
-    set((state) => {
-      console.log(state.mapErrors.cycle);
+    console.log(get().mapErrors.cycle);
 
-      state.nodeMap.forEach((node) => {
-        console.log(node);
-      });
-      return state;
+    get().nodeMap.forEach((node) => {
+      console.log(node);
     });
   },
 }));
