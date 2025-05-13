@@ -1,6 +1,13 @@
 import { type Connection, type Edge, type Node } from "@xyflow/react";
 import { create } from "zustand";
 
+export type LoopStatus = {
+  // just externally manage loops (from the compute Map function) using this object to which the end node can write to (and start node read from)
+  iter: number; // when iter > 0 then use loopResults as inputs, this also allows us to pass an index to the ForStart resutls
+  looping: boolean; //we could use this for while loops
+  loopResults: Map<string, number>; //map handleIds to result
+};
+
 type MapErrors = {
   cycle: boolean;
 };
@@ -30,17 +37,12 @@ export class AppNode {
   compute(
     inputs: nodeInputs,
     results: nodeData,
-    loopStatus?: {
-      // just externally manage loops (from the compute Map function) using this object to which the end node can write to (and start node read from)
-      iter: number; // when iter > 0 then use loopResults as inputs, this also allows us to pass an index to the ForStart resutls
-      looping: boolean; //we could use this for while loops
-      loopResults: Map<string, number>; //map handleIds to result
-    }
+    loopStatus?: LoopStatus
   ): void {}
 
   loopStart = false;
   loopEnd = false;
-  loopId: string | undefined = undefined;
+  loopId: string | undefined = undefined; // do we even need this now? because we can set the results in the corresponding end node compute function which knows its loopId
 
   constructor(nodeId: string, data: Record<string, unknown>) {
     this.nodeId = nodeId;
@@ -200,6 +202,13 @@ function connectionToEdgeId(edge: Connection): string {
 }
 
 function computeMap(sortedNodes: [string, AppNode][]) {
+  //external management of loops
+  // we only need one of these because no two loops are beeing computed simultaneously
+  const loopStatus: LoopStatus = {
+    iter: 0,
+    looping: true,
+    loopResults: new Map(),
+  };
   sortedNodes.forEach(([_, node]) => {
     // if node is a loop start node start a new queue and append itself and all following nodes.
     // if node is a loop end node start computing the queue
@@ -209,7 +218,14 @@ function computeMap(sortedNodes: [string, AppNode][]) {
     // with the results of the loopEnd node construct a new input Map (maybe just have one ready to update in place)
     // with the correct handles (we know them from the loop id and the loop store)
     // and feed this input map into the start node so it can access the updated values after the iteration
-    node.compute(node.inputs, node.results);
+    // THIS IS PROB OUTDATED AS WE NOW USE THE LOOPSTATUS OBJECT
+    if (node.loopStart) {
+      //start loop
+    } else if (node.loopEnd) {
+      // and loop is still looping otherwise we need to continue with the map as is
+    } else {
+      node.compute(node.inputs, node.results);
+    }
   });
 }
 

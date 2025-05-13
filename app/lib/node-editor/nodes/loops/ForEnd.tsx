@@ -8,7 +8,11 @@ import LabelHandle from "../../node-components/LabelHandle";
 import NodeContent from "../../node-components/NodeContent";
 import SelectDropDown from "../../node-components/SelectDropDown";
 import { useLoopStore } from "../../node-store/loop-store";
-import type { nodeData, nodeInputs } from "../../node-store/node-store";
+import type {
+  LoopStatus,
+  nodeData,
+  nodeInputs,
+} from "../../node-store/node-store";
 import { OUT_HANDLE_1 } from "../constants";
 
 const ForEnd = memo(({ id, data }: { id: string; data: any }) => {
@@ -18,7 +22,11 @@ const ForEnd = memo(({ id, data }: { id: string; data: any }) => {
 
   useEffect(() => {
     updateNodeData(id, {
-      compute: (inputs: nodeInputs, results: nodeData) => {},
+      compute: (
+        inputs: nodeInputs,
+        results: nodeData,
+        loopStatus: LoopStatus
+      ) => {},
     });
   }, []);
 
