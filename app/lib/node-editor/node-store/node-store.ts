@@ -27,7 +27,16 @@ export class AppNode {
   mark: Mark | null = null; // TODO: null or undefined
   nodeId: string;
 
-  compute(inputs: nodeInputs, results: nodeData): void {}
+  compute(
+    inputs: nodeInputs,
+    results: nodeData,
+    loopStatus?: {
+      // just externally manage loops (from the compute Map function) using this object to which the end node can write to (and start node read from)
+      iter: number; // when iter > 0 then use loopResults as inputs, this also allows us to pass an index to the ForStart resutls
+      looping: boolean; //we could use this for while loops
+      loopResults: Map<string, number>; //map handleIds to result
+    }
+  ): void {}
 
   loopStart = false;
   loopEnd = false;
