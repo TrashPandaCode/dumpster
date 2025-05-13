@@ -29,6 +29,10 @@ export class AppNode {
 
   compute(inputs: nodeInputs, results: nodeData): void {}
 
+  loopStart = false;
+  loopEnd = false;
+  loopId: string | undefined = undefined;
+
   constructor(nodeId: string, data: Record<string, unknown>) {
     this.nodeId = nodeId;
     this.updateData(data);
@@ -39,6 +43,7 @@ export class AppNode {
       if (key === "compute") {
         this.compute = entry as (inputs: nodeInputs, results: nodeData) => void;
       }
+      // add the loop Id as well as loopstart and loop end here
     });
   }
 
@@ -187,6 +192,14 @@ function connectionToEdgeId(edge: Connection): string {
 
 function computeMap(sortedNodes: [string, AppNode][]) {
   sortedNodes.forEach(([_, node]) => {
+    // if node is a loop start node start a new queue and append itself and all following nodes.
+    // if node is a loop end node start computing the queue
+
+    // for loops in loops use an outer stack on which the loop queues are pushed
+
+    // with the results of the loopEnd node construct a new input Map (maybe just have one ready to update in place)
+    // with the correct handles (we know them from the loop id and the loop store)
+    // and feed this input map into the start node so it can access the updated values after the iteration
     node.compute(node.inputs, node.results);
   });
 }
