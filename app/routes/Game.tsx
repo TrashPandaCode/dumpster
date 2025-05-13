@@ -12,6 +12,8 @@ import "./game.css";
 import type { LEVELS } from "~/lib/game/core/levels";
 import { useGameStore } from "~/lib/zustand/game";
 
+import { GamePopup } from "~/routes/docs/GamePopup";
+
 const Game = ({ params }: Route.ComponentProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -34,6 +36,9 @@ const Game = ({ params }: Route.ComponentProps) => {
 
   return (
     <PanelGroup direction="horizontal">
+
+      <GamePopup />
+
       {/* autoSaveId="main-layout" */}
       <Panel id="game-panel" minSize={25} order={1}>
         <canvas id="game-canvas" ref={canvasRef} className="w-1/2"></canvas>
