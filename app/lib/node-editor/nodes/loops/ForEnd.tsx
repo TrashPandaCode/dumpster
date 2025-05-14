@@ -14,7 +14,7 @@ import type {
   nodeInputs,
 } from "../../node-store/node-store";
 import { getInput } from "../../node-store/utils";
-import { IN_HANDLE_1, OUT_HANDLE_1 } from "../constants";
+import { IN_HANDLE_1, IN_HANDLE_2, OUT_HANDLE_1 } from "../constants";
 
 const ForEnd = memo(({ id, data }: { id: string; data: any }) => {
   const loops = useLoopStore((state) => state.loops);
@@ -33,8 +33,8 @@ const ForEnd = memo(({ id, data }: { id: string; data: any }) => {
           results.set(handleId, input);
           loopStatus.loopResults.set(handleId, input);
         });
-        loopStatus.iter++;
         if (+getInput(inputs, IN_HANDLE_1, 0)) loopStatus.looping = false;
+        loopStatus.iter++;
       },
       loopEnd: true,
     });
@@ -48,6 +48,7 @@ const ForEnd = memo(({ id, data }: { id: string; data: any }) => {
   return (
     <div className="min-w-48">
       <NodeContent label="For End" type="loop">
+        <LabelHandle id={IN_HANDLE_2} label="DEBUG" position={Position.Left} />
         <LabelHandle id={IN_HANDLE_1} label="Break" position={Position.Left} />
         {Array.from(loops.get(data.loopId) ?? []).map(([label, handleId]) => (
           <LabelHandle

@@ -9,7 +9,8 @@ export type LoopStatus = {
 };
 
 type Loop = {
-  nodes: AppNode[];
+  startIndex: number; // index of start node
+  loopId: string;
   loopStatus: LoopStatus;
 };
 
@@ -212,44 +213,40 @@ function connectionToEdgeId(edge: Connection): string {
 }
 
 function computeMap(sortedNodes: AppNode[]) {
-  //external management of loops
   const loops: Loop[] = [];
 
-  sortedNodes.forEach((node) => {
-    // if node is a loop start node start a new queue and append itself and all following nodes.
-    // if node is a loop end node start computing the queue
+  for (let index = 0; index < sortedNodes.length; ) {
+    const node = sortedNodes[index];
 
-    // for loops in loops use an outer stack on which the loop queues are pushed
-
-    // with the results of the loopEnd node construct a new input Map (maybe just have one ready to update in place)
-    // with the correct handles (we know them from the loop id and the loop store)
-    // and feed this input map into the start node so it can access the updated values after the iteration
-    // THIS IS PROB OUTDATED AS WE NOW USE THE LOOPSTATUS OBJECT
     if (node.loopStart) {
-      const loop: Loop = {
-        nodes: [node],
-        loopStatus: {
-          iter: 0,
-          looping: true,
-          loopResults: new Map(),
-        },
-      };
-      loops.push(loop);
-      node.compute(node.inputs, node.results, loop.loopStatus);
-    } else if (node.loopEnd) {
-      const loop = loops.pop()!;
-      node.compute(node.inputs, node.results, loop.loopStatus);
-      loop.nodes.push(node); //rewrite this logic with indecies
-      // change the for each loop to a for loop
-      // have a stack with node loop start indecies
-      // this way loops in loops logic will become easier
+      if (loops.length == 0 || loops.at(-1)!.loopId !== node.loopId) {
+        const loop: Loop = {
+          startIndex: index,
+          loopId: node.loopId!,
+          loopStatus: {
+            iter: 0,
+            looping: true,
+            loopResults: new Map(),
+          },
+        };
+        loops.push(loop);
+      }
 
-      while (loop.loopStatus.looping) {}
+      node.compute(node.inputs, node.results, loops.at(-1)!.loopStatus);
+      index++;
+    } else if (node.loopEnd) {
+      const loop = loops.at(-1)!;
+      node.compute(node.inputs, node.results, loop.loopStatus);
+      if (loop.loopStatus.looping) index = loop.startIndex;
+      else {
+        loops.pop();
+        index++;
+      }
     } else {
-      loops.at(-1)?.nodes.push(node);
       node.compute(node.inputs, node.results);
+      index++;
     }
-  });
+  }
 }
 
 function orderMap(mapErrors: MapErrors, map: Map<string, AppNode>): AppNode[] {

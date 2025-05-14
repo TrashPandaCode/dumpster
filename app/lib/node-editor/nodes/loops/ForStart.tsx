@@ -14,9 +14,9 @@ import type {
   nodeInputs,
 } from "../../node-store/node-store";
 import { getInput } from "../../node-store/utils";
-import { OUT_HANDLE_1 } from "../constants";
+import { OUT_HANDLE_1, OUT_HANDLE_2 } from "../constants";
 
-const testIterations = 5;
+const testIterations = 5; // iter = 0 => while;
 
 const ForStart = memo(({ id, data }: { id: string; data: any }) => {
   const loops = useLoopStore((state) => state.loops);
@@ -56,6 +56,11 @@ const ForStart = memo(({ id, data }: { id: string; data: any }) => {
   return (
     <div className="min-w-48">
       <NodeContent label="For Start" type="loop">
+        <LabelHandle
+          id={OUT_HANDLE_2}
+          position={Position.Right}
+          label="DEBUG"
+        />
         <LabelHandle
           id={OUT_HANDLE_1}
           position={Position.Right}
