@@ -8,6 +8,11 @@ export type LoopStatus = {
   loopResults: Map<string, number>; //map handleIds to result
 };
 
+type Loop = {
+  nodes: AppNode[];
+  loopStatus: LoopStatus;
+};
+
 type MapErrors = {
   cycle: boolean;
 };
@@ -53,8 +58,13 @@ export class AppNode {
     Object.entries(data).forEach(([key, entry]) => {
       if (key === "compute") {
         this.compute = entry as (inputs: nodeInputs, results: nodeData) => void;
+      } else if (key === "loopStart") {
+        this.loopStart = entry as boolean;
+      } else if (key === "loopEnd") {
+        this.loopEnd = entry as boolean;
+      } else if (key === "loopId") {
+        this.loopId = entry as string;
       }
-      // add the loop Id as well as loopstart and loop end here
     });
   }
 
@@ -68,7 +78,7 @@ interface NodeStoreState {
    * sorted in reverse order
    */
   nodeMap: Map<string, AppNode>;
-  sortedNodes: [string, AppNode][];
+  sortedNodes: AppNode[];
   mapErrors: MapErrors;
   replaceNode: (node: Node) => void;
   removeNode: (nodeId: string) => void;
@@ -89,7 +99,7 @@ export const useNodeStore = create<NodeStoreState>((set) => ({
       } else {
         const newNode = new AppNode(node.id, node.data);
         state.nodeMap.set(node.id, newNode);
-        state.sortedNodes.push([node.id, newNode]);
+        state.sortedNodes.push(newNode);
       }
       return state;
     });
@@ -201,15 +211,11 @@ function connectionToEdgeId(edge: Connection): string {
   );
 }
 
-function computeMap(sortedNodes: [string, AppNode][]) {
+function computeMap(sortedNodes: AppNode[]) {
   //external management of loops
-  // we only need one of these because no two loops are beeing computed simultaneously
-  const loopStatus: LoopStatus = {
-    iter: 0,
-    looping: true,
-    loopResults: new Map(),
-  };
-  sortedNodes.forEach(([_, node]) => {
+  const loops: Loop[] = [];
+
+  sortedNodes.forEach((node) => {
     // if node is a loop start node start a new queue and append itself and all following nodes.
     // if node is a loop end node start computing the queue
 
@@ -220,19 +226,33 @@ function computeMap(sortedNodes: [string, AppNode][]) {
     // and feed this input map into the start node so it can access the updated values after the iteration
     // THIS IS PROB OUTDATED AS WE NOW USE THE LOOPSTATUS OBJECT
     if (node.loopStart) {
-      //start loop
+      const loop: Loop = {
+        nodes: [node],
+        loopStatus: {
+          iter: 0,
+          looping: true,
+          loopResults: new Map(),
+        },
+      };
+      loops.push(loop);
+      node.compute(node.inputs, node.results, loop.loopStatus);
     } else if (node.loopEnd) {
-      // and loop is still looping otherwise we need to continue with the map as is
+      const loop = loops.pop()!;
+      node.compute(node.inputs, node.results, loop.loopStatus);
+      loop.nodes.push(node); //rewrite this logic with indecies
+      // change the for each loop to a for loop
+      // have a stack with node loop start indecies
+      // this way loops in loops logic will become easier
+
+      while (loop.loopStatus.looping) {}
     } else {
+      loops.at(-1)?.nodes.push(node);
       node.compute(node.inputs, node.results);
     }
   });
 }
 
-function orderMap(
-  mapErrors: MapErrors,
-  map: Map<string, AppNode>
-): [string, AppNode][] {
+function orderMap(mapErrors: MapErrors, map: Map<string, AppNode>): AppNode[] {
   mapErrors.cycle = false;
   // remove all marks
   map.forEach((node) => {
@@ -240,7 +260,7 @@ function orderMap(
   });
 
   // map to contain sorted nodes
-  let sortedMap = new Map<string, AppNode>();
+  let sortedMap: AppNode[] = [];
 
   // TODO: this while loop is inefficient
   // because it loops over marked nodes
@@ -250,14 +270,10 @@ function orderMap(
     }
   });
 
-  return mapErrors.cycle ? [] : Array.from(sortedMap).reverse();
+  return mapErrors.cycle ? [] : sortedMap;
 }
 
-function visit(
-  node: AppNode,
-  sortedMap: Map<string, AppNode>,
-  mapErrors: MapErrors
-) {
+function visit(node: AppNode, sortedMap: AppNode[], mapErrors: MapErrors) {
   if (node.mark == Mark.Permanent) {
     return;
   }
@@ -274,5 +290,5 @@ function visit(
   });
 
   node.mark = Mark.Permanent;
-  sortedMap.set(node.nodeId, node);
+  sortedMap.unshift(node);
 }

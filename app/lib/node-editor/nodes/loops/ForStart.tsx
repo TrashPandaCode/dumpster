@@ -13,7 +13,10 @@ import type {
   nodeData,
   nodeInputs,
 } from "../../node-store/node-store";
+import { getInput } from "../../node-store/utils";
 import { OUT_HANDLE_1 } from "../constants";
+
+const testIterations = 5;
 
 const ForStart = memo(({ id, data }: { id: string; data: any }) => {
   const loops = useLoopStore((state) => state.loops);
@@ -30,10 +33,20 @@ const ForStart = memo(({ id, data }: { id: string; data: any }) => {
         results: nodeData,
         loopStatus: LoopStatus
       ) => {
-        if (loopStatus.iter > 0) {
-          // now we know we need to look at the loop results instead of the inputs
+        loops.get(data.loopId)?.forEach((handleId) => {
+          results.set(
+            handleId,
+            loopStatus.iter === 0
+              ? getInput(inputs, handleId, 0) // get data from nodes
+              : loopStatus.loopResults.get(handleId)! // get data from for end node
+          );
+        });
+        results.set(OUT_HANDLE_1, loopStatus.iter);
+        if (loopStatus.iter === testIterations - 1) {
+          loopStatus.looping = false;
         }
       },
+      loopStart: true,
     });
   }, []);
 
