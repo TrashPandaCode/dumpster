@@ -3,6 +3,7 @@ import { Position, useNodeConnections, useReactFlow } from "@xyflow/react";
 import { memo, useEffect, useRef, useState } from "react";
 
 import BaseHandle from "../../node-components/BaseHandle";
+import ConnectorHandle from "../../node-components/ConnectorHandle";
 import LabelHandle from "../../node-components/LabelHandle";
 import NodeContent from "../../node-components/NodeContent";
 import NumberInput from "../../node-components/NumberInput";
@@ -84,11 +85,7 @@ const ForStart = memo(
             />
             <BaseHandle id={IN_HANDLE_1} position={Position.Left} />
           </div>
-          <LabelHandle
-            id={LOOP_CONNECTOR_OUT}
-            position={Position.Right}
-            label="DEBUG"
-          />
+          <ConnectorHandle id={LOOP_CONNECTOR_OUT} position={Position.Right} />
           <LabelHandle
             id={OUT_HANDLE_1}
             position={Position.Right}

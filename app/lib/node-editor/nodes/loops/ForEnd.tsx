@@ -1,6 +1,7 @@
 import { Position, useReactFlow } from "@xyflow/react";
 import { memo, useEffect } from "react";
 
+import ConnectorHandle from "../../node-components/ConnectorHandle";
 import LabelHandle from "../../node-components/LabelHandle";
 import NodeContent from "../../node-components/NodeContent";
 import { useLoopStore } from "../../node-store/loop-store";
@@ -44,11 +45,7 @@ const ForEnd = memo(({ id, data }: { id: string; data: any }) => {
   return (
     <div className="min-w-60">
       <NodeContent label="For End" type="loop">
-        <LabelHandle
-          id={LOOP_CONNECTOR_IN}
-          label="DEBUG"
-          position={Position.Left}
-        />
+        <ConnectorHandle id={LOOP_CONNECTOR_IN} position={Position.Left} />
         <LabelHandle id={IN_HANDLE_1} label="Break" position={Position.Left} />
         {Array.from(loops.get(data.loopId) ?? []).map(([label, handleId]) => (
           <div
