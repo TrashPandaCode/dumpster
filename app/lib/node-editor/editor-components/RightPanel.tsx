@@ -58,12 +58,14 @@ const RightPanel = () => {
         </DropdownMenuPortal>
       </DropdownMenu>
 
-      <button
-        onClick={nodeStateDebugPrint}
-        className="cursor-pointer rounded bg-slate-800 p-2 text-white outline outline-slate-500 hover:bg-slate-900"
-      >
-        <CubeIcon className="text-white" />
-      </button>
+      {process.env.NODE_ENV === "development" && (
+        <button
+          onClick={nodeStateDebugPrint}
+          className="cursor-pointer rounded bg-slate-800 p-2 text-white outline outline-slate-500 hover:bg-slate-900"
+        >
+          <CubeIcon className="text-white" />
+        </button>
+      )}
     </Panel>
   );
 };
