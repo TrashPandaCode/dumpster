@@ -27,6 +27,7 @@ import { IN_HANDLE_1, OUT_HANDLE_1, OUT_HANDLE_2 } from "../constants";
 const ForStart = memo(
   ({ id, data, selected }: { id: string; data: any; selected: boolean }) => {
     const iterations = useRef(1); // iter = 0 => while;
+    const [iterDisplay, setIterDisplay] = useState(1);
 
     const loops = useLoopStore((state) => state.loops);
     const addHandle = useLoopStore((state) => state.addHandle);
@@ -43,6 +44,12 @@ const ForStart = memo(
           results: nodeData,
           loopStatus: LoopStatus
         ) => {
+          const iters = Math.max(
+            1,
+            Math.round(getInput(inputs, IN_HANDLE_1, iterations.current))
+          );
+          setIterDisplay(iters);
+
           loops.get(data.loopId)?.forEach((handleId) => {
             results.set(
               handleId,
@@ -52,7 +59,7 @@ const ForStart = memo(
             );
           });
           results.set(OUT_HANDLE_1, loopStatus.iter);
-          if (loopStatus.iter === iterations.current - 1) {
+          if (loopStatus.iter === iters - 1) {
             loopStatus.looping = false;
           }
         },
@@ -74,7 +81,7 @@ const ForStart = memo(
           <div className="text-left">
             iterations
             <NumberInput
-              value={iterations.current}
+              value={iterDisplay}
               setValue={(v) => {
                 if (v > 0) {
                   iterations.current = v;
