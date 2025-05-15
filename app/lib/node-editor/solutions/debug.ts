@@ -25,34 +25,34 @@ export const debugNodes: Node[] = [
   //   position: { x: 0, y: 500 },
   //   data: {},
   // },
-  {
-    id: FORSTART,
-    type: "ForStart",
-    position: { x: 0, y: 0 },
-    data: { loopId: 1 }, // the end node woudle have to have the same loop id, this needs to be inforced from the add menus as well
-  },
-  {
-    id: FOREND,
-    type: "ForEnd",
-    position: { x: 300, y: 0 },
-    data: { loopId: 1 }, // the end node woudle have to have the same loop id, this needs to be inforced from the add menus as well
-  },
+  // {
+  //   id: FORSTART,
+  //   type: "ForStart",
+  //   position: { x: 0, y: 0 },
+  //   data: { loopId: 1 }, // the end node woudle have to have the same loop id, this needs to be inforced from the add menus as well
+  // },
+  // {
+  //   id: FOREND,
+  //   type: "ForEnd",
+  //   position: { x: 300, y: 0 },
+  //   data: { loopId: 1 }, // the end node woudle have to have the same loop id, this needs to be inforced from the add menus as well
+  // },
 ];
 
 export const debugEdges: Edge[] = [
-  {
-    id: "loop-1-edge",
-    type: "straight",
-    source: FORSTART,
-    target: FOREND,
-    sourceHandle: LOOP_CONNECTOR_OUT,
-    targetHandle: LOOP_CONNECTOR_IN,
-    animated: true,
-    deletable: false,
-    selectable: false,
-    style: {
-      strokeWidth: 2,
-      stroke: "var(--color-blue-300)",
-    },
-  },
+  // {
+  //   id: "loop-1-edge",
+  //   type: "straight",
+  //   source: FORSTART,
+  //   target: FOREND,
+  //   sourceHandle: LOOP_CONNECTOR_OUT,
+  //   targetHandle: LOOP_CONNECTOR_IN,
+  //   animated: true,
+  //   deletable: false,
+  //   selectable: false,
+  //   style: {
+  //     strokeWidth: 2,
+  //     stroke: "var(--color-blue-300)",
+  //   },
+  // },
 ];
