@@ -11,6 +11,7 @@ interface LoopStoreState {
     > //map of input handles, these must be displayed as start input and output handles, and end input and output handles
   >;
   addHandle: (loopId: string, label: string) => void;
+  removeHandle: (loopId: string, label: string) => void;
 }
 
 export const useLoopStore = create<LoopStoreState>((set) => ({
@@ -25,6 +26,14 @@ export const useLoopStore = create<LoopStoreState>((set) => ({
 
       const newLoops = new Map(state.loops);
       newLoops.get(loopId)!.set(label, uuidv4());
+      return { loops: newLoops };
+    }),
+  removeHandle: (loopId, label) =>
+    set((state) => {
+      if (!state.loops.has(loopId)) return state;
+
+      const newLoops = new Map(state.loops);
+      newLoops.get(loopId)!.delete(label);
       return { loops: newLoops };
     }),
 }));

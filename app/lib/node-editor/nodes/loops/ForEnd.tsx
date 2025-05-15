@@ -46,25 +46,28 @@ const ForEnd = memo(({ id, data }: { id: string; data: any }) => {
   // and only the group can be deleted idk fitler is prob better
 
   return (
-    <div className="min-w-48">
+    <div className="min-w-60">
       <NodeContent label="For End" type="loop">
         <LabelHandle id={IN_HANDLE_2} label="DEBUG" position={Position.Left} />
         <LabelHandle id={IN_HANDLE_1} label="Break" position={Position.Left} />
         {Array.from(loops.get(data.loopId) ?? []).map(([label, handleId]) => (
-          <LabelHandle
+          <div
+            className={"flex w-full items-center justify-between"}
             key={handleId}
-            id={handleId}
-            position={Position.Right}
-            label={label}
-          />
-        ))}
-        {Array.from(loops.get(data.loopId) ?? []).map(([label, handleId]) => (
-          <LabelHandle
-            key={handleId}
-            id={handleId}
-            position={Position.Left}
-            label={label}
-          />
+          >
+            <LabelHandle
+              key={handleId}
+              id={handleId}
+              position={Position.Left}
+              label={label}
+            />
+            <LabelHandle
+              key={handleId}
+              id={handleId}
+              position={Position.Right}
+              label={label}
+            />
+          </div>
         ))}
       </NodeContent>
     </div>

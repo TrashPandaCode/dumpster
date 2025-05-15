@@ -1,11 +1,19 @@
-import { Position, useReactFlow, useUpdateNodeInternals } from "@xyflow/react";
-import React, { memo, useEffect, useRef } from "react";
+import { CrossCircledIcon, PlusIcon } from "@radix-ui/react-icons";
+import {
+  Position,
+  useNodeConnections,
+  useReactFlow,
+  useUpdateNodeInternals,
+} from "@xyflow/react";
+import React, { memo, useEffect, useRef, useState } from "react";
 
 import { LEVELS } from "~/lib/game/core/levels";
 import { useDataStore } from "~/lib/zustand/data";
 import { useGameStore } from "~/lib/zustand/game";
+import BaseHandle from "../../node-components/BaseHandle";
 import LabelHandle from "../../node-components/LabelHandle";
 import NodeContent from "../../node-components/NodeContent";
+import NumberInput from "../../node-components/NumberInput";
 import SelectDropDown from "../../node-components/SelectDropDown";
 import { useLoopStore } from "../../node-store/loop-store";
 import type {
@@ -14,96 +22,137 @@ import type {
   nodeInputs,
 } from "../../node-store/node-store";
 import { getInput } from "../../node-store/utils";
-import { OUT_HANDLE_1, OUT_HANDLE_2 } from "../constants";
+import { IN_HANDLE_1, OUT_HANDLE_1, OUT_HANDLE_2 } from "../constants";
 
-const testIterations = 5; // iter = 0 => while;
+const ForStart = memo(
+  ({ id, data, selected }: { id: string; data: any; selected: boolean }) => {
+    const iterations = useRef(1); // iter = 0 => while;
 
-const ForStart = memo(({ id, data }: { id: string; data: any }) => {
-  const loops = useLoopStore((state) => state.loops);
-  const addHandle = useLoopStore((state) => state.addHandle);
+    const loops = useLoopStore((state) => state.loops);
+    const addHandle = useLoopStore((state) => state.addHandle);
+    const removeHandle = useLoopStore((state) => state.removeHandle);
 
-  const curLabel = useRef("");
+    const curLabel = useRef("");
 
-  const { updateNodeData } = useReactFlow();
+    const { updateNodeData } = useReactFlow();
 
-  useEffect(() => {
-    updateNodeData(id, {
-      compute: (
-        inputs: nodeInputs,
-        results: nodeData,
-        loopStatus: LoopStatus
-      ) => {
-        loops.get(data.loopId)?.forEach((handleId) => {
-          results.set(
-            handleId,
-            loopStatus.iter === 0
-              ? getInput(inputs, handleId, 0) // get data from nodes
-              : loopStatus.loopResults.get(handleId)! // get data from for end node
-          );
-        });
-        results.set(OUT_HANDLE_1, loopStatus.iter);
-        if (loopStatus.iter === testIterations - 1) {
-          loopStatus.looping = false;
-        }
-      },
-      loopStart: true,
+    useEffect(() => {
+      updateNodeData(id, {
+        compute: (
+          inputs: nodeInputs,
+          results: nodeData,
+          loopStatus: LoopStatus
+        ) => {
+          loops.get(data.loopId)?.forEach((handleId) => {
+            results.set(
+              handleId,
+              loopStatus.iter === 0
+                ? getInput(inputs, handleId, 0) // get data from nodes
+                : loopStatus.loopResults.get(handleId)! // get data from for end node
+            );
+          });
+          results.set(OUT_HANDLE_1, loopStatus.iter);
+          if (loopStatus.iter === iterations.current - 1) {
+            loopStatus.looping = false;
+          }
+        },
+        loopStart: true,
+      });
+    }, []);
+
+    // we really need memoization for the handles!!!!
+    // same for end node
+
+    const iterConnection = useNodeConnections({
+      handleId: IN_HANDLE_1,
+      handleType: "target",
     });
-  }, []);
 
-  // we really need memoization for the handles!!!!
-  // same for end node
-
-  return (
-    <div className="min-w-48">
-      <NodeContent label="For Start" type="loop">
-        <LabelHandle
-          id={OUT_HANDLE_2}
-          position={Position.Right}
-          label="DEBUG"
-        />
-        <LabelHandle
-          id={OUT_HANDLE_1}
-          position={Position.Right}
-          label="Index"
-        />
-        {Array.from(loops.get(data.loopId) ?? []).map(([label, handleId]) => (
+    return (
+      <div className="min-w-60">
+        <NodeContent label="For Start" type="loop">
+          <div className="text-left">
+            iterations
+            <NumberInput
+              value={iterations.current}
+              setValue={(v) => {
+                if (v > 0) {
+                  iterations.current = v;
+                }
+              }}
+              defaultValue={iterations.current}
+              disabled={!!iterConnection.length}
+              type="int"
+            />
+            <BaseHandle id={IN_HANDLE_1} position={Position.Left} />
+          </div>
           <LabelHandle
-            key={handleId}
-            id={handleId}
+            id={OUT_HANDLE_2}
             position={Position.Right}
-            label={label}
+            label="DEBUG"
           />
-        ))}
-        {Array.from(loops.get(data.loopId) ?? []).map(([label, handleId]) => (
           <LabelHandle
-            key={handleId}
-            id={handleId}
-            position={Position.Left}
-            label={label}
+            id={OUT_HANDLE_1}
+            position={Position.Right}
+            label="Index"
           />
-        ))}
-        <div>
-          <input
-            type="text"
-            value={curLabel.current}
-            className="nodrag ml-3 w-12 rounded-sm border-1 border-slate-700 bg-slate-900 px-1 focus:border-slate-500 focus:outline-none disabled:text-slate-500"
-            onChange={(evt) => {
-              curLabel.current = evt.target.value;
-              updateNodeData(id, { curLabel });
-            }}
-          />
-          <button
-            className="ml-2 hover:cursor-pointer"
-            onClick={() => {
-              addHandle(data.loopId, curLabel.current);
-            }}
-          >
-            +
-          </button>
-        </div>
-      </NodeContent>
-    </div>
-  );
-});
+          {Array.from(loops.get(data.loopId) ?? []).map(([label, handleId]) => (
+            <div
+              className={
+                "flex w-full items-center justify-between [&>*:nth-child(even)]:pointer-events-none [&>*:nth-child(even)]:opacity-0 hover:[&>*:nth-child(even)]:pointer-events-auto hover:[&>*:nth-child(even)]:opacity-100 " +
+                (selected ? "hover:bg-slate-800" : "hover:bg-slate-700")
+              }
+              key={handleId}
+            >
+              <LabelHandle
+                key={handleId}
+                id={handleId}
+                position={Position.Left}
+                label={label}
+              />
+              <CrossCircledIcon
+                className="cursor-pointer text-red-400 transition-opacity duration-100"
+                onClick={() => {
+                  removeHandle(data.loopId, label);
+                }}
+              />
+              <LabelHandle
+                key={handleId}
+                id={handleId}
+                position={Position.Right}
+                label={label}
+              />
+            </div>
+          ))}
+          <div className="relative mt-3 px-3">
+            <input
+              type="text"
+              value={curLabel.current}
+              className="nodrag peer w-full rounded-sm border-1 border-slate-700 bg-slate-900 px-1 focus:border-slate-500 focus:outline-none disabled:text-slate-500"
+              placeholder="Handle Name"
+              onChange={(evt) => {
+                curLabel.current = evt.target.value;
+                updateNodeData(id, { curLabel });
+              }}
+              onKeyDown={(evt) => {
+                if (evt.key === "Enter") {
+                  addHandle(data.loopId, curLabel.current);
+                  curLabel.current = "";
+                }
+              }}
+            />
+            <PlusIcon
+              className="absolute top-1/2 right-4 -translate-y-1/2 cursor-pointer text-slate-400 opacity-0 transition-opacity duration-100 peer-focus:opacity-100"
+              onClick={() => {
+                addHandle(data.loopId, curLabel.current);
+                curLabel.current = "";
+              }}
+            />
+          </div>
+        </NodeContent>
+      </div>
+    );
+  }
+);
 
 export default ForStart;
