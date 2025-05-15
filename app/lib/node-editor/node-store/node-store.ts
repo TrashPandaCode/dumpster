@@ -52,6 +52,8 @@ export class AppNode {
 
   weight: number = 0;
 
+  type: string | undefined = ""; //TODO: DEBUG
+
   constructor(
     nodeId: string,
     data: Record<string, unknown>,
@@ -59,7 +61,8 @@ export class AppNode {
   ) {
     this.nodeId = nodeId;
     this.updateData(data);
-    if (type === "ForStart") this.weight = 1;
+    this.type = type; //TODO: DEBUG
+    if (type === "ForStart" || type === "ForEnd") this.weight = 1;
   }
 
   updateData(data: Record<string, unknown>) {
@@ -170,7 +173,7 @@ export const useNodeStore = create<NodeStoreState>((set, get) => ({
     console.log(get().mapErrors.cycle);
 
     get().sortedNodes.forEach((node) => {
-      console.log(node);
+      console.log(node.type, node);
     });
   },
 }));
