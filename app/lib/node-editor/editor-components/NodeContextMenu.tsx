@@ -38,7 +38,7 @@ const NodeContextMenu: React.FC<NodeContextMenuProps> = ({
 
     addNodes({
       ...node,
-      selected: true,
+      selected: false,
       dragging: false,
       id: newId,
       position,
