@@ -100,7 +100,7 @@ const ForStart = memo(
               key={handleId}
             >
               <LabelHandle
-                key={handleId}
+                key={handleId + "in"}
                 id={handleId}
                 position={Position.Left}
                 label={label}
@@ -112,7 +112,7 @@ const ForStart = memo(
                 }}
               />
               <LabelHandle
-                key={handleId}
+                key={handleId + "out"}
                 id={handleId}
                 position={Position.Right}
                 label={label}
