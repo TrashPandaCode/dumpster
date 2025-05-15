@@ -271,9 +271,17 @@ function visit(node: AppNode, sortedMap: AppNode[], mapErrors: MapErrors) {
 
   node.mark = Mark.Temporary;
 
+  // const visitLater: AppNode[] = [];
   node.outputs.forEach(({ targetNode }) => {
+    // if (targetNode.loopEnd && Array.from(node.outputs).filter(([key, { targetNode: n  }]) => n.mark == null).length > 1) {
+    //   visitLater.push(targetNode);
+    //   return;
+    // }
     visit(targetNode, sortedMap, mapErrors);
   });
+  // visitLater.forEach((node) => {
+  //   visit(node, sortedMap, mapErrors);
+  // });
 
   node.mark = Mark.Permanent;
   sortedMap.unshift(node);
