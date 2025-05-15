@@ -40,9 +40,9 @@ const GamePopup = () => {
     // Game popup
     return (
         <div className="fixed inset-0 flex items-center justify-center z-50">
-            <div className="flex flex-col w-[50%] h-[50%] rounded-lg border-3 p-5 font-mono text-white bg-gray-800/95 border-blue-300">
-                <div className="text-center mb-6 pt-8">
-                    <h2 className="font-bold text-7xl">Level: {currentLevel}</h2>
+            <div className="flex flex-col w-[50%] max-h-[80vh] rounded-lg border-3 p-5 font-mono text-white bg-gray-800/95 border-blue-300">
+                <div className="text-center mb-6 pt-4">
+                    <h2 className="font-bold text-5xl">Level: {currentLevel}</h2>
                 </div>
                 <div className="flex flex-row flex-1">
 
@@ -66,7 +66,7 @@ const GamePopup = () => {
                             <div className="absolute w-0 h-0 border-t-[10px] border-t-transparent border-b-[10px] border-b-transparent border-r-[10px] border-r-gray-700"
                                 style={{ top: "50%", left: "-10px", transform: "translateY(-50%)" }}
                             ></div>
-                            <p className="text-2xl italic">{typedText}</p>
+                            <p className="text-lg italic">{typedText}</p>
                         </div>
                     </div>
                 </div>
@@ -75,7 +75,7 @@ const GamePopup = () => {
                 <div className="flex flex-col items-center justify-center mt-4 pb-8">
                     <button
                         onClick={() => setIsVisible(false)}
-                        className="px-4 py-2 outline-2 outline-emerald-400 text-white rounded hover:bg-emerald-400 cursor-pointer text-2xl"
+                        className="px-4 py-2 outline-2 outline-emerald-400 text-white rounded hover:bg-emerald-400 cursor-pointer text-lg"
                     >
                         Let's Start!
                     </button>
