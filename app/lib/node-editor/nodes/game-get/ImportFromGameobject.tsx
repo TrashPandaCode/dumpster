@@ -9,7 +9,7 @@ import NodeContent from "../../node-components/NodeContent";
 import SelectDropDown from "../../node-components/SelectDropDown";
 import type { nodeData, nodeInputs } from "../../node-store/node-store";
 
-const GetFromGameobject = memo(({ id, data }: { id: string; data: any }) => {
+const ImportFromGameobject = memo(({ id, data }: { id: string; data: any }) => {
   const level = useGameStore((state) => state.currentLevel);
   const modifiableGameObjects = LEVELS[level].modifiableGameObjects;
 
@@ -59,4 +59,4 @@ const GetFromGameobject = memo(({ id, data }: { id: string; data: any }) => {
   );
 });
 
-export default GetFromGameobject;
+export default ImportFromGameobject;
