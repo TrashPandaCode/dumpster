@@ -52,7 +52,7 @@ export const debugEdges: Edge[] = [
     selectable: false,
     style: {
       strokeWidth: 2,
-      stroke: "var(--color-emerald-300)",
+      stroke: "var(--color-blue-300)",
     },
   },
 ];

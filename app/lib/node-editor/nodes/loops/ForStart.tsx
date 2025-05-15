@@ -71,7 +71,7 @@ const ForStart = memo(
       <div className="min-w-60">
         <NodeContent label="For Start" type="loop">
           <div className="text-left">
-            iterations
+            Iterations
             <NumberInput
               value={iterDisplay}
               setValue={(v) => {
