@@ -15,7 +15,7 @@ const ConnectorHandle = ({
           type="source"
           position={Position.Right}
           isConnectable={false}
-          className="!static float-right mt-3 flex !h-3 !w-3 items-baseline justify-center !rounded-[2px] !border-emerald-300 text-[8px]"
+          className="!static float-right mt-3 flex !h-3 !w-3 items-baseline justify-center !rounded-full !bg-blue-300 !border-blue-300 text-[8px]"
         />
       </div>
     );
@@ -27,7 +27,7 @@ const ConnectorHandle = ({
           type="target"
           position={Position.Left}
           isConnectable={false}
-          className="!static float-left mt-3 flex !h-3 !w-3 items-baseline justify-center !rounded-[2px] !border-emerald-300 text-[8px]"
+          className="!static float-left mt-3 flex !h-3 !w-3 items-baseline justify-center !rounded-full !bg-blue-300 !border-blue-300 text-[8px]"
         />
       </div>
     );
