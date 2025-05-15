@@ -1,20 +1,11 @@
 import { CrossCircledIcon, PlusIcon } from "@radix-ui/react-icons";
-import {
-  Position,
-  useNodeConnections,
-  useReactFlow,
-  useUpdateNodeInternals,
-} from "@xyflow/react";
-import React, { memo, useEffect, useRef, useState } from "react";
+import { Position, useNodeConnections, useReactFlow } from "@xyflow/react";
+import { memo, useEffect, useRef, useState } from "react";
 
-import { LEVELS } from "~/lib/game/core/levels";
-import { useDataStore } from "~/lib/zustand/data";
-import { useGameStore } from "~/lib/zustand/game";
 import BaseHandle from "../../node-components/BaseHandle";
 import LabelHandle from "../../node-components/LabelHandle";
 import NodeContent from "../../node-components/NodeContent";
 import NumberInput from "../../node-components/NumberInput";
-import SelectDropDown from "../../node-components/SelectDropDown";
 import { useLoopStore } from "../../node-store/loop-store";
 import type {
   LoopStatus,
@@ -22,7 +13,7 @@ import type {
   nodeInputs,
 } from "../../node-store/node-store";
 import { getInput } from "../../node-store/utils";
-import { IN_HANDLE_1, OUT_HANDLE_1, OUT_HANDLE_2 } from "../constants";
+import { IN_HANDLE_1, LOOP_CONNECTOR_OUT, OUT_HANDLE_1 } from "../constants";
 
 const ForStart = memo(
   ({ id, data, selected }: { id: string; data: any; selected: boolean }) => {
@@ -94,7 +85,7 @@ const ForStart = memo(
             <BaseHandle id={IN_HANDLE_1} position={Position.Left} />
           </div>
           <LabelHandle
-            id={OUT_HANDLE_2}
+            id={LOOP_CONNECTOR_OUT}
             position={Position.Right}
             label="DEBUG"
           />

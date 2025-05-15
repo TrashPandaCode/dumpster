@@ -1,12 +1,8 @@
-import { Position, useReactFlow, useUpdateNodeInternals } from "@xyflow/react";
-import React, { memo, useEffect, useRef } from "react";
+import { Position, useReactFlow } from "@xyflow/react";
+import { memo, useEffect } from "react";
 
-import { LEVELS } from "~/lib/game/core/levels";
-import { useDataStore } from "~/lib/zustand/data";
-import { useGameStore } from "~/lib/zustand/game";
 import LabelHandle from "../../node-components/LabelHandle";
 import NodeContent from "../../node-components/NodeContent";
-import SelectDropDown from "../../node-components/SelectDropDown";
 import { useLoopStore } from "../../node-store/loop-store";
 import type {
   LoopStatus,
@@ -14,7 +10,7 @@ import type {
   nodeInputs,
 } from "../../node-store/node-store";
 import { getInput } from "../../node-store/utils";
-import { IN_HANDLE_1, IN_HANDLE_2, OUT_HANDLE_1 } from "../constants";
+import { IN_HANDLE_1, LOOP_CONNECTOR_IN } from "../constants";
 
 const ForEnd = memo(({ id, data }: { id: string; data: any }) => {
   const loops = useLoopStore((state) => state.loops);
@@ -48,7 +44,11 @@ const ForEnd = memo(({ id, data }: { id: string; data: any }) => {
   return (
     <div className="min-w-60">
       <NodeContent label="For End" type="loop">
-        <LabelHandle id={IN_HANDLE_2} label="DEBUG" position={Position.Left} />
+        <LabelHandle
+          id={LOOP_CONNECTOR_IN}
+          label="DEBUG"
+          position={Position.Left}
+        />
         <LabelHandle id={IN_HANDLE_1} label="Break" position={Position.Left} />
         {Array.from(loops.get(data.loopId) ?? []).map(([label, handleId]) => (
           <div

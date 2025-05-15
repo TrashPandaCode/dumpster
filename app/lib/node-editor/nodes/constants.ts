@@ -6,6 +6,9 @@ export const OUT_HANDLE_1: string = "output-handle-x";
 export const OUT_HANDLE_2: string = "output-handle-y";
 export const OUT_HANDLE_3: string = "output-handle-z";
 
+export const LOOP_CONNECTOR_OUT: string = "loop-connector-out";
+export const LOOP_CONNECTOR_IN: string = "loop-connector-in";
+
 // 1 -> x
 // 2 -> y
 // 3 -> z
