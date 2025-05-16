@@ -7,14 +7,15 @@ const ConnectorHandle = ({
   id: string;
   position: Position;
 }) => {
+  // TODO: simplify
   if (position == Position.Right) {
     return (
       <div>
         <Handle
           id={id}
           type="source"
-          position={Position.Right}
-          // isConnectable={false}
+          position={position}
+          isConnectable={false}
           className="!static float-right mt-3 flex !h-3 !w-3 items-baseline justify-center !rounded-full !border-blue-300 !bg-blue-300 text-[8px]"
         />
       </div>
@@ -25,9 +26,28 @@ const ConnectorHandle = ({
         <Handle
           id={id}
           type="target"
-          position={Position.Left}
-          // isConnectable={false}
+          position={position}
+          isConnectable={false}
           className="!static float-left mt-3 flex !h-3 !w-3 items-baseline justify-center !rounded-full !border-blue-300 !bg-blue-300 text-[8px]"
+        />
+      </div>
+    );
+  } else if (position == Position.Top) {
+    return (
+      <div>
+        <Handle
+          id={id}
+          type="target"
+          position={position}
+          isConnectable={false}
+          className="invisible"
+        />
+        <Handle
+          id={id}
+          type="source"
+          position={position}
+          isConnectable={false}
+          className="invisible"
         />
       </div>
     );

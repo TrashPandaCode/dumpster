@@ -1,5 +1,5 @@
 import Display from "./debug/Display";
-import GetFromGameobject from "./game-get/GetFromGameobject";
+import ImportFromGameobject from "./game-get/ImportFromGameobject";
 import Time from "./game-get/Time";
 import ExportToGameobject from "./game-set/ExportToGameobject";
 import Group from "./groups/Group";
@@ -17,12 +17,25 @@ export const nodeTypes = {
   KeyPress,
   MathFloat,
   ExportToGameobject,
-  GetFromGameobject,
+  ImportFromGameobject,
   Switch,
   Group,
   ForStart,
   ForEnd,
 };
+
+export const searchNodeTypes = [
+  "Value",
+  "Display",
+  "Time",
+  "KeyPress",
+  "MathFloat",
+  "ExportToGameobject",
+  "GetFromGameobject",
+  "Switch",
+  "Group",
+  "ForLoop",
+];
 
 export const categorizedNodeTypes = new Map<
   string,

@@ -14,7 +14,7 @@ import type {
   nodeInputs,
 } from "../../node-store/node-store";
 import { getInput } from "../../node-store/utils";
-import { IN_HANDLE_1, LOOP_CONNECTOR_OUT, OUT_HANDLE_1 } from "../constants";
+import { IN_HANDLE_1, MAIN_LOOP_CONNECTOR, OUT_HANDLE_1 } from "../constants";
 
 const ForStart = memo(
   ({ id, data, selected }: { id: string; data: any; selected: boolean }) => {
@@ -85,7 +85,7 @@ const ForStart = memo(
             />
             <BaseHandle id={IN_HANDLE_1} position={Position.Left} />
           </div>
-          <ConnectorHandle id={LOOP_CONNECTOR_OUT} position={Position.Right} />
+          <ConnectorHandle id={MAIN_LOOP_CONNECTOR} position={Position.Right} />
           <LabelHandle
             id={OUT_HANDLE_1}
             position={Position.Right}
