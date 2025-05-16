@@ -31,7 +31,7 @@ export const searchNodeTypes = [
   "KeyPress",
   "MathFloat",
   "ExportToGameobject",
-  "GetFromGameobject",
+  "ImportFromGameobject",
   "Switch",
   "Group",
   "ForLoop",
