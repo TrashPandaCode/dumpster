@@ -9,6 +9,7 @@ import type { Route } from "./+types/Game";
 
 import "./game.css";
 
+import { cleanupKaplay } from "~/lib/game/core/kaplayCtx";
 import type { LEVELS } from "~/lib/game/core/levels";
 import { useGameStore } from "~/lib/zustand/game";
 
@@ -32,7 +33,11 @@ const Game = ({ params }: Route.ComponentProps) => {
 
     // load the game level
     loadLevel(level);
-  }, [canvasRef.current]);
+
+    return () => {
+      cleanupKaplay();
+    };
+  }, []);
 
   return (
     <PanelGroup direction="horizontal">

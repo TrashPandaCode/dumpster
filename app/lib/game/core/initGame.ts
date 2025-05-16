@@ -4,7 +4,9 @@ import { useKeyStore } from "~/lib/zustand/key";
 import { useTimeStore } from "~/lib/zustand/time";
 import { getKaplayCtx } from "./kaplayCtx";
 
-let first = true; //TODO: remove just for react strict mode
+export let state = {
+  first: true,
+}; //TODO: remove just for react strict mode
 
 /**
  * Initializes the game with a canvas element and sets up basic game-node interactions.
@@ -13,10 +15,10 @@ let first = true; //TODO: remove just for react strict mode
  * @returns Kaplay context
  */
 export default function initGame(canvas: HTMLCanvasElement) {
-  if (!first) return; //TODO: remove just for react strict mode
-  first = false; //TODO: remove just for react strict mode
+  if (!state.first) return; //TODO: remove just for react strict mode
+  state.first = false; //TODO: remove just for react strict mode
 
-  const k = getKaplayCtx(canvas);
+  const { k, game } = getKaplayCtx(canvas);
 
   useKeyStore.getState().setKeyDownFunction((key) => k.isKeyDown(key));
   useKeyStore.getState().setKeyPressedFunction((key) => k.isKeyPressed(key));
@@ -27,7 +29,11 @@ export default function initGame(canvas: HTMLCanvasElement) {
 
   //Game Loop, runs at 60 frames per second
   k.onUpdate(() => {
-    if (useGameStore.getState().isPaused) return;
+    if (useGameStore.getState().isPaused) {
+      game.paused = true;
+      return;
+    }
+    game.paused = false; // TODO: run this only once (maybe in store)
 
     // compute node map
     useNodeStore.getState().compute();

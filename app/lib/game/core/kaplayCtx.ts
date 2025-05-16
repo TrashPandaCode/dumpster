@@ -1,14 +1,14 @@
-import kaplay, { type KAPLAYCtx } from "kaplay";
+import kaplay, { type GameObj, type KAPLAYCtx, type TimerComp } from "kaplay";
+import { state } from "./initGame";
 
-// Kaplay Context Singleton, kaplay does not work if initialized multiple times
-let k: KAPLAYCtx | undefined = undefined;
+let ctx: { k: KAPLAYCtx, game: GameObj<TimerComp> } | undefined = undefined;
 
 export function getKaplayCtx(canvas?: HTMLCanvasElement) {
-  if (k) {
-    return k;
+  if (ctx) {
+    return ctx;
   }
 
-  k = kaplay({
+  const k = kaplay({
     global: false,
     pixelDensity: 2,
     touchToMouse: true,
@@ -16,5 +16,18 @@ export function getKaplayCtx(canvas?: HTMLCanvasElement) {
     debugKey: "f1",
     canvas: canvas,
   });
-  return k;
+  const game = k.add([k.timer()]);
+
+  ctx = {
+    k,
+    game
+  }
+
+  return ctx;
+}
+
+export function cleanupKaplay() {
+  if (!ctx) return;
+  ctx = undefined;
+  state.first = true; //TODO: remove just for react strict mode
 }
