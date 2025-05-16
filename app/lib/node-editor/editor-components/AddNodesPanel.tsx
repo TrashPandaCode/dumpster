@@ -125,7 +125,6 @@ const AddNodesPanel = ({
               ? LOOP_CONNECTOR
               : MAIN_LOOP_CONNECTOR,
             animated: true,
-            deletable: false,
             selectable: false,
             style: {
               opacity: 0.5,
@@ -262,7 +261,6 @@ function createForLoop(
     sourceHandle: MAIN_LOOP_CONNECTOR,
     targetHandle: MAIN_LOOP_CONNECTOR,
     animated: true,
-    deletable: false,
     selectable: false,
     style: {
       strokeWidth: 2,
