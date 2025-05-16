@@ -63,7 +63,7 @@ const NodeEditor = () => {
           case "remove":
             const node = getNode(element.id);
             if (node?.data.loopStart || node?.data.loopEnd) {
-              const nodeS = getNodes().filter(
+              const nodeOther = getNodes().filter(
                 (n) => n.id !== element.id && n.data.loopId === node.data.loopId
               )[0];
               setNodes((nds) =>
@@ -82,7 +82,10 @@ const NodeEditor = () => {
               );
               setEdges((edgs) =>
                 edgs.filter((edg) => {
-                  if (edg.target === nodeS.id || edg.source === nodeS.id) {
+                  if (
+                    edg.target === nodeOther.id ||
+                    edg.source === nodeOther.id
+                  ) {
                     removeEdge(edg.id);
                     return false;
                   }
@@ -90,7 +93,7 @@ const NodeEditor = () => {
                 })
               );
 
-              removeNode(nodeS.id);
+              removeNode(nodeOther.id);
             }
             removeNode(element.id);
             break;
