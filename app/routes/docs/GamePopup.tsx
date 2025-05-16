@@ -51,7 +51,7 @@ const GamePopup = () => {
                         <div
                             className="w-64 h-64"
                             style={{
-                                backgroundImage: "url('app/assets/game/sprites/raccoon_spritesheet.png')",
+                                backgroundImage: "url('/game/sprites/raccoon_spritesheet.png')",
                                 backgroundPosition: "0 0",
                                 backgroundSize: "400% 400%",
                                 imageRendering: "pixelated",
