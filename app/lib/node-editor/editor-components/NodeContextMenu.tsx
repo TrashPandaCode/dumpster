@@ -25,7 +25,7 @@ const NodeContextMenu: React.FC<NodeContextMenuProps> = ({
     <div style={{ position: "absolute", top: y, left: x, zIndex: 1000 }}>
       {nodeType === "ForStart" || nodeType === "ForEnd" ? (
         <AddNodesPanel onClose={onClose} x={x} y={y} parentLoopId={nodeLoopId}>
-          {/* TODO: this of course needs better styling */}
+          <hr />
           <DefaultNodeContextMenu nodeId={nodeId} onClose={onClose} />
         </AddNodesPanel>
       ) : (

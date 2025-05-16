@@ -210,12 +210,7 @@ const AddNodesPanel = ({
           </button>
         ))}
       </div>
-      {nodeSearch === "" && (
-        <>
-          <hr />
-          {children}
-        </>
-      )}
+      {nodeSearch === "" && <>{children}</>}
     </Panel>
   );
 };
