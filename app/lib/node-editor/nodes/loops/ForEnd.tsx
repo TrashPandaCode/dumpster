@@ -11,7 +11,7 @@ import type {
   nodeInputs,
 } from "../../node-store/node-store";
 import { getInput } from "../../node-store/utils";
-import { IN_HANDLE_1, LOOP_CONNECTOR_IN } from "../constants";
+import { IN_HANDLE_1, MAIN_LOOP_CONNECTOR } from "../constants";
 
 const ForEnd = memo(({ id, data }: { id: string; data: any }) => {
   const loops = useLoopStore((state) => state.loops);
@@ -45,7 +45,7 @@ const ForEnd = memo(({ id, data }: { id: string; data: any }) => {
   return (
     <div className="min-w-60">
       <NodeContent label="For End" type="loop">
-        <ConnectorHandle id={LOOP_CONNECTOR_IN} position={Position.Left} />
+        <ConnectorHandle id={MAIN_LOOP_CONNECTOR} position={Position.Left} />
         <LabelHandle id={IN_HANDLE_1} label="Break" position={Position.Left} />
         {Array.from(loops.get(data.loopId) ?? []).map(([label, handleId]) => (
           <div

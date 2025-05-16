@@ -24,6 +24,19 @@ export const nodeTypes = {
   ForEnd,
 };
 
+export const searchNodeTypes = [
+  "Value",
+  "Display",
+  "Time",
+  "KeyPress",
+  "MathFloat",
+  "ExportToGameobject",
+  "GetFromGameobject",
+  "Switch",
+  "Group",
+  "ForLoop",
+];
+
 export const categorizedNodeTypes = new Map<
   string,
   { nodes: { name: string; type: string; description: string }[] }

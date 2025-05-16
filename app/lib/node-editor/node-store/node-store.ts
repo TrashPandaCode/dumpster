@@ -48,9 +48,7 @@ export class AppNode {
 
   loopStart = false;
   loopEnd = false;
-  loopId: string | undefined = undefined; // do we even need this now? because we can set the results in the corresponding end node compute function which knows its loopId
-
-  weight: number = 0;
+  loopId: string | undefined = undefined;
 
   type: string | undefined = ""; //TODO: DEBUG
 
@@ -62,7 +60,6 @@ export class AppNode {
     this.nodeId = nodeId;
     this.updateData(data);
     this.type = type; //TODO: DEBUG
-    if (type === "ForStart" || type === "ForEnd") this.weight = 1;
   }
 
   updateData(data: Record<string, unknown>) {
@@ -200,7 +197,7 @@ function edgeIdParser(edgeId: string): {
   };
 }
 
-function connectionToEdgeId(edge: Connection): string {
+export function connectionToEdgeId(edge: Connection): string {
   return (
     "xy-edge__" +
     edge.source +
@@ -258,10 +255,7 @@ function orderMap(mapErrors: MapErrors, map: Map<string, AppNode>): AppNode[] {
   // map to contain sorted nodes
   const sortedMap: AppNode[] = [];
 
-  const unsortedNodes = Array.from(map.values()).sort(
-    (a, b) => a.weight - b.weight
-  );
-  unsortedNodes.forEach((node) => {
+  map.forEach((node) => {
     if (!node.mark) {
       visit(node, sortedMap, mapErrors);
     }

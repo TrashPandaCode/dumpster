@@ -11,11 +11,11 @@ import { Panel, useReactFlow } from "@xyflow/react";
 import { v4 as uuidv4 } from "uuid";
 
 import { useNodeStore } from "../node-store/node-store";
-import { LOOP_CONNECTOR_IN, LOOP_CONNECTOR_OUT } from "../nodes/constants";
+import { MAIN_LOOP_CONNECTOR } from "../nodes/constants";
 import { nodeTypes } from "../nodes/node-types";
 
 const RightPanel = () => {
-  const { addNodes, addEdges } = useReactFlow();
+  const { addNodes, addEdges, getNodes } = useReactFlow();
   const nodeStateDebugPrint = useNodeStore((state) => state.debugPrint);
 
   return (
@@ -82,8 +82,8 @@ const RightPanel = () => {
                     type: "straight",
                     source: startId,
                     target: endId,
-                    sourceHandle: LOOP_CONNECTOR_OUT,
-                    targetHandle: LOOP_CONNECTOR_IN,
+                    sourceHandle: MAIN_LOOP_CONNECTOR,
+                    targetHandle: MAIN_LOOP_CONNECTOR,
                     animated: true,
                     deletable: false,
                     selectable: false,
@@ -103,6 +103,14 @@ const RightPanel = () => {
 
       <button
         onClick={nodeStateDebugPrint}
+        className="cursor-pointer rounded bg-slate-800 p-2 text-white outline outline-slate-500 hover:bg-slate-900"
+      >
+        <CubeIcon className="text-white" />
+      </button>
+      <button
+        onClick={() => {
+          console.log(getNodes());
+        }}
         className="cursor-pointer rounded bg-slate-800 p-2 text-white outline outline-slate-500 hover:bg-slate-900"
       >
         <CubeIcon className="text-white" />

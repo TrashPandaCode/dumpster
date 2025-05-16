@@ -37,6 +37,8 @@ const NodeEditor = () => {
   } | null>(null);
   const [nodeContextMenu, setNodeContextMenu] = useState<{
     nodeId: string;
+    nodeType: string | undefined;
+    nodeLoopId: string | undefined;
     x: number;
     y: number;
   } | null>(null);
@@ -90,8 +92,49 @@ const NodeEditor = () => {
   );
   const onConnect: OnConnect = useCallback(
     (connection) => {
-      addEdgeStore(connection);
-      setEdges((eds) => addEdge(connection, eds));
+      const source = getNode(connection.source);
+      const target = getNode(connection.target);
+
+      const canConnect = () => {
+        // Same loop connections
+        if (
+          source?.data.loopStart &&
+          source.data.loopId === target?.data.loopId
+        )
+          return true;
+
+        // Loop start to child node
+        if (
+          source?.data.loopStart &&
+          target?.data.parentLoopId === source.data.loopId
+        )
+          return true;
+
+        // Loop end to sibling node
+        if (
+          source?.data.loopEnd &&
+          source.data.parentLoopId === target?.data.parentLoopId
+        )
+          return true;
+
+        // Node to its loop end
+        if (
+          target?.data.loopEnd &&
+          source?.data.parentLoopId === target.data.loopId
+        )
+          return true;
+
+        // Siblings in same parent loop
+        if (source?.data.parentLoopId === target?.data.parentLoopId)
+          return true;
+
+        return false;
+      };
+
+      if (canConnect()) {
+        addEdgeStore(connection);
+        setEdges((eds) => addEdge(connection, eds));
+      }
     },
     [setEdges]
   );
@@ -114,6 +157,8 @@ const NodeEditor = () => {
       const position = getContextMenuPosition(event);
       setNodeContextMenu({
         nodeId: node.id,
+        nodeType: node.type,
+        nodeLoopId: node.data.loopId as string | undefined,
         x: position.x,
         y: position.y,
       });
@@ -291,6 +336,8 @@ const NodeEditor = () => {
       {nodeContextMenu && (
         <NodeContextMenu
           nodeId={nodeContextMenu.nodeId}
+          nodeType={nodeContextMenu.nodeType}
+          nodeLoopId={nodeContextMenu.nodeLoopId}
           x={nodeContextMenu.x}
           y={nodeContextMenu.y}
           onClose={() => setNodeContextMenu(null)}
