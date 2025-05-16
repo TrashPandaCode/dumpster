@@ -70,12 +70,18 @@ const ExportToGameobject = memo(
                     position={Position.Left}
                     label={label}
                   />
-                  <CrossCircledIcon
-                    className="cursor-pointer text-red-400 ml-2 mt-[1px]"
-                    onClick={() => {
-                      removeHandle(gameObject.current, label);
-                    }}
-                  />
+                  {!modifiableGameObjects
+                    .find((g) => g.id === gameObject.current)
+                    ?.connections.find(
+                      (connection) => connection.label === label
+                    ) && (
+                    <CrossCircledIcon
+                      className="mt-[1px] ml-2 cursor-pointer text-red-400"
+                      onClick={() => {
+                        removeHandle(gameObject.current, label);
+                      }}
+                    />
+                  )}
                 </div>
               )
           )}
