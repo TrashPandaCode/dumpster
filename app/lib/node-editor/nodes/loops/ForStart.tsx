@@ -100,19 +100,17 @@ const ForStart = memo(
               key={handleId}
             >
               <LabelHandle
-                key={handleId + "in"}
                 id={handleId}
                 position={Position.Left}
                 label={label}
               />
               <CrossCircledIcon
-                className="cursor-pointer text-red-400 transition-opacity duration-100"
+                className="cursor-pointer text-red-400"
                 onClick={() => {
                   removeHandle(data.loopId, label);
                 }}
               />
               <LabelHandle
-                key={handleId + "out"}
                 id={handleId}
                 position={Position.Right}
                 label={label}

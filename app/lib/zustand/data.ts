@@ -19,6 +19,7 @@ interface DataState {
   gameObjects: GameObjectsData;
   setData: (gameObject: string, label: string, value: number) => void;
   addHandle: (gameObject: string, label: string) => void;
+  removeHandle: (gameObject: string, label: string) => void;
 }
 
 export const useDataStore = create<DataState>((set, get) => ({
@@ -40,6 +41,13 @@ export const useDataStore = create<DataState>((set, get) => ({
       newGameObjectsMap
         .get(gameObject)!
         .set(label, { handleId: uuidv4(), access: "all", value: 0 });
+
+      return { ...state, gameObjects: newGameObjectsMap };
+    }),
+  removeHandle: (gameObject, label) =>
+    set((state) => {
+      const newGameObjectsMap = new Map(state.gameObjects);
+      newGameObjectsMap.get(gameObject)!.delete(label);
 
       return { ...state, gameObjects: newGameObjectsMap };
     }),
