@@ -29,7 +29,9 @@ const NodeContextMenu: React.FC<NodeContextMenuProps> = ({
           <DefaultNodeContextMenu nodeId={nodeId} onClose={onClose} />
         </AddNodesPanel>
       ) : (
-        <DefaultNodeContextMenu nodeId={nodeId} onClose={onClose} />
+        <div className="flex w-36 flex-col gap-1 rounded bg-slate-800 p-2 font-mono shadow-lg outline-1 outline-slate-700 outline-solid">
+          <DefaultNodeContextMenu nodeId={nodeId} onClose={onClose} />
+        </div>
       )}
     </div>
   );
@@ -73,7 +75,7 @@ const DefaultNodeContextMenu = ({
   }, [nodeId, setNodes, setEdges]);
 
   return (
-    <div className="flex w-36 flex-col gap-1 rounded bg-slate-800 p-2 font-mono shadow-lg outline-1 outline-slate-700 outline-solid">
+    <>
       <button
         className="w-full rounded px-2 py-1 text-left text-sm text-white hover:bg-slate-700"
         onClick={duplicateNode}
@@ -86,6 +88,6 @@ const DefaultNodeContextMenu = ({
       >
         Delete
       </button>
-    </div>
+    </>
   );
 };
