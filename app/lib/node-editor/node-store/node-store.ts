@@ -111,7 +111,13 @@ export const useNodeStore = create<NodeStoreState>((set, get) => ({
     }
   },
   removeNode: (nodeId: string) => {
-    get().nodeMap.delete(nodeId);
+    set((state) => {
+      state.nodeMap.delete(nodeId);
+      return {
+        ...state,
+        sortedNodes: orderMap(state.mapErrors, state.nodeMap),
+      };
+    });
   },
   addEdge: (edge: Connection | Edge) => {
     set((state) => {

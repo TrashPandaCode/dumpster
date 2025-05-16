@@ -15,7 +15,7 @@ import { MAIN_LOOP_CONNECTOR } from "../nodes/constants";
 import { nodeTypes } from "../nodes/node-types";
 
 const RightPanel = () => {
-  const { addNodes, addEdges, getNodes } = useReactFlow();
+  const { addNodes, addEdges, getNodes, getEdges } = useReactFlow();
   const nodeStateDebugPrint = useNodeStore((state) => state.debugPrint);
 
   return (
@@ -111,6 +111,14 @@ const RightPanel = () => {
           <button
             onClick={() => {
               console.log(getNodes());
+            }}
+            className="cursor-pointer rounded bg-slate-800 p-2 text-white outline outline-slate-500 hover:bg-slate-900"
+          >
+            <CubeIcon className="text-white" />
+          </button>
+          <button
+            onClick={() => {
+              console.log(getEdges());
             }}
             className="cursor-pointer rounded bg-slate-800 p-2 text-white outline outline-slate-500 hover:bg-slate-900"
           >

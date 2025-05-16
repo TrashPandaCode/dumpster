@@ -27,7 +27,7 @@ import { debugEdges, debugNodes } from "./solutions/debug";
 import { applyNodeChanges } from "./utils";
 
 const NodeEditor = () => {
-  const { getIntersectingNodes, getNode } = useReactFlow();
+  const { getIntersectingNodes, getNode, getNodes, getEdges } = useReactFlow();
 
   const [nodes, setNodes] = useState<Node[]>(debugNodes); // TODO: load nodes based on level
   const [edges, setEdges] = useState<Edge[]>(debugEdges);
@@ -61,6 +61,37 @@ const NodeEditor = () => {
             replaceNode(element.item);
             break;
           case "remove":
+            const node = getNode(element.id);
+            if (node?.data.loopStart || node?.data.loopEnd) {
+              const nodeS = getNodes().filter(
+                (n) => n.id !== element.id && n.data.loopId === node.data.loopId
+              )[0];
+              setNodes((nds) =>
+                nds
+                  .filter((n) => n.data.loopId !== node?.data.loopId)
+                  .map((n) => ({
+                    ...n,
+                    data: {
+                      ...n.data,
+                      parentLoopId:
+                        n.data.parentLoopId === node.data.loopId
+                          ? undefined
+                          : n.data.parentLoopId,
+                    },
+                  }))
+              );
+              setEdges((edgs) =>
+                edgs.filter((edg) => {
+                  if (edg.target === nodeS.id || edg.source === nodeS.id) {
+                    removeEdge(edg.id);
+                    return false;
+                  }
+                  return true;
+                })
+              );
+
+              removeNode(nodeS.id);
+            }
             removeNode(element.id);
             break;
           case "replace":
@@ -71,7 +102,7 @@ const NodeEditor = () => {
 
       setNodes((nds) => applyNodeChanges(changes, nds));
     },
-    [setNodes]
+    [setNodes, getNode, getNodes, setEdges]
   );
   const onEdgesChange: OnEdgesChange = useCallback(
     (changes) => {
