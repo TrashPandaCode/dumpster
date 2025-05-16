@@ -125,7 +125,10 @@ const NodeEditor = () => {
           return true;
 
         // Siblings in same parent loop
-        if (source?.data.parentLoopId === target?.data.parentLoopId)
+        if (
+          !source?.data.loopStart &&
+          source?.data.parentLoopId === target?.data.parentLoopId
+        )
           return true;
 
         return false;
