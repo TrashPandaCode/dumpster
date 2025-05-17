@@ -34,7 +34,7 @@ export const initialize1_1 = () => {
 
   k.setGravity(2000);
 
-  //Create Game Objects
+  //Create Basic Game Objects
   const raccoon = game.add([
     k.sprite("raccoon", {
       anim: "walkHolding",
@@ -50,8 +50,7 @@ export const initialize1_1 = () => {
     k.sprite("flag", {
       anim: "default",
     }),
-    // k.pos(800, 50),
-    k.pos(k.width() - 100, k.height() - 100),
+    k.pos(800, 125),
     k.scale(5),
     k.area(),
     "flag",
@@ -66,10 +65,61 @@ export const initialize1_1 = () => {
     "floor",
   ]);
 
-  const raccoonSpeed = 200;
+  //Create Level Based Game Objects
+  const ladderRight = game.add([
+    k.rect(100, 300),
+    k.pos(k.width() - 200, k.height() - 325),
+    k.color(50, 50, 50),
+    k.area(),
+    "ladderRight",
+  ]);
+
+  const platformMiddle = game.add([
+    k.rect(k.width() - 50, 40),
+    k.pos(25, k.height() - 345),
+    k.color(100, 100, 100),
+    k.area(),
+    k.body({ isStatic: true }),
+    k.platformEffector(),
+    "platformMiddle",
+  ]);
+
+  const ladderLeft = game.add([
+    k.rect(100, 300),
+    k.pos(50, k.height() - 665),
+    k.color(50, 50, 50),
+    k.area(),
+    "ladderLeft",
+  ]);
+
+  const platformTop = game.add([
+    k.rect(k.width() - 50, 40),
+    k.pos(25, k.height() - 690),
+    k.color(100, 100, 100),
+    k.area(),
+    k.body({ isStatic: true }),
+    k.platformEffector(),
+    "platformTop",
+  ]);
+
   game.onUpdate(() => {
     if (useGameStore.getState().isPaused) return;
-    raccoon.move(raccoonSpeed, 0);
+
+    // //Move raccoon
+    // raccoon.vel.x =
+    //   useDataStore.getState().gameObjects.get("raccoon")?.get("xpos")?.value ?? 0;
+    // raccoon.vel.y =
+    //   useDataStore.getState().gameObjects.get("raccoon")?.get("ypos")?.value ?? 0;
+
+    if (raccoon.isOverlapping(ladderRight || ladderLeft)) {
+      raccoon.gravityScale = 0;
+
+    } else {
+      raccoon.gravityScale = 1;
+    }
+
+
+
   });
 
   k.onCollide("raccoon", "flag", (raccoon, flag) => {

@@ -101,13 +101,6 @@ export const LEVELS = {
         id: "racoon",
         connections: [{ label: "xpos", access: "get" }],
       },
-      {
-        id: "trashCan",
-        connections: [
-          { label: "xpos", access: "set" },
-          { label: "ypos", access: "set" },
-        ],
-      },
     ],
   },
   "1.2": {
@@ -128,6 +121,18 @@ export const LEVELS = {
       edges: [],
     },
     hints: [],
-    modifiableGameObjects: [],
+    modifiableGameObjects: [
+      {
+        id: "racoon",
+        connections: [{ label: "xpos", access: "get" }],
+      },
+      {
+        id: "trashCan",
+        connections: [
+          { label: "xpos", access: "set" },
+          { label: "ypos", access: "set" },
+        ],
+      },
+    ],
   },
 } satisfies Record<string, Level>;
