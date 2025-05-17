@@ -5,12 +5,12 @@ import { getKaplayCtx } from "../core/kaplayCtx";
 const RACOON_SPEED = 3000;
 
 export const initialize1_1 = () => {
-  const k = getKaplayCtx();
+  const { k, game } = getKaplayCtx();
 
   k.loadBean();
-  const racoon = k.add([k.sprite("bean"), k.pos(20, 130)]);
+  const racoon = game.add([k.sprite("bean"), k.pos(20, 130)]);
 
-  const trashCan = k.add([
+  const trashCan = game.add([
     k.sprite("bean"),
     k.color(0, 0, 0),
     k.pos(400, 400), // this is overridden by the node data
@@ -19,7 +19,7 @@ export const initialize1_1 = () => {
   ]);
   trashCan.tag("trashCan");
 
-  const finishLine = k.add([
+  const finishLine = game.add([
     k.sprite("bean"),
     k.color(255, 0, 0),
     k.pos(600, 100), // this is overridden by the node data
@@ -32,7 +32,7 @@ export const initialize1_1 = () => {
     console.log("Collided with finish line");
   });
 
-  k.onUpdate(() => {
+  game.onUpdate(() => {
     if (useGameStore.getState().isPaused) return;
 
     const gameObjects = useDataStore.getState().gameObjects;
