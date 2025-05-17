@@ -27,7 +27,7 @@ import { debugEdges, debugNodes } from "./solutions/debug";
 import { applyNodeChanges } from "./utils";
 
 const NodeEditor = () => {
-  const { getIntersectingNodes, getNode } = useReactFlow();
+  const { getIntersectingNodes, getNode, getNodes, getEdges } = useReactFlow();
 
   const [nodes, setNodes] = useState<Node[]>(debugNodes); // TODO: load nodes based on level
   const [edges, setEdges] = useState<Edge[]>(debugEdges);
@@ -37,6 +37,8 @@ const NodeEditor = () => {
   } | null>(null);
   const [nodeContextMenu, setNodeContextMenu] = useState<{
     nodeId: string;
+    nodeType: string | undefined;
+    nodeLoopId: string | undefined;
     x: number;
     y: number;
   } | null>(null);
@@ -59,6 +61,40 @@ const NodeEditor = () => {
             replaceNode(element.item);
             break;
           case "remove":
+            const node = getNode(element.id);
+            if (node?.data.loopStart || node?.data.loopEnd) {
+              const nodeOther = getNodes().filter(
+                (n) => n.id !== element.id && n.data.loopId === node.data.loopId
+              )[0];
+              setNodes((nds) =>
+                nds
+                  .filter((n) => n.data.loopId !== node?.data.loopId)
+                  .map((n) => ({
+                    ...n,
+                    data: {
+                      ...n.data,
+                      parentLoopId:
+                        n.data.parentLoopId === node.data.loopId
+                          ? undefined
+                          : n.data.parentLoopId,
+                    },
+                  }))
+              );
+              setEdges((edgs) =>
+                edgs.filter((edg) => {
+                  if (
+                    edg.target === nodeOther.id ||
+                    edg.source === nodeOther.id
+                  ) {
+                    removeEdge(edg.id);
+                    return false;
+                  }
+                  return true;
+                })
+              );
+
+              removeNode(nodeOther.id);
+            }
             removeNode(element.id);
             break;
           case "replace":
@@ -69,7 +105,7 @@ const NodeEditor = () => {
 
       setNodes((nds) => applyNodeChanges(changes, nds));
     },
-    [setNodes]
+    [setNodes, getNode, getNodes, setEdges]
   );
   const onEdgesChange: OnEdgesChange = useCallback(
     (changes) => {
@@ -90,8 +126,53 @@ const NodeEditor = () => {
   );
   const onConnect: OnConnect = useCallback(
     (connection) => {
-      addEdgeStore(connection);
-      setEdges((eds) => addEdge(connection, eds));
+      const source = getNode(connection.source);
+      const target = getNode(connection.target);
+
+      const canConnect = () => {
+        // Same loop connections
+        if (
+          source?.data.loopStart &&
+          source.data.loopId === target?.data.loopId
+        )
+          return true;
+
+        // Loop start to child node
+        if (
+          source?.data.loopStart &&
+          target?.data.parentLoopId === source.data.loopId
+        )
+          return true;
+
+        // Loop end to sibling node
+        if (
+          source?.data.loopEnd &&
+          source.data.parentLoopId === target?.data.parentLoopId
+        )
+          return true;
+
+        // Node to its loop end
+        if (
+          target?.data.loopEnd &&
+          source?.data.parentLoopId === target.data.loopId
+        )
+          return true;
+
+        // Siblings in same parent loop
+        if (
+          !source?.data.loopStart &&
+          !target?.data.loopEnd &&
+          source?.data.parentLoopId === target?.data.parentLoopId
+        )
+          return true;
+
+        return false;
+      };
+
+      if (canConnect()) {
+        addEdgeStore(connection);
+        setEdges((eds) => addEdge(connection, eds));
+      }
     },
     [setEdges]
   );
@@ -114,6 +195,8 @@ const NodeEditor = () => {
       const position = getContextMenuPosition(event);
       setNodeContextMenu({
         nodeId: node.id,
+        nodeType: node.type,
+        nodeLoopId: node.data.loopId as string | undefined,
         x: position.x,
         y: position.y,
       });
@@ -291,6 +374,8 @@ const NodeEditor = () => {
       {nodeContextMenu && (
         <NodeContextMenu
           nodeId={nodeContextMenu.nodeId}
+          nodeType={nodeContextMenu.nodeType}
+          nodeLoopId={nodeContextMenu.nodeLoopId}
           x={nodeContextMenu.x}
           y={nodeContextMenu.y}
           onClose={() => setNodeContextMenu(null)}

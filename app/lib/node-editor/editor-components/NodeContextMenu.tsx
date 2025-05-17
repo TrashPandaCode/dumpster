@@ -1,9 +1,13 @@
-import { Panel, useReactFlow } from "@xyflow/react";
+import { useReactFlow } from "@xyflow/react";
 import { useCallback } from "react";
 import { v4 as uuidv4 } from "uuid";
 
+import AddNodesPanel, { createForLoop } from "./AddNodesPanel";
+
 type NodeContextMenuProps = {
   nodeId: string;
+  nodeType: string | undefined;
+  nodeLoopId: string | undefined;
   x: number;
   y: number;
   onClose: () => void;
@@ -11,11 +15,38 @@ type NodeContextMenuProps = {
 
 const NodeContextMenu: React.FC<NodeContextMenuProps> = ({
   nodeId,
+  nodeType,
+  nodeLoopId,
   x,
   y,
   onClose,
 }) => {
-  const { getNode, setNodes, addNodes, setEdges } = useReactFlow();
+  return (
+    <div style={{ position: "absolute", top: y, left: x, zIndex: 1000 }}>
+      {nodeType === "ForStart" || nodeType === "ForEnd" ? (
+        <AddNodesPanel onClose={onClose} x={x} y={y} parentLoopId={nodeLoopId}>
+          <hr className="mx-auto h-1 w-44 rounded-sm border-0 bg-slate-700" />
+          <DefaultNodeContextMenu nodeId={nodeId} onClose={onClose} />
+        </AddNodesPanel>
+      ) : (
+        <div className="flex w-36 flex-col gap-1 rounded bg-slate-800 p-2 font-mono shadow-lg outline-1 outline-slate-700 outline-solid">
+          <DefaultNodeContextMenu nodeId={nodeId} onClose={onClose} />
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default NodeContextMenu;
+
+const DefaultNodeContextMenu = ({
+  nodeId,
+  onClose,
+}: {
+  nodeId: string;
+  onClose: () => void;
+}) => {
+  const { getNode, setNodes, addNodes, setEdges, addEdges } = useReactFlow();
 
   const duplicateNode = useCallback(() => {
     const node = getNode(nodeId);
@@ -26,13 +57,17 @@ const NodeContextMenu: React.FC<NodeContextMenuProps> = ({
       y: node.position.y + 50,
     };
 
-    addNodes({
-      ...node,
-      selected: false,
-      dragging: false,
-      id: uuidv4(),
-      position,
-    });
+    if (node.data.loopStart || node.data.loopEnd) {
+      createForLoop(addNodes, position.x, position.y, addEdges);
+    } else {
+      addNodes({
+        ...node,
+        selected: false,
+        dragging: false,
+        id: uuidv4(),
+        position,
+      });
+    }
 
     onClose();
   }, [nodeId, getNode, addNodes]);
@@ -44,23 +79,19 @@ const NodeContextMenu: React.FC<NodeContextMenuProps> = ({
   }, [nodeId, setNodes, setEdges]);
 
   return (
-    <div style={{ position: "absolute", top: y, left: x, zIndex: 1000 }}>
-      <Panel className="flex flex-col w-36 gap-1 rounded bg-slate-800 p-2 font-mono shadow-lg outline-1 outline-slate-700 outline-solid">
-        <button
-          className="w-full rounded px-2 py-1 text-left text-sm text-white hover:bg-slate-700"
-          onClick={duplicateNode}
-        >
-          Duplicate
-        </button>
-        <button
-          className="w-full rounded px-2 py-1 text-left text-sm text-white hover:bg-slate-700"
-          onClick={deleteNode}
-        >
-          Delete
-        </button>
-      </Panel>
-    </div>
+    <>
+      <button
+        className="w-full rounded px-2 py-1 text-left text-sm text-white hover:bg-slate-700"
+        onClick={duplicateNode}
+      >
+        Duplicate
+      </button>
+      <button
+        className="w-full rounded px-2 py-1 text-left text-sm text-white hover:bg-slate-700"
+        onClick={deleteNode}
+      >
+        Delete
+      </button>
+    </>
   );
 };
-
-export default NodeContextMenu;

@@ -1,6 +1,21 @@
 import { type Connection, type Edge, type Node } from "@xyflow/react";
 import { create } from "zustand";
 
+import { connectionToEdgeId } from "./utils";
+
+export type LoopStatus = {
+  // just externally manage loops (from the compute Map function) using this object to which the end node can write to (and start node read from)
+  iter: number; // when iter > 0 then use loopResults as inputs, this also allows us to pass an index to the ForStart resutls
+  looping: boolean; //we could use this for while loops
+  loopResults: Map<string, number>; //map handleIds to result
+};
+
+type Loop = {
+  startIndex: number; // index of start node
+  loopId: string;
+  loopStatus: LoopStatus;
+};
+
 type MapErrors = {
   cycle: boolean;
 };
@@ -27,17 +42,38 @@ export class AppNode {
   mark: Mark | null = null; // TODO: null or undefined
   nodeId: string;
 
-  compute(inputs: nodeInputs, results: nodeData): void {}
+  compute(
+    inputs: nodeInputs,
+    results: nodeData,
+    loopStatus?: LoopStatus
+  ): void {}
 
-  constructor(nodeId: string, data: Record<string, unknown>) {
+  loopStart = false;
+  loopEnd = false;
+  loopId: string | undefined = undefined;
+
+  type: string | undefined = ""; //TODO: DEBUG
+
+  constructor(
+    nodeId: string,
+    data: Record<string, unknown>,
+    type: string | undefined
+  ) {
     this.nodeId = nodeId;
     this.updateData(data);
+    this.type = type; //TODO: DEBUG
   }
 
   updateData(data: Record<string, unknown>) {
     Object.entries(data).forEach(([key, entry]) => {
       if (key === "compute") {
         this.compute = entry as (inputs: nodeInputs, results: nodeData) => void;
+      } else if (key === "loopStart") {
+        this.loopStart = entry as boolean;
+      } else if (key === "loopEnd") {
+        this.loopEnd = entry as boolean;
+      } else if (key === "loopId") {
+        this.loopId = entry as string;
       }
     });
   }
@@ -48,11 +84,8 @@ export class AppNode {
 }
 
 interface NodeStoreState {
-  /**
-   * sorted in reverse order
-   */
   nodeMap: Map<string, AppNode>;
-  sortedNodes: [string, AppNode][];
+  sortedNodes: AppNode[];
   mapErrors: MapErrors;
   replaceNode: (node: Node) => void;
   removeNode: (nodeId: string) => void;
@@ -71,13 +104,19 @@ export const useNodeStore = create<NodeStoreState>((set, get) => ({
     if (nodeMap.has(node.id)) {
       nodeMap.get(node.id)?.updateData(node.data);
     } else {
-      const newNode = new AppNode(node.id, node.data);
+      const newNode = new AppNode(node.id, node.data, node.type);
       nodeMap.set(node.id, newNode);
-      get().sortedNodes.push([node.id, newNode]);
+      get().sortedNodes.push(newNode);
     }
   },
   removeNode: (nodeId: string) => {
-    get().nodeMap.delete(nodeId);
+    set((state) => {
+      state.nodeMap.delete(nodeId);
+      return {
+        ...state,
+        sortedNodes: orderMap(state.mapErrors, state.nodeMap),
+      };
+    });
   },
   addEdge: (edge: Connection | Edge) => {
     set((state) => {
@@ -135,8 +174,8 @@ export const useNodeStore = create<NodeStoreState>((set, get) => ({
   debugPrint: () => {
     console.log(get().mapErrors.cycle);
 
-    get().nodeMap.forEach((node) => {
-      console.log(node);
+    get().sortedNodes.forEach((node) => {
+      console.log(node.type, node);
     });
   },
 }));
@@ -163,27 +202,44 @@ function edgeIdParser(edgeId: string): {
   };
 }
 
-function connectionToEdgeId(edge: Connection): string {
-  return (
-    "xy-edge__" +
-    edge.source +
-    edge.sourceHandle +
-    "-" +
-    edge.target +
-    edge.targetHandle
-  );
+function computeMap(sortedNodes: AppNode[]) {
+  const loops: Loop[] = [];
+
+  for (let index = 0; index < sortedNodes.length; ) {
+    const node = sortedNodes[index];
+
+    if (node.loopStart) {
+      if (loops.length == 0 || loops.at(-1)!.loopId !== node.loopId) {
+        const loop: Loop = {
+          startIndex: index,
+          loopId: node.loopId!,
+          loopStatus: {
+            iter: 0,
+            looping: true,
+            loopResults: new Map(),
+          },
+        };
+        loops.push(loop);
+      }
+
+      node.compute(node.inputs, node.results, loops.at(-1)!.loopStatus);
+      index++;
+    } else if (node.loopEnd) {
+      const loop = loops.at(-1)!;
+      node.compute(node.inputs, node.results, loop.loopStatus);
+      if (loop.loopStatus.looping) index = loop.startIndex;
+      else {
+        loops.pop();
+        index++;
+      }
+    } else {
+      node.compute(node.inputs, node.results);
+      index++;
+    }
+  }
 }
 
-function computeMap(sortedNodes: [string, AppNode][]) {
-  sortedNodes.forEach(([_, node]) => {
-    node.compute(node.inputs, node.results);
-  });
-}
-
-function orderMap(
-  mapErrors: MapErrors,
-  map: Map<string, AppNode>
-): [string, AppNode][] {
+function orderMap(mapErrors: MapErrors, map: Map<string, AppNode>): AppNode[] {
   mapErrors.cycle = false;
   // remove all marks
   map.forEach((node) => {
@@ -191,24 +247,18 @@ function orderMap(
   });
 
   // map to contain sorted nodes
-  let sortedMap = new Map<string, AppNode>();
+  const sortedMap: AppNode[] = [];
 
-  // TODO: this while loop is inefficient
-  // because it loops over marked nodes
   map.forEach((node) => {
     if (!node.mark) {
       visit(node, sortedMap, mapErrors);
     }
   });
 
-  return mapErrors.cycle ? [] : Array.from(sortedMap).reverse();
+  return mapErrors.cycle ? [] : sortedMap;
 }
 
-function visit(
-  node: AppNode,
-  sortedMap: Map<string, AppNode>,
-  mapErrors: MapErrors
-) {
+function visit(node: AppNode, sortedMap: AppNode[], mapErrors: MapErrors) {
   if (node.mark == Mark.Permanent) {
     return;
   }
@@ -225,5 +275,5 @@ function visit(
   });
 
   node.mark = Mark.Permanent;
-  sortedMap.set(node.nodeId, node);
+  sortedMap.unshift(node);
 }

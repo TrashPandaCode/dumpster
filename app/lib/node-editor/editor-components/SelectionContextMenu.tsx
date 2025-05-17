@@ -2,6 +2,8 @@ import { Panel, useReactFlow, type Edge, type Node } from "@xyflow/react";
 import React, { useCallback } from "react";
 import { v4 as uuidv4 } from "uuid";
 
+import { connectionToEdgeId } from "../node-store/utils";
+
 type SelectionContextMenuProps = {
   nodeIds: string[];
   x: number;
@@ -45,15 +47,15 @@ const SelectionContextMenu: React.FC<SelectionContextMenuProps> = ({
       .map((e) => {
         const newSource = idMap.get(e.source)!;
         const newTarget = idMap.get(e.target)!;
+        const edgeId = connectionToEdgeId({
+          source: newSource,
+          sourceHandle: e.sourceHandle!,
+          target: newTarget,
+          targetHandle: e.targetHandle!,
+        });
         return {
           ...e,
-          id:
-            "xy-edge__" +
-            newSource +
-            e.sourceHandle! +
-            "-" +
-            newTarget +
-            e.targetHandle,
+          id: edgeId,
           source: newSource,
           target: newTarget,
           selected: false,
