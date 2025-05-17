@@ -13,7 +13,7 @@ import { cleanupKaplay } from "~/lib/game/core/kaplayCtx";
 import type { LEVELS } from "~/lib/game/core/levels";
 import { useGameStore } from "~/lib/zustand/game";
 
-import { GamePopup } from "~/routes/docs/GamePopup";
+import { GamePopup } from "~/lib/game/components/GamePopup";
 
 const Game = ({ params }: Route.ComponentProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);

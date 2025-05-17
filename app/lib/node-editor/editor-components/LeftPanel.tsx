@@ -1,6 +1,6 @@
 import { InfoCircledIcon, PauseIcon, PlayIcon, ResetIcon } from "@radix-ui/react-icons";
 import { Panel } from "@xyflow/react";
-import { InfoPopup } from "~/routes/docs/InfoPopup";
+import { InfoPopup } from "~/lib/game/components/InfoPopup";
 
 import { useGameStore } from "~/lib/zustand/game";
 import { useState } from "react";
