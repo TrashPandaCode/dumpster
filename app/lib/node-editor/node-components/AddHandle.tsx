@@ -45,7 +45,7 @@ const AddHandle = ({
         }}
       />
       <PlusIcon
-        className="absolute top-1/2 right-4 -translate-y-1/2 cursor-pointer text-slate-400 opacity-0 transition-opacity duration-100 peer-focus:opacity-100"
+        className="absolute top-1/2 right-4 -translate-y-1/2 cursor-pointer text-slate-400"
         onClick={() => {
           createHandle();
         }}
