@@ -2,7 +2,7 @@ import { Panel, useReactFlow, type Edge, type Node } from "@xyflow/react";
 import React, { useCallback } from "react";
 import { v4 as uuidv4 } from "uuid";
 
-import { connectionToEdgeId } from "../node-store/node-store";
+import { connectionToEdgeId } from "../node-store/utils";
 
 type SelectionContextMenuProps = {
   nodeIds: string[];

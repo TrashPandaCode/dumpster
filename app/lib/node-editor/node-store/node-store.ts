@@ -1,6 +1,8 @@
 import { type Connection, type Edge, type Node } from "@xyflow/react";
 import { create } from "zustand";
 
+import { connectionToEdgeId } from "./utils";
+
 export type LoopStatus = {
   // just externally manage loops (from the compute Map function) using this object to which the end node can write to (and start node read from)
   iter: number; // when iter > 0 then use loopResults as inputs, this also allows us to pass an index to the ForStart resutls
@@ -82,9 +84,6 @@ export class AppNode {
 }
 
 interface NodeStoreState {
-  /**
-   * sorted in reverse order
-   */
   nodeMap: Map<string, AppNode>;
   sortedNodes: AppNode[];
   mapErrors: MapErrors;
@@ -201,17 +200,6 @@ function edgeIdParser(edgeId: string): {
     edgeTarget: match[3],
     edgeTargetHandle: match[4],
   };
-}
-
-export function connectionToEdgeId(edge: Connection): string {
-  return (
-    "xy-edge__" +
-    edge.source +
-    edge.sourceHandle +
-    "-" +
-    edge.target +
-    edge.targetHandle
-  );
 }
 
 function computeMap(sortedNodes: AppNode[]) {

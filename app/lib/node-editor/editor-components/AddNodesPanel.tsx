@@ -10,7 +10,7 @@ import {
 import { useEffect, useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
-import { connectionToEdgeId } from "../node-store/node-store";
+import { connectionToEdgeId } from "../node-store/utils";
 import { LOOP_CONNECTOR, MAIN_LOOP_CONNECTOR } from "../nodes/constants";
 import { TYPES } from "../nodes/math-float/types";
 import { searchNodeTypes } from "../nodes/node-types";
