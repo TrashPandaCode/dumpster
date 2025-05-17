@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useGameStore } from "~/lib/zustand/game";
 import { LEVELS } from "~/lib/game/core/levels";
 
-const GamePopup = () => {
+const GamePopup = ({ onClose }: { onClose: () => void }) => {
     const [isVisible, setIsVisible] = useState(true);
     const [typedText, setTypedText] = useState("");
 
@@ -29,6 +29,12 @@ const GamePopup = () => {
             setTypedText("");
         };
     }, [description]);
+
+    useEffect(() => {
+        if (!isVisible) {
+            onClose();
+        }
+    }, [isVisible, onClose]);
 
     if (!isVisible) {
         return null;

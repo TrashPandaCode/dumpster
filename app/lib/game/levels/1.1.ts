@@ -2,53 +2,82 @@ import { useDataStore } from "~/lib/zustand/data";
 import { useGameStore } from "~/lib/zustand/game";
 import { getKaplayCtx } from "../core/kaplayCtx";
 
-const RACOON_SPEED = 3000;
-
 export const initialize1_1 = () => {
   const { k, game } = getKaplayCtx();
 
-  k.loadBean();
-  const racoon = game.add([k.sprite("bean"), k.pos(20, 130)]);
+  //Load Sprites
+  k.loadSprite("raccoon", "/game/sprites/raccoon_spritesheet.png", {
+    sliceX: 4,
+    sliceY: 4,
+    anims: {
+      idle: { from: 0, to: 0, loop: false },
+      idleHolding: { from: 1, to: 1, loop: false },
+      walk: { from: 2, to: 7, loop: true },
+      walkHolding: { from: 8, to: 13, loop: true },
+    },
+  });
+  k.loadSprite("trashcan", "/game/sprites/trashcan_spritesheet.png", {
+    sliceX: 2,
+    sliceY: 1,
+    anims: {
+      empty: { from: 0, to: 0, loop: false },
+      filled: { from: 1, to: 1, loop: false },
+    },
+  });
+  k.loadSprite("flag", "/game/sprites/flag_spritesheet.png", {
+    sliceX: 2,
+    sliceY: 2,
+    anims: {
+      default: { from: 0, to: 3, loop: true },
+    },
+  });
 
-  const trashCan = game.add([
-    k.sprite("bean"),
-    k.color(0, 0, 0),
-    k.pos(400, 400), // this is overridden by the node data
-    k.scale(0.5),
+  k.setGravity(2000);
+
+  //Create Game Objects
+  const raccoon = game.add([
+    k.sprite("raccoon", {
+      anim: "walkHolding",
+    }),
+    k.pos(100, k.height() - 100),
+    k.scale(5),
     k.area(),
+    k.body(),
+    "raccoon",
   ]);
-  trashCan.tag("trashCan");
 
-  const finishLine = game.add([
-    k.sprite("bean"),
-    k.color(255, 0, 0),
-    k.pos(600, 100), // this is overridden by the node data
-    k.scale(4, 0.5),
+  const flag = game.add([
+    k.sprite("flag", {
+      anim: "default",
+    }),
+    // k.pos(800, 50),
+    k.pos(k.width() - 100, k.height() - 100),
+    k.scale(5),
     k.area(),
+    "flag",
   ]);
-  finishLine.tag("finishLine");
 
-  k.onCollide("trashCan", "finishLine", (trashCan, finishLine) => {
+  const floor = game.add([
+    k.rect(k.width(), 5),
+    k.pos(0, k.height() - 5),
+    k.color(255, 200, 200),
+    k.area(),
+    k.body({ isStatic: true }),
+    "floor",
+  ]);
+
+  const raccoonSpeed = 200;
+  game.onUpdate(() => {
+    if (useGameStore.getState().isPaused) return;
+    raccoon.move(raccoonSpeed, 0);
+  });
+
+  k.onCollide("raccoon", "flag", (raccoon, flag) => {
+    raccoon.pos.x = 100;
+    raccoon.pos.y = k.height() - 100;
+    raccoon.vel.x = 0;
+    raccoon.vel.y = 0;
     console.log("Collided with finish line");
   });
 
-  game.onUpdate(() => {
-    if (useGameStore.getState().isPaused) return;
-
-    const gameObjects = useDataStore.getState().gameObjects;
-
-    // racoon.move(RACOON_SPEED * k.dt(), 0);
-    racoon.pos.x = (racoon.pos.x + 1) % 1000;
-    // Write racoon position to store
-    const { handleId, access } = gameObjects.get("racoon")!.get("xpos")!;
-    gameObjects.get("racoon")!.set("xpos", {
-      handleId,
-      access,
-      value: racoon.pos.x,
-    });
-
-    //Move TrashCan
-    trashCan.pos.x = gameObjects.get("trashCan")?.get("xpos")?.value ?? 0;
-    trashCan.pos.y = gameObjects.get("trashCan")?.get("ypos")?.value ?? 0;
-  });
 };

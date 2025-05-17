@@ -1,5 +1,5 @@
 import { DragHandleDots2Icon } from "@radix-ui/react-icons";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 
 import initGame from "~/lib/game/core/initGame";
@@ -15,8 +15,11 @@ import { useGameStore } from "~/lib/zustand/game";
 
 import { GamePopup } from "~/lib/game/components/GamePopup";
 
+
 const Game = ({ params }: Route.ComponentProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [showPopup, setShowPopup] = useState(true);
+
 
   // load current level from params
   // also set the current level in the game store
@@ -32,17 +35,20 @@ const Game = ({ params }: Route.ComponentProps) => {
     initGame(canvasRef.current);
 
     // load the game level
-    loadLevel(level);
+
+    if (!showPopup) {
+      loadLevel(level);
+    }
 
     return () => {
       cleanupKaplay();
     };
-  }, []);
+  }, [showPopup]);
 
   return (
     <PanelGroup direction="horizontal">
 
-      <GamePopup />
+      {showPopup && <GamePopup onClose={() => setShowPopup(false)} />}
 
       {/* autoSaveId="main-layout" */}
       <Panel id="game-panel" minSize={25} order={1}>
