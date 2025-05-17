@@ -2,7 +2,7 @@ import { useReactFlow } from "@xyflow/react";
 import { useCallback } from "react";
 import { v4 as uuidv4 } from "uuid";
 
-import AddNodesPanel from "./AddNodesPanel";
+import AddNodesPanel, { createForLoop } from "./AddNodesPanel";
 
 type NodeContextMenuProps = {
   nodeId: string;
@@ -46,7 +46,7 @@ const DefaultNodeContextMenu = ({
   nodeId: string;
   onClose: () => void;
 }) => {
-  const { getNode, setNodes, addNodes, setEdges } = useReactFlow();
+  const { getNode, setNodes, addNodes, setEdges, addEdges } = useReactFlow();
 
   const duplicateNode = useCallback(() => {
     const node = getNode(nodeId);
@@ -57,13 +57,17 @@ const DefaultNodeContextMenu = ({
       y: node.position.y + 50,
     };
 
-    addNodes({
-      ...node,
-      selected: false,
-      dragging: false,
-      id: uuidv4(),
-      position,
-    });
+    if (node.data.loopStart || node.data.loopEnd) {
+      createForLoop(addNodes, position.x, position.y, addEdges);
+    } else {
+      addNodes({
+        ...node,
+        selected: false,
+        dragging: false,
+        id: uuidv4(),
+        position,
+      });
+    }
 
     onClose();
   }, [nodeId, getNode, addNodes]);

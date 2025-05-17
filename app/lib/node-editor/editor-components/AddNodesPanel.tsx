@@ -80,10 +80,10 @@ const AddNodesPanel = ({
       type === "ForLoop"
         ? createForLoop(
             addNodes,
-            screenToFlowPosition,
             x,
             y,
             addEdges,
+            screenToFlowPosition,
             parentLoopId
           )
         : [createSingleNode(type, computeType)];
@@ -218,17 +218,17 @@ const AddNodesPanel = ({
 
 export default AddNodesPanel;
 
-function createForLoop(
+export function createForLoop(
   addNodes: (payload: Node | Node[]) => void,
-  screenToFlowPosition: (
+  x: number,
+  y: number,
+  addEdges: (payload: Edge | Edge[]) => void,
+  screenToFlowPosition?: (
     clientPosition: XYPosition,
     options?: {
       snapToGrid: boolean;
     }
   ) => XYPosition,
-  x: number,
-  y: number,
-  addEdges: (payload: Edge | Edge[]) => void,
   parentLoopId?: string
 ) {
   const startId = uuidv4();
@@ -244,13 +244,17 @@ function createForLoop(
     {
       id: startId,
       type: "ForStart",
-      position: screenToFlowPosition({ x, y }),
+      position: screenToFlowPosition
+        ? screenToFlowPosition({ x, y })
+        : { x, y },
       data: { loopId, parentLoopId },
     },
     {
       id: endId,
       type: "ForEnd",
-      position: screenToFlowPosition({ x: x + 300, y }),
+      position: screenToFlowPosition
+        ? screenToFlowPosition({ x: x + 300, y })
+        : { x: x + 300, y },
       data: { loopId, parentLoopId },
     },
   ]);
