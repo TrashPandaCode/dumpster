@@ -1,7 +1,8 @@
-import { CrossCircledIcon, PlusIcon } from "@radix-ui/react-icons";
+import { CrossCircledIcon } from "@radix-ui/react-icons";
 import { Position, useNodeConnections, useReactFlow } from "@xyflow/react";
 import { memo, useEffect, useRef, useState } from "react";
 
+import AddHandle from "../../node-components/AddHandle";
 import BaseHandle from "../../node-components/BaseHandle";
 import ConnectorHandle from "../../node-components/ConnectorHandle";
 import LabelHandle from "../../node-components/LabelHandle";
@@ -114,31 +115,13 @@ const ForStart = memo(
               />
             </div>
           ))}
-          <div className="relative mt-3 px-3">
-            <input
-              type="text"
-              value={curLabel.current}
-              className="nodrag peer w-full rounded-sm border-1 border-slate-700 bg-slate-900 px-1 focus:border-slate-500 focus:outline-none disabled:text-slate-500"
-              placeholder="Handle Name"
-              onChange={(evt) => {
-                curLabel.current = evt.target.value;
-                updateNodeData(id, { curLabel });
-              }}
-              onKeyDown={(evt) => {
-                if (evt.key === "Enter") {
-                  addHandle(data.loopId, curLabel.current);
-                  curLabel.current = "";
-                }
-              }}
-            />
-            <PlusIcon
-              className="absolute top-1/2 right-4 -translate-y-1/2 cursor-pointer text-slate-400 opacity-0 transition-opacity duration-100 peer-focus:opacity-100"
-              onClick={() => {
-                addHandle(data.loopId, curLabel.current);
-                curLabel.current = "";
-              }}
-            />
-          </div>
+          <AddHandle
+            addHandle={addHandle}
+            handleIdentifier={data.loopId}
+            handleLabel={curLabel}
+            nodeId={id}
+            updateNodeData={updateNodeData}
+          />
         </NodeContent>
       </div>
     );

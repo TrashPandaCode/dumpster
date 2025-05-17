@@ -1,10 +1,11 @@
-import { CrossCircledIcon, PlusIcon } from "@radix-ui/react-icons";
+import { CrossCircledIcon } from "@radix-ui/react-icons";
 import { Position, useReactFlow, useUpdateNodeInternals } from "@xyflow/react";
 import { memo, useEffect, useRef } from "react";
 
 import { LEVELS } from "~/lib/game/core/levels";
 import { useDataStore } from "~/lib/zustand/data";
 import { useGameStore } from "~/lib/zustand/game";
+import AddHandle from "../../node-components/AddHandle";
 import LabelHandle from "../../node-components/LabelHandle";
 import NodeContent from "../../node-components/NodeContent";
 import SelectDropDown from "../../node-components/SelectDropDown";
@@ -85,31 +86,13 @@ const ExportToGameobject = memo(
                 </div>
               )
           )}
-          <div className="relative mt-3 px-3">
-            <input
-              type="text"
-              value={curLabel.current}
-              className="nodrag peer w-full rounded-sm border-1 border-slate-700 bg-slate-900 px-1 focus:border-slate-500 focus:outline-none disabled:text-slate-500"
-              placeholder="Handle Name"
-              onChange={(evt) => {
-                curLabel.current = evt.target.value;
-                updateNodeData(id, { curLabel });
-              }}
-              onKeyDown={(evt) => {
-                if (evt.key === "Enter") {
-                  addHandle(gameObject.current, curLabel.current);
-                  curLabel.current = "";
-                }
-              }}
-            />
-            <PlusIcon
-              className="absolute top-1/2 right-4 -translate-y-1/2 cursor-pointer text-slate-400 opacity-0 transition-opacity duration-100 peer-focus:opacity-100"
-              onClick={() => {
-                addHandle(gameObject.current, curLabel.current);
-                curLabel.current = "";
-              }}
-            />
-          </div>
+          <AddHandle
+            addHandle={addHandle}
+            handleIdentifier={gameObject.current}
+            handleLabel={curLabel}
+            nodeId={id}
+            updateNodeData={updateNodeData}
+          />
         </NodeContent>
       </div>
     );
