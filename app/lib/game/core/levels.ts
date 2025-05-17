@@ -62,17 +62,10 @@ export const LEVELS = {
     hints: [],
     modifiableGameObjects: [
       {
-        id: "bean",
+        id: "raccoon",
         connections: [
           { label: "xpos", access: "all" },
           { label: "ypos", access: "all" },
-        ],
-      },
-      {
-        id: "bean2",
-        connections: [
-          { label: "xpos", access: "set" },
-          { label: "ypos", access: "set" },
         ],
       },
     ],
@@ -98,7 +91,7 @@ export const LEVELS = {
     hints: [],
     modifiableGameObjects: [
       {
-        id: "racoon",
+        id: "raccoon",
         connections: [{ label: "xpos", access: "get" }],
       },
     ],
@@ -123,7 +116,7 @@ export const LEVELS = {
     hints: [],
     modifiableGameObjects: [
       {
-        id: "racoon",
+        id: "raccoon",
         connections: [{ label: "xpos", access: "get" }],
       },
       {
