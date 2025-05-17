@@ -1,8 +1,11 @@
 import { QuestionMarkCircledIcon } from "@radix-ui/react-icons";
+import { Position } from "@xyflow/react";
 import classnames from "classnames";
 import { type ReactNode } from "react";
 import { NavLink } from "react-router";
 
+import { LOOP_CONNECTOR } from "../nodes/constants";
+import ConnectorHandle from "./ConnectorHandle";
 import EditLabel from "./EditLabel";
 
 const modules = import.meta.glob("/content/**/*.md");
@@ -58,6 +61,7 @@ const NodeContent = ({
         )}
       </div>
       <div className="flex h-full w-full flex-col justify-center">
+        <ConnectorHandle id={LOOP_CONNECTOR} position={Position.Top} />
         {children}
       </div>
     </div>
