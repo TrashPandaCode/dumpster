@@ -37,11 +37,6 @@ const ForEnd = memo(({ id, data }: { id: string; data: any }) => {
     });
   }, []);
 
-  // if one of the nodes is deleted the other one should be removed too
-  // we could always filter for a node with the same nodeId on delete
-  // or disallow delete and wrap both nodes with a group
-  // and only the group can be deleted idk fitler is prob better
-
   return (
     <div className="min-w-60">
       <NodeContent label="For End" type="loop">

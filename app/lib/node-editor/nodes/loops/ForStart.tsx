@@ -59,9 +59,6 @@ const ForStart = memo(
       });
     }, []);
 
-    // we really need memoization for the handles!!!!
-    // same for end node
-
     const iterConnection = useNodeConnections({
       handleId: IN_HANDLE_1,
       handleType: "target",
