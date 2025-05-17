@@ -74,78 +74,78 @@ const AddNodesPanel = ({
   }, [nodeSearch]);
 
   const handleAddNode = (type: string, computeType?: string) => {
-    // TODO: this can be simplified a lot more!
-    if (parentLoopId) {
-      let ids = [];
-      if (type === "ForLoop") {
-        const { startId, endId } = createForLoop(
-          addNodes,
-          screenToFlowPosition,
-          x,
-          y,
-          addEdges,
-          parentLoopId
-        );
-        ids = [startId, endId];
-      } else {
-        const id = uuidv4();
-        addNodes({
-          id,
-          type,
-          position: screenToFlowPosition({ x, y }),
-          data: { initialComputeType: computeType, parentLoopId },
-        });
-        ids = [id];
-      }
-      const loopNodes = getNodes().filter(
-        (node) => node.data.loopId === parentLoopId
-      );
+    // Create nodes based on type
+    const ids =
+      type === "ForLoop"
+        ? createForLoop(
+            addNodes,
+            screenToFlowPosition,
+            x,
+            y,
+            addEdges,
+            parentLoopId
+          )
+        : [createSingleNode(type, computeType)];
 
-      ids.forEach((id) => {
-        loopNodes.forEach((node) => {
-          const edgeId = connectionToEdgeId({
-            source: node.data.loopStart ? node.id : id,
-            sourceHandle: node.data.loopStart
-              ? MAIN_LOOP_CONNECTOR
-              : LOOP_CONNECTOR,
-            target: node.data.loopStart ? id : node.id,
-            targetHandle: node.data.loopStart
-              ? LOOP_CONNECTOR
-              : MAIN_LOOP_CONNECTOR,
-          });
-          addEdges({
-            id: edgeId,
-            type: "straight",
-            source: node.data.loopStart ? node.id : id,
-            target: node.data.loopStart ? id : node.id,
-            sourceHandle: node.data.loopStart
-              ? MAIN_LOOP_CONNECTOR
-              : LOOP_CONNECTOR,
-            targetHandle: node.data.loopStart
-              ? LOOP_CONNECTOR
-              : MAIN_LOOP_CONNECTOR,
-            animated: true,
-            selectable: false,
-            style: {
-              opacity: 0.5,
-              strokeWidth: 1,
-              stroke: uuidToColor(parentLoopId),
-            },
-          });
-        });
-      });
-    } else if (type === "ForLoop") {
-      createForLoop(addNodes, screenToFlowPosition, x, y, addEdges);
-    } else {
-      addNodes({
-        id: uuidv4(),
-        type,
-        position: screenToFlowPosition({ x, y }),
-        data: { initialComputeType: computeType },
-      });
+    // Connect nodes if inside a loop
+    if (parentLoopId) {
+      connectNodesToLoop(ids, parentLoopId);
     }
 
     onClose();
+  };
+
+  // Helper function to create a single node and return its ID
+  const createSingleNode = (type: string, computeType?: string) => {
+    const id = uuidv4();
+    addNodes({
+      id,
+      type,
+      position: screenToFlowPosition({ x, y }),
+      data: {
+        initialComputeType: computeType,
+        parentLoopId,
+      },
+    });
+    return id;
+  };
+
+  // Helper function to connect nodes to loop connectors
+  const connectNodesToLoop = (nodeIds: string[], loopId: string) => {
+    const loopNodes = getNodes().filter((node) => node.data.loopId === loopId);
+
+    nodeIds.forEach((nodeId) => {
+      loopNodes.forEach((loopNode) => {
+        const isSource = loopNode.data.loopStart;
+        const sourceId = isSource ? loopNode.id : nodeId;
+        const targetId = isSource ? nodeId : loopNode.id;
+        const sourceHandle = isSource ? MAIN_LOOP_CONNECTOR : LOOP_CONNECTOR;
+        const targetHandle = isSource ? LOOP_CONNECTOR : MAIN_LOOP_CONNECTOR;
+
+        const edgeId = connectionToEdgeId({
+          source: sourceId,
+          sourceHandle,
+          target: targetId,
+          targetHandle,
+        });
+
+        addEdges({
+          id: edgeId,
+          type: "straight",
+          source: sourceId,
+          target: targetId,
+          sourceHandle,
+          targetHandle,
+          animated: true,
+          selectable: false,
+          style: {
+            opacity: 0.5,
+            strokeWidth: 1,
+            stroke: uuidToColor(loopId),
+          },
+        });
+      });
+    });
   };
 
   // handle keyboard navigation
@@ -267,7 +267,7 @@ function createForLoop(
       stroke: uuidToColor(loopId),
     },
   });
-  return { startId, endId };
+  return [startId, endId];
 }
 
 /**
