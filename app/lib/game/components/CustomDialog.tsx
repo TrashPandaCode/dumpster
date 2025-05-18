@@ -1,50 +1,31 @@
 import {
   DialogClose,
   DialogContent,
+  DialogOverlay,
   DialogPortal,
   DialogTitle,
 } from "@radix-ui/react-dialog";
-import { TriangleDownIcon } from "@radix-ui/react-icons";
-import { useEffect, useState } from "react";
+import { Cross2Icon } from "@radix-ui/react-icons";
+import { useEffect, useRef, useState } from "react";
 
-const CustomDialog = ({
-  title,
-  text,
-  buttonText,
-  type,
-}: {
-  title: string;
-  text: string[];
-  buttonText: string;
-  type: "level" | "info";
-}) => {
-  return (
-    <DialogPortal>
-      {/* <DialogOverlay className="data-[state=open]:animate-overlayShow fixed inset-0 bg-slate-800/25" /> */}
-      <DialogContent className="fixed top-1/2 left-1/2 flex min-w-5xl -translate-x-1/2 -translate-y-1/2 flex-col gap-6 rounded-lg border-3 border-blue-300 bg-slate-800/95 p-5 py-8 font-mono text-white">
-        <DialogTitle className="text-center text-5xl font-bold capitalize">
-          Level: {title}
-        </DialogTitle>
-        {type === "level" && <GameInner descriptions={text} />}
-        {type === "info" && <InfoInner goals={text} />}
+import { useGameStore } from "~/lib/zustand/game";
+import { LEVELS } from "../core/levels";
 
-        <DialogClose asChild>
-          <button className="outline-jam-600 hover:bg-jam-600 m-auto w-fit cursor-pointer rounded px-4 py-2 text-lg text-white outline-2">
-            {buttonText}
-          </button>
-        </DialogClose>
-      </DialogContent>
-    </DialogPortal>
-  );
-};
+const CustomDialog = ({ skip = false }: { skip?: boolean }) => {
+  const currentLevel = useGameStore((state) => state.currentLevel);
+  const goals = LEVELS[currentLevel]?.goals || [
+    "No goals defined for this level yet.",
+  ];
+  const descriptions = LEVELS[currentLevel]?.description || [
+    "No description available for this level.",
+  ];
 
-export default CustomDialog;
+  const index = useRef(0);
 
-const GameInner = ({ descriptions }: { descriptions: string[] }) => {
   const [typedText, setTypedText] = useState("");
-  const [index, setIndex] = useState(0);
+  const [description, setDescription] = useState(descriptions[index.current]);
 
-  const description = descriptions[index];
+  const [showingGoals, setShowingGoals] = useState(skip);
 
   // Typing effect
   useEffect(() => {
@@ -65,54 +46,110 @@ const GameInner = ({ descriptions }: { descriptions: string[] }) => {
     };
   }, [description]);
 
-  return (
-    <div className="flex flex-1 flex-row">
-      {/* Left side: Raccoon sprite */}
-      <div className="w-1/3 pr-4">
-        <div
-          style={{
-            aspectRatio: "1 / 1",
-            width: "100%",
-            backgroundImage: "url('/game/sprites/raccoon_spritesheet.png')",
-            backgroundPosition: "0 0",
-            backgroundSize: "400% 400%",
-            backgroundRepeat: "no-repeat",
-            imageRendering: "pixelated",
-          }}
-        ></div>
-      </div>
+  const handleNext = () => {
+    if (!showingGoals) {
+      if (index.current < descriptions.length - 1) {
+        index.current++;
+        setDescription(descriptions[index.current]);
+      } else {
+        index.current = 0;
+        setShowingGoals(true);
+        setDescription("");
+      }
+    }
+  };
 
-      {/* Right side: Description text */}
-      <div className="my-auto flex w-3/4 flex-col text-left">
-        <div className="relative w-fit rounded-lg bg-slate-700 p-4 text-white shadow-lg">
-          <div className="absolute top-1/2 -left-2 h-0 w-0 -translate-y-1/2 border-t-10 border-r-10 border-b-10 border-t-transparent border-r-slate-700 border-b-transparent"></div>
-          <p className="text-lg italic">{typedText}</p>
+  const handlePrevious = () => {
+    if (showingGoals) {
+      setShowingGoals(false);
+      index.current = descriptions.length - 1;
+      setDescription(descriptions[index.current]);
+    } else if (index.current > 0) {
+      index.current--;
+      setDescription(descriptions[index.current]);
+    }
+  };
+
+  return (
+    <DialogPortal>
+      <DialogOverlay className="fixed inset-0 bg-slate-800/25" />
+      <DialogContent className="fixed top-1/2 left-1/2 flex w-1/2 -translate-x-1/2 -translate-y-1/2 flex-col gap-6 rounded-lg border-3 border-blue-300 bg-slate-800/95 p-8 font-mono text-white">
+        <DialogTitle className="text-center text-4xl font-bold capitalize">
+          {currentLevel}
+        </DialogTitle>
+
+        <div className="flex flex-col gap-5">
+          <div className="flex flex-1 flex-row">
+            {/* Left side: Raccoon sprite */}
+            <div className="my-auto w-1/3 pr-4">
+              <div
+                style={{
+                  aspectRatio: "1 / 1",
+                  width: "100%",
+                  backgroundImage:
+                    "url('/game/sprites/raccoon_spritesheet.png')",
+                  backgroundPosition: "0 0",
+                  backgroundSize: "400% 400%",
+                  backgroundRepeat: "no-repeat",
+                  imageRendering: "pixelated",
+                }}
+              ></div>
+            </div>
+
+            {/* Right side: Description text */}
+            <div className="relative my-auto h-fit w-fit rounded-lg bg-slate-700 p-4 text-white shadow-lg">
+              <div className="absolute top-1/2 -left-2 h-0 w-0 -translate-y-1/2 border-t-10 border-r-10 border-b-10 border-t-transparent border-r-slate-700 border-b-transparent"></div>
+              <p className="text-lg italic">
+                {showingGoals ? (
+                  <>
+                    <span className="not-italic">Goals:</span>
+                    {goals.map((goal) => (
+                      <li key={goal.slice(0, 20)} className="text-lg italic">
+                        {goal}
+                      </li>
+                    ))}
+                  </>
+                ) : (
+                  typedText
+                )}
+              </p>
+            </div>
+          </div>
+          <div className="flex flex-row justify-end gap-5">
+            <button
+              onClick={handlePrevious}
+              className="cursor-pointer rounded-lg bg-slate-700/80 px-3 py-2 hover:bg-slate-600 focus:outline-none"
+            >
+              Previous
+            </button>
+            {showingGoals ? (
+              <DialogClose asChild>
+                <button className="cursor-pointer rounded-lg bg-slate-700/80 px-3 py-2 hover:bg-slate-600 focus:outline-none">
+                  Start
+                </button>
+              </DialogClose>
+            ) : (
+              <button
+                onClick={handleNext}
+                className="cursor-pointer rounded-lg bg-slate-700/80 px-3 py-2 hover:bg-slate-600 focus:outline-none"
+              >
+                Next
+              </button>
+            )}
+          </div>
         </div>
-        {index !== descriptions.length - 1 && (
-          <TriangleDownIcon
-            onClick={() => setIndex(index + 1)}
-            className="mx-auto size-10 cursor-pointer text-slate-400"
-          />
-        )}
-      </div>
-    </div>
+
+        <DialogClose asChild>
+          <button
+            className="absolute top-2.5 right-2.5 inline-flex size-[25px] cursor-pointer appearance-none items-center justify-center rounded-full bg-slate-700 focus:shadow-[0_0_0_2px] focus:outline-none"
+            aria-label="Close"
+          >
+            <Cross2Icon />
+          </button>
+        </DialogClose>
+      </DialogContent>
+    </DialogPortal>
   );
 };
 
-const InfoInner = ({ goals }: { goals: string[] }) => {
-  return (
-    <div className="flex flex-1 flex-row items-start justify-center">
-      {/* Goals Section */}
-      <div className="w-2/3 max-w-xl">
-        <h3 className="text-left text-3xl font-bold">Goals:</h3>
-        <ul className="list-inside list-disc pt-2 pl-8 text-left">
-          {goals.map((goal) => (
-            <li key={goal.slice(0, 20)} className="text-lg italic">
-              {goal}
-            </li>
-          ))}
-        </ul>
-      </div>
-    </div>
-  );
-};
+export default CustomDialog;

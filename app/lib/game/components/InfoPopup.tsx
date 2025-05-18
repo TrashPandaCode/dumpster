@@ -1,17 +1,9 @@
 import { Dialog, DialogTrigger } from "@radix-ui/react-dialog";
 import { InfoCircledIcon } from "@radix-ui/react-icons";
 
-import { LEVELS } from "~/lib/game/core/levels";
-import { useGameStore } from "~/lib/zustand/game";
 import CustomDialog from "./CustomDialog";
 
 const InfoPopup = () => {
-  const currentLevel = useGameStore((state) => state.currentLevel);
-
-  const goals = LEVELS[currentLevel]?.goals || [
-    "No goals defined for this level yet.",
-  ];
-
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -19,12 +11,7 @@ const InfoPopup = () => {
           <InfoCircledIcon className="text-white" />
         </button>
       </DialogTrigger>
-      <CustomDialog
-        type="info"
-        text={goals}
-        title={currentLevel}
-        buttonText={"Continue"}
-      />
+      <CustomDialog skip={true} />
     </Dialog>
   );
 };
