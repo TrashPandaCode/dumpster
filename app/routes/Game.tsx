@@ -9,6 +9,7 @@ import type { Route } from "./+types/Game";
 
 import "./game.css";
 
+import { GamePopup } from "~/lib/game/components/GamePopup";
 import { cleanupKaplay } from "~/lib/game/core/kaplayCtx";
 import type { LEVELS } from "~/lib/game/core/levels";
 import { useGameStore } from "~/lib/zustand/game";
@@ -38,22 +39,26 @@ const Game = ({ params }: Route.ComponentProps) => {
   }, []);
 
   return (
-    <PanelGroup direction="horizontal">
-      {/* autoSaveId="main-layout" */}
-      <Panel id="game-panel" minSize={25} order={1}>
-        <canvas id="game-canvas" ref={canvasRef} className="w-1/2"></canvas>
-      </Panel>
-      <PanelResizeHandle className="flex w-2 items-center justify-center bg-slate-800">
-        <DragHandleDots2Icon
-          width={32}
-          height={32}
-          className="scale-125 text-slate-400"
-        />
-      </PanelResizeHandle>
-      <Panel id="nodes-panel" minSize={25} order={2}>
-        <NodeEditor />
-      </Panel>
-    </PanelGroup>
+    <>
+      <GamePopup />
+      <PanelGroup direction="horizontal">
+        {/* autoSaveId="main-layout" */}
+
+        <Panel id="game-panel" minSize={25} order={1}>
+          <canvas id="game-canvas" ref={canvasRef} className="w-1/2"></canvas>
+        </Panel>
+        <PanelResizeHandle className="flex w-2 items-center justify-center bg-slate-800">
+          <DragHandleDots2Icon
+            width={32}
+            height={32}
+            className="scale-125 text-slate-400"
+          />
+        </PanelResizeHandle>
+        <Panel id="nodes-panel" minSize={25} order={2}>
+          <NodeEditor />
+        </Panel>
+      </PanelGroup>
+    </>
   );
 };
 

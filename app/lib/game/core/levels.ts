@@ -14,7 +14,8 @@ export type ConnectionAccess = "set" | "get" | "all";
 export type Level = {
   id: string;
   name: string;
-  description: string;
+  description: string[];
+  goals: string[];
   category: string;
   image: string;
   nodes: Node[];
@@ -42,8 +43,15 @@ export const LEVELS = {
   playground: {
     id: "playground",
     name: "Playground",
-    description:
+    description: [
       "This is a playground level where you can test your game mechanics.",
+      "Use of all nodes is permitted.",
+    ],
+    goals: [
+      "Test all features freely.",
+      "Experiment with different setups.",
+      "No restrictions in this mode.",
+    ],
     category: "Sandbox",
     image: alleyOne,
     nodes: [],
@@ -74,8 +82,13 @@ export const LEVELS = {
   "1.1": {
     id: "1.1",
     name: "Level 1.1",
-    description:
+    description: [
       "This is the first level of the game. It introduces the basic mechanics and objectives.",
+    ],
+    goals: [
+      "Create a character controller for the raccoon.",
+      "Navigate the raccoon to the goal flag.",
+    ],
     category: "Introduction",
     image: alleyTwo,
     nodes: [],
@@ -103,8 +116,10 @@ export const LEVELS = {
   "1.2": {
     id: "1.2",
     name: "Level 1.2",
-    description:
+    description: [
       "This is the second level of the game. It builds upon the mechanics introduced in Level 1.1.",
+    ],
+    goals: ["No goals defined yet."],
     category: "Introduction",
     image: houseImage,
     nodes: [],
