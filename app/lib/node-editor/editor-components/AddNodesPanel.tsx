@@ -3,10 +3,9 @@ import { Panel, useReactFlow, type PanelPosition } from "@xyflow/react";
 import { useEffect, useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
-import { LOOP_CONNECTOR, MAIN_LOOP_CONNECTOR } from "../nodes/constants";
 import { TYPES } from "../nodes/math-float/types";
 import { searchNodeTypes } from "../nodes/node-types";
-import { connectionToEdgeId, createForLoop, uuidToColor } from "../utils";
+import { connectNodesToLoop, createForLoop } from "../utils";
 
 const AddNodesPanel = ({
   x,
@@ -82,7 +81,7 @@ const AddNodesPanel = ({
 
     // Connect nodes if inside a loop
     if (parentLoopId) {
-      connectNodesToLoop(ids, parentLoopId);
+      connectNodesToLoop(getNodes, addEdges, ids, parentLoopId);
     }
 
     onClose();
@@ -101,44 +100,6 @@ const AddNodesPanel = ({
       },
     });
     return id;
-  };
-
-  // Helper function to connect nodes to loop connectors
-  const connectNodesToLoop = (nodeIds: string[], loopId: string) => {
-    const loopNodes = getNodes().filter((node) => node.data.loopId === loopId);
-
-    nodeIds.forEach((nodeId) => {
-      loopNodes.forEach((loopNode) => {
-        const isSource = loopNode.data.loopStart;
-        const sourceId = isSource ? loopNode.id : nodeId;
-        const targetId = isSource ? nodeId : loopNode.id;
-        const sourceHandle = isSource ? MAIN_LOOP_CONNECTOR : LOOP_CONNECTOR;
-        const targetHandle = isSource ? LOOP_CONNECTOR : MAIN_LOOP_CONNECTOR;
-
-        const edgeId = connectionToEdgeId({
-          source: sourceId,
-          sourceHandle,
-          target: targetId,
-          targetHandle,
-        });
-
-        addEdges({
-          id: edgeId,
-          type: "straight",
-          source: sourceId,
-          target: targetId,
-          sourceHandle,
-          targetHandle,
-          animated: true,
-          selectable: false,
-          style: {
-            opacity: 0.5,
-            strokeWidth: 1,
-            stroke: uuidToColor(loopId),
-          },
-        });
-      });
-    });
   };
 
   // handle keyboard navigation

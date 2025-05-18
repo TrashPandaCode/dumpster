@@ -2,7 +2,7 @@ import { useReactFlow } from "@xyflow/react";
 import { useCallback } from "react";
 import { v4 as uuidv4 } from "uuid";
 
-import { createForLoop } from "../utils";
+import { connectNodesToLoop, createForLoop } from "../utils";
 import AddNodesPanel from "./AddNodesPanel";
 
 type NodeContextMenuProps = {
@@ -47,7 +47,8 @@ const DefaultNodeContextMenu = ({
   nodeId: string;
   onClose: () => void;
 }) => {
-  const { getNode, setNodes, addNodes, setEdges, addEdges } = useReactFlow();
+  const { getNode, getNodes, setNodes, addNodes, setEdges, addEdges } =
+    useReactFlow();
 
   const duplicateNode = useCallback(() => {
     const node = getNode(nodeId);
@@ -61,17 +62,27 @@ const DefaultNodeContextMenu = ({
     if (node.data.loopStart || node.data.loopEnd) {
       createForLoop(addNodes, position.x, position.y, addEdges);
     } else {
+      const id = uuidv4();
       addNodes({
         ...node,
         selected: false,
         dragging: false,
-        id: uuidv4(),
+        id: id,
         position,
       });
+      console.log(node.data.parentLoopId);
+
+      if (node.data.parentLoopId)
+        connectNodesToLoop(
+          getNodes,
+          addEdges,
+          [id],
+          node.data.parentLoopId as string
+        );
     }
 
     onClose();
-  }, [getNode, nodeId, onClose, addNodes, addEdges]);
+  }, [getNode, nodeId, onClose, addNodes, addEdges, getNodes]);
 
   const deleteNode = useCallback(() => {
     setNodes((nodes) => nodes.filter((node) => node.id !== nodeId));

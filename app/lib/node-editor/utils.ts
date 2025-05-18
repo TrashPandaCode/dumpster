@@ -8,7 +8,7 @@ import type {
 import { v4 as uuidv4 } from "uuid";
 
 import type { nodeInputs } from "./node-store/node-store";
-import { MAIN_LOOP_CONNECTOR } from "./nodes/constants";
+import { LOOP_CONNECTOR, MAIN_LOOP_CONNECTOR } from "./nodes/constants";
 
 /*
  * This function applies changes to nodes or edges that are triggered by React Flow internally.
@@ -369,4 +369,47 @@ export function createForLoop(
     },
   });
   return [startId, endId];
+}
+
+// Helper function to connect nodes to loop connectors
+export function connectNodesToLoop(
+  getNodes: () => Node[],
+  addEdges: (payload: Edge | Edge[]) => void,
+  nodeIds: string[],
+  loopId: string
+) {
+  const loopNodes = getNodes().filter((node) => node.data.loopId === loopId);
+
+  nodeIds.forEach((nodeId) => {
+    loopNodes.forEach((loopNode) => {
+      const isSource = loopNode.data.loopStart;
+      const sourceId = isSource ? loopNode.id : nodeId;
+      const targetId = isSource ? nodeId : loopNode.id;
+      const sourceHandle = isSource ? MAIN_LOOP_CONNECTOR : LOOP_CONNECTOR;
+      const targetHandle = isSource ? LOOP_CONNECTOR : MAIN_LOOP_CONNECTOR;
+
+      const edgeId = connectionToEdgeId({
+        source: sourceId,
+        sourceHandle,
+        target: targetId,
+        targetHandle,
+      });
+
+      addEdges({
+        id: edgeId,
+        type: "straight",
+        source: sourceId,
+        target: targetId,
+        sourceHandle,
+        targetHandle,
+        animated: true,
+        selectable: false,
+        style: {
+          opacity: 0.5,
+          strokeWidth: 1,
+          stroke: uuidToColor(loopId),
+        },
+      });
+    });
+  });
 }
