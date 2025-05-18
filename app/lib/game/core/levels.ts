@@ -64,17 +64,10 @@ export const LEVELS = {
     hints: [],
     modifiableGameObjects: [
       {
-        id: "bean",
+        id: "raccoon",
         connections: [
           { label: "xpos", access: "all" },
           { label: "ypos", access: "all" },
-        ],
-      },
-      {
-        id: "bean2",
-        connections: [
-          { label: "xpos", access: "set" },
-          { label: "ypos", access: "set" },
         ],
       },
     ],
@@ -86,8 +79,8 @@ export const LEVELS = {
       "This is the first level of the game. It introduces the basic mechanics and objectives.",
     ],
     goals: [
-      "Create a character controller for the raccoon.",
-      "Navigate the raccoon to the goal flag.",
+      "Create your first nodes.",
+      "Solve the equation.",
     ],
     category: "Introduction",
     image: alleyTwo,
@@ -101,14 +94,9 @@ export const LEVELS = {
     hints: [],
     modifiableGameObjects: [
       {
-        id: "racoon",
-        connections: [{ label: "xpos", access: "get" }],
-      },
-      {
-        id: "trashCan",
+        id: "raccoon",
         connections: [
-          { label: "xpos", access: "set" },
-          { label: "ypos", access: "set" },
+          { label: "value", access: "set" },
         ],
       },
     ],
@@ -130,6 +118,21 @@ export const LEVELS = {
       edges: [],
     },
     hints: [],
-    modifiableGameObjects: [],
+    modifiableGameObjects: [
+      {
+        id: "raccoon",
+        connections: [
+          { label: "xpos", access: "get" },
+
+          { label: "xpos", access: "set" },
+        ],
+      },
+      {
+        id: "trashCan",
+        connections: [
+          { label: "xpos", access: "set" },
+          { label: "ypos", access: "set" },
+        ],
+      },],
   },
 } satisfies Record<string, Level>;
