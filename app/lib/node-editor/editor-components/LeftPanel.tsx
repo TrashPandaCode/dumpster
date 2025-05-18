@@ -1,16 +1,13 @@
-import { InfoCircledIcon, PauseIcon, PlayIcon, ResetIcon } from "@radix-ui/react-icons";
+import { PauseIcon, PlayIcon, ResetIcon } from "@radix-ui/react-icons";
 import { Panel } from "@xyflow/react";
-import { InfoPopup } from "~/lib/game/components/InfoPopup";
 
+import { InfoPopup } from "~/lib/game/components/InfoPopup";
 import { useGameStore } from "~/lib/zustand/game";
-import { useState } from "react";
 
 const LeftPanel = () => {
   const isPaused = useGameStore((state) => state.isPaused);
   const play = useGameStore((state) => state.play);
   const pause = useGameStore((state) => state.pause);
-
-  const [isInfoPopupVisible, setIsInfoPopupVisible] = useState(false);
 
   return (
     <Panel
@@ -36,19 +33,7 @@ const LeftPanel = () => {
       <button className="cursor-pointer rounded bg-slate-800 p-2 outline outline-slate-500 hover:bg-slate-900">
         <ResetIcon className="text-white" />
       </button>
-      <button
-        onClick={() => setIsInfoPopupVisible(true)}
-        className="cursor-pointer rounded bg-slate-800 p-2 outline outline-slate-500 hover:bg-slate-900"
-      >
-        <InfoCircledIcon className="text-white" />
-      </button>
-
-      {isInfoPopupVisible && (
-        <InfoPopup
-          isVisible={isInfoPopupVisible}
-          setIsVisible={setIsInfoPopupVisible}
-        />
-      )}
+      <InfoPopup />
     </Panel>
   );
 };
