@@ -118,20 +118,20 @@ const CustomDialog = ({ skip = false }: { skip?: boolean }) => {
           <div className="flex flex-row justify-end gap-5">
             <button
               onClick={handlePrevious}
-              className="cursor-pointer rounded-lg bg-slate-700/80 px-3 py-2 hover:bg-slate-600 focus:outline-none"
+              className="cursor-pointer rounded-lg bg-slate-700/80 px-3 py-2 hover:bg-slate-600 focus:outline-1 focus:outline-blue-300"
             >
               Previous
             </button>
             {showingGoals ? (
               <DialogClose asChild>
-                <button className="cursor-pointer rounded-lg bg-slate-700/80 px-3 py-2 hover:bg-slate-600 focus:outline-none">
+                <button className="cursor-pointer rounded-lg bg-slate-700/80 px-3 py-2 hover:bg-slate-600 focus:outline-1 focus:outline-blue-300">
                   Start
                 </button>
               </DialogClose>
             ) : (
               <button
                 onClick={handleNext}
-                className="cursor-pointer rounded-lg bg-slate-700/80 px-3 py-2 hover:bg-slate-600 focus:outline-none"
+                className="cursor-pointer rounded-lg bg-slate-700/80 px-3 py-2 hover:bg-slate-600 focus:outline-1 focus:outline-blue-300"
               >
                 Next
               </button>
@@ -141,7 +141,7 @@ const CustomDialog = ({ skip = false }: { skip?: boolean }) => {
 
         <DialogClose asChild>
           <button
-            className="absolute top-2.5 right-2.5 inline-flex size-[25px] cursor-pointer appearance-none items-center justify-center rounded-full bg-slate-700 focus:shadow-[0_0_0_2px] focus:outline-none"
+            className="absolute top-2.5 right-2.5 inline-flex size-[25px] cursor-pointer appearance-none items-center justify-center rounded-full bg-slate-700 focus:outline-1 focus:outline-blue-300"
             aria-label="Close"
           >
             <Cross2Icon />
