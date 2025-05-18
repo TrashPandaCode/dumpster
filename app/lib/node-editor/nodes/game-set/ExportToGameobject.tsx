@@ -10,7 +10,7 @@ import LabelHandle from "../../node-components/LabelHandle";
 import NodeContent from "../../node-components/NodeContent";
 import SelectDropDown from "../../node-components/SelectDropDown";
 import type { nodeData, nodeInputs } from "../../node-store/node-store";
-import { getInput } from "../../node-store/utils";
+import { getInput } from "../../utils";
 
 const ExportToGameobject = memo(
   ({ id, data, selected }: { id: string; data: any; selected: boolean }) => {

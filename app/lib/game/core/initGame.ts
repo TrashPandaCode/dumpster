@@ -4,7 +4,7 @@ import { useKeyStore } from "~/lib/zustand/key";
 import { useTimeStore } from "~/lib/zustand/time";
 import { getKaplayCtx } from "./kaplayCtx";
 
-export let state = {
+export const state = {
   first: true,
 }; //TODO: remove just for react strict mode
 

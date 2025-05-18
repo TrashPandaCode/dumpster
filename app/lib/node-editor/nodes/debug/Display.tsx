@@ -4,7 +4,7 @@ import { memo, useEffect, useState } from "react";
 import LabelHandle from "../../node-components/LabelHandle";
 import NodeContent from "../../node-components/NodeContent";
 import type { nodeData, nodeInputs } from "../../node-store/node-store";
-import { getInput } from "../../node-store/utils";
+import { getInput } from "../../utils";
 import { IN_HANDLE_1 } from "../constants";
 
 const Display = memo(({ id }: { id: string }) => {

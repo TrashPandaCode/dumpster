@@ -1,20 +1,12 @@
 import { ChevronRightIcon } from "@radix-ui/react-icons";
-import {
-  Panel,
-  useReactFlow,
-  type Edge,
-  type Node,
-  type PanelPosition,
-  type XYPosition,
-} from "@xyflow/react";
+import { Panel, useReactFlow, type PanelPosition } from "@xyflow/react";
 import { useEffect, useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
-import { connectionToEdgeId } from "../node-store/utils";
 import { LOOP_CONNECTOR, MAIN_LOOP_CONNECTOR } from "../nodes/constants";
 import { TYPES } from "../nodes/math-float/types";
 import { searchNodeTypes } from "../nodes/node-types";
-import { uuidToColor } from "../utils";
+import { connectionToEdgeId, createForLoop, uuidToColor } from "../utils";
 
 const AddNodesPanel = ({
   x,
@@ -217,60 +209,3 @@ const AddNodesPanel = ({
 };
 
 export default AddNodesPanel;
-
-export function createForLoop(
-  addNodes: (payload: Node | Node[]) => void,
-  x: number,
-  y: number,
-  addEdges: (payload: Edge | Edge[]) => void,
-  screenToFlowPosition?: (
-    clientPosition: XYPosition,
-    options?: {
-      snapToGrid: boolean;
-    }
-  ) => XYPosition,
-  parentLoopId?: string
-) {
-  const startId = uuidv4();
-  const endId = uuidv4();
-  const loopId = uuidv4();
-  const edgeId = connectionToEdgeId({
-    source: startId,
-    sourceHandle: MAIN_LOOP_CONNECTOR,
-    target: endId,
-    targetHandle: MAIN_LOOP_CONNECTOR,
-  });
-  addNodes([
-    {
-      id: startId,
-      type: "ForStart",
-      position: screenToFlowPosition
-        ? screenToFlowPosition({ x, y })
-        : { x, y },
-      data: { loopId, parentLoopId },
-    },
-    {
-      id: endId,
-      type: "ForEnd",
-      position: screenToFlowPosition
-        ? screenToFlowPosition({ x: x + 300, y })
-        : { x: x + 300, y },
-      data: { loopId, parentLoopId },
-    },
-  ]);
-  addEdges({
-    id: edgeId,
-    type: "straight",
-    source: startId,
-    target: endId,
-    sourceHandle: MAIN_LOOP_CONNECTOR,
-    targetHandle: MAIN_LOOP_CONNECTOR,
-    animated: true,
-    selectable: false,
-    style: {
-      strokeWidth: 2,
-      stroke: uuidToColor(loopId),
-    },
-  });
-  return [startId, endId];
-}

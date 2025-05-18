@@ -1,4 +1,3 @@
-import { type Connection, type Edge, type Node } from "@xyflow/react";
 import { v4 as uuidv4 } from "uuid";
 import { create } from "zustand";
 

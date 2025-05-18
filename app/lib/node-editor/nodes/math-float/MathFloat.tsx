@@ -7,7 +7,7 @@ import NodeContent from "../../node-components/NodeContent";
 import NumberInput from "../../node-components/NumberInput";
 import SelectDropDown from "../../node-components/SelectDropDown";
 import { type nodeData, type nodeInputs } from "../../node-store/node-store";
-import { getInput } from "../../node-store/utils";
+import { getInput } from "../../utils";
 import { IN_HANDLE_1, IN_HANDLE_2, OUT_HANDLE_1 } from "../constants";
 import { COMPUTE, INPUTS, TYPES } from "./types";
 

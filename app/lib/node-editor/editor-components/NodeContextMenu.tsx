@@ -2,7 +2,8 @@ import { useReactFlow } from "@xyflow/react";
 import { useCallback } from "react";
 import { v4 as uuidv4 } from "uuid";
 
-import AddNodesPanel, { createForLoop } from "./AddNodesPanel";
+import { createForLoop } from "../utils";
+import AddNodesPanel from "./AddNodesPanel";
 
 type NodeContextMenuProps = {
   nodeId: string;
@@ -70,13 +71,13 @@ const DefaultNodeContextMenu = ({
     }
 
     onClose();
-  }, [nodeId, getNode, addNodes]);
+  }, [getNode, nodeId, onClose, addNodes, addEdges]);
 
   const deleteNode = useCallback(() => {
     setNodes((nodes) => nodes.filter((node) => node.id !== nodeId));
     setEdges((edges) => edges.filter((edge) => edge.source !== nodeId));
     onClose();
-  }, [nodeId, setNodes, setEdges]);
+  }, [setNodes, setEdges, onClose, nodeId]);
 
   return (
     <>

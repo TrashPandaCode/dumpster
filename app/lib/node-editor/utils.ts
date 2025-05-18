@@ -1,4 +1,14 @@
-import type { Node, NodeChange } from "@xyflow/react";
+import type {
+  Connection,
+  Edge,
+  Node,
+  NodeChange,
+  XYPosition,
+} from "@xyflow/react";
+import { v4 as uuidv4 } from "uuid";
+
+import type { nodeInputs } from "./node-store/node-store";
+import { MAIN_LOOP_CONNECTOR } from "./nodes/constants";
 
 /*
  * This function applies changes to nodes or edges that are triggered by React Flow internally.
@@ -206,7 +216,7 @@ export function uuidToColor(uuid: string, format = "hex") {
   // For dark blue backgrounds, avoid blue hues (200-250),
   // increase lightness and saturation for better contrast
   let adjustedHue = hueValue;
-  let saturation = 85; // Higher saturation for more vibrant colors
+  const saturation = 85; // Higher saturation for more vibrant colors
   let lightness = 65; // Brighter for better visibility on dark background
 
   // Adjust colors in the blue range to avoid blending with the dark blue background
@@ -282,4 +292,81 @@ function hslToRgb(h: number, s: number, l: number) {
  */
 function rgbToHex(r: number, g: number, b: number) {
   return "#" + ((1 << 24) | (r << 16) | (g << 8) | b).toString(16).slice(1);
+}
+
+export const getInput = (
+  inputs: nodeInputs,
+  handleId: string,
+  fallback: number
+) => {
+  const input = inputs.get(handleId);
+  return input?.sourceNode.getResult(input.sourceHandleId) ?? fallback;
+};
+
+export function connectionToEdgeId(edge: Connection): string {
+  return (
+    "xy-edge__" +
+    edge.source +
+    edge.sourceHandle +
+    "-" +
+    edge.target +
+    edge.targetHandle
+  );
+}
+
+export function createForLoop(
+  addNodes: (payload: Node | Node[]) => void,
+  x: number,
+  y: number,
+  addEdges: (payload: Edge | Edge[]) => void,
+  screenToFlowPosition?: (
+    clientPosition: XYPosition,
+    options?: {
+      snapToGrid: boolean;
+    }
+  ) => XYPosition,
+  parentLoopId?: string
+) {
+  const startId = uuidv4();
+  const endId = uuidv4();
+  const loopId = uuidv4();
+  const edgeId = connectionToEdgeId({
+    source: startId,
+    sourceHandle: MAIN_LOOP_CONNECTOR,
+    target: endId,
+    targetHandle: MAIN_LOOP_CONNECTOR,
+  });
+  addNodes([
+    {
+      id: startId,
+      type: "ForStart",
+      position: screenToFlowPosition
+        ? screenToFlowPosition({ x, y })
+        : { x, y },
+      data: { loopId, parentLoopId },
+    },
+    {
+      id: endId,
+      type: "ForEnd",
+      position: screenToFlowPosition
+        ? screenToFlowPosition({ x: x + 300, y })
+        : { x: x + 300, y },
+      data: { loopId, parentLoopId },
+    },
+  ]);
+  addEdges({
+    id: edgeId,
+    type: "straight",
+    source: startId,
+    target: endId,
+    sourceHandle: MAIN_LOOP_CONNECTOR,
+    targetHandle: MAIN_LOOP_CONNECTOR,
+    animated: true,
+    selectable: false,
+    style: {
+      strokeWidth: 2,
+      stroke: uuidToColor(loopId),
+    },
+  });
+  return [startId, endId];
 }

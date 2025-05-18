@@ -9,7 +9,7 @@
     "dev": "bun run generate:nav && react-router dev",
     "start": "react-router-serve ./build/server/index.js",
     "typecheck": "react-router typegen && tsc",
-    "lint": "eslint .",
+    "lint": "eslint ./app",
     "prettier": "prettier --write ."
   },
   "dependencies": {

@@ -27,7 +27,7 @@ import { debugEdges, debugNodes } from "./solutions/debug";
 import { applyNodeChanges } from "./utils";
 
 const NodeEditor = () => {
-  const { getIntersectingNodes, getNode, getNodes, getEdges } = useReactFlow();
+  const { getIntersectingNodes, getNode, getNodes } = useReactFlow();
 
   const [nodes, setNodes] = useState<Node[]>(debugNodes); // TODO: load nodes based on level
   const [edges, setEdges] = useState<Edge[]>(debugEdges);
@@ -105,7 +105,7 @@ const NodeEditor = () => {
 
       setNodes((nds) => applyNodeChanges(changes, nds));
     },
-    [setNodes, getNode, getNodes, setEdges]
+    [setNodes, getNode, getNodes, setEdges, replaceNode, removeNode, removeEdge]
   );
   const onEdgesChange: OnEdgesChange = useCallback(
     (changes) => {
@@ -122,7 +122,7 @@ const NodeEditor = () => {
 
       setEdges((eds) => applyEdgeChanges(changes, eds));
     },
-    [setEdges]
+    [setEdges, addEdgeStore, removeEdge]
   );
   const onConnect: OnConnect = useCallback(
     (connection) => {
@@ -174,7 +174,7 @@ const NodeEditor = () => {
         setEdges((eds) => addEdge(connection, eds));
       }
     },
-    [setEdges]
+    [setEdges, getNode, addEdgeStore]
   );
 
   const handlePaneContextMenu = useCallback(
@@ -224,7 +224,7 @@ const NodeEditor = () => {
     setPaneContextMenu(null);
     setNodeContextMenu(null);
     setSelectionContextMenu(null);
-  }, [paneContextMenu, nodeContextMenu, selectionContextMenu]);
+  }, [setPaneContextMenu, setNodeContextMenu, setSelectionContextMenu]);
 
   const onNodeDragStop: OnNodeDrag = (_, childNode) => {
     // if the node is a group, return

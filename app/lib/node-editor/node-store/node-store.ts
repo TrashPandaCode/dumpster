@@ -1,7 +1,7 @@
 import { type Connection, type Edge, type Node } from "@xyflow/react";
 import { create } from "zustand";
 
-import { connectionToEdgeId } from "./utils";
+import { connectionToEdgeId } from "../utils";
 
 export type LoopStatus = {
   // just externally manage loops (from the compute Map function) using this object to which the end node can write to (and start node read from)

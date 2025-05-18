@@ -10,7 +10,7 @@ import type {
   nodeData,
   nodeInputs,
 } from "../../node-store/node-store";
-import { getInput } from "../../node-store/utils";
+import { getInput } from "../../utils";
 import { IN_HANDLE_1, MAIN_LOOP_CONNECTOR } from "../constants";
 
 const ForEnd = memo(({ id, data }: { id: string; data: any }) => {

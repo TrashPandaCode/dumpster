@@ -6,7 +6,7 @@ import LabelHandle from "../../node-components/LabelHandle";
 import NodeContent from "../../node-components/NodeContent";
 import NumberInput from "../../node-components/NumberInput";
 import { type nodeData, type nodeInputs } from "../../node-store/node-store";
-import { getInput } from "../../node-store/utils";
+import { getInput } from "../../utils";
 import {
   IN_HANDLE_1,
   IN_HANDLE_2,
