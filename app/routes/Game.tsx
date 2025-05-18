@@ -9,7 +9,7 @@ import type { Route } from "./+types/Game";
 
 import "./game.css";
 
-import { GamePopup } from "~/lib/game/components/GamePopup";
+import LevelDialog from "~/lib/game/components/LevelDialog";
 import { cleanupKaplay } from "~/lib/game/core/kaplayCtx";
 import type { LEVELS } from "~/lib/game/core/levels";
 import { useGameStore } from "~/lib/zustand/game";
@@ -40,7 +40,7 @@ const Game = ({ params }: Route.ComponentProps) => {
 
   return (
     <>
-      <GamePopup />
+      <LevelDialog defaultOpen={true} />
       <PanelGroup direction="horizontal">
         {/* autoSaveId="main-layout" */}
 

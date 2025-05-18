@@ -1,7 +1,12 @@
-import { PauseIcon, PlayIcon, ResetIcon } from "@radix-ui/react-icons";
+import {
+  InfoCircledIcon,
+  PauseIcon,
+  PlayIcon,
+  ResetIcon,
+} from "@radix-ui/react-icons";
 import { Panel } from "@xyflow/react";
 
-import { InfoPopup } from "~/lib/game/components/InfoPopup";
+import LevelDialog from "~/lib/game/components/LevelDialog";
 import { useGameStore } from "~/lib/zustand/game";
 
 const LeftPanel = () => {
@@ -33,7 +38,14 @@ const LeftPanel = () => {
       <button className="cursor-pointer rounded bg-slate-800 p-2 outline outline-slate-500 hover:bg-slate-900">
         <ResetIcon className="text-white" />
       </button>
-      <InfoPopup />
+      <LevelDialog
+        skip={true}
+        trigger={
+          <button className="cursor-pointer rounded bg-slate-800 p-2 outline outline-slate-500 hover:bg-slate-900">
+            <InfoCircledIcon className="text-white" />
+          </button>
+        }
+      />
     </Panel>
   );
 };
