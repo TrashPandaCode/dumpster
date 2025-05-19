@@ -11,6 +11,7 @@ import {
   type OnEdgesChange,
   type OnNodeDrag,
   type OnNodesChange,
+  type ReactFlowInstance,
 } from "@xyflow/react";
 import React, { useCallback, useState } from "react";
 
@@ -29,6 +30,7 @@ import { applyNodeChanges } from "./utils";
 const Editor = () => {
   const { getIntersectingNodes, getNode, getNodes } = useReactFlow();
 
+  const [rfInstance, setRfInstance] = useState<ReactFlowInstance>();
   const [nodes, setNodes] = useState<Node[]>(debugNodes); // TODO: load nodes based on level
   const [edges, setEdges] = useState<Edge[]>(debugEdges);
   const [paneContextMenu, setPaneContextMenu] = useState<{
@@ -345,6 +347,7 @@ const Editor = () => {
     <>
       <ReactFlow
         id="node-editor"
+        onInit={setRfInstance}
         nodeTypes={nodeTypes}
         nodes={nodes}
         edges={edges}
@@ -362,7 +365,7 @@ const Editor = () => {
         onNodeDragStop={onNodeDragStop}
       >
         <Background bgColor="#14141d" color="#a7abc2" />
-        <RightPanel />
+        <RightPanel rfInstance={rfInstance} />
         <LeftPanel />
       </ReactFlow>
       {paneContextMenu && (

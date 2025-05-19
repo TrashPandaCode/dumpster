@@ -5,16 +5,31 @@ import {
   DropdownMenuPortal,
   DropdownMenuTrigger,
 } from "@radix-ui/react-dropdown-menu";
-import { CubeIcon, HamburgerMenuIcon } from "@radix-ui/react-icons";
-import { Panel, useReactFlow } from "@xyflow/react";
+import {
+  ClipboardIcon,
+  CopyIcon,
+  CubeIcon,
+  HamburgerMenuIcon,
+} from "@radix-ui/react-icons";
+import { Panel, useReactFlow, type ReactFlowInstance } from "@xyflow/react";
 import { v4 as uuidv4 } from "uuid";
 
 import { useNodeStore } from "../node-store/node-store";
 import { MAIN_LOOP_CONNECTOR } from "../nodes/constants";
 import { nodeTypes } from "../nodes/node-types";
 
-const RightPanel = () => {
-  const { addNodes, addEdges, getNodes, getEdges } = useReactFlow();
+const RightPanel: React.FC<{ rfInstance: ReactFlowInstance | undefined }> = ({
+  rfInstance,
+}) => {
+  const {
+    addNodes,
+    addEdges,
+    getNodes,
+    getEdges,
+    setViewport,
+    setEdges,
+    setNodes,
+  } = useReactFlow();
   const nodeStateDebugPrint = useNodeStore((state) => state.debugPrint);
 
   return (
@@ -122,6 +137,30 @@ const RightPanel = () => {
             className="cursor-pointer rounded bg-slate-800 p-2 text-white outline outline-slate-500 hover:bg-slate-900"
           >
             <CubeIcon className="text-white" />
+          </button>
+          <button
+            onClick={() => {
+              const flow = rfInstance?.toObject();
+              navigator.clipboard.writeText(JSON.stringify(flow));
+            }}
+            className="cursor-pointer rounded bg-slate-800 p-2 text-white outline outline-slate-500 hover:bg-slate-900"
+          >
+            <CopyIcon className="text-white" />
+          </button>
+          <button
+            onClick={async () => {
+              const flow = JSON.parse(await navigator.clipboard.readText());
+
+              if (flow) {
+                const { x = 0, y = 0, zoom = 1 } = flow.viewport;
+                setNodes(flow.nodes);
+                setEdges(flow.edges);
+                setViewport({ x, y, zoom });
+              }
+            }}
+            className="cursor-pointer rounded bg-slate-800 p-2 text-white outline outline-slate-500 hover:bg-slate-900"
+          >
+            <ClipboardIcon className="text-white" />
           </button>
         </>
       )}
