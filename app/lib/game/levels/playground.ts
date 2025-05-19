@@ -66,13 +66,13 @@ export const initializePlayground = () => {
   game.onUpdate(() => {
     //Move
     raccoon.pos.x =
-      useDataStore.getState().gameObjects.get("bean")?.get("xpos")?.value ?? 0;
+      useDataStore.getState().gameObjects.get("raccoon")?.get("xpos")?.value ?? 0;
     raccoon.pos.y =
-      useDataStore.getState().gameObjects.get("bean")?.get("ypos")?.value ?? 0;
+      useDataStore.getState().gameObjects.get("raccoon")?.get("ypos")?.value ?? 0;
 
     trashcan.pos.x =
-      useDataStore.getState().gameObjects.get("bean2")?.get("xpos")?.value ?? 0;
+      useDataStore.getState().gameObjects.get("trashcan")?.get("xpos")?.value ?? 0;
     trashcan.pos.y =
-      useDataStore.getState().gameObjects.get("bean2")?.get("ypos")?.value ?? 0;
+      useDataStore.getState().gameObjects.get("trashcan")?.get("ypos")?.value ?? 0;
   });
 };

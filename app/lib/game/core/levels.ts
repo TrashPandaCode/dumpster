@@ -64,14 +64,14 @@ export const LEVELS = {
     hints: [],
     modifiableGameObjects: [
       {
-        id: "bean",
+        id: "raccoon",
         connections: [
           { label: "xpos", access: "all" },
           { label: "ypos", access: "all" },
         ],
       },
       {
-        id: "bean2",
+        id: "trashcan",
         connections: [
           { label: "xpos", access: "set" },
           { label: "ypos", access: "set" },
