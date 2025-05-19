@@ -31,13 +31,29 @@ export const initializePlayground = () => {
     },
   });
 
+  const raccScale = 5
   const raccoon = game.add([
     k.sprite("raccoon", {
       anim: "walkHolding",
     }),
     k.pos(100, k.height() - 100),
-    k.scale(5),
+    k.scale(raccScale),
+    k.anchor("bot"),
+    k.state("idle", ["idle", "walkLeft", "walkRight"]),
   ]);
+  raccoon.onStateEnter("idle", () => {
+    raccoon.play("idle");
+  });
+  raccoon.onStateEnter("walkLeft", () => {
+    raccoon.play("walk");
+    raccoon.scaleTo(k.vec2(-raccScale, raccScale));
+  });
+  raccoon.onStateEnter("walkRight", () => {
+    raccoon.play("walk");
+    raccoon.scaleTo(k.vec2(raccScale, raccScale));
+
+  });
+
   const trashcan = game.add([
     k.sprite("trashcan", {
       anim: "filled",
@@ -63,7 +79,11 @@ export const initializePlayground = () => {
     "floor",
   ]);
 
+
+
   game.onUpdate(() => {
+    let lastX = raccoon.pos.x;
+
     //Move
     raccoon.pos.x =
       useDataStore.getState().gameObjects.get("raccoon")?.get("xpos")?.value ?? 0;
@@ -74,5 +94,20 @@ export const initializePlayground = () => {
       useDataStore.getState().gameObjects.get("trashcan")?.get("xpos")?.value ?? 0;
     trashcan.pos.y =
       useDataStore.getState().gameObjects.get("trashcan")?.get("ypos")?.value ?? 0;
+
+    //Handle anim change
+    if((raccoon.pos.x - lastX) == 0){
+      if(raccoon.state != "idle"){
+        raccoon.enterState("idle");
+      };
+    } else if((raccoon.pos.x - lastX) < 0){
+      if(raccoon.state != "walkLeft"){
+        raccoon.enterState("walkLeft");
+      };
+    } else{
+      if(raccoon.state != "walkRight"){
+        raccoon.enterState("walkRight");
+      };
+    };
   });
 };
