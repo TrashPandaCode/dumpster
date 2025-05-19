@@ -26,7 +26,7 @@ import { nodeTypes } from "./nodes/node-types";
 import { debugEdges, debugNodes } from "./solutions/debug";
 import { applyNodeChanges } from "./utils";
 
-const NodeEditor = () => {
+const Editor = () => {
   const { getIntersectingNodes, getNode, getNodes } = useReactFlow();
 
   const [nodes, setNodes] = useState<Node[]>(debugNodes); // TODO: load nodes based on level
@@ -60,7 +60,7 @@ const NodeEditor = () => {
           case "add":
             replaceNode(element.item);
             break;
-          case "remove":
+          case "remove": {
             const node = getNode(element.id);
             if (node?.data.loopStart || node?.data.loopEnd) {
               const nodeOther = getNodes().filter(
@@ -97,6 +97,7 @@ const NodeEditor = () => {
             }
             removeNode(element.id);
             break;
+          }
           case "replace":
             replaceNode(element.item);
             break;
@@ -393,9 +394,9 @@ const NodeEditor = () => {
   );
 };
 
-export default () => (
+export const NodeEditor = () => (
   <ReactFlowProvider>
-    <NodeEditor />
+    <Editor />
   </ReactFlowProvider>
 );
 
