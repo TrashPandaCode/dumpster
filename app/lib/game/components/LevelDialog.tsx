@@ -96,9 +96,9 @@ const LevelDialog = ({
           </div>
 
           {/* Right side: Description text */}
-          <div className="relative my-auto h-fit w-fit rounded-lg bg-slate-700 p-4 text-white shadow-lg">
-            <div className="absolute top-1/2 -left-2 h-0 w-0 -translate-y-1/2 border-t-10 border-r-10 border-b-10 border-t-transparent border-r-slate-700 border-b-transparent"></div>
-            <p className="text-lg italic">
+          <div className="relative my-auto h-36 w-full rounded-lg bg-slate-700 p-4 text-white shadow-lg">
+            <div className="absolute top-1/2 -left-2.5 h-0 w-0 -translate-y-1/2 border-t-10 border-r-10 border-b-10 border-t-transparent border-r-slate-700 border-b-transparent"></div>
+            <p className="h-full overflow-auto pr-2 text-lg italic [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-slate-500 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-slate-900">
               {showingGoals ? (
                 <>
                   <span className="not-italic">Goals:</span>
