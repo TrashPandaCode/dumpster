@@ -17,7 +17,7 @@ const ExportToGameobject = memo(
     const level = useGameStore((state) => state.currentLevel);
     const modifiableGameObjects = LEVELS[level].modifiableGameObjects;
 
-    const { updateNodeData } = useReactFlow();
+    const { updateNodeData, setEdges } = useReactFlow();
     const updateNodeInternals = useUpdateNodeInternals();
 
     const gameObject = useRef(
@@ -44,16 +44,21 @@ const ExportToGameobject = memo(
       });
     }, []);
 
+    const handleSelect = (selected: string) => {
+      gameObject.current = selected;
+      updateNodeData(id, { gameObject });
+      updateNodeInternals(id);
+
+      // remove all edges with export node as target
+      setEdges((edgs) => edgs.filter((edg) => edg.target !== id));
+    };
+
     return (
       <div>
         <NodeContent label="Export To Gameobject" type="export">
           <SelectDropDown
             items={{ "Game objects": Array.from(gameObjects.keys()) }}
-            setSelected={(selected: string) => {
-              gameObject.current = selected;
-              updateNodeData(id, { gameObject });
-              updateNodeInternals(id);
-            }}
+            setSelected={handleSelect}
             defaultValue={gameObject.current}
           />
           {Array.from(gameObjects.get(gameObject.current) ?? []).map(

@@ -413,3 +413,7 @@ export function connectNodesToLoop(
     });
   });
 }
+
+export function handleUUID() {
+  return uuidv4().replace(/-/g, "");
+}

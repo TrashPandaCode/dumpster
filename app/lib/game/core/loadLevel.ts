@@ -1,5 +1,4 @@
-import { v4 as uuidv4 } from "uuid";
-
+import { handleUUID } from "~/lib/node-editor/utils";
 import { useDataStore } from "~/lib/zustand/data";
 import { LEVELS } from "./levels";
 
@@ -22,7 +21,7 @@ export const loadLevel = (level: string) => {
         new Map(
           item.connections.map((conn) => [
             conn.label,
-            { handleId: uuidv4(), access: conn.access, value: 0 },
+            { handleId: handleUUID(), access: conn.access, value: 0 },
           ])
         ),
       ])

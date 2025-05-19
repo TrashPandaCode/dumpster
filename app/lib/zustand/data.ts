@@ -1,7 +1,7 @@
-import { v4 as uuidv4 } from "uuid";
 import { create } from "zustand";
 
 import type { ConnectionAccess } from "../game/core/levels";
+import { handleUUID } from "../node-editor/utils";
 
 type GameObjectsData = Map<
   string, // gameobject label
@@ -40,7 +40,7 @@ export const useDataStore = create<DataState>((set, get) => ({
       const newGameObjectsMap = new Map(state.gameObjects);
       newGameObjectsMap
         .get(gameObject)!
-        .set(label, { handleId: uuidv4(), access: "all", value: 0 });
+        .set(label, { handleId: handleUUID(), access: "all", value: 0 });
 
       return { ...state, gameObjects: newGameObjectsMap };
     }),
