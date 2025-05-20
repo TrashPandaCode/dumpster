@@ -8,19 +8,19 @@ export const initializePlayground = () => {
   k.loadSprite("background1", "/game/backgrounds/background1.png");
   k.loadSprite("background1light", "/game/backgrounds/background1_light.png");
 
-  const background = k.add([
+  const background = game.add([
     k.sprite("background1"),
     k.anchor("top"),
-    k.scale(k.height()* (1/180)),
-    k.pos(k.width()/2 + 400, 0),
+    k.scale(k.height() * (1 / 180)),
+    k.pos(k.width() / 2 + 400, 0),
     k.z(0),
   ]);
 
-    const backgroundLight = k.add([
+  const backgroundLight = game.add([
     k.sprite("background1light"),
     k.anchor("top"),
-    k.scale(k.height()* (1/180)),
-    k.pos(k.width()/2 + 200, 0),
+    k.scale(k.height() * (1 / 180)),
+    k.pos(k.width() / 2 + 200, 0),
     k.z(100),
     k.opacity(0.75),
   ]);
@@ -51,7 +51,7 @@ export const initializePlayground = () => {
     },
   });
 
-  const raccScale = 5
+  const raccScale = 5;
   const raccoon = game.add([
     k.sprite("raccoon", {
       anim: "walkHolding",
@@ -72,7 +72,6 @@ export const initializePlayground = () => {
   raccoon.onStateEnter("walkRight", () => {
     raccoon.play("walk");
     raccoon.scaleTo(k.vec2(raccScale, raccScale));
-
   });
 
   const trashcan = game.add([
@@ -93,35 +92,37 @@ export const initializePlayground = () => {
     k.z(1),
   ]);
 
-
-
   game.onUpdate(() => {
-    let lastX = raccoon.pos.x;
+    const lastX = raccoon.pos.x;
 
     //Move
     raccoon.pos.x =
-      useDataStore.getState().gameObjects.get("raccoon")?.get("xpos")?.value ?? 0;
+      useDataStore.getState().gameObjects.get("raccoon")?.get("xpos")?.value ??
+      0;
     raccoon.pos.y =
-      useDataStore.getState().gameObjects.get("raccoon")?.get("ypos")?.value ?? 0;
+      useDataStore.getState().gameObjects.get("raccoon")?.get("ypos")?.value ??
+      0;
 
     trashcan.pos.x =
-      useDataStore.getState().gameObjects.get("trashcan")?.get("xpos")?.value ?? 0;
+      useDataStore.getState().gameObjects.get("trashcan")?.get("xpos")?.value ??
+      0;
     trashcan.pos.y =
-      useDataStore.getState().gameObjects.get("trashcan")?.get("ypos")?.value ?? 0;
+      useDataStore.getState().gameObjects.get("trashcan")?.get("ypos")?.value ??
+      0;
 
     //Handle anim change
-    if((raccoon.pos.x - lastX) == 0){
-      if(raccoon.state != "idle"){
+    if (raccoon.pos.x - lastX == 0) {
+      if (raccoon.state != "idle") {
         raccoon.enterState("idle");
-      };
-    } else if((raccoon.pos.x - lastX) < 0){
-      if(raccoon.state != "walkLeft"){
+      }
+    } else if (raccoon.pos.x - lastX < 0) {
+      if (raccoon.state != "walkLeft") {
         raccoon.enterState("walkLeft");
-      };
-    } else{
-      if(raccoon.state != "walkRight"){
+      }
+    } else {
+      if (raccoon.state != "walkRight") {
         raccoon.enterState("walkRight");
-      };
-    };
+      }
+    }
   });
 };
