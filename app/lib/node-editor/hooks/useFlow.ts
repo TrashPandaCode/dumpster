@@ -8,7 +8,6 @@ import {
   type OnEdgesChange,
   type OnNodeDrag,
   type OnNodesChange,
-  type ReactFlowInstance,
 } from "@xyflow/react";
 import { useCallback, useState } from "react";
 
@@ -17,7 +16,6 @@ import { debugEdges, debugNodes } from "../solutions/debug";
 import { applyNodeChanges } from "../utils";
 
 export function useFlow() {
-  const [rfInstance, setRfInstance] = useState<ReactFlowInstance>();
   const { getIntersectingNodes, getNode, getNodes } = useReactFlow();
   const [nodes, setNodes] = useState<Node[]>(debugNodes);
   const [edges, setEdges] = useState<Edge[]>(debugEdges);
@@ -270,10 +268,8 @@ export function useFlow() {
   return {
     nodes,
     edges,
-    rfInstance,
     setNodes,
     setEdges,
-    setRfInstance,
     onNodesChange,
     onEdgesChange,
     onConnect,

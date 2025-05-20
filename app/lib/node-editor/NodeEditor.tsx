@@ -1,6 +1,13 @@
-import { Background, ReactFlow, ReactFlowProvider } from "@xyflow/react";
+import {
+  Background,
+  ReactFlow,
+  ReactFlowProvider,
+  type ReactFlowInstance,
+} from "@xyflow/react";
 
 import "@xyflow/react/dist/style.css";
+
+import { useState } from "react";
 
 import LeftPanel from "./editor-components/LeftPanel";
 import NodeContextMenu from "./editor-components/NodeContextMenu";
@@ -12,11 +19,11 @@ import { useFlow } from "./hooks/useFlow";
 import { nodeTypes } from "./nodes/node-types";
 
 const Editor = () => {
+  const [rfInstance, setRfInstance] = useState<ReactFlowInstance>();
+
   const {
     nodes,
     edges,
-    rfInstance,
-    setRfInstance,
     onNodesChange,
     onEdgesChange,
     onConnect,
