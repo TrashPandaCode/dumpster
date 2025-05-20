@@ -60,9 +60,13 @@ export const initialize1_1 = () => {
   let lastWidth = k.width();
   let lastHeight = k.height();
 
+  let raccooonRelX = raccoon.pos.x / lastWidth;
+  let raccooonRelY = raccoon.pos.y / lastHeight;
+
   function updateLayout() {
-    raccoon.pos.x = 0.1 * k.width();
-    raccoon.pos.y = k.height() - 0.1 * k.height();
+
+    raccoon.pos.x = raccooonRelX * k.width();
+    raccoon.pos.y = raccooonRelY * k.height();
     raccoon.scale = k.vec2(0.1 * k.height() / 24);
 
     text.pos.x = 0.5 * k.width() - 0.1 * k.width();
@@ -84,6 +88,9 @@ export const initialize1_1 = () => {
 
     // Check if the window size has changed
     if (k.width() !== lastWidth || k.height() !== lastHeight) {
+      raccooonRelX = raccoon.pos.x / lastWidth;
+      raccooonRelY = raccoon.pos.y / lastHeight;
+
       lastWidth = k.width();
       lastHeight = k.height();
       updateLayout();
