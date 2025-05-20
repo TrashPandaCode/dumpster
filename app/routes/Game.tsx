@@ -10,6 +10,7 @@ import type { Route } from "./+types/Game";
 import "./game.css";
 
 import LevelDialog from "~/lib/game/components/LevelDialog";
+import LevelCompleteDialog from "~/lib/game/components/LevelCompleteDialog";
 import { cleanupKaplay } from "~/lib/game/core/kaplayCtx";
 import type { LEVELS } from "~/lib/game/core/levels";
 import { useGameStore } from "~/lib/zustand/game";
@@ -21,7 +22,21 @@ const Game = ({ params }: Route.ComponentProps) => {
   // also set the current level in the game store
   const setCurrentLevel = useGameStore((state) => state.setCurrentLevel);
   const level = params.id || "playground";
-  setCurrentLevel(level as keyof typeof LEVELS); // we can cast confidently here since we know the params.id is a valid level id, because loading the level will fail if it is not
+
+  useEffect(() => {
+    setCurrentLevel(level as keyof typeof LEVELS); // we can cast confidently here since we know the params.id is a valid level id, because loading the level will fail if it is not
+  }, [level, setCurrentLevel]);
+
+  const open = useGameStore(
+    (state) => state.levelCompleteDialogOpen
+  );
+  const setOpen = useGameStore(
+    (state) => state.setLevelCompleteDialogOpen
+  );
+
+  useEffect(() => {
+    setOpen(false);
+  }, [level, setOpen]);
 
   useEffect(() => {
     if (!canvasRef.current) {
@@ -36,11 +51,16 @@ const Game = ({ params }: Route.ComponentProps) => {
     return () => {
       cleanupKaplay();
     };
-  }, []);
+  }, [level]);
 
   return (
     <>
       <LevelDialog defaultOpen={true} />
+      <LevelCompleteDialog
+        open={open}
+        onOpenChange={setOpen}
+        currentLevel={level}
+      />
       <PanelGroup direction="horizontal">
         {/* autoSaveId="main-layout" */}
 

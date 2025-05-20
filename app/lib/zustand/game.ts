@@ -9,6 +9,8 @@ interface GameState {
   play: () => void;
   currentLevel: LevelId;
   setCurrentLevel: (level: LevelId) => void;
+  levelCompleteDialogOpen: boolean;
+  setLevelCompleteDialogOpen: (open: boolean) => void;
 }
 
 export const useGameStore = create<GameState>((set) => ({
@@ -17,4 +19,8 @@ export const useGameStore = create<GameState>((set) => ({
   play: () => set({ isPaused: false }),
   currentLevel: "playground",
   setCurrentLevel: (level: LevelId) => set({ currentLevel: level }),
+  levelCompleteDialogOpen: false,
+  setLevelCompleteDialogOpen: (open: boolean) => set({
+    levelCompleteDialogOpen: open
+  }),
 }));

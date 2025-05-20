@@ -4,6 +4,7 @@ import alleyOne from "~/assets/alley_one.jpg";
 import alleyTwo from "~/assets/alley_two.png";
 import houseImage from "~/assets/house.png";
 import { initialize1_1 } from "../levels/1.1";
+import { initialize2_1 } from "../levels/2.1";
 import { initializePlayground } from "../levels/playground";
 
 export type ConnectionAccess = "set" | "get" | "all";
@@ -101,9 +102,9 @@ export const LEVELS = {
       },
     ],
   },
-  "1.2": {
-    id: "1.2",
-    name: "Level 1.2",
+  "2.1": {
+    id: "2.1",
+    name: "Level 2.1",
     description: [
       "This is the second level of the game. It builds upon the mechanics introduced in Level 1.1.",
     ],
@@ -112,7 +113,7 @@ export const LEVELS = {
     image: houseImage,
     nodes: [],
     edges: [],
-    initialState: initialize1_1,
+    initialState: initialize2_1,
     solution: {
       nodes: [],
       edges: [],
