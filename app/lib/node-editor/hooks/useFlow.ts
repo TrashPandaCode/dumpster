@@ -10,14 +10,24 @@ import {
   type OnNodesChange,
 } from "@xyflow/react";
 import { useCallback, useState } from "react";
+import { useShallow } from "zustand/shallow";
 
+import { useNodeSetterStore } from "../node-store/node-setter";
 import { useNodeStore } from "../node-store/node-store";
-import { debugEdges, debugNodes } from "../solutions/debug";
+import { debugEdges } from "../solutions/debug";
 import { applyNodeChanges } from "../utils";
+
+const selector = (state: {
+  nodes: Node[];
+  setNodes: (nodes: Node[]) => void;
+}) => ({
+  nodes: state.nodes,
+  setNodes: state.setNodes,
+});
 
 export function useFlow() {
   const { getIntersectingNodes, getNode, getNodes } = useReactFlow();
-  const [nodes, setNodes] = useState<Node[]>(debugNodes);
+  const { nodes, setNodes } = useNodeSetterStore(useShallow(selector));
   const [edges, setEdges] = useState<Edge[]>(debugEdges);
 
   const replaceNode = useNodeStore((state) => state.replaceNode);
@@ -38,8 +48,8 @@ export function useFlow() {
               const nodeOther = getNodes().filter(
                 (n) => n.id !== element.id && n.data.loopId === node.data.loopId
               )[0];
-              setNodes((nds) =>
-                nds
+              setNodes(
+                nodes
                   .filter((n) => n.data.loopId !== node?.data.loopId)
                   .map((n) => ({
                     ...n,
@@ -76,9 +86,9 @@ export function useFlow() {
         }
       });
 
-      setNodes((nds) => applyNodeChanges(changes, nds));
+      setNodes(applyNodeChanges(changes, nodes));
     },
-    [setNodes, getNode, getNodes, setEdges, replaceNode, removeNode, removeEdge]
+    [setNodes, nodes, replaceNode, getNode, removeNode, getNodes, removeEdge]
   );
 
   const onEdgesChange: OnEdgesChange = useCallback(
@@ -162,11 +172,11 @@ export function useFlow() {
     // if there are no overlapping nodes but node has a parentid or
     // if the overlapping node is not a group, remove the node from the group it is in
     if ((!parentNode || parentNode.type !== "Group") && childNode.parentId) {
-      setNodes((nds) =>
-        nds.map((n) => {
+      setNodes(
+        nodes.map((n) => {
           // look for and update the corresponding node with the new position and remove the parentId
           if (n.id === childNode.id) {
-            const parent = nds.find((p) => p.id === childNode.parentId);
+            const parent = nodes.find((p) => p.id === childNode.parentId);
 
             // if parent is not found, return the node unmodified
             // ... highly unlikely
@@ -240,8 +250,8 @@ export function useFlow() {
     parentWidth = Math.max(widthChild, parentWidth);
     parentHeight = Math.max(heightChild, parentHeight);
 
-    setNodes((nds) =>
-      nds.map((n) => {
+    setNodes(
+      nodes.map((n) => {
         // apply changes to the child and parent node
         if (n.id === childNode.id) {
           return {
