@@ -1,7 +1,6 @@
 import {
   addEdge,
   applyEdgeChanges,
-  applyNodeChanges,
   useReactFlow,
   type Edge,
   type Node,
@@ -15,6 +14,7 @@ import { useCallback, useState } from "react";
 
 import { useNodeStore } from "../node-store/node-store";
 import { debugEdges, debugNodes } from "../solutions/debug";
+import { applyNodeChanges } from "../utils";
 
 export function useFlow() {
   const [rfInstance, setRfInstance] = useState<ReactFlowInstance>();
