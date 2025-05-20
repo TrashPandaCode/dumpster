@@ -1,23 +1,6 @@
-import {
-  addEdge,
-  applyEdgeChanges,
-  Background,
-  ReactFlow,
-  ReactFlowProvider,
-  useReactFlow,
-  type Edge,
-  type Node,
-  type OnConnect,
-  type OnEdgesChange,
-  type OnNodeDrag,
-  type OnNodesChange,
-  type ReactFlowInstance,
-} from "@xyflow/react";
-import React, { useCallback, useState } from "react";
+import { Background, ReactFlow, ReactFlowProvider } from "@xyflow/react";
 
 import "@xyflow/react/dist/style.css";
-
-import { useFetcher } from "react-router";
 
 import LeftPanel from "./editor-components/LeftPanel";
 import NodeContextMenu from "./editor-components/NodeContextMenu";
@@ -26,19 +9,13 @@ import RightPanel from "./editor-components/RightPanel";
 import SelectionContextMenu from "./editor-components/SelectionContextMenu";
 import { useContextMenu } from "./hooks/useContextMenu";
 import { useFlow } from "./hooks/useFlow";
-import { useGroups } from "./hooks/useGroups";
-import { useNodeStore } from "./node-store/node-store";
 import { nodeTypes } from "./nodes/node-types";
-import { debugEdges, debugNodes } from "./solutions/debug";
-import { applyNodeChanges } from "./utils";
 
 const Editor = () => {
   const {
     nodes,
     edges,
     rfInstance,
-    setNodes,
-    setEdges,
     setRfInstance,
     onNodesChange,
     onEdgesChange,
