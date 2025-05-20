@@ -4,21 +4,14 @@ import classnames from "classnames";
 import { type ReactNode } from "react";
 import { NavLink } from "react-router";
 
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "../editor-components/Tooltip";
 import { LOOP_CONNECTOR } from "../nodes/constants";
 import ConnectorHandle from "./ConnectorHandle";
 import EditLabel from "./EditLabel";
-
-const modules = import.meta.glob("/content/**/*.md");
-
-const loadMarkdown = async (filename: string) => {
-  const path = `/content/${filename}`;
-  if (modules[path]) {
-    const mod = await modules[path]();
-    return mod;
-  } else {
-    throw new Error(`Markdown file not found: ${filename}`);
-  }
-};
 
 const NodeContent = ({
   label,
@@ -55,9 +48,17 @@ const NodeContent = ({
         </div>
 
         {label !== "Select Math Type" && (
-          <NavLink target="_blank" to={`/docs/nodes/${label.toLowerCase()}`}>
-            <QuestionMarkCircledIcon className="cursor-pointer text-slate-400" />
-          </NavLink>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <NavLink
+                target="_blank"
+                to={`/docs/nodes/${label.toLowerCase()}`}
+              >
+                <QuestionMarkCircledIcon className="cursor-pointer text-slate-400" />
+              </NavLink>
+            </TooltipTrigger>
+            <TooltipContent>Go to documentation</TooltipContent>
+          </Tooltip>
         )}
       </div>
       <div className="flex h-full w-full flex-col justify-center">
