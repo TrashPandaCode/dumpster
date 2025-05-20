@@ -199,46 +199,71 @@ export function useFlow() {
     // if overlapping node is not a group, return
     if (parentNode.type !== "Group") return;
 
-    // get child node position in global coords
-    let childNodeGlobalPosition = childNode.position;
-    if (childNode.parentId) {
-      const parent =
-        childNode.parentId === parentNode.id
-          ? parentNode
-          : getNode(childNode.parentId)!;
-
-      childNodeGlobalPosition = {
-        x: childNode.position.x + parent.position.x,
-        y: childNode.position.y + parent.position.y,
-      };
+    // get all child nodes of the parent node
+    const children = getNodes().filter(
+      (n) => n.parentId === parentNode.id
+    );
+    if(!children.some((child) => child.id === childNode.id)) {
+      children.push(childNode)
     }
 
-    // new parent node position
-    const offset = 20;
-    const offsetX = parentNode.position.x - childNodeGlobalPosition.x + offset;
-    const offsetY = parentNode.position.y - childNodeGlobalPosition.y + offset;
+    // get the child nodes positions in global coords
+    const childNodesGlobalPositions = children.map((child) => {
+      return {
+        x: child.parentId ? child.position.x + parentNode.position.x : child.position.x,
+        y: child.parentId ? child.position.y + parentNode.position.y : child.position.y,
+        width: child.measured!.width!,
+        height: child.measured!.height!,
+      };
+    });
 
-    const parentPosition = {
-      x: parentNode.position.x - Math.max(offsetX, 0),
-      y: parentNode.position.y - Math.max(offsetY, 0),
+    // get all extreme coords of positions of child nodes
+    const childExtremas = {
+      x: {
+        min: Math.min(
+          ...childNodesGlobalPositions.map((pos) => pos.x)
+        ),
+        max: Math.max(
+          ...childNodesGlobalPositions.map((pos) => pos.x + pos.width)
+        ),
+      },
+      y: {
+        min: Math.min(
+          ...childNodesGlobalPositions.map((pos) => pos.y)
+        ),
+        max: Math.max(
+          ...childNodesGlobalPositions.map((pos) => pos.y + pos.height)
+        ),
+      },
     };
 
-    let parentWidth = parentNode.measured!.width! + Math.max(offsetX, 0);
-    let parentHeight = parentNode.measured!.height! + Math.max(offsetY, 0);
-
-    // new child position
-    const childPosition = {
-      x: childNodeGlobalPosition.x - parentPosition.x,
-      y: childNodeGlobalPosition.y - parentPosition.y,
+    // caculate a bounding box around the child positions in form of an origin point on the top left and a width and height
+    const childBounds = {
+      x: childExtremas.x.min - 20,
+      y: childExtremas.y.min - 30,
+      width: childExtremas.x.max - childExtremas.x.min + 40,
+      height: childExtremas.y.max - childExtremas.y.min + 50,
     };
 
-    // new parent width based on child position
-    const widthChild = childPosition.x + childNode.measured!.width! + 20;
-    const heightChild = childPosition.y + childNode.measured!.height! + 20;
+    const parentBounds = {
+      x: parentNode.position.x,
+      y: parentNode.position.y,
+      width: parentNode.measured!.width!,
+      height: parentNode.measured!.height!,
+    };
 
-    // expand parent if new width is greater
-    parentWidth = Math.max(widthChild, parentWidth);
-    parentHeight = Math.max(heightChild, parentHeight);
+    const newParentBounds = {
+      x: Math.min(childBounds.x, parentBounds.x),
+      y: Math.min(childBounds.y, parentBounds.y),
+      width: Math.max(
+        childBounds.x + childBounds.width, parentBounds.x + parentBounds.width
+      ) - Math.min(childBounds.x, parentBounds.x),
+      height: Math.max(
+        childBounds.y + childBounds.height, parentBounds.y + parentBounds.height
+      ) - Math.min(childBounds.y, parentBounds.y),
+      minWidth: (childBounds.x + childBounds.width) - Math.min(childBounds.x, parentBounds.x),
+      minHeight: (childBounds.y + childBounds.height) - Math.min(childBounds.y, parentBounds.y),
+    };
 
     setNodes((nds) =>
       nds.map((n) => {
@@ -247,15 +272,21 @@ export function useFlow() {
           return {
             ...n,
             parentId: parentNode.id,
-            position: childPosition,
+            position: {
+              x: childNode.parentId === undefined ? n.position.x - newParentBounds.x : n.position.x,
+              y: childNode.parentId === undefined ? n.position.y - newParentBounds.y : n.position.y,
+            },
           };
         } else if (n.id === parentNode.id) {
           return {
             ...n,
-            position: parentPosition,
-            width: parentWidth,
-            height: parentHeight,
-            data: { isParent: true },
+            position: {
+              x: newParentBounds.x,
+              y: newParentBounds.y,
+            },
+            width: newParentBounds.width,
+            height: newParentBounds.height,
+            data: { isParent: true, minWidth: newParentBounds.minWidth, minHeight: newParentBounds.minHeight },
             style: { zIndex: -1 },
           };
         }

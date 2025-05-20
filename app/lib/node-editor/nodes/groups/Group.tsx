@@ -1,6 +1,6 @@
 import { SizeIcon } from "@radix-ui/react-icons";
 import { NodeResizeControl } from "@xyflow/react";
-import { memo } from "react";
+import { memo, useRef } from "react";
 
 import NodeContent from "../../node-components/NodeContent";
 
@@ -14,8 +14,8 @@ const Group = memo(({ data }: { data: any }) => {
     <>
       <NodeResizeControl
         style={controlStyle}
-        minWidth={200}
-        minHeight={150}
+        minWidth={data.minWidth ?? 200}
+        minHeight={data.minHeight ?? 150}
         className="relative"
       >
         <SizeIcon className="absolute right-2 bottom-2 rotate-90 cursor-nw-resize text-slate-400" />
