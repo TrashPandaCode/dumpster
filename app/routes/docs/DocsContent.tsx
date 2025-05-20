@@ -9,6 +9,7 @@ import {
   BreadcrumbSeparator,
 } from "~/lib/core/components/Breadcrumb";
 import type { Route } from "../docs/+types/DocsContent";
+import DocsNodeEditor from "~/lib/core/DocsNodeEditor";
 
 const docs = import.meta.glob("/content/docs/**/*.md");
 
@@ -22,24 +23,24 @@ export async function clientLoader({ params }: Route.LoaderArgs) {
   }
 
   const mod = (await loader()) as {
-    html: string;
     attributes: Record<string, any>;
+    ReactComponent: React.ComponentType;
   };
 
   return {
-    html: mod.html,
     metadata: mod.attributes,
+    ReactComponent: mod.ReactComponent,
     category,
     topic,
   };
 }
 
 const Docs = ({ loaderData }: Route.ComponentProps) => {
-  const { html, metadata, category, topic } = loaderData;
+  const { metadata, ReactComponent, category, topic } = loaderData;
 
   return (
     <main className="w-full">
-      <Breadcrumb className="mb-8 mt-[10px]">
+      <Breadcrumb className="mt-[10px] mb-8">
         <BreadcrumbList>
           <BreadcrumbItem>
             <BreadcrumbLink asChild>
@@ -56,10 +57,10 @@ const Docs = ({ loaderData }: Route.ComponentProps) => {
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
-      <article
-        className="prose prose-slate max-w-4xl"
-        dangerouslySetInnerHTML={{ __html: html }}
-      />
+
+      <article className="prose prose-slate max-w-4xl">
+        <ReactComponent DocsNodeEditor={DocsNodeEditor} />
+      </article>
     </main>
   );
 };
