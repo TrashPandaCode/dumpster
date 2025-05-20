@@ -48,6 +48,9 @@ const LevelDialog = ({
     };
   }, [description]);
 
+  const nextButtonRef = useRef<HTMLButtonElement>(null);
+  const startButtonRef = useRef<HTMLButtonElement>(null);
+
   const handleNext = () => {
     if (!showingGoals) {
       if (index.current < descriptions.length - 1) {
@@ -57,6 +60,9 @@ const LevelDialog = ({
         index.current = 0;
         setShowingGoals(true);
         setDescription("");
+        setTimeout(() => {
+          startButtonRef.current?.focus();
+        }, 0);
       }
     }
   };
@@ -66,6 +72,9 @@ const LevelDialog = ({
       setShowingGoals(false);
       index.current = descriptions.length - 1;
       setDescription(descriptions[index.current]);
+      setTimeout(() => {
+        nextButtonRef.current?.focus();
+      }, 0);
     } else if (index.current > 0) {
       index.current--;
       setDescription(descriptions[index.current]);
@@ -117,18 +126,26 @@ const LevelDialog = ({
         <div className="flex flex-row justify-end gap-5">
           <button
             onClick={handlePrevious}
-            className="cursor-pointer rounded-lg bg-slate-700/80 px-3 py-2 hover:bg-slate-600 focus:outline-1 focus:outline-blue-300"
+            disabled={showingGoals ? false : index.current === 0}
+            className={`rounded-lg bg-slate-700/80 px-3 py-2 focus:outline-1 focus:outline-blue-300
+              ${(!showingGoals && index.current === 0)
+                ? "opacity-50"
+                : "cursor-pointer hover:bg-slate-600"
+              }`}
           >
             Previous
           </button>
           {showingGoals ? (
             <DialogClose asChild>
-              <button className="cursor-pointer rounded-lg bg-slate-700/80 px-3 py-2 hover:bg-slate-600 focus:outline-1 focus:outline-blue-300">
+              <button
+                ref={startButtonRef}
+                className="cursor-pointer rounded-lg bg-slate-700/80 px-3 py-2 hover:bg-slate-600 focus:outline-1 focus:outline-blue-300">
                 Start
               </button>
             </DialogClose>
           ) : (
             <button
+              ref={nextButtonRef}
               onClick={handleNext}
               className="cursor-pointer rounded-lg bg-slate-700/80 px-3 py-2 hover:bg-slate-600 focus:outline-1 focus:outline-blue-300"
             >
