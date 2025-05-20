@@ -278,8 +278,6 @@ export function useFlow() {
   return {
     nodes,
     edges,
-    setNodes,
-    setEdges,
     onNodesChange,
     onEdgesChange,
     onConnect,
