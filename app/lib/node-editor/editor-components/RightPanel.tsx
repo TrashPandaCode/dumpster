@@ -40,7 +40,7 @@ const RightPanel: React.FC<{ rfInstance: ReactFlowInstance | undefined }> = ({
     >
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <IconButton tooltip="Add Node" aria-label="Add Node">
+          <IconButton side="left" tooltip="Add Node" aria-label="Add Node">
             <HamburgerMenuIcon className="text-white" />
           </IconButton>
         </DropdownMenuTrigger>
@@ -114,11 +114,16 @@ const RightPanel: React.FC<{ rfInstance: ReactFlowInstance | undefined }> = ({
       </DropdownMenu>
       {process.env.NODE_ENV === "development" && (
         <>
-          <IconButton onClick={nodeStateDebugPrint} tooltip="Print Node State">
+          <IconButton
+            onClick={nodeStateDebugPrint}
+            side="left"
+            tooltip="Print Node State"
+          >
             <CubeIcon className="text-white" />
           </IconButton>
           <IconButton
             tooltip="Print Nodes"
+            side="left"
             onClick={() => {
               console.log(getNodes());
             }}
@@ -127,6 +132,7 @@ const RightPanel: React.FC<{ rfInstance: ReactFlowInstance | undefined }> = ({
           </IconButton>
           <IconButton
             tooltip="Print Edges"
+            side="left"
             onClick={() => {
               console.log(getEdges());
             }}
@@ -135,6 +141,7 @@ const RightPanel: React.FC<{ rfInstance: ReactFlowInstance | undefined }> = ({
           </IconButton>
           <IconButton
             tooltip="Copy State"
+            side="left"
             onClick={() => {
               const flow = rfInstance?.toObject();
               navigator.clipboard.writeText(JSON.stringify(flow));
@@ -144,6 +151,7 @@ const RightPanel: React.FC<{ rfInstance: ReactFlowInstance | undefined }> = ({
           </IconButton>
           <IconButton
             tooltip="Paste State"
+            side="left"
             onClick={async () => {
               const flow = JSON.parse(await navigator.clipboard.readText());
 

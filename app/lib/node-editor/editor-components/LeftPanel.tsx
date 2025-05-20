@@ -22,6 +22,7 @@ const LeftPanel = () => {
     >
       <IconButton
         tooltip="Play/Pause"
+        side="right"
         onClick={() => {
           if (isPaused) {
             play();
@@ -36,13 +37,13 @@ const LeftPanel = () => {
           <PauseIcon className="text-white" />
         )}
       </IconButton>
-      <IconButton tooltip="Reset Level">
+      <IconButton tooltip="Reset Level" side="right">
         <ResetIcon className="text-white" />
       </IconButton>
       <LevelDialog
         skip={true}
         trigger={
-          <IconButton tooltip="Level Info">
+          <IconButton tooltip="Level Info" side="right">
             <InfoCircledIcon className="text-white" />
           </IconButton>
         }

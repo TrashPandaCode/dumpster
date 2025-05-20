@@ -7,8 +7,9 @@ export const IconButton = React.forwardRef<
   HTMLButtonElement,
   React.ComponentPropsWithoutRef<"button"> & {
     tooltip?: string;
+    side?: "top" | "right" | "bottom" | "left";
   }
->(({ tooltip, className, children, ...props }, ref) => {
+>(({ tooltip, className, children, side, ...props }, ref) => {
   return (
     <Tooltip>
       <TooltipTrigger asChild>
@@ -24,7 +25,7 @@ export const IconButton = React.forwardRef<
         </button>
       </TooltipTrigger>
 
-      <TooltipContent>
+      <TooltipContent side={side}>
         <p>{tooltip}</p>
       </TooltipContent>
     </Tooltip>
