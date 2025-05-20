@@ -8,6 +8,7 @@ import { Panel } from "@xyflow/react";
 
 import LevelDialog from "~/lib/game/components/LevelDialog";
 import { useGameStore } from "~/lib/zustand/game";
+import { IconButton } from "./IconButton";
 
 const LeftPanel = () => {
   const isPaused = useGameStore((state) => state.isPaused);
@@ -19,7 +20,8 @@ const LeftPanel = () => {
       position="top-left"
       className="flex flex-col items-center justify-center gap-2"
     >
-      <button
+      <IconButton
+        tooltip="Play/Pause"
         onClick={() => {
           if (isPaused) {
             play();
@@ -27,23 +29,22 @@ const LeftPanel = () => {
             pause();
           }
         }}
-        className="cursor-pointer rounded bg-slate-800 p-2 outline outline-slate-500 hover:bg-slate-900"
       >
         {isPaused ? (
           <PlayIcon className="text-white" />
         ) : (
           <PauseIcon className="text-white" />
         )}
-      </button>
-      <button className="cursor-pointer rounded bg-slate-800 p-2 outline outline-slate-500 hover:bg-slate-900">
+      </IconButton>
+      <IconButton tooltip="Reset Level">
         <ResetIcon className="text-white" />
-      </button>
+      </IconButton>
       <LevelDialog
         skip={true}
         trigger={
-          <button className="cursor-pointer rounded bg-slate-800 p-2 outline outline-slate-500 hover:bg-slate-900">
+          <IconButton tooltip="Level Info">
             <InfoCircledIcon className="text-white" />
-          </button>
+          </IconButton>
         }
       />
     </Panel>
