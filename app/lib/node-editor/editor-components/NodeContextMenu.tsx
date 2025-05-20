@@ -2,7 +2,7 @@ import { useReactFlow } from "@xyflow/react";
 import { useCallback } from "react";
 import { v4 as uuidv4 } from "uuid";
 
-import { connectNodesToLoop, createForLoop } from "../utils";
+import { connectNodesToLoop, createForLoop, handleUUID } from "../utils";
 import AddNodesPanel from "./AddNodesPanel";
 
 type NodeContextMenuProps = {
@@ -47,8 +47,15 @@ const DefaultNodeContextMenu = ({
   nodeId: string;
   onClose: () => void;
 }) => {
-  const { getNode, getNodes, setNodes, addNodes, setEdges, addEdges } =
-    useReactFlow();
+  const {
+    getNode,
+    getNodes,
+    setNodes,
+    addNodes,
+    getEdges,
+    setEdges,
+    addEdges,
+  } = useReactFlow();
 
   // handle node duplication
   const duplicateNode = useCallback(() => {
@@ -65,16 +72,17 @@ const DefaultNodeContextMenu = ({
 
     if (node.data.loopStart || node.data.loopEnd) {
       // this is to simple what if the loop contains nodes
+      // also state of the loop is not copied, idk maybe it should be
       // TODO issue in Github
       createForLoop(addNodes, position.x, position.y, addEdges);
     } else {
       // duplicate the node
-      const id = uuidv4();
+      const newId = uuidv4();
       addNodes({
         ...node,
         selected: false,
         dragging: false,
-        id: id,
+        id: newId,
         position,
       });
       console.log(node.data.parentLoopId);
@@ -84,13 +92,55 @@ const DefaultNodeContextMenu = ({
         connectNodesToLoop(
           getNodes,
           addEdges,
-          [id],
+          [newId],
           node.data.parentLoopId as string
         );
+
+      // if the duplicated node is a group, duplicate and handle the children of the group
+      if (node.type === "Group") {
+        // duplicate the children of the group
+        const children = getNodes().filter((n) => n.parentId === nodeId);
+        const oldToNewIdMap = new Map<string, string>();
+        const newChildren = children.map((child) => {
+          const newChildId = uuidv4();
+          oldToNewIdMap.set(child.id, newChildId);
+
+          const childPosition = {
+            x: child.position.x,
+            y: child.position.y,
+          };
+
+          return {
+            ...child,
+            id: newChildId,
+            position: childPosition,
+            parentId: newId,
+          };
+        });
+        addNodes(newChildren);
+
+        // duplicate all edges that connect to the children of the group
+        const edges = getEdges().filter((edge) => {
+          const sourceId = oldToNewIdMap.get(edge.source);
+          const targetId = oldToNewIdMap.get(edge.target);
+          return sourceId && targetId;
+        });
+        const newEdges = edges.map((edge) => {
+          const sourceId = oldToNewIdMap.get(edge.source) || edge.source;
+          const targetId = oldToNewIdMap.get(edge.target) || edge.target;
+          return {
+            ...edge,
+            id: uuidv4(),
+            source: sourceId,
+            target: targetId,
+          };
+        });
+        addEdges(newEdges);
+      }
     }
 
     onClose();
-  }, [getNode, nodeId, onClose, addNodes, addEdges, getNodes]);
+  }, [getNode, nodeId, onClose, addNodes, addEdges, getNodes, getEdges]);
 
   const deleteNode = useCallback(() => {
     setNodes((nodes) => nodes.filter((node) => node.id !== nodeId));
