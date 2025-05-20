@@ -76,7 +76,8 @@ const DefaultNodeContextMenu = ({
       // TODO issue in Github
       createForLoop(addNodes, position.x, position.y, addEdges);
     } else {
-      // duplicate the node
+      // this is the new id for the duplicated node
+      // this is also used if the node is a group and we need to duplicate the children
       const newId = uuidv4();
       addNodes({
         ...node,
@@ -98,11 +99,13 @@ const DefaultNodeContextMenu = ({
 
       // if the duplicated node is a group, duplicate and handle the children of the group
       if (node.type === "Group") {
-        // duplicate the children of the group
+        // identify the children of the group
         const children = getNodes().filter((n) => n.parentId === nodeId);
         const oldToNewIdMap = new Map<string, string>();
+        // compute new ids positions and parentId for each child
         const newChildren = children.map((child) => {
           const newChildId = uuidv4();
+          // log the old and new ids for use with the edges
           oldToNewIdMap.set(child.id, newChildId);
 
           const childPosition = {
@@ -117,14 +120,17 @@ const DefaultNodeContextMenu = ({
             parentId: newId,
           };
         });
+        // add the new children to the graph
         addNodes(newChildren);
 
         // duplicate all edges that connect to the children of the group
+        // identify the edges that connect to the children of the group
         const edges = getEdges().filter((edge) => {
           const sourceId = oldToNewIdMap.get(edge.source);
           const targetId = oldToNewIdMap.get(edge.target);
           return sourceId && targetId;
         });
+        // compute their new source and target ids
         const newEdges = edges.map((edge) => {
           const sourceId = oldToNewIdMap.get(edge.source) || edge.source;
           const targetId = oldToNewIdMap.get(edge.target) || edge.target;
@@ -135,6 +141,7 @@ const DefaultNodeContextMenu = ({
             target: targetId,
           };
         });
+        // add the new edges to the graph
         addEdges(newEdges);
       }
     }
