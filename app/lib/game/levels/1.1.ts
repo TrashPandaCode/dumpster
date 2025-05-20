@@ -22,8 +22,8 @@ export const initialize1_1 = () => {
     k.sprite("raccoon", {
       anim: "walkHolding",
     }),
-    k.pos(100, k.height() - 100),
-    k.scale(5),
+    k.pos(0.1 * k.width(), k.height() - 0.1 * k.height()),
+    k.scale(0.1 * k.width() / 24),
     k.area(),
     k.body(),
     "raccoon",
@@ -44,7 +44,8 @@ export const initialize1_1 = () => {
 
   let text = game.add([
     k.text(equation, { size: 32 }),
-    k.pos(500, 100),
+    k.pos(0.5 * k.width() - 0.1 * k.width(), 0.1 * k.height()),
+    k.scale(0.03 * k.width() / 24),
     "text",
   ]);
 
@@ -56,14 +57,44 @@ export const initialize1_1 = () => {
     "background",
   ]);
 
+  let lastWidth = k.width();
+  let lastHeight = k.height();
+
+  function updateLayout() {
+    raccoon.pos.x = 0.1 * k.width();
+    raccoon.pos.y = k.height() - 0.1 * k.height();
+    raccoon.scale = k.vec2(0.1 * k.height() / 24);
+
+    text.pos.x = 0.5 * k.width() - 0.1 * k.width();
+    text.pos.y = 0.1 * k.height();
+    text.scale = k.vec2(0.03 * k.width() / 24);
+
+    background.width = k.width();
+    background.height = k.height();
+
+    floor.pos.y = k.height() - 5;
+    floor.width = k.width();
+  }
+
+  // Update layout on window resize
+  updateLayout();
+
   game.onUpdate(() => {
     if (useGameStore.getState().isPaused) return;
 
+    // Check if the window size has changed
+    if (k.width() !== lastWidth || k.height() !== lastHeight) {
+      lastWidth = k.width();
+      lastHeight = k.height();
+      updateLayout();
+    }
+
+    // Get value from exportToGameObject node
     const value = useDataStore.getState().gameObjects.get("raccoon")?.get("value")?.value ?? 0;
 
     if (value == result && text.text !== "Equation solved!") {
       text.text = "Equation solved!";
-      raccoon.pos.x = 400;
+      raccoon.pos.x = 0.5 * k.width();
     }
 
   });
