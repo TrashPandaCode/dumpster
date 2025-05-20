@@ -5,6 +5,26 @@ import { getKaplayCtx } from "../core/kaplayCtx";
 export const initializePlayground = () => {
   const { k, game } = getKaplayCtx();
 
+  k.loadSprite("background1", "/game/backgrounds/background1.png");
+  k.loadSprite("background1light", "/game/backgrounds/background1_light.png");
+
+  const background = k.add([
+    k.sprite("background1"),
+    k.anchor("top"),
+    k.scale(k.height()* (1/180)),
+    k.pos(k.width()/2 + 400, 0),
+    k.z(0),
+  ]);
+
+    const backgroundLight = k.add([
+    k.sprite("background1light"),
+    k.anchor("top"),
+    k.scale(k.height()* (1/180)),
+    k.pos(k.width()/2 + 200, 0),
+    k.z(100),
+    k.opacity(0.75),
+  ]);
+
   k.loadSprite("raccoon", "/game/sprites/raccoon_spritesheet.png", {
     sliceX: 4,
     sliceY: 4,
@@ -39,6 +59,7 @@ export const initializePlayground = () => {
     k.pos(100, k.height() - 100),
     k.scale(raccScale),
     k.anchor("bot"),
+    k.z(2),
     k.state("idle", ["idle", "walkLeft", "walkRight"]),
   ]);
   raccoon.onStateEnter("idle", () => {
@@ -60,23 +81,16 @@ export const initializePlayground = () => {
     }),
     k.pos(200, 200),
     k.scale(5),
+    k.z(1),
   ]);
+
   const flag = game.add([
     k.sprite("flag", {
       anim: "default",
     }),
-    k.pos(200, 200),
+    k.pos(0, 0),
     k.scale(5),
-  ]);
-
-  //Create "Floor" Component
-  const floor = game.add([
-    k.rect(k.width(), 5),
-    k.pos(0, k.height() - 5),
-    k.color(255, 200, 200),
-    k.area(),
-    k.body({ isStatic: true }),
-    "floor",
+    k.z(1),
   ]);
 
 
