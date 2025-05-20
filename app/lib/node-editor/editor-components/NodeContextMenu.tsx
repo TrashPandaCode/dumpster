@@ -50,18 +50,25 @@ const DefaultNodeContextMenu = ({
   const { getNode, getNodes, setNodes, addNodes, setEdges, addEdges } =
     useReactFlow();
 
+  // handle node duplication
   const duplicateNode = useCallback(() => {
+    // get the node to duplicate
     const node = getNode(nodeId);
+    // if the node is not found, return
     if (!node) return;
 
+    // calculate the new position for the duplicated node
     const position = {
       x: node.position.x + 50,
       y: node.position.y + 50,
     };
 
     if (node.data.loopStart || node.data.loopEnd) {
+      // this is to simple what if the loop contains nodes
+      // TODO issue in Github
       createForLoop(addNodes, position.x, position.y, addEdges);
     } else {
+      // duplicate the node
       const id = uuidv4();
       addNodes({
         ...node,
@@ -72,6 +79,7 @@ const DefaultNodeContextMenu = ({
       });
       console.log(node.data.parentLoopId);
 
+      // if the duplicated node is part of a loop, connect it to the loop
       if (node.data.parentLoopId)
         connectNodesToLoop(
           getNodes,
