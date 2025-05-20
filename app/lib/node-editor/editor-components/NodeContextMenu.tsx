@@ -2,7 +2,7 @@ import { useReactFlow } from "@xyflow/react";
 import { useCallback } from "react";
 import { v4 as uuidv4 } from "uuid";
 
-import { connectNodesToLoop, createForLoop, handleUUID } from "../utils";
+import { connectNodesToLoop, createForLoop } from "../utils";
 import AddNodesPanel from "./AddNodesPanel";
 
 type NodeContextMenuProps = {
