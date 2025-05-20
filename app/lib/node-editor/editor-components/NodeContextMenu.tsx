@@ -150,10 +150,28 @@ const DefaultNodeContextMenu = ({
   }, [getNode, nodeId, onClose, addNodes, addEdges, getNodes, getEdges]);
 
   const deleteNode = useCallback(() => {
-    setNodes((nodes) => nodes.filter((node) => node.id !== nodeId));
-    setEdges((edges) => edges.filter((edge) => edge.source !== nodeId));
+    const idsToDelete = [nodeId];
+    if (getNode(nodeId)?.type === "Group") {
+      // if the node is a group, delete all its children
+      const children = getNodes().filter((n) => n.parentId === nodeId);
+      idsToDelete.push(...children.map((child) => child.id));
+    }
+
+    // remove all nodes with the ids in idsToDelete
+    setNodes((nodes) => nodes.filter((node) => !idsToDelete.includes(node.id)));
+    // remove all edges that connect to the nodes with the ids in idsToDelete
+    setEdges((edges) =>
+      edges.filter(
+        (edge) =>
+          !(
+            idsToDelete.includes(edge.source) ||
+            idsToDelete.includes(edge.target)
+          )
+      )
+    );
+
     onClose();
-  }, [setNodes, setEdges, onClose, nodeId]);
+  }, [nodeId, getNode, setNodes, setEdges, onClose, getNodes]);
 
   return (
     <>
