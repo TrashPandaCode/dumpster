@@ -265,6 +265,13 @@ export function useFlow() {
       minHeight: (childBounds.y + childBounds.height) - Math.min(childBounds.y, parentBounds.y),
     };
 
+    // offset the children by the difference of the parent node position and the new parent node position
+    // this is needed to keep the child nodes in the same position relative to the parent node
+    const childNodeOffset = {
+      x: parentNode.position.x - newParentBounds.x,
+      y: parentNode.position.y - newParentBounds.y,
+    };
+
     setNodes((nds) =>
       nds.map((n) => {
         // apply changes to the child and parent node
@@ -273,8 +280,17 @@ export function useFlow() {
             ...n,
             parentId: parentNode.id,
             position: {
-              x: childNode.parentId === undefined ? n.position.x - newParentBounds.x : n.position.x,
-              y: childNode.parentId === undefined ? n.position.y - newParentBounds.y : n.position.y,
+              x: childNode.parentId === undefined ? n.position.x - newParentBounds.x : n.position.x + childNodeOffset.x,
+              y: childNode.parentId === undefined ? n.position.y - newParentBounds.y : n.position.y + childNodeOffset.y,
+            },
+          };
+
+        } else if (n.parentId === parentNode.id) {
+          return {
+            ...n,
+            position: {
+              x: n.position.x + childNodeOffset.x,
+              y: n.position.y + childNodeOffset.y,
             },
           };
         } else if (n.id === parentNode.id) {
