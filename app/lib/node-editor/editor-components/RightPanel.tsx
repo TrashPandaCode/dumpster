@@ -17,6 +17,7 @@ import { v4 as uuidv4 } from "uuid";
 import { useNodeStore } from "../node-store/node-store";
 import { MAIN_LOOP_CONNECTOR } from "../nodes/constants";
 import { nodeTypes } from "../nodes/node-types";
+import { IconButton } from "./IconButton";
 
 const RightPanel: React.FC<{ rfInstance: ReactFlowInstance | undefined }> = ({
   rfInstance,
@@ -39,17 +40,14 @@ const RightPanel: React.FC<{ rfInstance: ReactFlowInstance | undefined }> = ({
     >
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <button
-            className="cursor-pointer rounded bg-slate-800 p-2 outline outline-slate-500 hover:bg-slate-900 data-[state=open]:bg-slate-900"
-            aria-label="Customise options"
-          >
+          <IconButton side="left" tooltip="Add Node" aria-label="Add Node">
             <HamburgerMenuIcon className="text-white" />
-          </button>
+          </IconButton>
         </DropdownMenuTrigger>
 
         <DropdownMenuPortal>
           <DropdownMenuContent
-            className="flex w-65 flex-col items-center gap-1 rounded bg-slate-800 p-2 font-mono shadow-lg !outline-1 !outline-slate-700"
+            className="mt-2 flex w-65 flex-col items-center gap-1 rounded bg-slate-800 p-2 font-mono shadow-lg !outline-1 !outline-slate-700"
             align="end"
           >
             {Object.keys(nodeTypes).map((name) => (
@@ -116,38 +114,44 @@ const RightPanel: React.FC<{ rfInstance: ReactFlowInstance | undefined }> = ({
       </DropdownMenu>
       {process.env.NODE_ENV === "development" && (
         <>
-          <button
+          <IconButton
             onClick={nodeStateDebugPrint}
-            className="cursor-pointer rounded bg-slate-800 p-2 text-white outline outline-slate-500 hover:bg-slate-900"
+            side="left"
+            tooltip="Print Node State"
           >
             <CubeIcon className="text-white" />
-          </button>
-          <button
+          </IconButton>
+          <IconButton
+            tooltip="Print Nodes"
+            side="left"
             onClick={() => {
               console.log(getNodes());
             }}
-            className="cursor-pointer rounded bg-slate-800 p-2 text-white outline outline-slate-500 hover:bg-slate-900"
           >
             <CubeIcon className="text-white" />
-          </button>
-          <button
+          </IconButton>
+          <IconButton
+            tooltip="Print Edges"
+            side="left"
             onClick={() => {
               console.log(getEdges());
             }}
-            className="cursor-pointer rounded bg-slate-800 p-2 text-white outline outline-slate-500 hover:bg-slate-900"
           >
             <CubeIcon className="text-white" />
-          </button>
-          <button
+          </IconButton>
+          <IconButton
+            tooltip="Copy State"
+            side="left"
             onClick={() => {
               const flow = rfInstance?.toObject();
               navigator.clipboard.writeText(JSON.stringify(flow));
             }}
-            className="cursor-pointer rounded bg-slate-800 p-2 text-white outline outline-slate-500 hover:bg-slate-900"
           >
             <CopyIcon className="text-white" />
-          </button>
-          <button
+          </IconButton>
+          <IconButton
+            tooltip="Paste State"
+            side="left"
             onClick={async () => {
               const flow = JSON.parse(await navigator.clipboard.readText());
 
@@ -158,10 +162,9 @@ const RightPanel: React.FC<{ rfInstance: ReactFlowInstance | undefined }> = ({
                 setViewport({ x, y, zoom });
               }
             }}
-            className="cursor-pointer rounded bg-slate-800 p-2 text-white outline outline-slate-500 hover:bg-slate-900"
           >
             <ClipboardIcon className="text-white" />
-          </button>
+          </IconButton>
         </>
       )}
     </Panel>

@@ -14,6 +14,7 @@ import NodeContextMenu from "./editor-components/NodeContextMenu";
 import PaneContextMenu from "./editor-components/PaneContextMenu";
 import RightPanel from "./editor-components/RightPanel";
 import SelectionContextMenu from "./editor-components/SelectionContextMenu";
+import { TooltipProvider } from "./editor-components/Tooltip";
 import { useContextMenu } from "./hooks/useContextMenu";
 import { useFlow } from "./hooks/useFlow";
 import { nodeTypes } from "./nodes/node-types";
@@ -98,7 +99,9 @@ const Editor = () => {
 
 const NodeEditor = () => (
   <ReactFlowProvider>
-    <Editor />
+    <TooltipProvider>
+      <Editor />
+    </TooltipProvider>
   </ReactFlowProvider>
 );
 
