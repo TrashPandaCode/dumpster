@@ -7,7 +7,7 @@ interface NodeSetterState {
   nodes: Node[];
   setNodes: (nodes: Node[]) => void;
   resetHighlight: () => void;
-  highlightNode: (id: string) => void;
+  highlightNode: (id: string, color: string) => void;
 }
 
 export const useNodeSetterStore = create<NodeSetterState>((set) => ({
@@ -23,7 +23,7 @@ export const useNodeSetterStore = create<NodeSetterState>((set) => ({
         },
       })),
     })),
-  highlightNode: (id) =>
+  highlightNode: (id, color) =>
     set((state) => ({
       nodes: state.nodes.map((node) =>
         node.id === id
@@ -31,7 +31,7 @@ export const useNodeSetterStore = create<NodeSetterState>((set) => ({
               ...node,
               style: {
                 ...node.style,
-                outline: "2px solid red",
+                outline: "2px solid " + color,
               },
             }
           : node

@@ -272,7 +272,7 @@ function visit(node: AppNode, sortedMap: AppNode[], mapErrors: MapErrors) {
   if (node.mark == Mark.Temporary) {
     console.log("Found cycle");
 
-    useNodeSetterStore.getState().highlightNode(node.nodeId);
+    useNodeSetterStore.getState().highlightNode(node.nodeId, "red");
 
     mapErrors.cycle = true;
     return;

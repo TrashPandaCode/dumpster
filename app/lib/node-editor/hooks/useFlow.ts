@@ -15,7 +15,7 @@ import { useShallow } from "zustand/shallow";
 import { useNodeSetterStore } from "../node-store/node-setter";
 import { useNodeStore } from "../node-store/node-store";
 import { debugEdges } from "../solutions/debug";
-import { applyNodeChanges } from "../utils";
+import { applyNodeChanges, highlightDuplicateExportNodes } from "../utils";
 
 const selector = (state: {
   nodes: Node[];
@@ -41,6 +41,7 @@ export function useFlow() {
         switch (element.type) {
           case "add":
             replaceNode(element.item);
+
             break;
           case "remove": {
             const node = getNode(element.id);
@@ -87,6 +88,7 @@ export function useFlow() {
       });
 
       setNodes(applyNodeChanges(changes, nodes));
+      highlightDuplicateExportNodes(nodes);
     },
     [setNodes, nodes, replaceNode, getNode, removeNode, getNodes, removeEdge]
   );
