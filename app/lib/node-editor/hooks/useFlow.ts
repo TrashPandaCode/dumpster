@@ -151,6 +151,7 @@ export function useFlow() {
     },
     [setEdges, getNode, addEdgeStore]
   );
+
   const onNodeDragStop: OnNodeDrag = (_, childNode) => {
     // if the node is a group, return
     // node nesting cant work because of weird react flow behavior

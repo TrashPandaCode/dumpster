@@ -71,7 +71,7 @@ const DefaultNodeContextMenu = ({
     };
 
     if (node.data.loopStart || node.data.loopEnd) {
-      // this is to simple what if the loop contains nodes
+      // this is too simple what if the loop contains nodes
       // also state of the loop is not copied, idk maybe it should be
       // TODO issue in Github
       createForLoop(addNodes, position.x, position.y, addEdges);
