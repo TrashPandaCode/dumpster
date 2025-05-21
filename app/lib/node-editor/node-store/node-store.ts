@@ -242,7 +242,7 @@ function computeMap(sortedNodes: AppNode[]) {
 
 function orderMap(mapErrors: MapErrors, map: Map<string, AppNode>): AppNode[] {
   mapErrors.cycle = false;
-  useNodeSetterStore.getState().resetHighlight();
+  useNodeSetterStore.getState().resetHighlight("cycle");
   // remove all marks
   map.forEach((node) => {
     node.mark = null;
@@ -265,10 +265,7 @@ function visit(node: AppNode, sortedMap: AppNode[], mapErrors: MapErrors) {
     return;
   }
   if (node.mark == Mark.Temporary) {
-    console.log("Found cycle");
-
-    useNodeSetterStore.getState().highlightNode(node.nodeId, "red");
-
+    useNodeSetterStore.getState().highlightNode(node.nodeId, "cycle", "red");
     mapErrors.cycle = true;
     return;
   }

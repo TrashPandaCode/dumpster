@@ -1,12 +1,6 @@
 import { CrossCircledIcon } from "@radix-ui/react-icons";
-import {
-  Position,
-  useReactFlow,
-  useUpdateNodeInternals,
-  type Node,
-} from "@xyflow/react";
+import { Position, useReactFlow, useUpdateNodeInternals } from "@xyflow/react";
 import { memo, useEffect, useRef } from "react";
-import { useShallow } from "zustand/shallow";
 
 import { LEVELS } from "~/lib/game/core/levels";
 import { useDataStore } from "~/lib/zustand/data";
@@ -17,20 +11,16 @@ import NodeContent from "../../node-components/NodeContent";
 import SelectDropDown from "../../node-components/SelectDropDown";
 import { useNodeSetterStore } from "../../node-store/node-setter";
 import type { nodeData, nodeInputs } from "../../node-store/node-store";
-import { getInput, highlightDuplicateExportNodes } from "../../utils";
+import { getInput } from "../../utils";
 
 const ExportToGameobject = memo(
   ({ id, data, selected }: { id: string; data: any; selected: boolean }) => {
     const level = useGameStore((state) => state.currentLevel);
     const modifiableGameObjects = LEVELS[level].modifiableGameObjects;
-    const selector = (state: {
-      nodes: Node[];
-      setNodes: (nodes: Node[]) => void;
-    }) => ({
-      nodes: state.nodes,
-      setNodes: state.setNodes,
-    });
-    const { nodes, setNodes } = useNodeSetterStore(useShallow(selector));
+
+    const highlightDuplicateNodes = useNodeSetterStore(
+      (state) => state.highlightDuplicateNodes
+    );
 
     const { updateNodeData, setEdges } = useReactFlow();
     const updateNodeInternals = useUpdateNodeInternals();
@@ -66,7 +56,7 @@ const ExportToGameobject = memo(
       console.log("selected", selected);
       // remove all edges with export node as target
       setEdges((edgs) => edgs.filter((edg) => edg.target !== id));
-      highlightDuplicateExportNodes(nodes);
+      highlightDuplicateNodes();
     };
 
     return (
