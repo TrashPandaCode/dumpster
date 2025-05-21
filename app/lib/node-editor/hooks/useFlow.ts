@@ -16,6 +16,7 @@ import { useNodeSetterStore } from "../node-store/node-setter";
 import { useNodeStore } from "../node-store/node-store";
 import { debugEdges } from "../solutions/debug";
 import { applyNodeChanges, highlightDuplicateExportNodes } from "../utils";
+import { v4 as uuidv4 } from "uuid";
 
 const selector = (state: {
   nodes: Node[];

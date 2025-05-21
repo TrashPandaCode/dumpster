@@ -468,3 +468,95 @@ export function highlightDuplicateExportNodes(nodes: Node[]) {
     }
   }
 }
+
+// this accepts a list of nodes and duplicates them
+// loops and groups will be handled automatically, just include them and their children
+export function duplicateNodes(
+  nodes: Node[],
+  addNodes: (payload: Node | Node[]) => void,
+  addEdges: (payload: Edge | Edge[]) => void,
+  getNodes: () => Node[]
+) {
+  // if this is called with no nodes, return
+  if (!nodes) return;
+
+  // this map will to keep track of which new parent ids should be assigned to children
+  const oldToNewIdMap = new Map<string, string>();
+
+  // filter the children from the top-level nodes
+  const topLevelNodes = nodes.filter(
+    (node) =>
+      node.parentId === undefined && node.data.parentLoopId === undefined
+  );
+  const children = nodes.filter(
+    (node) => node.parentId !== undefined || node.data.parentLoopId !== undefined
+  );
+
+  // duplicate the top-level nodes
+  const newTopLevelNodes = topLevelNodes.map((node) => {
+    const newId = uuidv4();
+    oldToNewIdMap.set(node.id, newId);
+
+    let newLoopId: string | undefined = undefined;
+    if (node.type === "ForEnd" || node.type === "ForStart") {
+      if (!oldToNewIdMap.has(node.data.loopId as string)) { // if the old loopId hasn't been mapped yet
+        newLoopId = uuidv4(); // create a new loopId
+        oldToNewIdMap.set(node.data.loopId as string, newLoopId); // map the old loopId to the new one
+      } else {
+        newLoopId = oldToNewIdMap.get(node.data.loopId as string); // is loopId ever not a string?
+      }
+    }
+
+    const newPosition = {
+      x: node.position.x + 50,
+      y: node.position.y + 50,
+    };
+
+    return {
+      ...node,
+      id: newId,
+      position: newPosition,
+      data: {
+        ...node.data,
+        loopId: newLoopId,
+      }
+    };
+  });
+
+}
+
+// // this accepts a list of nodes and duplicates them
+// // loops and groups will be handled automatically, just include them and their children
+// export function duplicateNodes(nodes: Node[]) : { nodes: Node[] } {
+//   // if this is called with no nodes, return
+//   if (!nodes) return;
+
+//   // create a map of old node ids to new node ids
+//   const oldToNewIdMap = new Map<string, string>();
+
+//   // filter the children from the top-level nodes
+//   const topLevelNodes = nodes.filter((node) => node.parentId === undefined && node.data.parentLoopId === undefined);
+//   const children = nodes.filter((node) => node.parentId !== undefined || node.data.parentLoopId !== undefined);
+
+//   // duplicate the top-level nodes
+//   const newTopLevelNodes = topLevelNodes.map((node) => {
+//     const newId = uuidv4();
+//     oldToNewIdMap.set(node.id, newId);
+
+//     const newPosition = {
+//       x: node.position.x + 50,
+//       y: node.position.y + 50,
+//     };
+
+//     return {
+//       ...node,
+//       id: newId,
+//       position: newPosition,
+//       parentId: undefined,
+//       data: {
+//         ...node.data,
+//         parentLoopId: undefined,
+//       },
+//     };
+//   })
+// };
