@@ -48,7 +48,6 @@ const ExportToGameobject = memo(
       gameObject.current = selected;
       updateNodeData(id, { gameObject });
       updateNodeInternals(id);
-      console.log("selected", selected);
       // remove all edges with export node as target
       setEdges((edgs) => edgs.filter((edg) => edg.target !== id));
     };

@@ -70,7 +70,6 @@ const DefaultNodeContextMenu = ({
         id: id,
         position,
       });
-      console.log(node.data.parentLoopId);
 
       if (node.data.parentLoopId)
         connectNodesToLoop(
