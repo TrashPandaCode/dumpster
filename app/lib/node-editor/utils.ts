@@ -7,7 +7,6 @@ import type {
 } from "@xyflow/react";
 import { v4 as uuidv4 } from "uuid";
 
-import { useNodeSetterStore } from "./node-store/node-setter";
 import type { nodeInputs } from "./node-store/node-store";
 import { LOOP_CONNECTOR, MAIN_LOOP_CONNECTOR } from "./nodes/constants";
 
@@ -434,39 +433,6 @@ export function getContextMenuPosition(event: MouseEvent | React.MouseEvent): {
       ? window.innerHeight - 284
       : (event as React.MouseEvent).clientY;
   return { x: x - 15, y: y - 15 };
-}
-
-export function highlightDuplicateExportNodes(nodes: Node[]) {
-  const highlightNode = useNodeSetterStore.getState().highlightNode;
-  const resetHighlight = useNodeSetterStore.getState().resetHighlight;
-  console.log("All nodes:", nodes);
-
-  resetHighlight();
-
-  const exportNodes = nodes.filter(
-    (node) => node.type === "ExportToGameobject"
-  );
-  const grouped: Record<string, Node[]> = {};
-  console.log("exportNodes", exportNodes);
-  for (const node of exportNodes) {
-    const gameObject = (node.data.gameObject as { current: string } | undefined)
-      ?.current;
-    if (!gameObject) continue;
-    if (!grouped[gameObject]) {
-      grouped[gameObject] = [];
-    }
-    grouped[gameObject].push(node);
-  }
-
-  for (const [_, group] of Object.entries(grouped)) {
-    if (group.length > 1) {
-      console.log("Duplicate export nodes found:", group);
-      for (const node of group) {
-        console.log("Highlighting node:", node.id);
-        highlightNode(node.id, "orange");
-      }
-    }
-  }
 }
 
 // this accepts a list of nodes and duplicates them

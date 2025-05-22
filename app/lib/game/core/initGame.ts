@@ -2,6 +2,7 @@ import { useNodeStore } from "~/lib/node-editor/node-store/node-store";
 import { useGameStore } from "~/lib/zustand/game";
 import { useKeyStore } from "~/lib/zustand/key";
 import { useTimeStore } from "~/lib/zustand/time";
+import { globalKeyTracker } from "../utils/globalKeyTracker";
 import { getKaplayCtx } from "./kaplayCtx";
 
 export const state = {
@@ -20,9 +21,9 @@ export default function initGame(canvas: HTMLCanvasElement) {
 
   const { k, game } = getKaplayCtx(canvas);
 
-  useKeyStore.getState().setKeyDownFunction((key) => k.isKeyDown(key));
-  useKeyStore.getState().setKeyPressedFunction((key) => k.isKeyPressed(key));
-  useKeyStore.getState().setKeyReleasedFunction((key) => k.isKeyReleased(key));
+  useKeyStore.getState().setKeyDownFunction(globalKeyTracker.isKeyDown);
+  useKeyStore.getState().setKeyPressedFunction(globalKeyTracker.isKeyPressed);
+  useKeyStore.getState().setKeyReleasedFunction(globalKeyTracker.isKeyReleased);
 
   useTimeStore.getState().setTimeFunction(() => k.time());
   useTimeStore.getState().setDeltaTimeFunction(() => k.dt());
@@ -37,6 +38,8 @@ export default function initGame(canvas: HTMLCanvasElement) {
 
     // compute node map
     useNodeStore.getState().compute();
+
+    globalKeyTracker.clearPressedAndReleased();
   });
 
   return k;

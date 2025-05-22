@@ -13,6 +13,7 @@ import LevelDialog from "~/lib/game/components/LevelDialog";
 import { cleanupKaplay } from "~/lib/game/core/kaplayCtx";
 import type { LEVELS } from "~/lib/game/core/levels";
 import { useGameStore } from "~/lib/zustand/game";
+import { globalKeyTracker } from "~/lib/game/utils/globalKeyTracker";
 
 const Game = ({ params }: Route.ComponentProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -28,6 +29,7 @@ const Game = ({ params }: Route.ComponentProps) => {
       return;
     }
 
+    globalKeyTracker.init();
     initGame(canvasRef.current);
 
     // load the game level
@@ -35,6 +37,7 @@ const Game = ({ params }: Route.ComponentProps) => {
 
     return () => {
       cleanupKaplay();
+      globalKeyTracker.cleanup();
     };
   }, []);
 

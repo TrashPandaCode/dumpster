@@ -1,5 +1,6 @@
 import { ChevronRightIcon } from "@radix-ui/react-icons";
 import { Panel, useReactFlow, type PanelPosition } from "@xyflow/react";
+import classnames from "classnames";
 import { useEffect, useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
@@ -147,9 +148,10 @@ const AddNodesPanel = ({
         {filteredTypes.map((type, index) => (
           <button
             key={`add_node_${type}_${index}`}
-            className={`w-full rounded px-2 py-1 text-left text-sm text-white ${
+            className={classnames(
+              "w-full rounded px-2 py-1 text-left text-sm text-white",
               selectedIndex === index ? "bg-slate-700" : "hover:bg-slate-700"
-            }`}
+            )}
             onClick={() => handleAddNode(type.nodeType, type.computeType)}
           >
             {type.computeType ? (

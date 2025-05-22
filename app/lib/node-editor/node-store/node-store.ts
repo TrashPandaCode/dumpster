@@ -3,6 +3,7 @@ import { create } from "zustand";
 
 import { connectionToEdgeId } from "../utils";
 import { useNodeSetterStore } from "./node-setter";
+import { useToastStore } from "./toast-store";
 
 export type LoopStatus = {
   // just externally manage loops (from the compute Map function) using this object to which the end node can write to (and start node read from)
@@ -247,7 +248,7 @@ function computeMap(sortedNodes: AppNode[]) {
 
 function orderMap(mapErrors: MapErrors, map: Map<string, AppNode>): AppNode[] {
   mapErrors.cycle = false;
-  useNodeSetterStore.getState().resetHighlight();
+  useNodeSetterStore.getState().resetHighlight("cycle");
   // remove all marks
   map.forEach((node) => {
     node.mark = null;
@@ -266,14 +267,16 @@ function orderMap(mapErrors: MapErrors, map: Map<string, AppNode>): AppNode[] {
 }
 
 function visit(node: AppNode, sortedMap: AppNode[], mapErrors: MapErrors) {
+  const { triggerToast } = useToastStore.getState();
   if (node.mark == Mark.Permanent) {
     return;
   }
   if (node.mark == Mark.Temporary) {
-    console.log("Found cycle");
-
-    useNodeSetterStore.getState().highlightNode(node.nodeId, "red");
-
+    useNodeSetterStore.getState().highlightNode(node.nodeId, "cycle", "red");
+    triggerToast(
+      "Cycle detected",
+      `A cycle was detected in the node graph. Please check your node connections.`
+    );
     mapErrors.cycle = true;
     return;
   }

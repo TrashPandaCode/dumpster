@@ -15,20 +15,24 @@ import { useShallow } from "zustand/shallow";
 import { useNodeSetterStore } from "../node-store/node-setter";
 import { useNodeStore } from "../node-store/node-store";
 import { debugEdges } from "../solutions/debug";
-import { applyNodeChanges, highlightDuplicateExportNodes } from "../utils";
+import { applyNodeChanges } from "../utils";
 import { v4 as uuidv4 } from "uuid";
 
 const selector = (state: {
   nodes: Node[];
   setNodes: (nodes: Node[]) => void;
+  highlightDuplicateNodes: () => void;
 }) => ({
   nodes: state.nodes,
   setNodes: state.setNodes,
+  highlightDuplicateNodes: state.highlightDuplicateNodes,
 });
 
 export function useFlow() {
   const { getIntersectingNodes, getNode, getNodes } = useReactFlow();
-  const { nodes, setNodes } = useNodeSetterStore(useShallow(selector));
+  const { nodes, setNodes, highlightDuplicateNodes } = useNodeSetterStore(
+    useShallow(selector)
+  );
   const [edges, setEdges] = useState<Edge[]>(debugEdges);
 
   const replaceNode = useNodeStore((state) => state.replaceNode);
@@ -38,11 +42,13 @@ export function useFlow() {
 
   const onNodesChange: OnNodesChange = useCallback(
     (changes) => {
+      let handleHighlight = false;
+
       changes.forEach((element) => {
         switch (element.type) {
           case "add":
             replaceNode(element.item);
-
+            handleHighlight = element.item.type === "ExportToGameobject";
             break;
           case "remove": {
             const node = getNode(element.id);
@@ -80,18 +86,30 @@ export function useFlow() {
               removeNode(nodeOther.id);
             }
             removeNode(element.id);
+            handleHighlight = true;
             break;
           }
           case "replace":
             replaceNode(element.item);
+            handleHighlight = element.item.type === "ExportToGameobject";
             break;
         }
       });
-
       setNodes(applyNodeChanges(changes, nodes));
-      highlightDuplicateExportNodes(nodes);
+      if (handleHighlight) {
+        highlightDuplicateNodes();
+      }
     },
-    [setNodes, nodes, replaceNode, getNode, removeNode, getNodes, removeEdge]
+    [
+      setNodes,
+      nodes,
+      replaceNode,
+      highlightDuplicateNodes,
+      getNode,
+      removeNode,
+      getNodes,
+      removeEdge,
+    ]
   );
 
   const onEdgesChange: OnEdgesChange = useCallback(

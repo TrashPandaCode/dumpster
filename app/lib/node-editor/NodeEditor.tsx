@@ -14,6 +14,7 @@ import NodeContextMenu from "./editor-components/NodeContextMenu";
 import PaneContextMenu from "./editor-components/PaneContextMenu";
 import RightPanel from "./editor-components/RightPanel";
 import SelectionContextMenu from "./editor-components/SelectionContextMenu";
+import Toaster from "./editor-components/Toaster";
 import { TooltipProvider } from "./editor-components/Tooltip";
 import { useContextMenu } from "./hooks/useContextMenu";
 import { useFlow } from "./hooks/useFlow";
@@ -67,6 +68,7 @@ const Editor = () => {
         <Background bgColor="#14141d" color="#a7abc2" />
         <RightPanel rfInstance={rfInstance} />
         <LeftPanel />
+        <Toaster />
       </ReactFlow>
       {paneContextMenu && (
         <PaneContextMenu

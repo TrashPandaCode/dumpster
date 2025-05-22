@@ -4,6 +4,7 @@ import {
   Collapsible as Root,
 } from "@radix-ui/react-collapsible";
 import { ChevronDownIcon, ChevronRightIcon } from "@radix-ui/react-icons";
+import classnames from "classnames";
 import { useState, type ReactNode } from "react";
 
 const Collapsible = ({
@@ -17,20 +18,22 @@ const Collapsible = ({
   return (
     <Root open={open} onOpenChange={setOpen}>
       <CollapsibleTrigger
-        className={`group flex w-full items-baseline justify-between rounded px-2 py-1 ${
+        className={classnames(
+          "group flex w-full items-baseline justify-between rounded px-2 py-1",
           open ? "bg-slate-100" : ""
-        }`}
+        )}
       >
         <span>{title}</span>
         <span
-          className={`ml-2 transition-opacity ${
+          className={classnames(
+            "ml-2 transition-opacity",
             open ? "opacity-100" : "opacity-0 group-hover:opacity-100"
-          }`}
+          )}
         >
           {open ? <ChevronDownIcon /> : <ChevronRightIcon />}
         </span>
       </CollapsibleTrigger>
-      <CollapsibleContent className="flex flex-col pl-8 gap-2 nth-[2]:pt-2">
+      <CollapsibleContent className="flex flex-col gap-2 pl-8 nth-[2]:pt-2">
         {children}
       </CollapsibleContent>
     </Root>
