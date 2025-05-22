@@ -33,12 +33,10 @@ const ExportToGameobject = memo(
     useEffect(() => {
       updateNodeData(id, {
         compute: (inputs: nodeInputs, _: nodeData) => {
-          gameObjects
-            .get(gameObject.current)!
-            .forEach(({ handleId, access }, label) => {
-              if (access === "get") return;
-              setData(gameObject.current, label, getInput(inputs, handleId, 0));
-            });
+          gameObjects.get(gameObject.current)!.forEach(({ access }, label) => {
+            if (access === "get") return;
+            setData(gameObject.current, label, getInput(inputs, label, 0));
+          });
         },
         gameObject,
       });
@@ -61,17 +59,17 @@ const ExportToGameobject = memo(
             defaultValue={gameObject.current}
           />
           {Array.from(gameObjects.get(gameObject.current) ?? []).map(
-            ([label, { handleId, access }]) =>
+            ([label, { access }]) =>
               access !== "get" && (
                 <div
                   className={
                     "flex w-full items-center [&>*:nth-child(even)]:pointer-events-none [&>*:nth-child(even)]:opacity-0 hover:[&>*:nth-child(even)]:pointer-events-auto hover:[&>*:nth-child(even)]:opacity-100 " +
                     (selected ? "hover:bg-slate-800" : "hover:bg-slate-700")
                   }
-                  key={handleId}
+                  key={label}
                 >
                   <LabelHandle
-                    id={handleId}
+                    id={label}
                     position={Position.Left}
                     label={label}
                   />

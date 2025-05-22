@@ -35,7 +35,7 @@ const AddHandle = ({
         className="nodrag peer w-full rounded-sm border-1 border-slate-700 bg-slate-900 px-1 focus:border-slate-500 focus:outline-none disabled:text-slate-500"
         placeholder="Handle Name"
         onChange={(evt) => {
-          handleLabel.current = evt.target.value;
+          handleLabel.current = evt.target.value.replace("-", "");
           updateNodeData(nodeId, { curLabel: handleLabel });
         }}
         onKeyDown={(evt) => {
