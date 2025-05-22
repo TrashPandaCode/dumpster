@@ -42,7 +42,7 @@ export const initialize1_1 = () => {
   const equation = "7 + 5 * 2 - 3 / 3 = ?";
   const result = 16;
 
-  let text = game.add([
+  const label = game.add([
     k.text(equation, { size: 32 }),
     k.pos(0.5 * k.width() - 0.1 * k.width(), 0.1 * k.height()),
     k.scale(0.03 * k.width() / 24),
@@ -69,9 +69,9 @@ export const initialize1_1 = () => {
     raccoon.pos.y = raccooonRelY * k.height();
     raccoon.scale = k.vec2(0.1 * k.height() / 24);
 
-    text.pos.x = 0.5 * k.width() - 0.1 * k.width();
-    text.pos.y = 0.1 * k.height();
-    text.scale = k.vec2(0.03 * k.width() / 24);
+    label.pos.x = 0.5 * k.width() - 0.1 * k.width();
+    label.pos.y = 0.1 * k.height();
+    label.scale = k.vec2(0.03 * k.width() / 24);
 
     background.width = k.width();
     background.height = k.height();
@@ -99,8 +99,8 @@ export const initialize1_1 = () => {
     // Get value from exportToGameObject node
     const value = useDataStore.getState().gameObjects.get("raccoon")?.get("value")?.value ?? 0;
 
-    if (value == result && text.text !== "Equation solved!") {
-      text.text = "Equation solved!";
+    if (value == result && label.text !== "Equation solved!") {
+      label.text = "Equation solved!";
       raccoon.pos.x = 0.5 * k.width();
     }
 

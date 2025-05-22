@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useGameStore } from "~/lib/zustand/game";
 import { LEVELS } from "../core/levels";
 import CustomDialog from "./CustomDialog";
+import classNames from "classnames";
 
 const LevelDialog = ({
   defaultOpen = false,
@@ -48,7 +49,6 @@ const LevelDialog = ({
     };
   }, [description]);
 
-  const nextButtonRef = useRef<HTMLButtonElement>(null);
   const startButtonRef = useRef<HTMLButtonElement>(null);
 
   const handleNext = () => {
@@ -72,9 +72,6 @@ const LevelDialog = ({
       setShowingGoals(false);
       index.current = descriptions.length - 1;
       setDescription(descriptions[index.current]);
-      setTimeout(() => {
-        nextButtonRef.current?.focus();
-      }, 0);
     } else if (index.current > 0) {
       index.current--;
       setDescription(descriptions[index.current]);
@@ -127,11 +124,11 @@ const LevelDialog = ({
           <button
             onClick={handlePrevious}
             disabled={showingGoals ? false : index.current === 0}
-            className={`rounded-lg bg-slate-700/80 px-3 py-2 focus:outline-1 focus:outline-blue-300
-              ${(!showingGoals && index.current === 0)
-                ? "opacity-50"
-                : "cursor-pointer hover:bg-slate-600"
-              }`}
+            className={
+              classNames(
+                "rounded-lg bg-slate-700/80 px-3 py-2 focus:outline-1 focus:outline-blue-300",
+                 !showingGoals && index.current === 0 ? "opacity-50" : "cursor-pointer hover:bg-slate-600"
+                )}
           >
             Previous
           </button>
@@ -145,7 +142,6 @@ const LevelDialog = ({
             </DialogClose>
           ) : (
             <button
-              ref={nextButtonRef}
               onClick={handleNext}
               className="cursor-pointer rounded-lg bg-slate-700/80 px-3 py-2 hover:bg-slate-600 focus:outline-1 focus:outline-blue-300"
             >
