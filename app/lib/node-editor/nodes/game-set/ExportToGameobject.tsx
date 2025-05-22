@@ -9,7 +9,6 @@ import AddHandle from "../../node-components/AddHandle";
 import LabelHandle from "../../node-components/LabelHandle";
 import NodeContent from "../../node-components/NodeContent";
 import SelectDropDown from "../../node-components/SelectDropDown";
-import { useNodeSetterStore } from "../../node-store/node-setter";
 import type { nodeData, nodeInputs } from "../../node-store/node-store";
 import { getInput } from "../../utils";
 
@@ -17,10 +16,6 @@ const ExportToGameobject = memo(
   ({ id, data, selected }: { id: string; data: any; selected: boolean }) => {
     const level = useGameStore((state) => state.currentLevel);
     const modifiableGameObjects = LEVELS[level].modifiableGameObjects;
-
-    const highlightDuplicateNodes = useNodeSetterStore(
-      (state) => state.highlightDuplicateNodes
-    );
 
     const { updateNodeData, setEdges } = useReactFlow();
     const updateNodeInternals = useUpdateNodeInternals();
@@ -56,7 +51,6 @@ const ExportToGameobject = memo(
       console.log("selected", selected);
       // remove all edges with export node as target
       setEdges((edgs) => edgs.filter((edg) => edg.target !== id));
-      highlightDuplicateNodes();
     };
 
     return (
