@@ -502,7 +502,8 @@ export function duplicateNodes(
     const endId = uuidv4();
     const loopId = uuidv4();
     const parentLoopId = oldToNewIdMap.get(loop.start.data.parentLoopId as string);
-    const parentId = loop.start.parentId ? oldToNewIdMap.get(loop.start.parentId) : undefined;
+    const parentIdStart = loop.start.parentId ? oldToNewIdMap.get(loop.start.parentId) : undefined;
+    const parentIdEnd = loop.end.parentId ? oldToNewIdMap.get(loop.end.parentId) : undefined;
     const edgeId = connectionToEdgeId({
       source: startId,
       sourceHandle: MAIN_LOOP_CONNECTOR,
@@ -514,7 +515,7 @@ export function duplicateNodes(
       {
         id: startId,
         type: "ForStart",
-        parentId,
+        parentId: parentIdStart,
         position: {
             x: loop.start.parentId ? loop.start.position.x : loop.start.position.x + 50,
             y: loop.start.parentId ? loop.start.position.y : loop.start.position.y + 50,
@@ -524,7 +525,7 @@ export function duplicateNodes(
       {
         id: endId,
         type: "ForEnd",
-        parentId,
+        parentId: parentIdEnd,
         position: {
           x: loop.end.parentId ? loop.end.position.x : loop.end.position.x + 50,
           y: loop.end.parentId ? loop.end.position.y : loop.end.position.y + 50,
