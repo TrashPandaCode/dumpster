@@ -2,12 +2,14 @@ import {
   Dialog,
   DialogClose,
   DialogContent,
+  DialogDescription,
   DialogOverlay,
   DialogPortal,
   DialogTitle,
   DialogTrigger,
 } from "@radix-ui/react-dialog";
 import { Cross2Icon } from "@radix-ui/react-icons";
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 
 const CustomDialog = ({
   title,
@@ -26,11 +28,18 @@ const CustomDialog = ({
       <DialogPortal>
         <DialogOverlay className="fixed inset-0 bg-slate-800/25" />
         <DialogContent className="fixed top-1/2 left-1/2 flex w-1/2 -translate-x-1/2 -translate-y-1/2 flex-col gap-6 rounded-lg border-2 border-blue-300 bg-slate-800/95 p-8 font-mono text-white">
+          <VisuallyHidden asChild>
+            <DialogDescription>
+              This dialog displays the level goals and instructions for the
+              {title} level. You can close it by clicking the close button or
+              pressing the escape key.
+            </DialogDescription>
+          </VisuallyHidden>
           <DialogTitle className="text-center text-4xl font-bold capitalize">
             {title}
           </DialogTitle>
 
-          {children}
+          <div id="dialog">{children}</div>
 
           <DialogClose asChild>
             <button
