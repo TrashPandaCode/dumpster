@@ -2,6 +2,7 @@ import { type Node } from "@xyflow/react";
 import { create } from "zustand";
 
 import { debugNodes } from "../solutions/debug";
+import { useToastStore } from "./toast-store";
 
 type HighlightType = "cycle" | "duplicate";
 
@@ -60,6 +61,7 @@ export const useNodeSetterStore = create<NodeSetterState>((set, get) => ({
     );
 
     const grouped: Record<string, Node[]> = {};
+    const { triggerToast } = useToastStore.getState();
 
     for (const node of exportNodes) {
       const gameObject = (
@@ -74,6 +76,10 @@ export const useNodeSetterStore = create<NodeSetterState>((set, get) => ({
 
     for (const [_, group] of Object.entries(grouped)) {
       if (group.length > 1) {
+        triggerToast(
+          "Duplicate GameObject",
+          `The GameObject ${(group[0].data.gameObject as { name: string }).name} is duplicated in the scene.`
+        );
         for (const node of group) {
           get().highlightNode(node.id, "duplicate", "orange");
         }
