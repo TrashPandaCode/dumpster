@@ -78,7 +78,7 @@ export const useNodeSetterStore = create<NodeSetterState>((set, get) => ({
       if (group.length > 1) {
         triggerToast(
           "Duplicate GameObject",
-          `The GameObject ${(group[0].data.gameObject as { name: string }).name} is duplicated in the scene.`
+          `You have two or more nodes that export to the same GameObject. This can cause issues in the game. Be careful!`
         );
         for (const node of group) {
           get().highlightNode(node.id, "duplicate", "orange");
