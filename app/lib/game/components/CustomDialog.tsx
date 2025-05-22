@@ -13,15 +13,23 @@ const CustomDialog = ({
   title,
   trigger,
   defaultOpen,
+  open,
+  onOpenChange,
   children,
 }: {
   title: string;
   trigger?: React.ReactNode;
   defaultOpen?: boolean;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
   children?: React.ReactNode;
 }) => {
   return (
-    <Dialog defaultOpen={defaultOpen}>
+    <Dialog
+      defaultOpen={defaultOpen}
+      open={open}
+      onOpenChange={onOpenChange}
+    >
       <DialogTrigger asChild>{trigger}</DialogTrigger>
       <DialogPortal>
         <DialogOverlay className="fixed inset-0 bg-slate-800/25" />

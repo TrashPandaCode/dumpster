@@ -102,6 +102,8 @@ export const initialize1_1 = () => {
     if (value == result && label.text !== "Equation solved!") {
       label.text = "Equation solved!";
       raccoon.pos.x = 0.5 * k.width();
+
+      useGameStore.getState().setLevelCompleteDialogOpen(true);
     }
 
   });

@@ -23,20 +23,12 @@ const Game = ({ params }: Route.ComponentProps) => {
   const setCurrentLevel = useGameStore((state) => state.setCurrentLevel);
   const level = params.id || "playground";
 
-  useEffect(() => {
-    setCurrentLevel(level as keyof typeof LEVELS); // we can cast confidently here since we know the params.id is a valid level id, because loading the level will fail if it is not
-  }, [level, setCurrentLevel]);
+  setCurrentLevel(level as keyof typeof LEVELS); // we can cast confidently here since we know the params.id is a valid level id, because loading the level will fail if it is not
 
   const open = useGameStore(
-    (state) => state.levelCompleteDialogOpen
-  );
+    (state) => state.levelCompleteDialogOpen);
   const setOpen = useGameStore(
-    (state) => state.setLevelCompleteDialogOpen
-  );
-
-  useEffect(() => {
-    setOpen(false);
-  }, [level, setOpen]);
+    (state) => state.setLevelCompleteDialogOpen);
 
   useEffect(() => {
     if (!canvasRef.current) {
@@ -51,7 +43,7 @@ const Game = ({ params }: Route.ComponentProps) => {
     return () => {
       cleanupKaplay();
     };
-  }, [level]);
+  }, []);
 
   return (
     <>

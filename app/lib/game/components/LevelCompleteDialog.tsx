@@ -27,7 +27,8 @@ const LevelCompleteDialog = ({
     return (
         <CustomDialog
             title={currentLevel}
-            defaultOpen={open}
+            open={open}
+            onOpenChange={onOpenChange}
             trigger={null}
         >
             <div className="flex flex-col gap-5">
