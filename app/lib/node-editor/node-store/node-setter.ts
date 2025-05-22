@@ -61,7 +61,6 @@ export const useNodeSetterStore = create<NodeSetterState>((set, get) => ({
     );
 
     const grouped: Record<string, Node[]> = {};
-    const { triggerToast } = useToastStore.getState();
 
     for (const node of exportNodes) {
       const gameObject = (
@@ -76,10 +75,12 @@ export const useNodeSetterStore = create<NodeSetterState>((set, get) => ({
 
     for (const [_, group] of Object.entries(grouped)) {
       if (group.length > 1) {
-        triggerToast(
-          "Duplicate GameObject",
-          `You have two or more nodes that export to the same GameObject. This can cause issues in the game. Be careful!`
-        );
+        useToastStore
+          .getState()
+          .triggerToast(
+            "Duplicate GameObject",
+            "You have two or more nodes that export to the same GameObject. This can cause issues in the game. Be careful!"
+          );
         for (const node of group) {
           get().highlightNode(node.id, "duplicate", "orange");
         }
