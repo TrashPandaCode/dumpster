@@ -3,7 +3,7 @@ import { create } from "zustand";
 import type { ConnectionAccess } from "../game/core/levels";
 import { handleUUID } from "../node-editor/utils";
 
-type GameObjectsData = Map<
+export type GameObjectsData = Map<
   string, // gameobject label
   Map<
     string, // handle display name
