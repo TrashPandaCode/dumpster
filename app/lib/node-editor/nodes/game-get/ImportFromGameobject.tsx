@@ -1,5 +1,12 @@
+import { ChevronDownIcon } from "@radix-ui/react-icons";
 import { Position, useReactFlow, useUpdateNodeInternals } from "@xyflow/react";
-import { memo, useEffect, useRef } from "react";
+import classnames from "classnames";
+import {
+  useSelect,
+  type UseSelectState,
+  type UseSelectStateChangeOptions,
+} from "downshift";
+import { memo, useEffect, useRef, useState } from "react";
 
 import { LEVELS } from "~/lib/game/core/levels";
 import { useDataStore } from "~/lib/zustand/data";
@@ -40,9 +47,90 @@ const ImportFromGameobject = memo(({ id, data }: { id: string; data: any }) => {
     setEdges((edgs) => edgs.filter((edg) => edg.source !== id));
   };
 
+  const [selectedItems, setSelectedItems] = useState<item[]>(["bean"]);
+
+  const {
+    isOpen,
+    getToggleButtonProps,
+    getMenuProps,
+    highlightedIndex,
+    getItemProps,
+  } = useSelect({
+    items: books,
+    stateReducer,
+    selectedItem: null,
+    onSelectedItemChange: ({ selectedItem }) => {
+      if (!selectedItem) return;
+
+      const index = selectedItems.indexOf(selectedItem);
+
+      if (index > 0) {
+        setSelectedItems([
+          ...selectedItems.slice(0, index),
+          ...selectedItems.slice(index + 1),
+        ]);
+      } else if (index === 0) {
+        setSelectedItems([...selectedItems.slice(1)]);
+      } else {
+        setSelectedItems([...selectedItems, selectedItem]);
+      }
+    },
+  });
+
+  const buttonText =
+    selectedItems.length === 1
+      ? selectedItems[0]
+      : selectedItems.length > 1
+        ? `${selectedItems.length} selected`
+        : "select";
+
   return (
     <div className="min-w-48">
       <NodeContent label="Import From Gameobject" type="import">
+        <div className="flex w-72 flex-col gap-1">
+          <div
+            className="nodrag text-md mx-3 flex flex-1 items-baseline rounded-sm border border-slate-700 bg-slate-900 px-1 text-white focus:border-slate-500 focus:outline-none"
+            {...getToggleButtonProps()}
+          >
+            <span>{buttonText}</span>
+            <ChevronDownIcon className="ml-auto text-white" />
+          </div>
+        </div>
+        <ul
+          className={classnames(
+            "nodrag nowheel absolute w-60 bg-slate-900 shadow-md",
+            !isOpen && "hidden"
+          )}
+          {...getMenuProps()}
+        >
+          {isOpen &&
+            books.map((item, index) => (
+              <li
+                className={classnames(
+                  highlightedIndex === index && "bg-blue-300",
+                  selectedItems.includes(item) && "font-bold",
+                  "flex items-center gap-3 px-3 py-2 shadow-sm"
+                )}
+                key={item}
+                {...getItemProps({
+                  item,
+                  index,
+                  "aria-selected": selectedItems.includes(item),
+                })}
+              >
+                <input
+                  type="checkbox"
+                  className="h-5 w-5"
+                  checked={selectedItems.includes(item)}
+                  value={item}
+                  onChange={() => null}
+                />
+                <div className="flex flex-col">
+                  <span>{item}</span>
+                </div>
+              </li>
+            ))}
+        </ul>
         <SelectDropDown
           items={{ "Game objects": Array.from(gameObjects.keys()) }}
           setSelected={handleSelect}
@@ -65,3 +153,26 @@ const ImportFromGameobject = memo(({ id, data }: { id: string; data: any }) => {
 });
 
 export default ImportFromGameobject;
+
+type item = string;
+
+const books: item[] = ["bean", "bean1", "bean2", "bean3", "bean4", "bean5"];
+
+function stateReducer(
+  state: UseSelectState<item>,
+  actionAndChanges: UseSelectStateChangeOptions<item>
+): Partial<UseSelectState<item>> {
+  const { changes, type } = actionAndChanges;
+  switch (type) {
+    case useSelect.stateChangeTypes.ToggleButtonKeyDownEnter:
+    case useSelect.stateChangeTypes.ToggleButtonKeyDownSpaceButton:
+    case useSelect.stateChangeTypes.ItemClick:
+      return {
+        ...changes,
+        isOpen: true,
+        highlightedIndex: state.highlightedIndex,
+      };
+    default:
+      return changes;
+  }
+}
