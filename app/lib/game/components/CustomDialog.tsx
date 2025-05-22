@@ -15,11 +15,13 @@ const CustomDialog = ({
   title,
   trigger,
   defaultOpen,
+  desc,
   children,
 }: {
   title: string;
   trigger?: React.ReactNode;
   defaultOpen?: boolean;
+  desc?: string;
   children?: React.ReactNode;
 }) => {
   return (
@@ -29,11 +31,7 @@ const CustomDialog = ({
         <DialogOverlay className="fixed inset-0 bg-slate-800/25" />
         <DialogContent className="fixed top-1/2 left-1/2 flex w-1/2 -translate-x-1/2 -translate-y-1/2 flex-col gap-6 rounded-lg border-2 border-blue-300 bg-slate-800/95 p-8 font-mono text-white">
           <VisuallyHidden asChild>
-            <DialogDescription>
-              This dialog displays the level goals and instructions for the
-              {title} level. You can close it by clicking the close button or
-              pressing the escape key.
-            </DialogDescription>
+            <DialogDescription>{desc}</DialogDescription>
           </VisuallyHidden>
           <DialogTitle className="text-center text-4xl font-bold capitalize">
             {title}

@@ -77,6 +77,9 @@ const LevelDialog = ({
       title={currentLevel}
       trigger={trigger}
       defaultOpen={defaultOpen}
+      desc={`This dialog displays the level goals and instructions for the
+            ${currentLevel} level. You can close it by clicking the close button or
+            pressing the escape key.`}
     >
       <div className="flex flex-col gap-5">
         <div className="flex flex-1 flex-row">
