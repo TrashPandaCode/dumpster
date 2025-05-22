@@ -7,7 +7,7 @@ let keydownHandler: (e: KeyboardEvent) => void;
 let keyupHandler: (e: KeyboardEvent) => void;
 
 /**
- * Normalizes the key name to a consistent format.
+ * Converts our key names to React/DOM key names.
  * @param key The key name to normalize.
  * @returns The normalized key name.
  */

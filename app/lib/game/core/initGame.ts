@@ -2,8 +2,8 @@ import { useNodeStore } from "~/lib/node-editor/node-store/node-store";
 import { useGameStore } from "~/lib/zustand/game";
 import { useKeyStore } from "~/lib/zustand/key";
 import { useTimeStore } from "~/lib/zustand/time";
-import { getKaplayCtx } from "./kaplayCtx";
 import { globalKeyTracker } from "../utils/globalKeyTracker";
+import { getKaplayCtx } from "./kaplayCtx";
 
 export const state = {
   first: true,
@@ -21,9 +21,9 @@ export default function initGame(canvas: HTMLCanvasElement) {
 
   const { k, game } = getKaplayCtx(canvas);
 
-  useKeyStore.getState().setKeyDownFunction((key) => globalKeyTracker.isKeyDown(key));
-  useKeyStore.getState().setKeyPressedFunction((key) => globalKeyTracker.isKeyPressed(key));
-  useKeyStore.getState().setKeyReleasedFunction((key) => globalKeyTracker.isKeyReleased(key));
+  useKeyStore.getState().setKeyDownFunction(globalKeyTracker.isKeyDown);
+  useKeyStore.getState().setKeyPressedFunction(globalKeyTracker.isKeyPressed);
+  useKeyStore.getState().setKeyReleasedFunction(globalKeyTracker.isKeyReleased);
 
   useTimeStore.getState().setTimeFunction(() => k.time());
   useTimeStore.getState().setDeltaTimeFunction(() => k.dt());
