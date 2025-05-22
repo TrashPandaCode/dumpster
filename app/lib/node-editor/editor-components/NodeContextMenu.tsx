@@ -86,7 +86,6 @@ const DefaultNodeContextMenu = ({
         id: newId,
         position,
       });
-      console.log(node.data.parentLoopId);
 
       // if the duplicated node is part of a loop, connect it to the loop
       if (node.data.parentLoopId)
