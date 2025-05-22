@@ -6,20 +6,34 @@ let initialized = false;
 let keydownHandler: (e: KeyboardEvent) => void;
 let keyupHandler: (e: KeyboardEvent) => void;
 
+/**
+ * Normalizes the key name to a consistent format.
+ * @param key The key name to normalize.
+ * @returns The normalized key name.
+ */
+function normalizeKey(key: string): string {
+  const lower = key.toLowerCase();
+  if (lower === "space") return " ";
+  if (lower === "enter") return "Enter";
+  return key;
+}
+
 function initGlobalKeyTracker() {
   if (initialized) return;
   initialized = true;
 
   keydownHandler = (e) => {
-    if (!keysDown.has(e.key)) {
-      keysPressed.add(e.key);
+    const key = e.key;
+    if (!keysDown.has(key)) {
+      keysPressed.add(key);
     }
-    keysDown.add(e.key);
+    keysDown.add(key);
   };
 
   keyupHandler = (e) => {
-    keysDown.delete(e.key);
-    keysReleased.add(e.key);
+    const key = e.key;
+    keysDown.delete(key);
+    keysReleased.add(key);
   };
 
   window.addEventListener("keydown", keydownHandler);
@@ -38,15 +52,15 @@ function cleanupGlobalKeyTracker() {
 }
 
 function isKeyDown(key: string) {
-  return keysDown.has(key);
+  return keysDown.has(normalizeKey(key));
 }
 
 function isKeyPressed(key: string) {
-  return keysPressed.has(key);
+  return keysPressed.has(normalizeKey(key));
 }
 
 function isKeyReleased(key: string) {
-  return keysReleased.has(key);
+  return keysReleased.has(normalizeKey(key));
 }
 
 function clearPressedAndReleased() {
