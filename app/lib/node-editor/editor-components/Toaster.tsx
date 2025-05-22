@@ -16,7 +16,7 @@ const Toaster = () => {
         <Toast.Description>{description}</Toast.Description>
         <Toast.Close className="absolute top-2 right-2">Close</Toast.Close>
       </Toast.Root>
-      <Toast.Viewport className="z- fixed right-0 bottom-0 m-4" />
+      <Toast.Viewport className="fixed right-0 bottom-0 z-[9999] m-4" />
     </Toast.Provider>
   );
 };
