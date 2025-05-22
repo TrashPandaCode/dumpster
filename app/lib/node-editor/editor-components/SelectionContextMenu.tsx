@@ -2,7 +2,7 @@ import { Panel, useReactFlow, type Edge, type Node } from "@xyflow/react";
 import React, { useCallback } from "react";
 import { v4 as uuidv4 } from "uuid";
 
-import { connectionToEdgeId } from "../utils";
+import { connectionToEdgeId, duplicateNodes as newDuplicate } from "../utils";
 
 type SelectionContextMenuProps = {
   nodeIds: string[];
@@ -93,6 +93,22 @@ const SelectionContextMenu: React.FC<SelectionContextMenuProps> = ({
           onClick={duplicateNodes}
         >
           Duplicate {nodeIds.length} nodes
+        </button>
+        <button
+          className="w-full rounded px-2 py-1 text-left text-sm text-white hover:bg-slate-700"
+          onClick={() => {
+            newDuplicate(
+              getNodes().filter((n) => nodeIds.includes(n.id)),
+              addNodes,
+              addEdges,
+              getNodes,
+              getEdges,
+              setNodes
+            );
+            onClose();
+          }}
+        >
+          newDuplicate {nodeIds.length} nodes
         </button>
         <button
           className="w-full rounded px-2 py-1 text-left text-sm text-white hover:bg-slate-700"

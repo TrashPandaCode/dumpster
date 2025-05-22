@@ -74,7 +74,14 @@ const DefaultNodeContextMenu = ({
       // this is too simple what if the loop contains nodes
       // also state of the loop is not copied, idk maybe it should be
       // TODO issue in Github
-      createForLoop(addNodes, position.x, position.y, addEdges);
+      createForLoop(
+        addNodes,
+        addEdges,
+        position.x,
+        position.y,
+        position.x + 300,
+        position.y
+      );
     } else {
       // this is the new id for the duplicated node
       // this is also used if the node is a group and we need to duplicate the children

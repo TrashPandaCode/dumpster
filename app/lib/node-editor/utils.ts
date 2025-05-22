@@ -316,16 +316,19 @@ export function connectionToEdgeId(edge: Connection): string {
 
 export function createForLoop(
   addNodes: (payload: Node | Node[]) => void,
-  x: number,
-  y: number,
   addEdges: (payload: Edge | Edge[]) => void,
+  x1: number,
+  y1: number,
+  x2: number,
+  y2: number,
+  parentLoopId?: string,
+  parentId?: string,
   screenToFlowPosition?: (
     clientPosition: XYPosition,
     options?: {
       snapToGrid: boolean;
     }
   ) => XYPosition,
-  parentLoopId?: string
 ) {
   const startId = uuidv4();
   const endId = uuidv4();
@@ -340,17 +343,19 @@ export function createForLoop(
     {
       id: startId,
       type: "ForStart",
+      parentId,
       position: screenToFlowPosition
-        ? screenToFlowPosition({ x, y })
-        : { x, y },
+        ? screenToFlowPosition({ x: x1, y: y1 })
+        : { x: x1, y: y1 },
       data: { loopId, parentLoopId },
     },
     {
       id: endId,
       type: "ForEnd",
+      parentId,
       position: screenToFlowPosition
-        ? screenToFlowPosition({ x: x + 300, y })
-        : { x: x + 300, y },
+        ? screenToFlowPosition({ x: x2, y: y2 })
+        : { x: x2, y: y2 },
       data: { loopId, parentLoopId },
     },
   ]);
@@ -368,7 +373,7 @@ export function createForLoop(
       stroke: uuidToColor(loopId),
     },
   });
-  return [startId, endId];
+  return [startId, endId, loopId];
 }
 
 // Helper function to connect nodes to loop connectors
@@ -376,7 +381,7 @@ export function connectNodesToLoop(
   getNodes: () => Node[],
   addEdges: (payload: Edge | Edge[]) => void,
   nodeIds: string[],
-  loopId: string
+  loopId: string,
 ) {
   const loopNodes = getNodes().filter((node) => node.data.loopId === loopId);
 
@@ -441,88 +446,172 @@ export function duplicateNodes(
   nodes: Node[],
   addNodes: (payload: Node | Node[]) => void,
   addEdges: (payload: Edge | Edge[]) => void,
-  getNodes: () => Node[]
+  getNodes: () => Node[],
+  getEdges: () => Edge[],
+  setNodes: (payload: Node[] | ((nodes: Node[]) => Node[])) => void,
+  screenToFlowPosition?: (
+    clientPosition: XYPosition,
+    options?: {
+      snapToGrid: boolean;
+    }
+  ) => XYPosition,
 ) {
+
   // if this is called with no nodes, return
   if (!nodes) return;
 
-  // this map will to keep track of which new parent ids should be assigned to children
+  // this map will keep track of which new parent ids should be assigned to children
   const oldToNewIdMap = new Map<string, string>();
-
-  // filter the children from the top-level nodes
-  const topLevelNodes = nodes.filter(
-    (node) =>
-      node.parentId === undefined && node.data.parentLoopId === undefined
-  );
-  const children = nodes.filter(
-    (node) => node.parentId !== undefined || node.data.parentLoopId !== undefined
-  );
-
-  // duplicate the top-level nodes
-  const newTopLevelNodes = topLevelNodes.map((node) => {
+  const newNodes: Node[] = [];
+  const newEdges: Edge[] = [];
+  // create copies of group nodes
+  const groupNodes: Node[] = nodes.filter((node) => node.type === "Group");
+  newNodes.push(...groupNodes.map((node) => {
     const newId = uuidv4();
     oldToNewIdMap.set(node.id, newId);
-
-    let newLoopId: string | undefined = undefined;
-    if (node.type === "ForEnd" || node.type === "ForStart") {
-      if (!oldToNewIdMap.has(node.data.loopId as string)) { // if the old loopId hasn't been mapped yet
-        newLoopId = uuidv4(); // create a new loopId
-        oldToNewIdMap.set(node.data.loopId as string, newLoopId); // map the old loopId to the new one
-      } else {
-        newLoopId = oldToNewIdMap.get(node.data.loopId as string); // is loopId ever not a string?
-      }
-    }
-
-    const newPosition = {
-      x: node.position.x + 50,
-      y: node.position.y + 50,
-    };
 
     return {
       ...node,
       id: newId,
-      position: newPosition,
+      position: {
+        x: node.position.x + 50,
+        y: node.position.y + 50,
+      },
       data: {
         ...node.data,
-        loopId: newLoopId,
-      }
+      },
     };
+  }));
+
+  // loop nodes and how they are nested
+  const loopStartNodes: Node[] = nodes.filter((node) => node.type === "ForStart");
+  const loopEndNodes: Node[] = nodes.filter((node) => node.type === "ForEnd");
+
+  type loop = {start: Node, end: Node};
+  const loops: loop[] = [];
+  loopStartNodes.forEach((node) => {
+    const endNode = loopEndNodes.find((endNode) => endNode.data.loopId === node.data.loopId);
+    if (endNode) {
+      loops.push({start: node, end: endNode});
+    }
   });
 
+  // duplicate the loops with createLoop()
+  loops.forEach((loop) => {
+    const startId = uuidv4();
+    const endId = uuidv4();
+    const loopId = uuidv4();
+    const parentLoopId = oldToNewIdMap.get(loop.start.data.parentLoopId as string);
+    const parentId = loop.start.parentId ? oldToNewIdMap.get(loop.start.parentId) : undefined;
+    const edgeId = connectionToEdgeId({
+      source: startId,
+      sourceHandle: MAIN_LOOP_CONNECTOR,
+      target: endId,
+      targetHandle: MAIN_LOOP_CONNECTOR,
+    });
+
+    newNodes.push(...[
+      {
+        id: startId,
+        type: "ForStart",
+        parentId,
+        position: {
+            x: loop.start.parentId ? loop.start.position.x : loop.start.position.x + 50,
+            y: loop.start.parentId ? loop.start.position.y : loop.start.position.y + 50,
+          },
+        data: { loopId, parentLoopId, loopStart: true, loopEnd: false },
+      },
+      {
+        id: endId,
+        type: "ForEnd",
+        parentId,
+        position: {
+          x: loop.end.parentId ? loop.end.position.x : loop.end.position.x + 50,
+          y: loop.end.parentId ? loop.end.position.y : loop.end.position.y + 50,
+        },
+        data: { loopId, parentLoopId, loopStart: false, loopEnd: true },
+      },
+    ])
+
+    newEdges.push({
+      id: edgeId,
+      type: "straight",
+      source: startId,
+      target: endId,
+      sourceHandle: MAIN_LOOP_CONNECTOR,
+      targetHandle: MAIN_LOOP_CONNECTOR,
+      animated: true,
+      selectable: false,
+      style: {
+        strokeWidth: 2,
+        stroke: uuidToColor(loopId),
+      },
+    });
+
+    oldToNewIdMap.set(loop.start.id, startId);
+    oldToNewIdMap.set(loop.end.id, endId);
+    oldToNewIdMap.set(loop.start.data.loopId as string, loopId);
+  })
+
+  // handles special loop edges
+  // this is not using connectNodesToLoop() because of weird update behaviour with addNodes and getNodes
+  loops.forEach((loop) => {
+    const newLoopId = oldToNewIdMap.get(loop.start.data.loopId as string);
+
+    if(!newLoopId) return;
+    const loopChildrenIds = newNodes
+      .filter((node) => node.data.parentLoopId === newLoopId)
+      .map((node) => { return node.id })
+
+    if(loopChildrenIds.length === 0) return;
+
+    const loopNodes: Node[] = [
+        newNodes.find((node) => node.id === oldToNewIdMap.get(loop.start.id))!,
+        newNodes.find((node) => node.id === oldToNewIdMap.get(loop.end.id))!
+      ];
+    loopChildrenIds.forEach((nodeId) => {
+      loopNodes.forEach((loopNode) => {
+        const isSource = loopNode.data.loopStart;
+        const sourceId = isSource ? loopNode.id : nodeId;
+        const targetId = isSource ? nodeId : loopNode.id;
+        const sourceHandle = isSource ? MAIN_LOOP_CONNECTOR : LOOP_CONNECTOR;
+        const targetHandle = isSource ? LOOP_CONNECTOR : MAIN_LOOP_CONNECTOR;
+
+        const edgeId = connectionToEdgeId({
+          source: sourceId,
+          sourceHandle,
+          target: targetId,
+          targetHandle,
+        });
+
+        newEdges.push({
+          id: edgeId,
+          type: "straight",
+          source: sourceId,
+          target: targetId,
+          sourceHandle,
+          targetHandle,
+          animated: true,
+          selectable: false,
+          style: {
+            opacity: 0.5,
+            strokeWidth: 1,
+            stroke: uuidToColor(newLoopId),
+          },
+        });
+      });
+    });
+  })
+
+  addNodes(newNodes);
+  addEdges(newEdges);
+
+
+  // set all new nodes as selected
+  setNodes((nodes) => {
+    return nodes.map((node) => ({
+      ...node,
+      selected: Array.from(oldToNewIdMap.values()).includes(node.id),
+    }));
+  })
 }
-
-// // this accepts a list of nodes and duplicates them
-// // loops and groups will be handled automatically, just include them and their children
-// export function duplicateNodes(nodes: Node[]) : { nodes: Node[] } {
-//   // if this is called with no nodes, return
-//   if (!nodes) return;
-
-//   // create a map of old node ids to new node ids
-//   const oldToNewIdMap = new Map<string, string>();
-
-//   // filter the children from the top-level nodes
-//   const topLevelNodes = nodes.filter((node) => node.parentId === undefined && node.data.parentLoopId === undefined);
-//   const children = nodes.filter((node) => node.parentId !== undefined || node.data.parentLoopId !== undefined);
-
-//   // duplicate the top-level nodes
-//   const newTopLevelNodes = topLevelNodes.map((node) => {
-//     const newId = uuidv4();
-//     oldToNewIdMap.set(node.id, newId);
-
-//     const newPosition = {
-//       x: node.position.x + 50,
-//       y: node.position.y + 50,
-//     };
-
-//     return {
-//       ...node,
-//       id: newId,
-//       position: newPosition,
-//       parentId: undefined,
-//       data: {
-//         ...node.data,
-//         parentLoopId: undefined,
-//       },
-//     };
-//   })
-// };
