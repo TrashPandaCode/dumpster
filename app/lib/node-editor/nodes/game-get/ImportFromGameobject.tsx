@@ -6,7 +6,7 @@ import {
   type UseSelectState,
   type UseSelectStateChangeOptions,
 } from "downshift";
-import { memo, useEffect, useRef, useState } from "react";
+import { memo, useEffect, useMemo, useRef, useState } from "react";
 
 import { LEVELS, type ConnectionAccess } from "~/lib/game/core/levels";
 import { useDataStore, type GameObjectsData } from "~/lib/zustand/data";
@@ -28,11 +28,11 @@ const ImportFromGameobject = memo(({ id, data }: { id: string; data: any }) => {
   const [selectedGameObjects, setSelectedGameObjects] = useState<GameObject[]>([
     selectableGameObjects[0],
   ]);
-  const handleIntersection = useRef(
-    getHandleIntersection(gameObjects, selectedGameObjects)
-  );
 
-  console.log(handleIntersection);
+  const handleIntersection = useMemo(
+    () => getHandleIntersection("get", gameObjects, selectedGameObjects),
+    [gameObjects, selectedGameObjects]
+  );
 
   const { updateNodeData, setEdges } = useReactFlow();
   const updateNodeInternals = useUpdateNodeInternals();
@@ -44,15 +44,13 @@ const ImportFromGameobject = memo(({ id, data }: { id: string; data: any }) => {
           selectedGameObjects.length === 1
             ? 0
             : getInput(inputs, IN_HANDLE_1, -1);
-
         if (0 > index || index >= selectedGameObjects.length) {
           results.clear();
           return;
         }
-
         const gob = selectedGameObjects[index];
-        handleIntersection.current.forEach((handleName) => {
-          results.set(handleName, gameObjects.get(gob)!.get(handleName)!.value);
+        handleIntersection.forEach((handle) => {
+          results.set(handle, gameObjects.get(gob)!.get(handle)!.value);
         });
       },
     });
@@ -84,13 +82,6 @@ const ImportFromGameobject = memo(({ id, data }: { id: string; data: any }) => {
       } else {
         newSelection = [...selectedGameObjects, selectedItem];
       }
-
-      handleIntersection.current = getHandleIntersection(
-        gameObjects,
-        newSelection
-      );
-      console.log(handleIntersection.current);
-
       setSelectedGameObjects(newSelection);
       updateNodeInternals(id);
       setEdges((edgs) =>
@@ -156,7 +147,7 @@ const ImportFromGameobject = memo(({ id, data }: { id: string; data: any }) => {
               ))}
           </ul>
         </div>
-        {handleIntersection.current.map((label) => (
+        {handleIntersection.map((label) => (
           <LabelHandle
             key={label}
             id={label}
@@ -190,36 +181,39 @@ function stateReducer(
   }
 }
 
-// currently also handles of wrong access type are evaluated
-
 function getHandleIntersection(
-  gameObjectsData: GameObjectsData,
-  gameObjectLabels: string[]
+  handleAccess: ConnectionAccess,
+  gameObjects: GameObjectsData,
+  selectedGameObjects: GameObject[]
 ): string[] {
-  if (gameObjectLabels.length === 0) {
-    return [];
-  }
+  if (selectedGameObjects.length === 0) return [];
+
+  const getFilteredHandles = (gameObjectLabel: string): Set<string> => {
+    const gameObject = gameObjects.get(gameObjectLabel)!;
+
+    const handles = new Set<string>();
+    for (const [handle, data] of gameObject) {
+      if (data.access === handleAccess || data.access === "all") {
+        handles.add(handle);
+      }
+    }
+    return handles;
+  };
+
   // Get the first game object's handles as the starting set
-  const firstGameObject = gameObjectsData.get(gameObjectLabels[0]);
-  if (!firstGameObject) {
-    return []; // If first object doesn't exist, no intersection possible
-  }
-  let intersection = new Set(firstGameObject.keys());
+  const intersection = getFilteredHandles(selectedGameObjects[0]);
+
   // Intersect with each subsequent game object's handles
-  for (let i = 1; i < gameObjectLabels.length; i++) {
-    const currentGameObject = gameObjectsData.get(gameObjectLabels[i]);
-    if (!currentGameObject) {
-      return []; // If any object doesn't exist, no intersection possible
-    }
-    const currentHandles = new Set(currentGameObject.keys());
+  for (let i = 1; i < selectedGameObjects.length; i++) {
+    const currentHandles = getFilteredHandles(selectedGameObjects[i]);
     // Keep only handles that exist in both sets
-    intersection = new Set(
-      [...intersection].filter((handle) => currentHandles.has(handle))
-    );
-    // Early exit if intersection becomes empty
-    if (intersection.size === 0) {
-      break;
+    for (const handle of intersection) {
+      if (!currentHandles.has(handle)) {
+        intersection.delete(handle);
+      }
     }
+    // Early exit if intersection becomes empty
+    if (intersection.size === 0) break;
   }
   return Array.from(intersection);
 }

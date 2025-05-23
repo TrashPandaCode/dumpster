@@ -68,11 +68,16 @@ export const LEVELS = {
         connections: [
           { label: "xpos", access: "all" },
           { label: "ypos", access: "all" },
+          { label: "xset", access: "set" },
+          { label: "yset", access: "set" },
         ],
       },
       {
         id: "trashcan",
-        connections: [{ label: "xpos", access: "all" }],
+        connections: [
+          { label: "xpos", access: "all" },
+          { label: "xset", access: "set" },
+        ],
       },
     ],
   },
