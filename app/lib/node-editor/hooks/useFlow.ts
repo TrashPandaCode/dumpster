@@ -15,8 +15,7 @@ import { useShallow } from "zustand/shallow";
 import { useNodeSetterStore } from "../node-store/node-setter";
 import { useNodeStore } from "../node-store/node-store";
 import { debugEdges } from "../solutions/debug";
-import { applyNodeChanges } from "../utils";
-import { v4 as uuidv4 } from "uuid";
+import { applyNodeChanges, computeGroupSizings } from "../utils";
 
 const selector = (state: {
   nodes: Node[];
@@ -183,6 +182,67 @@ export function useFlow() {
     [setEdges, getNode, addEdgeStore]
   );
 
+  const onNodeDragStopNew: OnNodeDrag = () => {
+    const draggedNonGroupNodes = getNodes().filter((node) => node.dragging && node.type !== "Group");
+    if (draggedNonGroupNodes.length === 0) return;
+
+    const parentNode = getIntersectingNodes(draggedNonGroupNodes[0])?.[0];
+    if (!parentNode || parentNode.type !== "Group") {
+      const nodesWithParent = draggedNonGroupNodes.filter(
+        (node) => node.parentId !== undefined
+      );
+      if (nodesWithParent.length === 0) return;
+      setNodes(
+        nodes.map((n) => {
+          if (nodesWithParent.some((node) => node.id === n.id)) {
+            const oldParent = nodes.find((p) => p.id === n.parentId);
+
+            const position = {
+              x: n.position.x + (oldParent ? oldParent.position.x : 0),
+              y: n.position.y + (oldParent ? oldParent.position.y : 0),
+            };
+
+            return {
+              ...n,
+              position,
+              parentId: undefined,
+              dragging: false,
+            };
+          }
+          return n;
+        })
+      );
+    }
+
+    // add all remaining nodes to the parent node
+    const updatedNodes = draggedNonGroupNodes.map((node) => {
+      const oldParent = getNodes().find((n) => n.id === node.parentId);
+
+      const position = {
+        x: node.position.x + (oldParent ? oldParent.position.x : 0) - parentNode.position.x,
+        y: node.position.y + (oldParent ? oldParent.position.y : 0) - parentNode.position.y,
+      };
+
+      return {
+        ...node,
+        position,
+        parentId: parentNode.id,
+        dragging: false,
+      };
+    });
+
+    setNodes(
+      nodes.map((node) => {
+        const updatedNode = updatedNodes.find((n) => n.id === node.id);
+        if (updatedNode) {
+          return updatedNode;
+        }
+        return node;
+      })
+    )
+  };
+
+
   const onNodeDragStop: OnNodeDrag = (_, childNode) => {
     // if the node is a group, return
     // node nesting cant work because of weird react flow behavior
@@ -240,70 +300,10 @@ export function useFlow() {
       children.push(childNode)
     }
 
-    // get the child nodes positions in global coords
-    const childNodesGlobalPositions = children.map((child) => {
-      return {
-        x: child.parentId ? child.position.x + parentNode.position.x : child.position.x,
-        y: child.parentId ? child.position.y + parentNode.position.y : child.position.y,
-        width: child.measured!.width!,
-        height: child.measured!.height!,
-      };
-    });
+    const parentSizings = computeGroupSizings(parentNode, children);
 
-    // get all extreme coords of positions of child nodes
-    const childExtremas = {
-      x: {
-        min: Math.min(
-          ...childNodesGlobalPositions.map((pos) => pos.x)
-        ),
-        max: Math.max(
-          ...childNodesGlobalPositions.map((pos) => pos.x + pos.width)
-        ),
-      },
-      y: {
-        min: Math.min(
-          ...childNodesGlobalPositions.map((pos) => pos.y)
-        ),
-        max: Math.max(
-          ...childNodesGlobalPositions.map((pos) => pos.y + pos.height)
-        ),
-      },
-    };
-
-    // caculate a bounding box around the child positions in form of an origin point on the top left and a width and height
-    const childBounds = {
-      x: childExtremas.x.min - 20,
-      y: childExtremas.y.min - 30,
-      width: childExtremas.x.max - childExtremas.x.min + 40,
-      height: childExtremas.y.max - childExtremas.y.min + 50,
-    };
-
-    const parentBounds = {
-      x: parentNode.position.x,
-      y: parentNode.position.y,
-      width: parentNode.measured!.width!,
-      height: parentNode.measured!.height!,
-    };
-
-    const newParentBounds = {
-      x: Math.min(childBounds.x, parentBounds.x),
-      y: Math.min(childBounds.y, parentBounds.y),
-      width: Math.max(
-        childBounds.x + childBounds.width, parentBounds.x + parentBounds.width
-      ) - Math.min(childBounds.x, parentBounds.x),
-      height: Math.max(
-        childBounds.y + childBounds.height, parentBounds.y + parentBounds.height
-      ) - Math.min(childBounds.y, parentBounds.y),
-      minWidth: (childBounds.x + childBounds.width) - Math.min(childBounds.x, parentBounds.x),
-      minHeight: (childBounds.y + childBounds.height) - Math.min(childBounds.y, parentBounds.y),
-    };
-
-    // offset the children by the difference of the parent node position and the new parent node position
-    // this is needed to keep the child nodes in the same position relative to the parent node
-    const childNodeOffset = {
-      x: parentNode.position.x - newParentBounds.x,
-      y: parentNode.position.y - newParentBounds.y,
-    };
+    const newParentBounds = parentSizings.newParentBounds;
+    const childNodeOffset = parentSizings.childNodeOffset;
 
     setNodes(
       nodes.map((n) => {
