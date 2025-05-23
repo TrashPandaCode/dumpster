@@ -4,6 +4,7 @@ import classnames from "classnames";
 import { useEffect, useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
+import { GROUP_SIZE } from "../nodes/constants";
 import { TYPES } from "../nodes/math-float/types";
 import { searchNodeTypes } from "../nodes/node-types";
 import { connectNodesToLoop, createForLoop } from "../utils";
@@ -107,6 +108,8 @@ const AddNodesPanel = ({
         initialComputeType: computeType,
         parentLoopId,
       },
+      height: type === "Group" ? GROUP_SIZE.height : undefined,
+      width: type === "Group" ? GROUP_SIZE.width : undefined,
     });
     return id;
   };
