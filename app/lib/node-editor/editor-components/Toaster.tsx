@@ -1,6 +1,5 @@
-import { Cross2Icon } from "@radix-ui/react-icons";
+import { Cross2Icon, ExclamationTriangleIcon } from "@radix-ui/react-icons";
 import * as Toast from "@radix-ui/react-toast";
-import React from "react";
 
 import { useToastStore } from "../node-store/toast-store";
 
@@ -12,11 +11,11 @@ const Toaster = () => {
       <Toast.Root
         open={open}
         onOpenChange={closeToast}
-        className="rounded-md bg-gray-800 p-4 text-white shadow-lg"
+        className="max-w-[35vw] rounded-md bg-slate-800 p-2 text-white outline outline-slate-500"
         onMouseEnter={pauseClose}
         onMouseLeave={resumeClose}
       >
-        <Toast.Title className="font-bold">{title}</Toast.Title>
+        <Toast.Title className="font-bold">{title} ⚠️</Toast.Title>
         <Toast.Description>{description}</Toast.Description>
         <Toast.Close className="absolute top-2 right-2">
           <Cross2Icon />

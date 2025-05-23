@@ -270,8 +270,8 @@ function visit(node: AppNode, sortedMap: AppNode[], mapErrors: MapErrors) {
     useToastStore
       .getState()
       .triggerToast(
-        "Cycle detected",
-        "A cycle was detected in the node graph. Please check your node connections."
+        "Cycle!",
+        "A cycle was detected in the node graph. Your graph wont execute unless you remove the cyclic connection."
       );
     mapErrors.cycle = true;
     return;

@@ -78,8 +78,8 @@ export const useNodeSetterStore = create<NodeSetterState>((set, get) => ({
         useToastStore
           .getState()
           .triggerToast(
-            "Duplicate GameObject",
-            "You have two or more nodes that export to the same GameObject. This can cause issues in the game. Be careful!"
+            "Duplicate Gameobject!",
+            "You have two or more nodes that export to the same Gameobject. This can cause issues regarding its behaviour. Be careful!"
           );
         for (const node of group) {
           get().highlightNode(node.id, "duplicate", "orange");

@@ -21,7 +21,7 @@ export const useToastStore = create<ToastState>((set) => ({
     if (timeoutId) clearTimeout(timeoutId);
     timeoutId = setTimeout(() => {
       set({ open: false });
-    }, 3000);
+    }, 5000);
   },
   closeToast: () => {
     if (timeoutId) clearTimeout(timeoutId);
