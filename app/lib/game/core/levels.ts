@@ -78,6 +78,7 @@ export const LEVELS = {
     name: "Level 1.1",
     description: [
       "This is the first level of the game. It introduces the basic mechanics and objectives.",
+      "You will learn how to create nodes and solve simple equations.",
     ],
     goals: [
       "Create your first nodes.",
@@ -123,6 +124,8 @@ export const LEVELS = {
       {
         id: "raccoon",
         connections: [
+          {label: "value", access: "set"},
+          
           { label: "xpos", access: "get" },
 
           { label: "xpos", access: "set" },

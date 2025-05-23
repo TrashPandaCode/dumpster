@@ -1,14 +1,15 @@
 import { DialogClose } from "@radix-ui/react-dialog";
-import React from "react";
 import { useNavigate } from "react-router";
 import { LEVELS } from "../core/levels";
 import CustomDialog from "./CustomDialog";
+import classNames from "classnames";
+import { useGameStore } from "~/lib/zustand/game";
 
 
 const getNextLevelUrl = (currentLevel: string) => {
     const levelIds = Object.keys(LEVELS).filter(id => id !== "playground");
     const idx = levelIds.indexOf(currentLevel);
-
+    
     return idx < levelIds.length - 1 ? `/game/${levelIds[idx + 1]}` : undefined;
 };
 
@@ -56,30 +57,33 @@ const LevelCompleteDialog = ({
                 </div>
                 <div className="flex flex-row justify-end gap-5">
                     <button
-                        className="rounded-lg bg-blue-500 px-4 py-2 text-white hover:bg-blue-600 focus:outline-1 focus:outline-blue-300"
+                        className="cursor-pointer rounded-lg bg-slate-700/80 px-4 py-2 text-white hover:bg-slate-600 focus:outline-1 focus:outline-blue-300"
                         onClick={() => navigate("/")}
                     >
-                        To menu
+                        To Menu
                     </button>
                     <DialogClose asChild>
                         <button
-                            className="rounded-lg bg-slate-700/80 px-4 py-2 text-white hover:bg-slate-600 focus:outline-1 focus:outline-blue-300"
+                            className="cursor-pointer rounded-lg bg-slate-700/80 px-4 py-2 text-white hover:bg-slate-600 focus:outline-1 focus:outline-blue-300"
                             onClick={() => onOpenChange(false)}
                         >
                             Continue
                         </button>
                     </DialogClose>
                     <button
-                        className={`rounded-lg px-4 py-2 text-white focus:outline-1 focus:outline-blue-300 ${nextLevelUrl
-                                ? "bg-green-500 hover:bg-green-600"
-                                : "bg-gray-400 cursor-not-allowed"
-                            }`}
+                        className={
+                            classNames("rounded-lg bg-slate-700/80 px-4 py-2 text-white focus:outline-1 focus:outline-blue-300",
+                                 nextLevelUrl ? "cursor-pointer hover:bg-slate-600" : "opacity-50")}
                         onClick={() => {
-                            if (nextLevelUrl) navigate(nextLevelUrl);
+                            if (nextLevelUrl) {
+                                useGameStore.getState().setLevelCompleted(false);
+                                navigate(nextLevelUrl);
+                            }
+
                         }}
                         disabled={!nextLevelUrl}
                     >
-                        Next level
+                        Next Level
                     </button>
                 </div>
             </div>

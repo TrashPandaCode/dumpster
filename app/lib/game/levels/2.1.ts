@@ -1,5 +1,6 @@
 import { useGameStore } from "~/lib/zustand/game";
 import { getKaplayCtx } from "../core/kaplayCtx";
+import { useDataStore } from "~/lib/zustand/data";
 
 export const initialize2_1 = () => {
     const { k, game } = getKaplayCtx();
@@ -116,6 +117,17 @@ export const initialize2_1 = () => {
         } else {
             raccoon.gravityScale = 1;
         }
+
+        // Only for testing of the level complete dialog
+            const value = useDataStore.getState().gameObjects.get("raccoon")?.get("value")?.value ?? 0;
+            const levelCompleted = useGameStore.getState().levelCompleted;
+
+            if (value == 16 && !levelCompleted) {
+              raccoon.pos.x = 0.5 * k.width();
+        
+              useGameStore.getState().setLevelCompleteDialogOpen(true);
+              useGameStore.getState().setLevelCompleted(true);
+            }
     });
 
     k.onCollide("raccoon", "flag", (raccoon, flag) => {
