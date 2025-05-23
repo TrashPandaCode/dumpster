@@ -1,4 +1,4 @@
-import { ChevronDownIcon } from "@radix-ui/react-icons";
+import { CheckIcon, ChevronDownIcon } from "@radix-ui/react-icons";
 import { Position, useReactFlow, useUpdateNodeInternals } from "@xyflow/react";
 import classnames from "classnames";
 import {
@@ -6,22 +6,20 @@ import {
   type UseSelectState,
   type UseSelectStateChangeOptions,
 } from "downshift";
-import { memo, useEffect, useMemo, useRef, useState } from "react";
+import { memo, useEffect, useMemo, useState } from "react";
 
-import { LEVELS, type ConnectionAccess } from "~/lib/game/core/levels";
+import { type ConnectionAccess } from "~/lib/game/core/levels";
 import { useDataStore, type GameObjectsData } from "~/lib/zustand/data";
-import { useGameStore } from "~/lib/zustand/game";
 import BaseHandle from "../../node-components/BaseHandle";
 import LabelHandle from "../../node-components/LabelHandle";
 import NodeContent from "../../node-components/NodeContent";
-import SelectDropDown from "../../node-components/SelectDropDown";
 import type { nodeData, nodeInputs } from "../../node-store/node-store";
 import { getInput } from "../../utils";
 import { IN_HANDLE_1 } from "../constants";
 
 type GameObject = string;
 
-const ImportFromGameobject = memo(({ id, data }: { id: string; data: any }) => {
+const ImportFromGameobject = memo(({ id }: { id: string }) => {
   const gameObjects = useDataStore((state) => state.gameObjects);
   const selectableGameObjects: GameObject[] = Array.from(gameObjects.keys());
 
@@ -113,7 +111,7 @@ const ImportFromGameobject = memo(({ id, data }: { id: string; data: any }) => {
           </div>
           <ul
             className={classnames(
-              "nodrag nowheel absolute z-50 w-60 bg-slate-900 shadow-md",
+              "nodrag nowheel absolute z-50 w-60 overflow-hidden rounded-md border border-slate-700 bg-slate-900 p-1 shadow-md",
               !isOpen && "hidden"
             )}
             {...getMenuProps()}
@@ -121,11 +119,6 @@ const ImportFromGameobject = memo(({ id, data }: { id: string; data: any }) => {
             {isOpen &&
               selectableGameObjects.map((item, index) => (
                 <li
-                  className={classnames(
-                    highlightedIndex === index && "bg-blue-300",
-                    selectedGameObjects.includes(item) && "font-bold",
-                    "flex items-center gap-3 px-3 py-2 shadow-sm"
-                  )}
                   key={item}
                   {...getItemProps({
                     item,
@@ -133,15 +126,14 @@ const ImportFromGameobject = memo(({ id, data }: { id: string; data: any }) => {
                     "aria-selected": selectedGameObjects.includes(item),
                   })}
                 >
-                  <input
-                    type="checkbox"
-                    className="h-5 w-5"
-                    checked={selectedGameObjects.includes(item)}
-                    value={item}
-                    onChange={() => null}
-                  />
-                  <div className="flex flex-col">
+                  <div
+                    className={classnames(
+                      "text-md relative flex h-[25px] cursor-pointer items-center justify-between rounded px-1 font-mono leading-none text-white select-none",
+                      index === highlightedIndex && "bg-slate-800"
+                    )}
+                  >
                     <span>{item}</span>
+                    {selectedGameObjects.includes(item) && <CheckIcon />}
                   </div>
                 </li>
               ))}
