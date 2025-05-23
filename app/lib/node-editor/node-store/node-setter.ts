@@ -1,8 +1,8 @@
 import { type Node } from "@xyflow/react";
 import { create } from "zustand";
 
+import { toast } from "../editor-components/Toast";
 import { debugNodes } from "../solutions/debug";
-import { useToastStore } from "./toast-store";
 
 type HighlightType = "cycle" | "duplicate";
 
@@ -75,12 +75,12 @@ export const useNodeSetterStore = create<NodeSetterState>((set, get) => ({
 
     for (const [_, group] of Object.entries(grouped)) {
       if (group.length > 1) {
-        useToastStore
-          .getState()
-          .triggerToast(
-            "Duplicate Gameobject!",
-            "You have two or more nodes that export to the same Gameobject. This can cause issues regarding its behaviour. Be careful!"
-          );
+        toast({
+          title: "Duplicate Gameobject!",
+          description:
+            "You have two or more nodes that export to the same Gameobject. This can cause issues regarding its behaviour. Be careful!",
+        });
+
         for (const node of group) {
           get().highlightNode(node.id, "duplicate", "orange");
         }
