@@ -480,7 +480,6 @@ export function duplicateNodes(
       data: {
         ...node.data,
       },
-      dragging: false,
     };
   }));
 
@@ -522,7 +521,6 @@ export function duplicateNodes(
             y: loop.start.parentId ? loop.start.position.y : loop.start.position.y + 50,
           },
         data: { loopId, parentLoopId, loopStart: true, loopEnd: false },
-        dragging: false,
       },
       {
         id: endId,
@@ -533,7 +531,6 @@ export function duplicateNodes(
           y: loop.end.parentId ? loop.end.position.y : loop.end.position.y + 50,
         },
         data: { loopId, parentLoopId, loopStart: false, loopEnd: true },
-        dragging: false,
       },
     ])
 
