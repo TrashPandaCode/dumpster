@@ -16,7 +16,7 @@ import {
 } from "../../utils";
 import { IN_HANDLE_1 } from "../constants";
 
-const ImportFromGameobject = memo(({ id }: { id: string }) => {
+const ImportFromGameobject = memo(({ id, data }: { id: string; data: any }) => {
   const gameObjects = useDataStore((state) => state.gameObjects);
   const selectableGameObjects: GameObject[] = Array.from(gameObjects.keys());
 
@@ -48,6 +48,7 @@ const ImportFromGameobject = memo(({ id }: { id: string }) => {
           results.set(handle, gameObjects.get(gob)!.get(handle)!.value);
         });
       },
+      selectedGameObjects,
     });
   }, [selectedGameObjects]);
 
@@ -81,7 +82,9 @@ const ImportFromGameobject = memo(({ id }: { id: string }) => {
       setSelectedGameObjects(newSelection);
       updateNodeInternals(id);
       setEdges((edgs) =>
-        edgs.filter((edg) => !(edg.source === id || edg.target === id))
+        edgs.filter(
+          (edg) => !(edg.source === id || edg.target === id) || edg.animated
+        )
       );
     },
   });
