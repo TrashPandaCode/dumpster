@@ -2,6 +2,7 @@ import { Panel, useReactFlow, type Edge, type Node } from "@xyflow/react";
 import React, { useCallback } from "react";
 import { v4 as uuidv4 } from "uuid";
 
+import { useLoopStore } from "../node-store/loop-store";
 import { connectionToEdgeId, duplicateNodes as newDuplicate } from "../utils";
 
 type SelectionContextMenuProps = {
@@ -17,6 +18,8 @@ const SelectionContextMenu: React.FC<SelectionContextMenuProps> = ({
   y,
   onClose,
 }) => {
+  const addHandle = useLoopStore((state) => state.addHandle);
+  const getHandles = useLoopStore((state) => state.getHandles);
   const { getNodes, getEdges, addNodes, addEdges, setNodes, setEdges } =
     useReactFlow();
 
@@ -101,9 +104,9 @@ const SelectionContextMenu: React.FC<SelectionContextMenuProps> = ({
               getNodes().filter((n) => nodeIds.includes(n.id)),
               addNodes,
               addEdges,
-              getNodes,
-              getEdges,
-              setNodes
+              setNodes,
+              addHandle,
+              getHandles
             );
             onClose();
           }}

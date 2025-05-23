@@ -446,9 +446,9 @@ export function duplicateNodes(
   nodes: Node[],
   addNodes: (payload: Node | Node[]) => void,
   addEdges: (payload: Edge | Edge[]) => void,
-  getNodes: () => Node[],
-  getEdges: () => Edge[],
   setNodes: (payload: Node[] | ((nodes: Node[]) => Node[])) => void,
+  addHandle: (loopId: string, label: string) => void,
+  getHandles: (loopId: string) => Map<string, string>,
   screenToFlowPosition?: (
     clientPosition: XYPosition,
     options?: {
@@ -554,12 +554,18 @@ export function duplicateNodes(
     oldToNewIdMap.set(loop.start.data.loopId as string, loopId);
   })
 
-  // handles special loop edges
-  // this is not using connectNodesToLoop() because of weird update behaviour with addNodes and getNodes
+  // handles edges for new loops and their children
+  // handles copying of handles from the old loop to the new loop
   loops.forEach((loop) => {
     const newLoopId = oldToNewIdMap.get(loop.start.data.loopId as string);
 
     if(!newLoopId) return;
+
+    const loopHandles = getHandles(loop.start.data.loopId as string);
+    loopHandles.forEach((_, label) => {
+      addHandle(newLoopId, label);
+    });
+
     const loopChildrenIds = newNodes
       .filter((node) => node.data.parentLoopId === newLoopId)
       .map((node) => { return node.id })
