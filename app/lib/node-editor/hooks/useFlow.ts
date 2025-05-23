@@ -215,6 +215,7 @@ export function useFlow() {
               ...n,
               position,
               parentId: undefined,
+              dragging: false,
             };
           }
 
@@ -315,6 +316,7 @@ export function useFlow() {
               x: childNode.parentId === undefined ? n.position.x - newParentBounds.x : n.position.x + childNodeOffset.x,
               y: childNode.parentId === undefined ? n.position.y - newParentBounds.y : n.position.y + childNodeOffset.y,
             },
+            dragging: false,
           };
 
         } else if (n.parentId === parentNode.id) {
@@ -324,6 +326,7 @@ export function useFlow() {
               x: n.position.x + childNodeOffset.x,
               y: n.position.y + childNodeOffset.y,
             },
+            dragging: false,
           };
         } else if (n.id === parentNode.id) {
           return {
@@ -336,6 +339,7 @@ export function useFlow() {
             height: newParentBounds.height,
             data: { isParent: true, minWidth: newParentBounds.minWidth, minHeight: newParentBounds.minHeight },
             style: { zIndex: -1 },
+            dragging: false,
           };
         }
         // return all other nodes unmodified
