@@ -58,7 +58,11 @@ const LevelCompleteDialog = ({
                 <div className="flex flex-row justify-end gap-5">
                     <button
                         className="cursor-pointer rounded-lg bg-slate-700/80 px-4 py-2 text-white hover:bg-slate-600 focus:outline-1 focus:outline-blue-300"
-                        onClick={() => navigate("/")}
+                        onClick={() => {
+                            useGameStore.getState().setLevelCompleted(false);
+                            onOpenChange(false);
+                            navigate("/")
+                        }}
                     >
                         To Menu
                     </button>
@@ -77,6 +81,7 @@ const LevelCompleteDialog = ({
                         onClick={() => {
                             if (nextLevelUrl) {
                                 useGameStore.getState().setLevelCompleted(false);
+                                onOpenChange(false);
                                 navigate(nextLevelUrl);
                             }
 

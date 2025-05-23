@@ -102,6 +102,14 @@ export const initialize2_1 = () => {
         "platformTop",
     ]);
 
+    k.onCollide("raccoon", "flag", (raccoon, flag) => {
+        raccoon.pos.x = 100;
+        raccoon.pos.y = k.height() - 100;
+        raccoon.vel.x = 0;
+        raccoon.vel.y = 0;
+        console.log("Collided with finish line");
+    });
+
     game.onUpdate(() => {
         if (useGameStore.getState().isPaused) return;
 
@@ -129,13 +137,4 @@ export const initialize2_1 = () => {
               useGameStore.getState().setLevelCompleted(true);
             }
     });
-
-    k.onCollide("raccoon", "flag", (raccoon, flag) => {
-        raccoon.pos.x = 100;
-        raccoon.pos.y = k.height() - 100;
-        raccoon.vel.x = 0;
-        raccoon.vel.y = 0;
-        console.log("Collided with finish line");
-    });
-
 };
