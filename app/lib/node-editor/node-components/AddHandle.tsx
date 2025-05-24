@@ -3,13 +3,13 @@ import type { Node } from "@xyflow/react";
 import React from "react";
 
 const AddHandle = ({
-  handleIdentifier,
+  handleIdentifiers,
   handleLabel,
   nodeId,
   updateNodeData,
   addHandle,
 }: {
-  handleIdentifier: string;
+  handleIdentifiers: string[];
   handleLabel: React.RefObject<string>;
   nodeId: string;
   updateNodeData: (
@@ -24,7 +24,9 @@ const AddHandle = ({
   addHandle: (handleIdentifier: string, label: string) => void;
 }) => {
   const createHandle = () => {
-    addHandle(handleIdentifier, handleLabel.current);
+    handleIdentifiers.forEach((handleIdentifier) =>
+      addHandle(handleIdentifier, handleLabel.current)
+    );
     handleLabel.current = "";
   };
   return (
@@ -35,7 +37,7 @@ const AddHandle = ({
         className="nodrag peer w-full rounded-sm border-1 border-slate-700 bg-slate-900 px-1 focus:border-slate-500 focus:outline-none disabled:text-slate-500"
         placeholder="Handle Name"
         onChange={(evt) => {
-          handleLabel.current = evt.target.value;
+          handleLabel.current = evt.target.value.replace("-", "");
           updateNodeData(nodeId, { curLabel: handleLabel });
         }}
         onKeyDown={(evt) => {

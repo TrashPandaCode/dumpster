@@ -21,7 +21,7 @@ export const loadLevel = (level: string) => {
         new Map(
           item.connections.map((conn) => [
             conn.label,
-            { handleId: handleUUID(), access: conn.access, value: 0 },
+            { access: conn.access, value: 0 },
           ])
         ),
       ])

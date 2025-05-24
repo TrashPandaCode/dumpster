@@ -1,14 +1,12 @@
 import { create } from "zustand";
 
 import type { ConnectionAccess } from "../game/core/levels";
-import { handleUUID } from "../node-editor/utils";
 
-type GameObjectsData = Map<
+export type GameObjectsData = Map<
   string, // gameobject label
   Map<
-    string, // handle display name
+    string, // handle display name and id
     {
-      handleId: string;
       access: ConnectionAccess;
       value: number;
     }
@@ -26,9 +24,8 @@ export const useDataStore = create<DataState>((set, get) => ({
   gameObjects: new Map(),
   setData: (gameObject, label, value) => {
     const gob = get().gameObjects.get(gameObject)!;
-    const { access, handleId } = gob.get(label)!;
+    const { access } = gob.get(label)!;
     gob.set(label, {
-      handleId,
       access,
       value,
     });
@@ -40,7 +37,7 @@ export const useDataStore = create<DataState>((set, get) => ({
       const newGameObjectsMap = new Map(state.gameObjects);
       newGameObjectsMap
         .get(gameObject)!
-        .set(label, { handleId: handleUUID(), access: "all", value: 0 });
+        .set(label, { access: "all", value: 0 });
 
       return { ...state, gameObjects: newGameObjectsMap };
     }),

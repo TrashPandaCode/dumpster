@@ -40,9 +40,8 @@ export const initialize1_1 = () => {
     // racoon.move(RACOON_SPEED * k.dt(), 0);
     racoon.pos.x = (racoon.pos.x + 1) % 1000;
     // Write racoon position to store
-    const { handleId, access } = gameObjects.get("racoon")!.get("xpos")!;
+    const { access } = gameObjects.get("racoon")!.get("xpos")!;
     gameObjects.get("racoon")!.set("xpos", {
-      handleId,
       access,
       value: racoon.pos.x,
     });

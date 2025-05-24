@@ -117,7 +117,7 @@ const ForStart = memo(
           ))}
           <AddHandle
             addHandle={addHandle}
-            handleIdentifier={data.loopId}
+            handleIdentifiers={[data.loopId]}
             handleLabel={curLabel}
             nodeId={id}
             updateNodeData={updateNodeData}
