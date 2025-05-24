@@ -8,13 +8,13 @@ import {
 import "@xyflow/react/dist/style.css";
 
 import { useState } from "react";
+import { Toaster } from "sonner";
 
 import LeftPanel from "./editor-components/LeftPanel";
 import NodeContextMenu from "./editor-components/NodeContextMenu";
 import PaneContextMenu from "./editor-components/PaneContextMenu";
 import RightPanel from "./editor-components/RightPanel";
 import SelectionContextMenu from "./editor-components/SelectionContextMenu";
-import Toaster from "./editor-components/Toaster";
 import { TooltipProvider } from "./editor-components/Tooltip";
 import { useContextMenu } from "./hooks/useContextMenu";
 import { useFlow } from "./hooks/useFlow";

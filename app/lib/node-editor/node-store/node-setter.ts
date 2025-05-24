@@ -1,15 +1,15 @@
 import { type Node } from "@xyflow/react";
 import { create } from "zustand";
 
+import { toast } from "../editor-components/Toast";
 import { debugNodes } from "../solutions/debug";
-import { useToastStore } from "./toast-store";
 
 type HighlightType = "cycle" | "duplicate";
 
 interface NodeSetterState {
   nodes: Node[];
   highlightNodes: Map<HighlightType, string[]>;
-  setNodes: (nodes: Node[]) => void;
+  setNodes: (updater: (nodes: Node[]) => Node[]) => void;
   resetHighlight: (type: HighlightType) => void;
   highlightNode: (id: string, type: HighlightType, color: string) => void;
   highlightDuplicateNodes: () => void;
@@ -18,7 +18,10 @@ interface NodeSetterState {
 export const useNodeSetterStore = create<NodeSetterState>((set, get) => ({
   nodes: debugNodes,
   highlightNodes: new Map(),
-  setNodes: (nodes) => set({ nodes }),
+  setNodes: (updater) =>
+    set((state) => ({
+      nodes: updater(state.nodes),
+    })),
   resetHighlight: (type) => {
     set((state) => {
       const highlightNodes = get().highlightNodes.get(type);
@@ -75,12 +78,12 @@ export const useNodeSetterStore = create<NodeSetterState>((set, get) => ({
 
     for (const [_, group] of Object.entries(grouped)) {
       if (group.length > 1) {
-        useToastStore
-          .getState()
-          .triggerToast(
-            "Duplicate GameObject",
-            "You have two or more nodes that export to the same GameObject. This can cause issues in the game. Be careful!"
-          );
+        toast({
+          title: "Duplicate Gameobject!",
+          description:
+            "You have two or more nodes that export to the same Gameobject. This can cause issues regarding its behaviour. Be careful!",
+        });
+
         for (const node of group) {
           get().highlightNode(node.id, "duplicate", "orange");
         }
