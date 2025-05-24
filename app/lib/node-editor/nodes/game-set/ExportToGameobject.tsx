@@ -1,8 +1,11 @@
+import { CrossCircledIcon } from "@radix-ui/react-icons";
 import { Position, useReactFlow, useUpdateNodeInternals } from "@xyflow/react";
 import { useSelect } from "downshift";
 import { memo, useEffect, useMemo, useRef, useState } from "react";
 
+import { LEVELS } from "~/lib/game/core/levels";
 import { useDataStore } from "~/lib/zustand/data";
+import { useGameStore } from "~/lib/zustand/game";
 import AddHandle from "../../node-components/AddHandle";
 import BaseHandle from "../../node-components/BaseHandle";
 import LabelHandle from "../../node-components/LabelHandle";
@@ -19,12 +22,19 @@ import { IN_HANDLE_1 } from "../constants";
 
 const ExportToGameobject = memo(
   ({ id, data, selected }: { id: string; data: any; selected: boolean }) => {
+    const level = useGameStore((state) => state.currentLevel);
+    const modifiableGameObjects = LEVELS[level].modifiableGameObjects;
+
     const gameObjects = useDataStore((state) => state.gameObjects);
     const selectableGameObjects: GameObject[] = Array.from(gameObjects.keys());
 
     const [selectedGameObjects, setSelectedGameObjects] = useState<
       GameObject[]
-    >([selectableGameObjects[0]]);
+    >(
+      data.selectedGameObjects
+        ? data.selectedGameObjects
+        : [selectableGameObjects[0]]
+    );
 
     const handleIntersection = useMemo(
       () => getHandleIntersection("set", gameObjects, selectedGameObjects),
@@ -116,13 +126,44 @@ const ExportToGameobject = memo(
             />
           </div>
           {handleIntersection.map((label) => (
-            <LabelHandle
+            <div
+              className={
+                "flex w-full items-center [&>*:nth-child(even)]:pointer-events-none [&>*:nth-child(even)]:opacity-0 hover:[&>*:nth-child(even)]:pointer-events-auto hover:[&>*:nth-child(even)]:opacity-100 " +
+                (selected ? "hover:bg-slate-800" : "hover:bg-slate-700")
+              }
               key={label}
-              id={label}
-              position={Position.Left}
-              label={label}
-            />
+            >
+              <LabelHandle
+                key={label}
+                id={label}
+                position={Position.Left}
+                label={label}
+              />
+              {!modifiableGameObjects.some(
+                ({ id, connections }) =>
+                  selectedGameObjects.includes(id) &&
+                  connections.some((connection) => connection.label === label)
+              ) && (
+                <CrossCircledIcon
+                  className="mt-[1px] ml-2 cursor-pointer text-red-400"
+                  onClick={() => {
+                    selectedGameObjects.forEach((gameObject) =>
+                      removeHandle(gameObject, label)
+                    );
+                  }}
+                />
+              )}
+            </div>
           ))}
+          {selectedGameObjects.length && (
+            <AddHandle
+              addHandle={addHandle}
+              handleIdentifiers={selectedGameObjects}
+              handleLabel={curLabel}
+              nodeId={id}
+              updateNodeData={updateNodeData}
+            />
+          )}
         </NodeContent>
       </div>
     );

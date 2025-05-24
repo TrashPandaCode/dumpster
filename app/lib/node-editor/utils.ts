@@ -441,6 +441,7 @@ export function getContextMenuPosition(event: MouseEvent | React.MouseEvent): {
       : (event as React.MouseEvent).clientY;
   return { x: x - 15, y: y - 15 };
 }
+
 export type GameObject = string;
 export function getHandleIntersection(
   handleAccess: ConnectionAccess,

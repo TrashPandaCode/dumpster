@@ -20,9 +20,11 @@ const ImportFromGameobject = memo(({ id, data }: { id: string; data: any }) => {
   const gameObjects = useDataStore((state) => state.gameObjects);
   const selectableGameObjects: GameObject[] = Array.from(gameObjects.keys());
 
-  const [selectedGameObjects, setSelectedGameObjects] = useState<GameObject[]>([
-    selectableGameObjects[0],
-  ]);
+  const [selectedGameObjects, setSelectedGameObjects] = useState<GameObject[]>(
+    data.selectedGameObjects
+      ? data.selectedGameObjects
+      : [selectableGameObjects[0]]
+  );
 
   const handleIntersection = useMemo(
     () => getHandleIntersection("get", gameObjects, selectedGameObjects),

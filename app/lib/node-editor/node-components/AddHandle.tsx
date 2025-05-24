@@ -3,13 +3,13 @@ import type { Node } from "@xyflow/react";
 import React from "react";
 
 const AddHandle = ({
-  handleIdentifier,
+  handleIdentifiers,
   handleLabel,
   nodeId,
   updateNodeData,
   addHandle,
 }: {
-  handleIdentifier: string;
+  handleIdentifiers: string[];
   handleLabel: React.RefObject<string>;
   nodeId: string;
   updateNodeData: (
@@ -24,7 +24,9 @@ const AddHandle = ({
   addHandle: (handleIdentifier: string, label: string) => void;
 }) => {
   const createHandle = () => {
-    addHandle(handleIdentifier, handleLabel.current);
+    handleIdentifiers.forEach((handleIdentifier) =>
+      addHandle(handleIdentifier, handleLabel.current)
+    );
     handleLabel.current = "";
   };
   return (
