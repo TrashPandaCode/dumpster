@@ -17,3 +17,9 @@ const getIndex = (index: number) => String.fromCharCode(119 + index);
 
 export const IN_HANDLE_X = (X: number) => `input-handle-${getIndex(X)}`;
 export const OUT_HANDLE_X = (X: number) => `output-handle-${getIndex(X)}`;
+
+// standard group sizes
+export const GROUP_SIZE = {
+  width: 250,
+  height: 200,
+};

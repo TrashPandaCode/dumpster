@@ -4,6 +4,7 @@ import classnames from "classnames";
 import { useEffect, useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
+import { GROUP_SIZE } from "../nodes/constants";
 import { TYPES } from "../nodes/math-float/types";
 import { searchNodeTypes } from "../nodes/node-types";
 import { connectNodesToLoop, createForLoop } from "../utils";
@@ -68,21 +69,29 @@ const AddNodesPanel = ({
 
   const handleAddNode = (type: string, computeType?: string) => {
     // Create nodes based on type
-    const ids =
+    const [startId, endId] =
       type === "ForLoop"
         ? createForLoop(
             addNodes,
+            addEdges,
             x,
             y,
-            addEdges,
-            screenToFlowPosition,
-            parentLoopId
+            x + 300,
+            y,
+            parentLoopId,
+            undefined,
+            screenToFlowPosition
           )
         : [createSingleNode(type, computeType)];
 
     // Connect nodes if inside a loop
     if (parentLoopId) {
-      connectNodesToLoop(getNodes, addEdges, ids, parentLoopId);
+      connectNodesToLoop(
+        getNodes,
+        addEdges,
+        [startId as string, endId as string],
+        parentLoopId
+      );
     }
 
     onClose();
@@ -99,6 +108,8 @@ const AddNodesPanel = ({
         initialComputeType: computeType,
         parentLoopId,
       },
+      height: type === "Group" ? GROUP_SIZE.height : undefined,
+      width: type === "Group" ? GROUP_SIZE.width : undefined,
     });
     return id;
   };

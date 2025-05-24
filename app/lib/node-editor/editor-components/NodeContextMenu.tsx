@@ -47,47 +47,137 @@ const DefaultNodeContextMenu = ({
   nodeId: string;
   onClose: () => void;
 }) => {
-  const { getNode, getNodes, setNodes, addNodes, setEdges, addEdges } =
-    useReactFlow();
+  const {
+    getNode,
+    getNodes,
+    setNodes,
+    addNodes,
+    getEdges,
+    setEdges,
+    addEdges,
+  } = useReactFlow();
 
+  // handle node duplication
   const duplicateNode = useCallback(() => {
+    // get the node to duplicate
     const node = getNode(nodeId);
+    // if the node is not found, return
     if (!node) return;
 
+    // calculate the new position for the duplicated node
     const position = {
       x: node.position.x + 50,
       y: node.position.y + 50,
     };
 
     if (node.data.loopStart || node.data.loopEnd) {
-      createForLoop(addNodes, position.x, position.y, addEdges);
+      // this is too simple what if the loop contains nodes
+      // also state of the loop is not copied, idk maybe it should be
+      // TODO issue in Github
+      createForLoop(
+        addNodes,
+        addEdges,
+        position.x,
+        position.y,
+        position.x + 300,
+        position.y
+      );
     } else {
-      const id = uuidv4();
+      // this is the new id for the duplicated node
+      // this is also used if the node is a group and we need to duplicate the children
+      const newId = uuidv4();
       addNodes({
         ...node,
         selected: false,
         dragging: false,
-        id: id,
+        id: newId,
         position,
       });
 
+      // if the duplicated node is part of a loop, connect it to the loop
       if (node.data.parentLoopId)
         connectNodesToLoop(
           getNodes,
           addEdges,
-          [id],
+          [newId],
           node.data.parentLoopId as string
         );
+
+      // if the duplicated node is a group, duplicate and handle the children of the group
+      if (node.type === "Group") {
+        // identify the children of the group
+        const children = getNodes().filter((n) => n.parentId === nodeId);
+        const oldToNewIdMap = new Map<string, string>();
+        // compute new ids positions and parentId for each child
+        const newChildren = children.map((child) => {
+          const newChildId = uuidv4();
+          // log the old and new ids for use with the edges
+          oldToNewIdMap.set(child.id, newChildId);
+
+          const childPosition = {
+            x: child.position.x,
+            y: child.position.y,
+          };
+
+          return {
+            ...child,
+            id: newChildId,
+            position: childPosition,
+            parentId: newId,
+          };
+        });
+        // add the new children to the graph
+        addNodes(newChildren);
+
+        // duplicate all edges that connect to the children of the group
+        // identify the edges that connect to the children of the group
+        const edges = getEdges().filter((edge) => {
+          const sourceId = oldToNewIdMap.get(edge.source);
+          const targetId = oldToNewIdMap.get(edge.target);
+          return sourceId && targetId;
+        });
+        // compute their new source and target ids
+        const newEdges = edges.map((edge) => {
+          const sourceId = oldToNewIdMap.get(edge.source) || edge.source;
+          const targetId = oldToNewIdMap.get(edge.target) || edge.target;
+          return {
+            ...edge,
+            id: uuidv4(),
+            source: sourceId,
+            target: targetId,
+          };
+        });
+        // add the new edges to the graph
+        addEdges(newEdges);
+      }
     }
 
     onClose();
-  }, [getNode, nodeId, onClose, addNodes, addEdges, getNodes]);
+  }, [getNode, nodeId, onClose, addNodes, addEdges, getNodes, getEdges]);
 
   const deleteNode = useCallback(() => {
-    setNodes((nodes) => nodes.filter((node) => node.id !== nodeId));
-    setEdges((edges) => edges.filter((edge) => edge.source !== nodeId));
+    const idsToDelete = [nodeId];
+    if (getNode(nodeId)?.type === "Group") {
+      // if the node is a group, delete all its children
+      const children = getNodes().filter((n) => n.parentId === nodeId);
+      idsToDelete.push(...children.map((child) => child.id));
+    }
+
+    // remove all nodes with the ids in idsToDelete
+    setNodes((nodes) => nodes.filter((node) => !idsToDelete.includes(node.id)));
+    // remove all edges that connect to the nodes with the ids in idsToDelete
+    setEdges((edges) =>
+      edges.filter(
+        (edge) =>
+          !(
+            idsToDelete.includes(edge.source) ||
+            idsToDelete.includes(edge.target)
+          )
+      )
+    );
+
     onClose();
-  }, [setNodes, setEdges, onClose, nodeId]);
+  }, [nodeId, getNode, setNodes, setEdges, onClose, getNodes]);
 
   return (
     <>

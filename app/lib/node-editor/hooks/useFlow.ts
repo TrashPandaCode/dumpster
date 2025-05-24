@@ -15,7 +15,7 @@ import { useShallow } from "zustand/shallow";
 import { useNodeSetterStore } from "../node-store/node-setter";
 import { useNodeStore } from "../node-store/node-store";
 import { debugEdges } from "../solutions/debug";
-import { applyNodeChanges } from "../utils";
+import { applyNodeChanges, computeGroupSizings } from "../utils";
 
 const selector = (state: {
   nodes: Node[];
@@ -180,6 +180,68 @@ export function useFlow() {
     },
     [setEdges, getNode, addEdgeStore]
   );
+
+  const onNodeDragStopNew: OnNodeDrag = () => {
+    const draggedNonGroupNodes = getNodes().filter((node) => node.dragging && node.type !== "Group");
+    if (draggedNonGroupNodes.length === 0) return;
+
+    const parentNode = getIntersectingNodes(draggedNonGroupNodes[0])?.[0];
+    if (!parentNode || parentNode.type !== "Group") {
+      const nodesWithParent = draggedNonGroupNodes.filter(
+        (node) => node.parentId !== undefined
+      );
+      if (nodesWithParent.length === 0) return;
+      setNodes(
+        nodes.map((n) => {
+          if (nodesWithParent.some((node) => node.id === n.id)) {
+            const oldParent = nodes.find((p) => p.id === n.parentId);
+
+            const position = {
+              x: n.position.x + (oldParent ? oldParent.position.x : 0),
+              y: n.position.y + (oldParent ? oldParent.position.y : 0),
+            };
+
+            return {
+              ...n,
+              position,
+              parentId: undefined,
+              dragging: false,
+            };
+          }
+          return n;
+        })
+      );
+    }
+
+    // add all remaining nodes to the parent node
+    const updatedNodes = draggedNonGroupNodes.map((node) => {
+      const oldParent = getNodes().find((n) => n.id === node.parentId);
+
+      const position = {
+        x: node.position.x + (oldParent ? oldParent.position.x : 0) - parentNode.position.x,
+        y: node.position.y + (oldParent ? oldParent.position.y : 0) - parentNode.position.y,
+      };
+
+      return {
+        ...node,
+        position,
+        parentId: parentNode.id,
+        dragging: false,
+      };
+    });
+
+    setNodes(
+      nodes.map((node) => {
+        const updatedNode = updatedNodes.find((n) => n.id === node.id);
+        if (updatedNode) {
+          return updatedNode;
+        }
+        return node;
+      })
+    )
+  };
+
+
   const onNodeDragStop: OnNodeDrag = (_, childNode) => {
     // if the node is a group, return
     // node nesting cant work because of weird react flow behavior
@@ -212,6 +274,7 @@ export function useFlow() {
               ...n,
               position,
               parentId: undefined,
+              dragging: false,
             };
           }
 
@@ -228,46 +291,18 @@ export function useFlow() {
     // if overlapping node is not a group, return
     if (parentNode.type !== "Group") return;
 
-    // get child node position in global coords
-    let childNodeGlobalPosition = childNode.position;
-    if (childNode.parentId) {
-      const parent =
-        childNode.parentId === parentNode.id
-          ? parentNode
-          : getNode(childNode.parentId)!;
-
-      childNodeGlobalPosition = {
-        x: childNode.position.x + parent.position.x,
-        y: childNode.position.y + parent.position.y,
-      };
+    // get all child nodes of the parent node
+    const children = getNodes().filter(
+      (n) => n.parentId === parentNode.id
+    );
+    if(!children.some((child) => child.id === childNode.id)) {
+      children.push(childNode)
     }
 
-    // new parent node position
-    const offset = 20;
-    const offsetX = parentNode.position.x - childNodeGlobalPosition.x + offset;
-    const offsetY = parentNode.position.y - childNodeGlobalPosition.y + offset;
+    const parentSizings = computeGroupSizings(parentNode, children);
 
-    const parentPosition = {
-      x: parentNode.position.x - Math.max(offsetX, 0),
-      y: parentNode.position.y - Math.max(offsetY, 0),
-    };
-
-    let parentWidth = parentNode.measured!.width! + Math.max(offsetX, 0);
-    let parentHeight = parentNode.measured!.height! + Math.max(offsetY, 0);
-
-    // new child position
-    const childPosition = {
-      x: childNodeGlobalPosition.x - parentPosition.x,
-      y: childNodeGlobalPosition.y - parentPosition.y,
-    };
-
-    // new parent width based on child position
-    const widthChild = childPosition.x + childNode.measured!.width! + 20;
-    const heightChild = childPosition.y + childNode.measured!.height! + 20;
-
-    // expand parent if new width is greater
-    parentWidth = Math.max(widthChild, parentWidth);
-    parentHeight = Math.max(heightChild, parentHeight);
+    const newParentBounds = parentSizings.newParentBounds;
+    const childNodeOffset = parentSizings.childNodeOffset;
 
     setNodes((nds) =>
       nds.map((n) => {
@@ -276,16 +311,34 @@ export function useFlow() {
           return {
             ...n,
             parentId: parentNode.id,
-            position: childPosition,
+            position: {
+              x: childNode.parentId === undefined ? n.position.x - newParentBounds.x : n.position.x + childNodeOffset.x,
+              y: childNode.parentId === undefined ? n.position.y - newParentBounds.y : n.position.y + childNodeOffset.y,
+            },
+            dragging: false,
+          };
+
+        } else if (n.parentId === parentNode.id) {
+          return {
+            ...n,
+            position: {
+              x: n.position.x + childNodeOffset.x,
+              y: n.position.y + childNodeOffset.y,
+            },
+            dragging: false,
           };
         } else if (n.id === parentNode.id) {
           return {
             ...n,
-            position: parentPosition,
-            width: parentWidth,
-            height: parentHeight,
-            data: { isParent: true },
+            position: {
+              x: newParentBounds.x,
+              y: newParentBounds.y,
+            },
+            width: newParentBounds.width,
+            height: newParentBounds.height,
+            data: { isParent: true, minWidth: newParentBounds.minWidth, minHeight: newParentBounds.minHeight },
             style: { zIndex: -1 },
+            dragging: false,
           };
         }
         // return all other nodes unmodified

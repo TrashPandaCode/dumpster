@@ -12,6 +12,7 @@ interface LoopStoreState {
   >;
   addHandle: (loopId: string, label: string) => void;
   removeHandle: (loopId: string, label: string) => void;
+  getHandles: (loopId: string) => Map<string, string>;
 }
 
 export const useLoopStore = create<LoopStoreState>((set) => ({
@@ -36,4 +37,13 @@ export const useLoopStore = create<LoopStoreState>((set) => ({
       newLoops.get(loopId)!.delete(label);
       return { loops: newLoops };
     }),
+  getHandles: (loopId) => {
+    const loop = useLoopStore.getState().loops.get(loopId);
+    if (!loop) return new Map();
+    const handles = new Map<string, string>();
+    loop.forEach((handleId, label) => {
+      handles.set(label, handleId);
+    });
+    return handles;
+  }
 }));
