@@ -43,7 +43,7 @@ const Game = ({ params }: Route.ComponentProps) => {
     return () => {
       cleanupKaplay();
     };
-  }, []);
+  }, [level]);
 
   return (
     <>

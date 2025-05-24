@@ -5,6 +5,8 @@ import { useDataStore } from "~/lib/zustand/data";
 export const initialize2_1 = () => {
     const { k, game } = getKaplayCtx();
 
+    useGameStore.getState().setLevelCompleted(false);
+
     //Load Sprites
     k.loadSprite("raccoon", "/game/sprites/raccoon_spritesheet.png", {
         sliceX: 4,
@@ -130,7 +132,7 @@ export const initialize2_1 = () => {
             const value = useDataStore.getState().gameObjects.get("raccoon")?.get("value")?.value ?? 0;
             const levelCompleted = useGameStore.getState().levelCompleted;
 
-            if (value == 16 && !levelCompleted) {
+            if (value == 24 && !levelCompleted) {
               raccoon.pos.x = 0.5 * k.width();
         
               useGameStore.getState().setLevelCompleteDialogOpen(true);

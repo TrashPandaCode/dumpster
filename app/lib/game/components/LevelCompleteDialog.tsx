@@ -4,6 +4,7 @@ import { LEVELS } from "../core/levels";
 import CustomDialog from "./CustomDialog";
 import classNames from "classnames";
 import { useGameStore } from "~/lib/zustand/game";
+import { cleanupKaplay } from "../core/kaplayCtx";
 
 
 const getNextLevelUrl = (currentLevel: string) => {
@@ -59,9 +60,10 @@ const LevelCompleteDialog = ({
                     <button
                         className="cursor-pointer rounded-lg bg-slate-700/80 px-4 py-2 text-white hover:bg-slate-600 focus:outline-1 focus:outline-blue-300"
                         onClick={() => {
-                            useGameStore.getState().setLevelCompleted(false);
+                            // useGameStore.getState().setLevelCompleted(false);
                             onOpenChange(false);
-                            navigate("/")
+                            cleanupKaplay();
+                            navigate("/");
                         }}
                     >
                         To Menu
@@ -80,11 +82,11 @@ const LevelCompleteDialog = ({
                                  nextLevelUrl ? "cursor-pointer hover:bg-slate-600" : "opacity-50")}
                         onClick={() => {
                             if (nextLevelUrl) {
-                                useGameStore.getState().setLevelCompleted(false);
+                                // useGameStore.getState().setLevelCompleted(false);
                                 onOpenChange(false);
+                                cleanupKaplay();
                                 navigate(nextLevelUrl);
                             }
-
                         }}
                         disabled={!nextLevelUrl}
                     >
