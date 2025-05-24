@@ -5,11 +5,6 @@ import type {
   NodeChange,
   XYPosition,
 } from "@xyflow/react";
-import {
-  useSelect,
-  type UseSelectState,
-  type UseSelectStateChangeOptions,
-} from "downshift";
 import { v4 as uuidv4 } from "uuid";
 
 import type { ConnectionAccess } from "../game/core/levels";
@@ -478,23 +473,4 @@ export function getHandleIntersection(
     if (intersection.size === 0) break;
   }
   return Array.from(intersection);
-}
-
-export function stateReducer(
-  state: UseSelectState<GameObject>,
-  actionAndChanges: UseSelectStateChangeOptions<GameObject>
-): Partial<UseSelectState<GameObject>> {
-  const { changes, type } = actionAndChanges;
-  switch (type) {
-    case useSelect.stateChangeTypes.ToggleButtonKeyDownEnter:
-    case useSelect.stateChangeTypes.ToggleButtonKeyDownSpaceButton:
-    case useSelect.stateChangeTypes.ItemClick:
-      return {
-        ...changes,
-        isOpen: true,
-        highlightedIndex: state.highlightedIndex,
-      };
-    default:
-      return changes;
-  }
 }

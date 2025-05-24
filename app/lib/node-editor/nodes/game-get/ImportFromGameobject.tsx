@@ -1,29 +1,34 @@
-import { Position, useReactFlow, useUpdateNodeInternals } from "@xyflow/react";
-import { useSelect } from "downshift";
-import { memo, useEffect, useMemo, useState } from "react";
+import { Position, useReactFlow } from "@xyflow/react";
+import { memo, useEffect, useMemo } from "react";
 
 import { useDataStore } from "~/lib/zustand/data";
+import { useGameobjectSelect } from "../../hooks/useGameobjectSelect";
 import BaseHandle from "../../node-components/BaseHandle";
 import LabelHandle from "../../node-components/LabelHandle";
 import MultiSelectDropDown from "../../node-components/MultiSelectDropDown";
 import NodeContent from "../../node-components/NodeContent";
 import type { nodeData, nodeInputs } from "../../node-store/node-store";
-import {
-  getHandleIntersection,
-  getInput,
-  stateReducer,
-  type GameObject,
-} from "../../utils";
+import { getHandleIntersection, getInput, type GameObject } from "../../utils";
 import { IN_HANDLE_1 } from "../constants";
 
 const ImportFromGameobject = memo(({ id, data }: { id: string; data: any }) => {
   const gameObjects = useDataStore((state) => state.gameObjects);
   const selectableGameObjects: GameObject[] = Array.from(gameObjects.keys());
 
-  const [selectedGameObjects, setSelectedGameObjects] = useState<GameObject[]>(
+  const {
+    isOpen,
+    getToggleButtonProps,
+    getMenuProps,
+    getLabelProps,
+    highlightedIndex,
+    getItemProps,
+    selectedGameObjects,
+  } = useGameobjectSelect(
+    selectableGameObjects,
     data.selectedGameObjects
       ? data.selectedGameObjects
-      : [selectableGameObjects[0]]
+      : [selectableGameObjects[0]],
+    id
   );
 
   const handleIntersection = useMemo(
@@ -31,8 +36,7 @@ const ImportFromGameobject = memo(({ id, data }: { id: string; data: any }) => {
     [gameObjects, selectedGameObjects]
   );
 
-  const { updateNodeData, setEdges } = useReactFlow();
-  const updateNodeInternals = useUpdateNodeInternals();
+  const { updateNodeData } = useReactFlow();
 
   useEffect(() => {
     updateNodeData(id, {
@@ -53,43 +57,6 @@ const ImportFromGameobject = memo(({ id, data }: { id: string; data: any }) => {
       selectedGameObjects,
     });
   }, [selectedGameObjects]);
-
-  const {
-    isOpen,
-    getToggleButtonProps,
-    getMenuProps,
-    getLabelProps,
-    highlightedIndex,
-    getItemProps,
-  } = useSelect({
-    items: selectableGameObjects,
-    stateReducer,
-    selectedItem: null,
-    onSelectedItemChange: ({ selectedItem }) => {
-      if (!selectedItem) return;
-
-      const index = selectedGameObjects.indexOf(selectedItem);
-      let newSelection = [];
-
-      if (index > 0) {
-        newSelection = [
-          ...selectedGameObjects.slice(0, index),
-          ...selectedGameObjects.slice(index + 1),
-        ];
-      } else if (index === 0) {
-        newSelection = [...selectedGameObjects.slice(1)];
-      } else {
-        newSelection = [...selectedGameObjects, selectedItem];
-      }
-      setSelectedGameObjects(newSelection);
-      updateNodeInternals(id);
-      setEdges((edgs) =>
-        edgs.filter(
-          (edg) => !(edg.source === id || edg.target === id) || edg.animated
-        )
-      );
-    },
-  });
 
   return (
     <div className="min-w-48">

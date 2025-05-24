@@ -1,23 +1,18 @@
 import { CrossCircledIcon } from "@radix-ui/react-icons";
-import { Position, useReactFlow, useUpdateNodeInternals } from "@xyflow/react";
-import { useSelect } from "downshift";
-import { memo, useEffect, useMemo, useRef, useState } from "react";
+import { Position, useReactFlow } from "@xyflow/react";
+import { memo, useEffect, useMemo, useRef } from "react";
 
 import { LEVELS } from "~/lib/game/core/levels";
 import { useDataStore } from "~/lib/zustand/data";
 import { useGameStore } from "~/lib/zustand/game";
+import { useGameobjectSelect } from "../../hooks/useGameobjectSelect";
 import AddHandle from "../../node-components/AddHandle";
 import BaseHandle from "../../node-components/BaseHandle";
 import LabelHandle from "../../node-components/LabelHandle";
 import MultiSelectDropDown from "../../node-components/MultiSelectDropDown";
 import NodeContent from "../../node-components/NodeContent";
 import type { nodeData, nodeInputs } from "../../node-store/node-store";
-import {
-  getHandleIntersection,
-  getInput,
-  stateReducer,
-  type GameObject,
-} from "../../utils";
+import { getHandleIntersection, getInput, type GameObject } from "../../utils";
 import { IN_HANDLE_1 } from "../constants";
 
 const ExportToGameobject = memo(
@@ -28,12 +23,20 @@ const ExportToGameobject = memo(
     const gameObjects = useDataStore((state) => state.gameObjects);
     const selectableGameObjects: GameObject[] = Array.from(gameObjects.keys());
 
-    const [selectedGameObjects, setSelectedGameObjects] = useState<
-      GameObject[]
-    >(
+    const {
+      isOpen,
+      getToggleButtonProps,
+      getMenuProps,
+      getLabelProps,
+      highlightedIndex,
+      getItemProps,
+      selectedGameObjects,
+    } = useGameobjectSelect(
+      selectableGameObjects,
       data.selectedGameObjects
         ? data.selectedGameObjects
-        : [selectableGameObjects[0]]
+        : [selectableGameObjects[0]],
+      id
     );
 
     const handleIntersection = useMemo(
@@ -46,8 +49,7 @@ const ExportToGameobject = memo(
     const removeHandle = useDataStore((state) => state.removeHandle);
     const curLabel = useRef(data.curLabel ? data.curLabel.current : "");
 
-    const { updateNodeData, setEdges } = useReactFlow();
-    const updateNodeInternals = useUpdateNodeInternals();
+    const { updateNodeData } = useReactFlow();
 
     useEffect(() => {
       updateNodeData(id, {
@@ -67,43 +69,6 @@ const ExportToGameobject = memo(
         selectedGameObjects,
       });
     }, [selectedGameObjects]);
-
-    const {
-      isOpen,
-      getToggleButtonProps,
-      getMenuProps,
-      getLabelProps,
-      highlightedIndex,
-      getItemProps,
-    } = useSelect({
-      items: selectableGameObjects,
-      stateReducer,
-      selectedItem: null,
-      onSelectedItemChange: ({ selectedItem }) => {
-        if (!selectedItem) return;
-
-        const index = selectedGameObjects.indexOf(selectedItem);
-        let newSelection = [];
-
-        if (index > 0) {
-          newSelection = [
-            ...selectedGameObjects.slice(0, index),
-            ...selectedGameObjects.slice(index + 1),
-          ];
-        } else if (index === 0) {
-          newSelection = [...selectedGameObjects.slice(1)];
-        } else {
-          newSelection = [...selectedGameObjects, selectedItem];
-        }
-        setSelectedGameObjects(newSelection);
-        updateNodeInternals(id);
-        setEdges((edgs) =>
-          edgs.filter(
-            (edg) => !(edg.source === id || edg.target === id) || edg.animated
-          )
-        );
-      },
-    });
 
     return (
       <div>
