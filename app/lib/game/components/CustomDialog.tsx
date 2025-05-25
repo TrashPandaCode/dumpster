@@ -11,6 +11,8 @@ import {
 import { Cross2Icon } from "@radix-ui/react-icons";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 
+import { useTelemetryStore } from "~/lib/zustand/telemetry";
+
 const CustomDialog = ({
   title,
   trigger,
@@ -24,6 +26,12 @@ const CustomDialog = ({
   desc?: string;
   children?: React.ReactNode;
 }) => {
+  const skippedTelemetry = useTelemetryStore((state) => state.skippedTutorial);
+
+  const handleClose = () =>{
+    skippedTelemetry(true);
+  };
+
   return (
     <Dialog defaultOpen={defaultOpen}>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
@@ -43,6 +51,7 @@ const CustomDialog = ({
             <button
               className="absolute top-2.5 right-2.5 inline-flex size-[25px] cursor-pointer appearance-none items-center justify-center rounded-full bg-slate-700 focus:outline-1 focus:outline-blue-300"
               aria-label="Close"
+              onClick={handleClose}
             >
               <Cross2Icon />
             </button>

@@ -15,12 +15,15 @@ import type { LEVELS } from "~/lib/game/core/levels";
 import { useGameStore } from "~/lib/zustand/game";
 import { globalKeyTracker } from "~/lib/game/utils/globalKeyTracker";
 
+import { useTelemetryStore } from "~/lib/zustand/telemetry"
+
 const Game = ({ params }: Route.ComponentProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   // load current level from params
   // also set the current level in the game store
   const setCurrentLevel = useGameStore((state) => state.setCurrentLevel);
+  const setTelemetryLevel = useTelemetryStore((state) => state.newLevel);
   const level = params.id || "playground";
   setCurrentLevel(level as keyof typeof LEVELS); // we can cast confidently here since we know the params.id is a valid level id, because loading the level will fail if it is not
 
@@ -34,6 +37,7 @@ const Game = ({ params }: Route.ComponentProps) => {
 
     // load the game level
     loadLevel(level);
+    setTelemetryLevel(level as keyof typeof LEVELS);
 
     return () => {
       cleanupKaplay();

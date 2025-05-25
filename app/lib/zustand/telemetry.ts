@@ -6,22 +6,49 @@ type LevelId = keyof typeof LEVELS;
 
 type LevelLog = {
     level: LevelId;
+    startTime: string;
+    finishTime: string;
+    skippedTutorial: boolean;
     nodes: string[];
 };
 
 type TelemetryStore = {
     logs: LevelLog[];
+    logStart: (time: string) => void;
+    logFinish: (time: string) => void;
     logNode: (node: string) => void;
+    skippedTutorial: (bool: boolean) => void;
     newLevel: (level: LevelId) => void;
 }
 
 export const useTelemetryStore = create<TelemetryStore>((set) => ({
     logs: [
         {
-            level: useGameStore.getState().currentLevel,
+            level: "playground",
+            startTime: "0",
+            finishTime: "0",
+            skippedTutorial: false,
             nodes: [],
         },
     ],
+    logStart: (time: string) =>
+        set((state) => {
+            const logs = [...state.logs];
+            const lastGroup = logs[logs.length - 1];
+            if (lastGroup) {
+                lastGroup.startTime = time;
+            }
+            return { logs };
+        }),
+    logFinish: (time: string) =>
+        set((state) => {
+            const logs = [...state.logs];
+            const lastGroup = logs[logs.length - 1];
+            if (lastGroup) {
+                lastGroup.finishTime = time;
+            }
+            return { logs };
+        }),
     logNode: (node: string) =>
         set((state) => {
             const logs = [...state.logs];
@@ -29,13 +56,23 @@ export const useTelemetryStore = create<TelemetryStore>((set) => ({
             if (lastGroup) {
                 lastGroup.nodes.push(node);
             }
+            console.log(logs);
             return { logs };
         }),
-
+    skippedTutorial: (bool: boolean) =>
+        set((state) => {
+            const logs = [...state.logs];
+            const lastGroup = logs[logs.length - 1];
+            if (lastGroup) {
+                lastGroup.skippedTutorial = bool;
+            }
+            console.log("skyped");
+            return { logs };
+        }),
     newLevel: (level: LevelId) => 
         set((state => {
             return{
-                logs: [...state.logs, { level, nodes: [] }]
+                logs: [...state.logs, { level, startTime:"0", finishTime:"0", skippedTutorial:false, nodes: [] }]
             };
         })),
 }));
