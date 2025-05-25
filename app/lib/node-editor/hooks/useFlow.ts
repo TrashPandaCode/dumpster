@@ -191,8 +191,8 @@ export function useFlow() {
         (node) => node.parentId !== undefined
       );
       if (nodesWithParent.length === 0) return;
-      setNodes(
-        nodes.map((n) => {
+      setNodes((nds) =>
+        nds.map((n) => {
           if (nodesWithParent.some((node) => node.id === n.id)) {
             const oldParent = nodes.find((p) => p.id === n.parentId);
 
@@ -230,8 +230,8 @@ export function useFlow() {
       };
     });
 
-    setNodes(
-      nodes.map((node) => {
+    setNodes((nds) =>
+      nds.map((node) => {
         const updatedNode = updatedNodes.find((n) => n.id === node.id);
         if (updatedNode) {
           return updatedNode;
