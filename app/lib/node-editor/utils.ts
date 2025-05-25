@@ -492,13 +492,7 @@ export function duplicateNodes(
   addEdges: (payload: Edge | Edge[]) => void,
   setNodes: (payload: Node[] | ((nodes: Node[]) => Node[])) => void,
   addHandle: (loopId: string, label: string) => void,
-  getHandles: (loopId: string) => Map<string, string>,
-  screenToFlowPosition?: (
-    clientPosition: XYPosition,
-    options?: {
-      snapToGrid: boolean;
-    }
-  ) => XYPosition
+  getHandles: (loopId: string) => Map<string, string>
 ) {
   // if this is called with no nodes, return
   if (!nodes) return;
@@ -553,12 +547,15 @@ export function duplicateNodes(
     const parentLoopId = oldToNewIdMap.get(
       loop.start.data.parentLoopId as string
     );
-    const parentIdStart = loop.start.parentId
-      ? oldToNewIdMap.get(loop.start.parentId)
+
+    const parentIdStart: string | undefined = loop.start.parentId
+      ? (oldToNewIdMap.get(loop.start.parentId) ?? loop.start.parentId)
       : undefined;
+
     const parentIdEnd = loop.end.parentId
-      ? oldToNewIdMap.get(loop.end.parentId)
+      ? (oldToNewIdMap.get(loop.end.parentId) ?? loop.end.parentId)
       : undefined;
+
     const edgeId = connectionToEdgeId({
       source: startId,
       sourceHandle: MAIN_LOOP_CONNECTOR,
@@ -573,12 +570,14 @@ export function duplicateNodes(
           type: "ForStart",
           parentId: parentIdStart,
           position: {
-            x: loop.start.parentId
-              ? loop.start.position.x
-              : loop.start.position.x + 50,
-            y: loop.start.parentId
-              ? loop.start.position.y
-              : loop.start.position.y + 50,
+            x:
+              loop.start.parentId && oldToNewIdMap.has(loop.start.parentId)
+                ? loop.start.position.x
+                : loop.start.position.x + 50,
+            y:
+              loop.start.parentId && oldToNewIdMap.has(loop.start.parentId)
+                ? loop.start.position.y
+                : loop.start.position.y + 50,
           },
           data: { loopId, parentLoopId, loopStart: true, loopEnd: false },
         },
@@ -587,12 +586,14 @@ export function duplicateNodes(
           type: "ForEnd",
           parentId: parentIdEnd,
           position: {
-            x: loop.end.parentId
-              ? loop.end.position.x
-              : loop.end.position.x + 50,
-            y: loop.end.parentId
-              ? loop.end.position.y
-              : loop.end.position.y + 50,
+            x:
+              loop.end.parentId && oldToNewIdMap.has(loop.end.parentId)
+                ? loop.end.position.x
+                : loop.end.position.x + 50,
+            y:
+              loop.end.parentId && oldToNewIdMap.has(loop.end.parentId)
+                ? loop.end.position.y
+                : loop.end.position.y + 50,
           },
           data: { loopId, parentLoopId, loopStart: false, loopEnd: true },
         },
@@ -617,6 +618,42 @@ export function duplicateNodes(
     oldToNewIdMap.set(loop.start.id, startId);
     oldToNewIdMap.set(loop.end.id, endId);
     oldToNewIdMap.set(loop.start.data.loopId as string, loopId);
+  });
+
+  // duplicate all other nodes
+  const otherNodes = nodes.filter(
+    (node) =>
+      node.type !== "Group" &&
+      node.type !== "ForStart" &&
+      node.type !== "ForEnd"
+  );
+  otherNodes.forEach((node) => {
+    const newId = uuidv4();
+    oldToNewIdMap.set(node.id, newId);
+
+    newNodes.push({
+      ...node,
+      id: newId,
+      parentId: node.parentId
+        ? (oldToNewIdMap.get(node.parentId) ?? node.parentId)
+        : undefined,
+      position: {
+        x:
+          node.parentId && oldToNewIdMap.has(node.parentId)
+            ? node.position.x
+            : node.position.x + 50,
+        y:
+          node.parentId && oldToNewIdMap.has(node.parentId)
+            ? node.position.y
+            : node.position.y + 50,
+      },
+      data: {
+        ...node.data,
+        parentLoopId: node.data.parentLoopId
+          ? oldToNewIdMap.get(node.data.parentLoopId as string)
+          : undefined,
+      },
+    });
   });
 
   // handles edges for new loops and their children
