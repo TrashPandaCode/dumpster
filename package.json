@@ -25,6 +25,7 @@
     "@react-router/serve": "^7.5.0",
     "@xyflow/react": "^12.5.5",
     "classnames": "^2.5.1",
+    "downshift": "^9.0.9",
     "isbot": "^5",
     "kaplay": "github:ecrax/kaplay#master",
     "react": "^19.0.0",
