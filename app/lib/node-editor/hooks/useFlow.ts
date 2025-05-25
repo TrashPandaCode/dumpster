@@ -317,12 +317,14 @@ export function useFlow() {
               {
                 ...c,
                 position: newPosition,
+                dragging: false,
               }
             );
           } else {
             updatedNodes.push({
               ...c,
               position: newPosition,
+              dragging: false,
             });
           }
         });
@@ -344,6 +346,7 @@ export function useFlow() {
           },
           width: pSizings.bounds.width,
           height: pSizings.bounds.height,
+          dragging: false,
         };
       })
     );
