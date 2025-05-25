@@ -293,7 +293,6 @@ export function useFlow() {
     });
 
     // update all parents
-    console.log("updating", parentsToUpdate.length, "parent(s)");
     updatedNodes.push(
       ...parentsToUpdate.map((p) => {
         const updatedChildren = updatedNodes.filter((n) => n.parentId === p.id);
