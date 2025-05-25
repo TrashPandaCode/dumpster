@@ -10,7 +10,11 @@ import { v4 as uuidv4 } from "uuid";
 import type { ConnectionAccess } from "../game/core/levels";
 import type { GameObjectsData } from "../zustand/data";
 import type { nodeInputs } from "./node-store/node-store";
-import { GROUP_SIZE, LOOP_CONNECTOR, MAIN_LOOP_CONNECTOR } from "./nodes/constants";
+import {
+  GROUP_SIZE,
+  LOOP_CONNECTOR,
+  MAIN_LOOP_CONNECTOR,
+} from "./nodes/constants";
 
 /*
  * This function applies changes to nodes or edges that are triggered by React Flow internally.
@@ -330,7 +334,7 @@ export function createForLoop(
     options?: {
       snapToGrid: boolean;
     }
-  ) => XYPosition,
+  ) => XYPosition
 ) {
   const startId = uuidv4();
   const endId = uuidv4();
@@ -375,7 +379,7 @@ export function createForLoop(
       stroke: uuidToColor(loopId),
     },
   });
-  return [startId, endId, loopId];
+  return [startId, endId];
 }
 
 // Helper function to connect nodes to loop connectors
@@ -383,7 +387,7 @@ export function connectNodesToLoop(
   getNodes: () => Node[],
   addEdges: (payload: Edge | Edge[]) => void,
   nodeIds: string[],
-  loopId: string,
+  loopId: string
 ) {
   const loopNodes = getNodes().filter((node) => node.data.loopId === loopId);
 
@@ -494,9 +498,8 @@ export function duplicateNodes(
     options?: {
       snapToGrid: boolean;
     }
-  ) => XYPosition,
+  ) => XYPosition
 ) {
-
   // if this is called with no nodes, return
   if (!nodes) return;
 
@@ -506,33 +509,39 @@ export function duplicateNodes(
   const newEdges: Edge[] = [];
   // create copies of group nodes
   const groupNodes: Node[] = nodes.filter((node) => node.type === "Group");
-  newNodes.push(...groupNodes.map((node) => {
-    const newId = uuidv4();
-    oldToNewIdMap.set(node.id, newId);
+  newNodes.push(
+    ...groupNodes.map((node) => {
+      const newId = uuidv4();
+      oldToNewIdMap.set(node.id, newId);
 
-    return {
-      ...node,
-      id: newId,
-      position: {
-        x: node.position.x + 50,
-        y: node.position.y + 50,
-      },
-      data: {
-        ...node.data,
-      },
-    };
-  }));
+      return {
+        ...node,
+        id: newId,
+        position: {
+          x: node.position.x + 50,
+          y: node.position.y + 50,
+        },
+        data: {
+          ...node.data,
+        },
+      };
+    })
+  );
 
   // loop nodes and how they are nested
-  const loopStartNodes: Node[] = nodes.filter((node) => node.type === "ForStart");
+  const loopStartNodes: Node[] = nodes.filter(
+    (node) => node.type === "ForStart"
+  );
   const loopEndNodes: Node[] = nodes.filter((node) => node.type === "ForEnd");
 
-  type loop = {start: Node, end: Node};
+  type loop = { start: Node; end: Node };
   const loops: loop[] = [];
   loopStartNodes.forEach((node) => {
-    const endNode = loopEndNodes.find((endNode) => endNode.data.loopId === node.data.loopId);
+    const endNode = loopEndNodes.find(
+      (endNode) => endNode.data.loopId === node.data.loopId
+    );
     if (endNode) {
-      loops.push({start: node, end: endNode});
+      loops.push({ start: node, end: endNode });
     }
   });
 
@@ -541,9 +550,15 @@ export function duplicateNodes(
     const startId = uuidv4();
     const endId = uuidv4();
     const loopId = uuidv4();
-    const parentLoopId = oldToNewIdMap.get(loop.start.data.parentLoopId as string);
-    const parentIdStart = loop.start.parentId ? oldToNewIdMap.get(loop.start.parentId) : undefined;
-    const parentIdEnd = loop.end.parentId ? oldToNewIdMap.get(loop.end.parentId) : undefined;
+    const parentLoopId = oldToNewIdMap.get(
+      loop.start.data.parentLoopId as string
+    );
+    const parentIdStart = loop.start.parentId
+      ? oldToNewIdMap.get(loop.start.parentId)
+      : undefined;
+    const parentIdEnd = loop.end.parentId
+      ? oldToNewIdMap.get(loop.end.parentId)
+      : undefined;
     const edgeId = connectionToEdgeId({
       source: startId,
       sourceHandle: MAIN_LOOP_CONNECTOR,
@@ -551,28 +566,38 @@ export function duplicateNodes(
       targetHandle: MAIN_LOOP_CONNECTOR,
     });
 
-    newNodes.push(...[
-      {
-        id: startId,
-        type: "ForStart",
-        parentId: parentIdStart,
-        position: {
-            x: loop.start.parentId ? loop.start.position.x : loop.start.position.x + 50,
-            y: loop.start.parentId ? loop.start.position.y : loop.start.position.y + 50,
+    newNodes.push(
+      ...[
+        {
+          id: startId,
+          type: "ForStart",
+          parentId: parentIdStart,
+          position: {
+            x: loop.start.parentId
+              ? loop.start.position.x
+              : loop.start.position.x + 50,
+            y: loop.start.parentId
+              ? loop.start.position.y
+              : loop.start.position.y + 50,
           },
-        data: { loopId, parentLoopId, loopStart: true, loopEnd: false },
-      },
-      {
-        id: endId,
-        type: "ForEnd",
-        parentId: parentIdEnd,
-        position: {
-          x: loop.end.parentId ? loop.end.position.x : loop.end.position.x + 50,
-          y: loop.end.parentId ? loop.end.position.y : loop.end.position.y + 50,
+          data: { loopId, parentLoopId, loopStart: true, loopEnd: false },
         },
-        data: { loopId, parentLoopId, loopStart: false, loopEnd: true },
-      },
-    ])
+        {
+          id: endId,
+          type: "ForEnd",
+          parentId: parentIdEnd,
+          position: {
+            x: loop.end.parentId
+              ? loop.end.position.x
+              : loop.end.position.x + 50,
+            y: loop.end.parentId
+              ? loop.end.position.y
+              : loop.end.position.y + 50,
+          },
+          data: { loopId, parentLoopId, loopStart: false, loopEnd: true },
+        },
+      ]
+    );
 
     newEdges.push({
       id: edgeId,
@@ -592,14 +617,14 @@ export function duplicateNodes(
     oldToNewIdMap.set(loop.start.id, startId);
     oldToNewIdMap.set(loop.end.id, endId);
     oldToNewIdMap.set(loop.start.data.loopId as string, loopId);
-  })
+  });
 
   // handles edges for new loops and their children
   // handles copying of handles from the old loop to the new loop
   loops.forEach((loop) => {
     const newLoopId = oldToNewIdMap.get(loop.start.data.loopId as string);
 
-    if(!newLoopId) return;
+    if (!newLoopId) return;
 
     const loopHandles = getHandles(loop.start.data.loopId as string);
     loopHandles.forEach((_, label) => {
@@ -608,14 +633,16 @@ export function duplicateNodes(
 
     const loopChildrenIds = newNodes
       .filter((node) => node.data.parentLoopId === newLoopId)
-      .map((node) => { return node.id })
+      .map((node) => {
+        return node.id;
+      });
 
-    if(loopChildrenIds.length === 0) return;
+    if (loopChildrenIds.length === 0) return;
 
     const loopNodes: Node[] = [
-        newNodes.find((node) => node.id === oldToNewIdMap.get(loop.start.id))!,
-        newNodes.find((node) => node.id === oldToNewIdMap.get(loop.end.id))!
-      ];
+      newNodes.find((node) => node.id === oldToNewIdMap.get(loop.start.id))!,
+      newNodes.find((node) => node.id === oldToNewIdMap.get(loop.end.id))!,
+    ];
     loopChildrenIds.forEach((nodeId) => {
       loopNodes.forEach((loopNode) => {
         const isSource = loopNode.data.loopStart;
@@ -648,11 +675,10 @@ export function duplicateNodes(
         });
       });
     });
-  })
+  });
 
   addNodes(newNodes);
   addEdges(newEdges);
-
 
   // set all new nodes as selected
   setNodes((nodes) => {
@@ -660,18 +686,19 @@ export function duplicateNodes(
       ...node,
       selected: Array.from(oldToNewIdMap.values()).includes(node.id),
     }));
-  })
+  });
 }
 
-export function computeGroupSizings(
-  parentNode: Node,
-  childNodes: Node[],
-) {
-// get the child nodes positions in global coords
+export function computeGroupSizings(parentNode: Node, childNodes: Node[]) {
+  // get the child nodes positions in global coords
   const childNodesGlobalPositions = childNodes.map((child) => {
     return {
-      x: child.parentId ? child.position.x + parentNode.position.x : child.position.x,
-      y: child.parentId ? child.position.y + parentNode.position.y : child.position.y,
+      x: child.parentId
+        ? child.position.x + parentNode.position.x
+        : child.position.x,
+      y: child.parentId
+        ? child.position.y + parentNode.position.y
+        : child.position.y,
       width: child.measured!.width!,
       height: child.measured!.height!,
     };
@@ -680,17 +707,13 @@ export function computeGroupSizings(
   // get all extreme coords of positions of child nodes
   const childExtremas = {
     x: {
-      min: Math.min(
-        ...childNodesGlobalPositions.map((pos) => pos.x)
-      ),
+      min: Math.min(...childNodesGlobalPositions.map((pos) => pos.x)),
       max: Math.max(
         ...childNodesGlobalPositions.map((pos) => pos.x + pos.width)
       ),
     },
     y: {
-      min: Math.min(
-        ...childNodesGlobalPositions.map((pos) => pos.y)
-      ),
+      min: Math.min(...childNodesGlobalPositions.map((pos) => pos.y)),
       max: Math.max(
         ...childNodesGlobalPositions.map((pos) => pos.y + pos.height)
       ),
@@ -715,14 +738,28 @@ export function computeGroupSizings(
   const newParentBounds = {
     x: Math.min(childBounds.x, parentBounds.x),
     y: Math.min(childBounds.y, parentBounds.y),
-    width: Math.max(
-      childBounds.x + childBounds.width, parentBounds.x + parentBounds.width
-    ) - Math.min(childBounds.x, parentBounds.x),
-    height: Math.max(
-      childBounds.y + childBounds.height, parentBounds.y + parentBounds.height
-    ) - Math.min(childBounds.y, parentBounds.y),
-    minWidth: Math.max((childBounds.x + childBounds.width) - Math.min(childBounds.x, parentBounds.x), GROUP_SIZE.width),
-    minHeight: Math.max((childBounds.y + childBounds.height) - Math.min(childBounds.y, parentBounds.y), GROUP_SIZE.height),
+    width:
+      Math.max(
+        childBounds.x + childBounds.width,
+        parentBounds.x + parentBounds.width
+      ) - Math.min(childBounds.x, parentBounds.x),
+    height:
+      Math.max(
+        childBounds.y + childBounds.height,
+        parentBounds.y + parentBounds.height
+      ) - Math.min(childBounds.y, parentBounds.y),
+    minWidth: Math.max(
+      childBounds.x +
+        childBounds.width -
+        Math.min(childBounds.x, parentBounds.x),
+      GROUP_SIZE.width
+    ),
+    minHeight: Math.max(
+      childBounds.y +
+        childBounds.height -
+        Math.min(childBounds.y, parentBounds.y),
+      GROUP_SIZE.height
+    ),
   };
 
   // offset the children by the difference of the parent node position and the new parent node position
@@ -735,5 +772,5 @@ export function computeGroupSizings(
   return {
     newParentBounds,
     childNodeOffset,
-  }
+  };
 }

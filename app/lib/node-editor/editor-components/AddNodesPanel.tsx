@@ -69,7 +69,7 @@ const AddNodesPanel = ({
 
   const handleAddNode = (type: string, computeType?: string) => {
     // Create nodes based on type
-    const [startId, endId] =
+    const ids =
       type === "ForLoop"
         ? createForLoop(
             addNodes,
@@ -86,12 +86,7 @@ const AddNodesPanel = ({
 
     // Connect nodes if inside a loop
     if (parentLoopId) {
-      connectNodesToLoop(
-        getNodes,
-        addEdges,
-        [startId as string, endId as string],
-        parentLoopId
-      );
+      connectNodesToLoop(getNodes, addEdges, ids, parentLoopId);
     }
 
     onClose();

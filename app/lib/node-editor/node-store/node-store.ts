@@ -103,7 +103,7 @@ export const useNodeStore = create<NodeStoreState>((set, get) => ({
   mapErrors: { cycle: false },
   replaceNode: (node: Node) => {
     // if the node is a group, we don't want to add it to the map since they are purely visual
-    if(node.type === "Group") {
+    if (node.type === "Group") {
       return;
     }
 
