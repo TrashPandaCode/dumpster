@@ -774,9 +774,9 @@ export function computeGroupSizings(parentNode: Node, childNodes: Node[]) {
   // caculate a bounding box around the child positions in form of an origin point on the top left and a width and height
   const childBounds = {
     x: childExtremas.x.min - 20,
-    y: childExtremas.y.min - 30,
+    y: childExtremas.y.min - 60,
     width: childExtremas.x.max - childExtremas.x.min + 40,
-    height: childExtremas.y.max - childExtremas.y.min + 50,
+    height: childExtremas.y.max - childExtremas.y.min + 80,
   };
 
   const parentBounds = {
