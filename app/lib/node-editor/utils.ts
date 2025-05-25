@@ -727,6 +727,20 @@ export function duplicateNodes(
 }
 
 export function computeGroupSizings(parentNode: Node, childNodes: Node[]) {
+  if (childNodes.length === 0) {
+    return {
+      bounds: {
+        x: parentNode.position.x,
+        y: parentNode.position.y,
+        width: GROUP_SIZE.width,
+        height: GROUP_SIZE.height,
+        minWidth: GROUP_SIZE.width,
+        minHeight: GROUP_SIZE.height,
+      },
+      offset: { x: 0, y: 0 },
+    };
+  }
+
   // get the child nodes positions in global coords
   const childNodesGlobalPositions = childNodes.map((child) => {
     return {
@@ -807,7 +821,7 @@ export function computeGroupSizings(parentNode: Node, childNodes: Node[]) {
   };
 
   return {
-    newParentBounds,
-    childNodeOffset,
+    bounds: newParentBounds,
+    offset: childNodeOffset,
   };
 }
