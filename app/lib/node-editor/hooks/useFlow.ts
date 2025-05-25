@@ -19,7 +19,7 @@ import { applyNodeChanges, computeGroupSizings } from "../utils";
 
 const selector = (state: {
   nodes: Node[];
-  setNodes: (nodes: Node[]) => void;
+  setNodes: (updater: (nodes: Node[]) => Node[]) => void;
   highlightDuplicateNodes: () => void;
 }) => ({
   nodes: state.nodes,
@@ -55,8 +55,8 @@ export function useFlow() {
               const nodeOther = getNodes().filter(
                 (n) => n.id !== element.id && n.data.loopId === node.data.loopId
               )[0];
-              setNodes(
-                nodes
+              setNodes((nds) =>
+                nds
                   .filter((n) => n.data.loopId !== node?.data.loopId)
                   .map((n) => ({
                     ...n,
@@ -94,14 +94,13 @@ export function useFlow() {
             break;
         }
       });
-      setNodes(applyNodeChanges(changes, nodes));
+      setNodes((nds) => applyNodeChanges(changes, nds));
       if (handleHighlight) {
         highlightDuplicateNodes();
       }
     },
     [
       setNodes,
-      nodes,
       replaceNode,
       highlightDuplicateNodes,
       getNode,
@@ -254,11 +253,11 @@ export function useFlow() {
     // if there are no overlapping nodes but node has a parentid or
     // if the overlapping node is not a group, remove the node from the group it is in
     if ((!parentNode || parentNode.type !== "Group") && childNode.parentId) {
-      setNodes(
-        nodes.map((n) => {
+      setNodes((nds) =>
+        nds.map((n) => {
           // look for and update the corresponding node with the new position and remove the parentId
           if (n.id === childNode.id) {
-            const parent = nodes.find((p) => p.id === childNode.parentId);
+            const parent = nds.find((p) => p.id === childNode.parentId);
 
             // if parent is not found, return the node unmodified
             // ... highly unlikely
@@ -305,8 +304,8 @@ export function useFlow() {
     const newParentBounds = parentSizings.newParentBounds;
     const childNodeOffset = parentSizings.childNodeOffset;
 
-    setNodes(
-      nodes.map((n) => {
+    setNodes((nds) =>
+      nds.map((n) => {
         // apply changes to the child and parent node
         if (n.id === childNode.id) {
           return {

@@ -9,7 +9,7 @@ type HighlightType = "cycle" | "duplicate";
 interface NodeSetterState {
   nodes: Node[];
   highlightNodes: Map<HighlightType, string[]>;
-  setNodes: (nodes: Node[]) => void;
+  setNodes: (updater: (nodes: Node[]) => Node[]) => void;
   resetHighlight: (type: HighlightType) => void;
   highlightNode: (id: string, type: HighlightType, color: string) => void;
   highlightDuplicateNodes: () => void;
@@ -18,7 +18,10 @@ interface NodeSetterState {
 export const useNodeSetterStore = create<NodeSetterState>((set, get) => ({
   nodes: debugNodes,
   highlightNodes: new Map(),
-  setNodes: (nodes) => set({ nodes }),
+  setNodes: (updater) =>
+    set((state) => ({
+      nodes: updater(state.nodes),
+    })),
   resetHighlight: (type) => {
     set((state) => {
       const highlightNodes = get().highlightNodes.get(type);
