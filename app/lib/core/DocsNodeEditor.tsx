@@ -18,8 +18,8 @@ import { v4 as uuidv4 } from "uuid";
 import "@xyflow/react/dist/style.css";
 
 import { TooltipProvider } from "../node-editor/editor-components/Tooltip";
-import { nodeTypes } from "../node-editor/nodes/node-types";
 import { createForLoop } from "../node-editor/utils";
+import { docsNodeTypes } from "./nodes/docsNodeTypes";
 
 const Editor: React.FC<{ type: string }> = ({ type }) => {
   const [nodes, setNodes] = useState<Node[]>(
@@ -60,7 +60,7 @@ const Editor: React.FC<{ type: string }> = ({ type }) => {
   );
 
   useEffect(() => {
-    if (type === "ForLoop") createForLoop(addNodes, 0, 0, addEdges);
+    if (type === "ForLoop") createForLoop(addNodes, 0, 0, addEdges); //TODO: these nodes will access the same store as the "actual" nodes
   }, []);
 
   return (
@@ -70,7 +70,7 @@ const Editor: React.FC<{ type: string }> = ({ type }) => {
         <ReactFlow
           className="not-prose rounded"
           id="node-editor"
-          nodeTypes={nodeTypes}
+          nodeTypes={docsNodeTypes}
           nodes={nodes}
           edges={edges}
           onNodesChange={onNodesChange}
