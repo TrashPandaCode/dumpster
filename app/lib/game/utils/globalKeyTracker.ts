@@ -2,15 +2,13 @@ const keysDown = new Set<string>();
 const keysPressed = new Set<string>();
 const keysReleased = new Set<string>();
 
+const defaultCombos = new Set<string>(["Control+d", "Control+n"]);
+const comboListeners = new Map<string, Set<(e: KeyboardEvent) => void>>();
+
 let initialized = false;
 let keydownHandler: (e: KeyboardEvent) => void;
 let keyupHandler: (e: KeyboardEvent) => void;
 
-/**
- * Converts our key names to React/DOM key names.
- * @param key The key name to normalize.
- * @returns The normalized key name.
- */
 function normalizeKey(key: string): string {
   const lower = key.toLowerCase();
   if (lower === "space") return " ";
@@ -18,16 +16,40 @@ function normalizeKey(key: string): string {
   return key;
 }
 
+function getComboString(e: KeyboardEvent): string {
+  const parts: string[] = [];
+  if (e.ctrlKey) parts.push("Control");
+  if (e.altKey) parts.push("Alt");
+  if (e.metaKey) parts.push("Meta");
+  if (e.shiftKey) parts.push("Shift");
+  parts.push(e.key.toLowerCase());
+  return parts.join("+");
+}
+function shortcutListener(combo: string, callback: (e: KeyboardEvent) => void) {
+  if (!comboListeners.has(combo)) {
+    comboListeners.set(combo, new Set());
+  }
+  comboListeners.get(combo)!.add(callback);
+  return () => comboListeners.get(combo)?.delete(callback);
+}
+
 function initGlobalKeyTracker() {
   if (initialized) return;
   initialized = true;
 
   keydownHandler = (e) => {
+    const combo = getComboString(e);
+    if (defaultCombos.has(combo)) {
+      e.preventDefault();
+    }
+
     const key = e.key;
     if (!keysDown.has(key)) {
       keysPressed.add(key);
     }
     keysDown.add(key);
+
+    comboListeners.get(combo)?.forEach((cb) => cb(e));
   };
 
   keyupHandler = (e) => {
@@ -75,4 +97,5 @@ export const globalKeyTracker = {
   isKeyPressed,
   isKeyReleased,
   clearPressedAndReleased,
+  shortcutListener,
 };
