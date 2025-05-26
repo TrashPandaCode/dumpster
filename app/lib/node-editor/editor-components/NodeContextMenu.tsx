@@ -95,13 +95,19 @@ const DefaultNodeContextMenu = ({
         className="w-full rounded px-2 py-1 text-left text-sm text-white hover:bg-slate-700"
         onClick={duplicateNode}
       >
-        Duplicate
+        <span>Duplicate</span>
+        <span className="ml-2 rounded bg-slate-600 px-1.5 py-0.5 font-mono text-xs text-gray-300">
+          Ctrl+D
+        </span>
       </button>
       <button
         className="w-full rounded px-2 py-1 text-left text-sm text-white hover:bg-slate-700"
         onClick={deleteNode}
       >
-        Delete
+        <span>Delete</span>
+        <span className="ml-2 rounded bg-slate-600 px-1.5 py-0.5 font-mono text-xs text-gray-300">
+          Del
+        </span>
       </button>
     </>
   );
