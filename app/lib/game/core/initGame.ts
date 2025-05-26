@@ -16,6 +16,9 @@ export const state = {
  * @returns Kaplay context
  */
 export default function initGame(canvas: HTMLCanvasElement) {
+  let pauseStart = 0;
+  let totalPausedTime = 0;
+
   if (!state.first) return; //TODO: remove just for react strict mode
   state.first = false; //TODO: remove just for react strict mode
 
@@ -25,18 +28,27 @@ export default function initGame(canvas: HTMLCanvasElement) {
   useKeyStore.getState().setKeyPressedFunction(globalKeyTracker.isKeyPressed);
   useKeyStore.getState().setKeyReleasedFunction(globalKeyTracker.isKeyReleased);
 
-  useTimeStore.getState().setTimeFunction(() => k.time());
+  useTimeStore.getState().setTimeFunction(() => k.time() - totalPausedTime);
   useTimeStore.getState().setDeltaTimeFunction(() => k.dt());
 
   //Game Loop, runs at 60 frames per second
   k.onUpdate(() => {
     if (useGameStore.getState().isPaused) {
+      // Log pause start
+      if(!game.paused){
+        pauseStart = k.time();
+      }
       game.paused = true;
       return;
     }
-    game.paused = false; // TODO: run this only once (maybe in store)
+    // Will run once on game resume
+    if (game.paused) {
+      totalPausedTime += k.time() - pauseStart;
+      pauseStart = 0;
+      game.paused = false;
+    }
 
-    // compute node map
+    // Compute node map
     useNodeStore.getState().compute();
 
     globalKeyTracker.clearPressedAndReleased();
