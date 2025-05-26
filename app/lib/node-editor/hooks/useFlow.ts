@@ -211,13 +211,11 @@ export function useFlow() {
       (n) => n.type === "Group"
     );
     // choose Group with largest intersection area as new parent
-    const newParentNode = intersectingNodes.length > 0
-      ? intersectingNodes.reduce((largest, current) => {
-          const currentArea = current.measured!.width! * current.measured!.height!;
-          const largestArea = largest.measured!.width! * largest.measured!.height!;
-          return currentArea > largestArea ? current : largest;
-        }, intersectingNodes[0])
-      : null;
+    const newParentNode = intersectingNodes.reduce((largest, current) => {
+      const currentArea = current.measured!.width! * current.measured!.height!;
+      const largestArea = largest.measured!.width! * largest.measured!.height!;
+      return currentArea > largestArea ? current : largest;
+    }, selectedNodes[0]);
 
     const updatedNodes: Node[] = [];
     const parentsToUpdate: Node[] = [];
