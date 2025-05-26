@@ -55,8 +55,15 @@ const DefaultNodeContextMenu = ({
   nodeId: string;
   onClose: () => void;
 }) => {
-  const { getNode, getNodes, setNodes, addNodes, setEdges, addEdges } =
-    useReactFlow();
+  const {
+    getNode,
+    getNodes,
+    getEdges,
+    setNodes,
+    addNodes,
+    setEdges,
+    addEdges,
+  } = useReactFlow();
 
   const addHandle = useLoopStore((state) => state.addHandle);
   const getHandles = useLoopStore((state) => state.getHandles);
@@ -79,6 +86,7 @@ const DefaultNodeContextMenu = ({
       nodesToDuplicate,
       addNodes,
       addEdges,
+      getEdges,
       setNodes,
       addHandle,
       getHandles
@@ -89,6 +97,7 @@ const DefaultNodeContextMenu = ({
     addEdges,
     addHandle,
     addNodes,
+    getEdges,
     getHandles,
     getNode,
     getNodes,
