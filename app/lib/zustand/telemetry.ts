@@ -19,6 +19,7 @@ type TelemetryStore = {
     logNode: (node: string) => void;
     skippedTutorial: (bool: boolean) => void;
     newLevel: (level: LevelId) => void;
+    downloadJSON: () => void;
 }
 
 export const useTelemetryStore = create<TelemetryStore>((set) => ({
@@ -75,4 +76,19 @@ export const useTelemetryStore = create<TelemetryStore>((set) => ({
                 logs: [...state.logs, { level, startTime:"0", finishTime:"0", skippedTutorial:false, nodes: [] }]
             };
         })),
+    downloadJSON: () =>
+        set((state) => {
+            const logs = [...state.logs];
+            const jsonStr = JSON.stringify(logs, null, 2); // Pretty print with 2-space indentation
+            const blob = new Blob([jsonStr], { type: "app/public/json" });
+            const url = URL.createObjectURL(blob);
+
+            const link = document.createElement("a");
+            link.href = url;
+            link.download = "telemetry.JSON";
+            link.click();
+
+            URL.revokeObjectURL(url);
+            return { logs };
+        }),
 }));

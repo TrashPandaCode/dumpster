@@ -18,12 +18,14 @@ import { globalKeyTracker } from "~/lib/game/utils/globalKeyTracker";
 import { useTelemetryStore } from "~/lib/zustand/telemetry"
 
 const Game = ({ params }: Route.ComponentProps) => {
+  const setTelemetryLevel = useTelemetryStore((state) => state.newLevel);
+  const downloadTelemetry = useTelemetryStore((state) => state.downloadJSON);
+
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   // load current level from params
   // also set the current level in the game store
   const setCurrentLevel = useGameStore((state) => state.setCurrentLevel);
-  const setTelemetryLevel = useTelemetryStore((state) => state.newLevel);
   const level = params.id || "playground";
   setCurrentLevel(level as keyof typeof LEVELS); // we can cast confidently here since we know the params.id is a valid level id, because loading the level will fail if it is not
 
@@ -39,11 +41,23 @@ const Game = ({ params }: Route.ComponentProps) => {
     loadLevel(level);
     setTelemetryLevel(level as keyof typeof LEVELS);
 
+    // Wait for Ctrl+S
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if ((event.ctrlKey || event.metaKey) && event.key === "s") {
+        event.preventDefault();
+        console.log("ctrl+s");
+        downloadTelemetry();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
     return () => {
       cleanupKaplay();
       globalKeyTracker.cleanup();
+      window.removeEventListener("keydown", handleKeyDown);
     };
-  }, []);
+  }, [downloadTelemetry]);
 
   return (
     <>
