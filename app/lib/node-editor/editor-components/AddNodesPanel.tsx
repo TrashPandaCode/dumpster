@@ -8,6 +8,8 @@ import { TYPES } from "../nodes/math-float/types";
 import { searchNodeTypes } from "../nodes/node-types";
 import { connectNodesToLoop, createForLoop } from "../utils";
 
+import { useTelemetryStore } from "~/lib/zustand/telemetry";
+
 const AddNodesPanel = ({
   x,
   y,
@@ -23,6 +25,8 @@ const AddNodesPanel = ({
   parentLoopId?: string;
   children?: React.ReactNode;
 }) => {
+  const logNodeTelemetry = useTelemetryStore((state) => state.logNode);
+
   const MathFloatComputeTypes = Object.values(TYPES).flat();
 
   const { addNodes, addEdges, screenToFlowPosition, getNodes } = useReactFlow();
@@ -84,6 +88,9 @@ const AddNodesPanel = ({
     if (parentLoopId) {
       connectNodesToLoop(getNodes, addEdges, ids, parentLoopId);
     }
+
+    // Log node in Telemetry
+    logNodeTelemetry(type);
 
     onClose();
   };
