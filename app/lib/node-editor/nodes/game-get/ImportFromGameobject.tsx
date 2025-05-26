@@ -60,7 +60,11 @@ const ImportFromGameobject = memo(({ id, data }: { id: string; data: any }) => {
 
   return (
     <div className="min-w-48">
-      <NodeContent label="Import From Gameobject" type="import">
+      <NodeContent
+        label="Import From Gameobject"
+        type="import"
+        docsName="import"
+      >
         <div className="text-left">
           {selectedGameObjects.length > 1 && (
             <BaseHandle id={IN_HANDLE_1} position={Position.Left} />

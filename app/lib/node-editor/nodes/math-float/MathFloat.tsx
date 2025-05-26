@@ -57,7 +57,11 @@ const MathFloat = memo(({ id, data }: { id: string; data: any }) => {
 
   return (
     <div className="min-w-3xs">
-      <NodeContent label={computeType.current} type="float">
+      <NodeContent
+        label={computeType.current}
+        type="float"
+        docsName="mathfloat"
+      >
         <SelectDropDown
           items={TYPES}
           setSelected={setComputeType}
