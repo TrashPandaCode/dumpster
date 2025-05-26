@@ -9,6 +9,7 @@ type NodeContextMenuProps = {
   nodeId: string;
   nodeType: string | undefined;
   nodeLoopId: string | undefined;
+  nodeParentId: string | undefined;
   x: number;
   y: number;
   onClose: () => void;
@@ -21,11 +22,18 @@ const NodeContextMenu: React.FC<NodeContextMenuProps> = ({
   x,
   y,
   onClose,
+  nodeParentId,
 }) => {
   return (
     <div style={{ position: "absolute", top: y, left: x, zIndex: 1000 }}>
       {nodeType === "ForStart" || nodeType === "ForEnd" ? (
-        <AddNodesPanel onClose={onClose} x={x} y={y} parentLoopId={nodeLoopId}>
+        <AddNodesPanel
+          onClose={onClose}
+          x={x}
+          y={y}
+          parentLoopId={nodeLoopId}
+          parentId={nodeParentId}
+        >
           <hr className="mx-auto h-1 w-44 rounded-sm border-0 bg-slate-700" />
           <DefaultNodeContextMenu nodeId={nodeId} onClose={onClose} />
         </AddNodesPanel>

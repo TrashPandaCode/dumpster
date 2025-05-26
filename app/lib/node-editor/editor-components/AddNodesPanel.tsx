@@ -16,6 +16,7 @@ const AddNodesPanel = ({
   position,
   parentLoopId,
   children,
+  parentId,
 }: {
   x: number;
   y: number;
@@ -23,10 +24,12 @@ const AddNodesPanel = ({
   position?: PanelPosition;
   parentLoopId?: string;
   children?: React.ReactNode;
+  parentId?: string;
 }) => {
   const MathFloatComputeTypes = Object.values(TYPES).flat();
 
-  const { addNodes, addEdges, screenToFlowPosition, getNodes } = useReactFlow();
+  const { addNodes, addEdges, screenToFlowPosition, getNodes, getNode } =
+    useReactFlow();
   const inputRef = useRef<HTMLInputElement>(null);
 
   const [nodeSearch, setNodeSearch] = useState("");
@@ -38,6 +41,8 @@ const AddNodesPanel = ({
       return { nodeType: t };
     })
   );
+
+  const parentNode = getNode(parentId ?? "");
 
   // focus the input field when the component mounts
   useEffect(() => {
@@ -68,19 +73,33 @@ const AddNodesPanel = ({
   }, [nodeSearch]);
 
   const handleAddNode = (type: string, computeType?: string) => {
+    const sFPosition1 = screenToFlowPosition({
+      x,
+      y,
+    });
+    const sFPosition2 = screenToFlowPosition({
+      x: x + 300,
+      y,
+    });
+
+    const positions = {
+      x1: parentNode ? sFPosition1.x - parentNode.position.x : sFPosition1.x,
+      y1: parentNode ? sFPosition1.y - parentNode.position.y : sFPosition1.y,
+      x2: parentNode ? sFPosition2.x - parentNode.position.x : sFPosition2.x,
+      y2: parentNode ? sFPosition2.y - parentNode.position.y : sFPosition2.y,
+    };
     // Create nodes based on type
     const ids =
       type === "ForLoop"
         ? createForLoop(
             addNodes,
             addEdges,
-            x,
-            y,
-            x + 300,
-            y,
+            positions.x1,
+            positions.y1,
+            positions.x2,
+            positions.y2,
             parentLoopId,
-            undefined,
-            screenToFlowPosition
+            parentId
           )
         : [createSingleNode(type, computeType)];
 
@@ -95,10 +114,20 @@ const AddNodesPanel = ({
   // Helper function to create a single node and return its ID
   const createSingleNode = (type: string, computeType?: string) => {
     const id = uuidv4();
+    const sFPosition = screenToFlowPosition({
+      x,
+      y,
+    });
+    const position = {
+      x: parentNode ? sFPosition.x - parentNode.position.x : sFPosition.x,
+      y: parentNode ? sFPosition.y - parentNode.position.y : sFPosition.y,
+    };
+
     addNodes({
       id,
       type,
-      position: screenToFlowPosition({ x, y }),
+      position: position,
+      parentId,
       data: {
         initialComputeType: computeType,
         parentLoopId,

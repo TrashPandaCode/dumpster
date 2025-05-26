@@ -328,13 +328,7 @@ export function createForLoop(
   x2: number,
   y2: number,
   parentLoopId?: string,
-  parentId?: string,
-  screenToFlowPosition?: (
-    clientPosition: XYPosition,
-    options?: {
-      snapToGrid: boolean;
-    }
-  ) => XYPosition
+  parentId?: string
 ) {
   const startId = uuidv4();
   const endId = uuidv4();
@@ -350,18 +344,14 @@ export function createForLoop(
       id: startId,
       type: "ForStart",
       parentId,
-      position: screenToFlowPosition
-        ? screenToFlowPosition({ x: x1, y: y1 })
-        : { x: x1, y: y1 },
+      position: { x: x1, y: y1 },
       data: { loopId, parentLoopId },
     },
     {
       id: endId,
       type: "ForEnd",
       parentId,
-      position: screenToFlowPosition
-        ? screenToFlowPosition({ x: x2, y: y2 })
-        : { x: x2, y: y2 },
+      position: { x: x2, y: y2 },
       data: { loopId, parentLoopId },
     },
   ]);
