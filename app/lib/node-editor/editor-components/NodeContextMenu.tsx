@@ -74,7 +74,6 @@ const DefaultNodeContextMenu = ({
           n.data.parentLoopId === node.data.loopId) && // also get all children if its a loop node
           node.data.loopId != undefined) // ensure we are dealing with a loop node
     );
-    console.log("Nodes to duplicate:", nodesToDuplicate);
 
     duplicateNodes(
       nodesToDuplicate,
