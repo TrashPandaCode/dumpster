@@ -72,7 +72,11 @@ const ExportToGameobject = memo(
 
     return (
       <div>
-        <NodeContent label="Export To Gameobject" type="export">
+        <NodeContent
+          label="Export To Gameobject"
+          type="export"
+          docsName="export"
+        >
           <div className="text-left">
             {selectedGameObjects.length > 1 && (
               <BaseHandle id={IN_HANDLE_1} position={Position.Left} />
