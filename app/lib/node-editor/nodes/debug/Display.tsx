@@ -21,7 +21,7 @@ const Display = memo(({ id }: { id: string }) => {
 
   return (
     <div className="min-w-48">
-      <NodeContent label="Display" type="debug">
+      <NodeContent label="Display" type="debug" docsName="display">
         <div className="flex gap-2">
           <LabelHandle id={IN_HANDLE_1} position={Position.Left} />
           <p>{displaNumber}</p>

@@ -8,7 +8,7 @@ import { LEVELS, type Level } from "~/lib/game/core/levels";
 import arrowDownIcon from "../assets/arrow_down.svg";
 
 const Home = () => {
-  const [currentHoverCard, setCurrentHoverCard] = useState(LEVELS["1.1"]); // Default to the first level
+  const [currentHoverCard, setCurrentHoverCard] = useState<Level>(LEVELS["1.1"]); // Default to the first level
   const CARDS = Object.values(LEVELS).slice(0, 6); // Get the first 6 levels for the cards
 
   const [showAll, setShowAll] = useState(false);

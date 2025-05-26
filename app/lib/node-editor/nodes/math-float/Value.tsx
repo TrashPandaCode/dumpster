@@ -22,7 +22,7 @@ const Value = memo(({ id, data }: { id: string; data: any }) => {
 
   return (
     <div className="min-w-48">
-      <NodeContent label="Value" type="float">
+      <NodeContent label="Value" type="float" docsName="value">
         <div className="flex w-full justify-end gap-2">
           <NumberInput
             setValue={(v) => (value.current = v)}

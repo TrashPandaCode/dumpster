@@ -16,13 +16,14 @@ import EditLabel from "./EditLabel";
 const NodeContent = ({
   label,
   type,
+  docsName,
   active = false,
   children,
   className,
 }: {
   label: string;
   type: string;
-  name?: string;
+  docsName: string;
   active?: boolean;
   children?: ReactNode;
   className?: string;
@@ -52,7 +53,7 @@ const NodeContent = ({
             <TooltipTrigger asChild>
               <NavLink
                 target="_blank"
-                to={`/docs/nodes/${label.toLowerCase()}`}
+                to={`/docs/nodes/${docsName.toLowerCase()}`}
               >
                 <QuestionMarkCircledIcon className="cursor-pointer text-slate-400" />
               </NavLink>
