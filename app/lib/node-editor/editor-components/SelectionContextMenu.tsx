@@ -1,5 +1,6 @@
-import { Panel } from "@xyflow/react";
-import React from "react";
+import { Panel, useReactFlow, type Edge, type Node } from "@xyflow/react";
+import React, { useCallback } from "react";
+import { v4 as uuidv4 } from "uuid";
 
 import { useLoopStore } from "../node-store/loop-store";
 import { connectionToEdgeId, duplicateNodes as newDuplicate } from "../utils";
@@ -92,10 +93,7 @@ const SelectionContextMenu: React.FC<SelectionContextMenuProps> = ({
       <Panel className="flex w-44 flex-col gap-1 rounded bg-slate-800 p-2 font-mono shadow-lg outline-1 outline-slate-700 outline-solid">
         <button
           className="w-full rounded px-2 py-1 text-left text-sm text-white hover:bg-slate-700"
-          onClick={() => {
-            duplicateNodes(nodeIds);
-            onClose();
-          }}
+          onClick={duplicateNodes}
         >
           Duplicate {nodeIds.length} nodes
         </button>
