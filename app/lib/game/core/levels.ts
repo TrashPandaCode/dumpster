@@ -177,6 +177,6 @@ export const LEVELS = {
     },
     hints: [],
     modifiableGameObjects: [],
-    availableNodes: [],
+    availableNodes: ["Display"],
   },
 } satisfies Record<string, Level>;

@@ -55,7 +55,8 @@ const AddNodes = ({
         return { nodeType: t };
       });
 
-    if (nodeSearch === "") return setFilteredTypes(types);
+    if (nodeSearch === "" || !searchNodeTypes.includes("MathFloat"))
+      return setFilteredTypes(types);
 
     const mathTypes = MathFloatComputeTypes.filter((type) =>
       type.toLowerCase().includes(nodeSearch.toLowerCase())
