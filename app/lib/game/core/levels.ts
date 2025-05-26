@@ -60,8 +60,7 @@ export type Level = {
     id: string;
     connections: { label: string; access: ConnectionAccess }[];
   }[];
-  // TODO
-  // allowedNodes
+  availableNodes: string[];
 };
 
 /**
@@ -71,7 +70,8 @@ export const LEVELS = {
   playground: {
     id: "playground",
     name: "Playground",
-    description: "This is a sandbox level where you can freely test game mechanics.",
+    description:
+      "This is a sandbox level where you can freely test game mechanics.",
     dialog: [
       "This is a playground level where you can test your game mechanics.",
       "Use of all nodes is permitted.",
@@ -107,11 +107,24 @@ export const LEVELS = {
         ],
       },
     ],
+    availableNodes: [
+      "Value",
+      "Display",
+      "Time",
+      "KeyPress",
+      "MathFloat",
+      "ExportToGameobject",
+      "ImportFromGameobject",
+      "Switch",
+      "Group",
+      "ForLoop",
+    ],
   },
   "1.1": {
     id: "1.1",
     name: "Level 1.1",
-    description: "This is the first level of the game, introducing basic mechanics.",
+    description:
+      "This is the first level of the game, introducing basic mechanics.",
     dialog: [
       "This is the first level of the game. It introduces the basic mechanics and objectives.",
     ],
@@ -142,11 +155,13 @@ export const LEVELS = {
         ],
       },
     ],
+    availableNodes: ["Value", "Display", "MathFloat", "ExportToGameobject"],
   },
   "1.2": {
     id: "1.2",
     name: "Level 1.2",
-    description: "This is the second level of the game, building upon Level 1.1.",
+    description:
+      "This is the second level of the game, building upon Level 1.1.",
     dialog: [
       "This is the second level of the game. It builds upon the mechanics introduced in Level 1.1.",
     ],
@@ -162,5 +177,6 @@ export const LEVELS = {
     },
     hints: [],
     modifiableGameObjects: [],
+    availableNodes: [],
   },
 } satisfies Record<string, Level>;

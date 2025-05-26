@@ -4,8 +4,9 @@ import classnames from "classnames";
 import { useEffect, useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
+import { LEVELS } from "~/lib/game/core/levels";
+import { useGameStore } from "~/lib/zustand/game";
 import { TYPES } from "../nodes/math-float/types";
-import { searchNodeTypes } from "../nodes/node-types";
 import { connectNodesToLoop, createForLoop } from "../utils";
 
 const AddNodes = ({
@@ -21,6 +22,9 @@ const AddNodes = ({
   parentLoopId?: string;
   children?: React.ReactNode;
 }) => {
+  const level = useGameStore((state) => state.currentLevel);
+  const searchNodeTypes = LEVELS[level].availableNodes;
+
   const MathFloatComputeTypes = Object.values(TYPES).flat();
 
   const { addNodes, addEdges, screenToFlowPosition, getNodes } = useReactFlow();
