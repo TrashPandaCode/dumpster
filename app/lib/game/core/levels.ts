@@ -12,20 +12,50 @@ export type ConnectionAccess = "set" | "get" | "all";
  * The Level type represents a game level.
  */
 export type Level = {
+  /**
+   * Unique identifier for the level.
+   */
   id: string;
+  /**
+   * (Human Readable) Name of the level.
+   */
   name: string;
-  description: string[];
+  /**
+   * Description of the level.
+   */
+  description: string;
+  /**
+   * Dialog for the level, providing context or instructions.
+   */
+  dialog: string[];
+  /**
+   * Goals for the level, outlining objectives to be achieved.
+   */
   goals: string[];
+  /**
+   * Category of the level, used for grouping or filtering levels.
+   */
   category: string;
+  /**
+   * Image representing the level, used for visual identification.
+   */
   image: string;
   nodes: Node[];
   edges: Edge[];
+  /**
+   * Function to initialize the state of the level.
+   * This function is called when the level is loaded (after initGame).
+   */
   initialState: () => void;
   solution: {
     nodes: Node[];
     edges: Edge[];
   };
   hints: string[];
+  /**
+   * Modifiable game objects in the level.
+   * Each object has an ID and a list of connections with access levels.
+   */
   modifiableGameObjects: {
     id: string;
     connections: { label: string; access: ConnectionAccess }[];
@@ -36,14 +66,13 @@ export type Level = {
 
 /**
  * The LEVELS object contains all the levels of the game.
- * Each level has a name, description, category, image, nodes, edges,
- * initial state function, solution, and hints.
  */
 export const LEVELS = {
   playground: {
     id: "playground",
     name: "Playground",
-    description: [
+    description: "This is a sandbox level where you can freely test game mechanics.",
+    dialog: [
       "This is a playground level where you can test your game mechanics.",
       "Use of all nodes is permitted.",
     ],
@@ -82,7 +111,8 @@ export const LEVELS = {
   "1.1": {
     id: "1.1",
     name: "Level 1.1",
-    description: [
+    description: "This is the first level of the game, introducing basic mechanics.",
+    dialog: [
       "This is the first level of the game. It introduces the basic mechanics and objectives.",
     ],
     goals: [
@@ -116,7 +146,8 @@ export const LEVELS = {
   "1.2": {
     id: "1.2",
     name: "Level 1.2",
-    description: [
+    description: "This is the second level of the game, building upon Level 1.1.",
+    dialog: [
       "This is the second level of the game. It builds upon the mechanics introduced in Level 1.1.",
     ],
     goals: ["No goals defined yet."],
