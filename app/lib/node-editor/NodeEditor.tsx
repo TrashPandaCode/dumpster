@@ -84,6 +84,7 @@ const Editor = () => {
           nodeId={nodeContextMenu.nodeId}
           nodeType={nodeContextMenu.nodeType}
           nodeLoopId={nodeContextMenu.nodeLoopId}
+          nodeParentId={nodeContextMenu.nodeParentId}
           x={nodeContextMenu.x}
           y={nodeContextMenu.y}
           onClose={() => setNodeContextMenu(null)}

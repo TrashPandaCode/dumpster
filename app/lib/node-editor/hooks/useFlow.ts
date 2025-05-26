@@ -15,7 +15,7 @@ import { useShallow } from "zustand/shallow";
 import { useNodeSetterStore } from "../node-store/node-setter";
 import { useNodeStore } from "../node-store/node-store";
 import { debugEdges } from "../solutions/debug";
-import { applyNodeChanges } from "../utils";
+import { applyNodeChanges, computeGroupSizings } from "../utils";
 
 const selector = (state: {
   nodes: Node[];
@@ -180,118 +180,186 @@ export function useFlow() {
     },
     [setEdges, getNode, addEdgeStore]
   );
-  const onNodeDragStop: OnNodeDrag = (_, childNode) => {
-    // if the node is a group, return
-    // node nesting cant work because of weird react flow behavior
-    // "parent nodes need to be in front of child nodes in node array"
-    if (childNode.type === "Group") return;
 
-    const parentNode = getIntersectingNodes(childNode)?.[0];
-
-    // if there are no overlapping nodes but node has a parentid or
-    // if the overlapping node is not a group, remove the node from the group it is in
-    if ((!parentNode || parentNode.type !== "Group") && childNode.parentId) {
-      setNodes((nds) =>
-        nds.map((n) => {
-          // look for and update the corresponding node with the new position and remove the parentId
-          if (n.id === childNode.id) {
-            const parent = nds.find((p) => p.id === childNode.parentId);
-
-            // if parent is not found, return the node unmodified
-            // ... highly unlikely
-            if (!parent) return n;
-
-            // add the parent position to the node position so the node position is relative to the editor again
-            const position = {
-              x: n.position.x + parent.position.x,
-              y: n.position.y + parent.position.y,
-            };
-
-            // return the modified node
-            return {
-              ...n,
-              position,
-              parentId: undefined,
-            };
-          }
-
-          // return all other nodes unmodified
-          return n;
-        })
-      );
-      return;
-    }
-
-    // if there are no overlapping nodes, return
-    if (!parentNode) return;
-
-    // if overlapping node is not a group, return
-    if (parentNode.type !== "Group") return;
-
-    // get child node position in global coords
-    let childNodeGlobalPosition = childNode.position;
-    if (childNode.parentId) {
-      const parent =
-        childNode.parentId === parentNode.id
-          ? parentNode
-          : getNode(childNode.parentId)!;
-
-      childNodeGlobalPosition = {
-        x: childNode.position.x + parent.position.x,
-        y: childNode.position.y + parent.position.y,
-      };
-    }
-
-    // new parent node position
-    const offset = 20;
-    const offsetX = parentNode.position.x - childNodeGlobalPosition.x + offset;
-    const offsetY = parentNode.position.y - childNodeGlobalPosition.y + offset;
-
-    const parentPosition = {
-      x: parentNode.position.x - Math.max(offsetX, 0),
-      y: parentNode.position.y - Math.max(offsetY, 0),
+  const onNodeDragStop: OnNodeDrag = () => {
+    const selectedNodes = nodes.filter((n) => n.selected && n.type !== "Group");
+    const selectedBoundingRect = {
+      x: Math.min(
+        ...selectedNodes.map((n) =>
+          n.parentId
+            ? n.position.x + getNode(n.parentId)!.position.x
+            : n.position.x
+        )
+      ),
+      y: Math.min(
+        ...selectedNodes.map((n) =>
+          n.parentId
+            ? n.position.y + getNode(n.parentId)!.position.y
+            : n.position.y
+        )
+      ),
+      width:
+        Math.max(
+          ...selectedNodes.map((n) => n.position.x + n.measured!.width!)
+        ) - Math.min(...selectedNodes.map((n) => n.position.x)),
+      height:
+        Math.max(
+          ...selectedNodes.map((n) => n.position.y + n.measured!.height!)
+        ) - Math.min(...selectedNodes.map((n) => n.position.y)),
     };
+    const intersectingNodes = getIntersectingNodes(selectedBoundingRect).filter(
+      (n) => n.type === "Group"
+    );
+    // choose Group with largest intersection area as new parent
+    const newParentNode = intersectingNodes.reduce((largest, current) => {
+      const currentArea = current.measured!.width! * current.measured!.height!;
+      const largestArea = largest.measured!.width! * largest.measured!.height!;
+      return currentArea > largestArea ? current : largest;
+    }, selectedNodes[0]);
 
-    let parentWidth = parentNode.measured!.width! + Math.max(offsetX, 0);
-    let parentHeight = parentNode.measured!.height! + Math.max(offsetY, 0);
-
-    // new child position
-    const childPosition = {
-      x: childNodeGlobalPosition.x - parentPosition.x,
-      y: childNodeGlobalPosition.y - parentPosition.y,
-    };
-
-    // new parent width based on child position
-    const widthChild = childPosition.x + childNode.measured!.width! + 20;
-    const heightChild = childPosition.y + childNode.measured!.height! + 20;
-
-    // expand parent if new width is greater
-    parentWidth = Math.max(widthChild, parentWidth);
-    parentHeight = Math.max(heightChild, parentHeight);
-
-    setNodes((nds) =>
-      nds.map((n) => {
-        // apply changes to the child and parent node
-        if (n.id === childNode.id) {
-          return {
-            ...n,
-            parentId: parentNode.id,
-            position: childPosition,
-          };
-        } else if (n.id === parentNode.id) {
-          return {
-            ...n,
-            position: parentPosition,
-            width: parentWidth,
-            height: parentHeight,
-            data: { isParent: true },
-            style: { zIndex: -1 },
-          };
+    const updatedNodes: Node[] = [];
+    const parentsToUpdate: Node[] = [];
+    selectedNodes.forEach((node) => {
+      if (node.type === "Group") {
+        return; // skip groups, they cant be nested
+      }
+      if (node.parentId === undefined && newParentNode.type === "Group") {
+        // the node is an orphan and can be freely adopted into a new group
+        updatedNodes.push({
+          ...node,
+          parentId: newParentNode.id,
+          position: {
+            x: node.position.x - newParentNode.position.x,
+            y: node.position.y - newParentNode.position.y,
+          },
+          dragging: false,
+        });
+        if (!parentsToUpdate.includes(newParentNode)) {
+          parentsToUpdate.push(newParentNode);
         }
-        // return all other nodes unmodified
-        return n;
+      } else if (
+        node.parentId !== undefined &&
+        node.parentId !== newParentNode.id &&
+        newParentNode.type === "Group"
+      ) {
+        // the node is open for adoption but paperwork with old parent is required
+        const oldParentNode = getNode(node.parentId)!;
+        updatedNodes.push({
+          ...node,
+          parentId: newParentNode.id,
+          position: {
+            x:
+              node.position.x +
+              oldParentNode.position.x -
+              newParentNode.position.x,
+            y:
+              node.position.y +
+              oldParentNode.position.y -
+              newParentNode.position.y,
+          },
+          dragging: false,
+        });
+        if (!parentsToUpdate.includes(newParentNode)) {
+          parentsToUpdate.push(newParentNode);
+        }
+        if (!parentsToUpdate.includes(getNode(node.parentId)!)) {
+          parentsToUpdate.push(getNode(node.parentId)!);
+        }
+      } else if (node.parentId === newParentNode.id) {
+        // the node is only moving around in its family
+        updatedNodes.push({
+          ...node,
+          dragging: false,
+        });
+        if (!parentsToUpdate.includes(newParentNode)) {
+          parentsToUpdate.push(newParentNode);
+        }
+      } else {
+        // the node is leaving home or never had one
+        const oldParentNode = getNode(node.parentId!)!;
+        updatedNodes.push({
+          ...node,
+          parentId: undefined,
+          position: {
+            x: node.position.x + getNode(node.parentId!)!.position.x,
+            y: node.position.y + getNode(node.parentId!)!.position.y,
+          },
+          dragging: false,
+        });
+        if (!parentsToUpdate.includes(oldParentNode)) {
+          parentsToUpdate.push(oldParentNode);
+        }
+      }
+    });
+
+    // update all parents
+    updatedNodes.push(
+      ...parentsToUpdate.map((p) => {
+        const updatedChildren = updatedNodes.filter((n) => n.parentId === p.id);
+        const nonUpdatedChildren = getNodes().filter(
+          (n) => n.parentId === p.id && !updatedNodes.some((c) => c.id === n.id)
+        );
+
+        const children = [...updatedChildren, ...nonUpdatedChildren];
+        const pSizings = computeGroupSizings(p, children);
+
+        // update all children positions with the offset from pSizings
+        children.forEach((c) => {
+          const newPosition = {
+            x: c.position.x + pSizings.offset.x,
+            y: c.position.y + pSizings.offset.y,
+          };
+          if (updatedChildren.some((n) => n.id === c.id)) {
+            updatedNodes.splice(
+              updatedNodes.findIndex((n) => n.id === c.id),
+              1,
+              {
+                ...c,
+                position: newPosition,
+                dragging: false,
+              }
+            );
+          } else {
+            updatedNodes.push({
+              ...c,
+              position: newPosition,
+              dragging: false,
+            });
+          }
+        });
+
+        return {
+          ...p,
+          position: {
+            x: pSizings.bounds.x,
+            y: pSizings.bounds.y,
+          },
+          data: {
+            ...p.data,
+            isParent: children.length > 0,
+            minWidth: pSizings.bounds.minWidth,
+            minHeight: pSizings.bounds.minHeight,
+          },
+          style: {
+            zIndex: -1,
+          },
+          width: pSizings.bounds.width,
+          height: pSizings.bounds.height,
+          dragging: false,
+        };
       })
     );
+
+    // finally update all nodes
+    setNodes((nds) => {
+      return nds.map((n) => {
+        const updatedNode = updatedNodes.find((uN) => uN.id === n.id);
+        if (updatedNode) {
+          return updatedNode;
+        }
+        return n;
+      });
+    });
   };
 
   return {
