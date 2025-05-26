@@ -211,41 +211,21 @@ export function useFlow() {
       (n) => n.type === "Group"
     );
     // choose Group with largest intersection area as new parent
-    const newParentNode =
-      intersectingNodes.length > 0
-        ? intersectingNodes.reduce((largest, current) => {
-            const currentArea =
-              current.measured!.width! * current.measured!.height!;
-            const largestArea =
-              largest.measured!.width! * largest.measured!.height!;
-            return currentArea > largestArea ? current : largest;
-          }, intersectingNodes[0])
-        : null;
+    const newParentNode = intersectingNodes.length > 0
+      ? intersectingNodes.reduce((largest, current) => {
+          const currentArea = current.measured!.width! * current.measured!.height!;
+          const largestArea = largest.measured!.width! * largest.measured!.height!;
+          return currentArea > largestArea ? current : largest;
+        }, intersectingNodes[0])
+      : null;
 
     const updatedNodes: Node[] = [];
     const parentsToUpdate: Node[] = [];
     selectedNodes.forEach((node) => {
       if (node.type === "Group") {
         return; // skip groups, they cant be nested
-      } else if (!newParentNode) {
-        // the node is leaving home or never had one
-        const oldParentNode = getNode(node.parentId!)!;
-        updatedNodes.push({
-          ...node,
-          parentId: undefined,
-          position: {
-            x: node.position.x + getNode(node.parentId!)!.position.x,
-            y: node.position.y + getNode(node.parentId!)!.position.y,
-          },
-          dragging: false,
-        });
-        if (!parentsToUpdate.includes(oldParentNode)) {
-          parentsToUpdate.push(oldParentNode);
-        }
-      } else if (
-        node.parentId === undefined &&
-        newParentNode.type === "Group"
-      ) {
+      }
+      if (node.parentId === undefined && newParentNode.type === "Group") {
         // the node is an orphan and can be freely adopted into a new group
         updatedNodes.push({
           ...node,
@@ -295,6 +275,21 @@ export function useFlow() {
         });
         if (!parentsToUpdate.includes(newParentNode)) {
           parentsToUpdate.push(newParentNode);
+        }
+      } else {
+        // the node is leaving home or never had one
+        const oldParentNode = getNode(node.parentId!)!;
+        updatedNodes.push({
+          ...node,
+          parentId: undefined,
+          position: {
+            x: node.position.x + getNode(node.parentId!)!.position.x,
+            y: node.position.y + getNode(node.parentId!)!.position.y,
+          },
+          dragging: false,
+        });
+        if (!parentsToUpdate.includes(oldParentNode)) {
+          parentsToUpdate.push(oldParentNode);
         }
       }
     });
