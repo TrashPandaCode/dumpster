@@ -28,8 +28,14 @@ const AddNodesPanel = ({
 }) => {
   const MathFloatComputeTypes = Object.values(TYPES).flat();
 
-  const { addNodes, addEdges, screenToFlowPosition, getNodes, getNode } =
-    useReactFlow();
+  const {
+    addNodes,
+    addEdges,
+    screenToFlowPosition,
+    getNodes,
+    getEdges,
+    getNode,
+  } = useReactFlow();
   const inputRef = useRef<HTMLInputElement>(null);
 
   const [nodeSearch, setNodeSearch] = useState("");

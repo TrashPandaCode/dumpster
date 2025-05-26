@@ -480,8 +480,9 @@ export function duplicateNodes(
   nodes: Node[],
   addNodes: (payload: Node | Node[]) => void,
   addEdges: (payload: Edge | Edge[]) => void,
+  getEdges: () => Edge[],
   setNodes: (payload: Node[] | ((nodes: Node[]) => Node[])) => void,
-  addHandle: (loopId: string, label: string) => void,
+  addHandle: (loopId: string, label: string) => string,
   getHandles: (loopId: string) => Map<string, string>
 ) {
   // if this is called with no nodes, return
@@ -529,7 +530,7 @@ export function duplicateNodes(
     }
   });
 
-  // duplicate the loops with createLoop()
+  // duplicate the loops
   loops.forEach((loop) => {
     const startId = uuidv4();
     const endId = uuidv4();
@@ -654,8 +655,9 @@ export function duplicateNodes(
     if (!newLoopId) return;
 
     const loopHandles = getHandles(loop.start.data.loopId as string);
-    loopHandles.forEach((_, label) => {
-      addHandle(newLoopId, label);
+    loopHandles.forEach((oldHandleId, label) => {
+      const newHandleId = addHandle(newLoopId, label);
+      oldToNewIdMap.set(oldHandleId, newHandleId);
     });
 
     const loopChildrenIds = newNodes
@@ -701,6 +703,52 @@ export function duplicateNodes(
           },
         });
       });
+    });
+  });
+
+  // filter for relevant edges
+  const relevantEdges = getEdges().filter((edge) => {
+    // if the edge is a loop connector, its already handled
+    if (
+      edge.sourceHandle === MAIN_LOOP_CONNECTOR ||
+      edge.targetHandle === MAIN_LOOP_CONNECTOR
+    ) {
+      return false;
+    }
+    // if the edge is not in the oldToNewIdMap, we can ignore it
+    return oldToNewIdMap.has(edge.source) && oldToNewIdMap.has(edge.target);
+  });
+
+  relevantEdges.forEach((edge) => {
+    const newSourceId = oldToNewIdMap.get(edge.source);
+    const newTargetId = oldToNewIdMap.get(edge.target);
+
+    const newSourceHandle =
+      oldToNewIdMap.get(edge.sourceHandle ?? "") ?? edge.sourceHandle ?? null;
+    const newTargetHandle =
+      oldToNewIdMap.get(edge.targetHandle ?? "") ?? edge.targetHandle ?? null;
+
+    if (!newSourceId || !newTargetId) return;
+    const newEdgeId = connectionToEdgeId({
+      source: newSourceId,
+      sourceHandle: newSourceHandle,
+      target: newTargetId,
+      targetHandle: newTargetHandle,
+    });
+
+    newEdges.push({
+      ...edge,
+      id: newEdgeId,
+      type: edge.type,
+      source: newSourceId,
+      target: newTargetId,
+      sourceHandle: newSourceHandle,
+      targetHandle: newTargetHandle,
+      animated: edge.animated ?? false,
+      selectable: edge.selectable ?? true,
+      style: {
+        ...edge.style,
+      },
     });
   });
 

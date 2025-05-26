@@ -104,6 +104,7 @@ const SelectionContextMenu: React.FC<SelectionContextMenuProps> = ({
               getNodes().filter((n) => nodeIds.includes(n.id)),
               addNodes,
               addEdges,
+              getEdges,
               setNodes,
               addHandle,
               getHandles
