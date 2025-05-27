@@ -52,7 +52,7 @@ const KeyPress = memo(({ id, data }: { id: string; data: any }) => {
     <div className="min-w-60">
       <NodeContent
         label="KeyPress"
-        type="float"
+        type="input"
         active={active}
         docsName="keypress"
       >

@@ -4,6 +4,7 @@ import Time from "./game-get/Time";
 import ExportToGameobject from "./game-set/ExportToGameobject";
 import Group from "./groups/Group";
 import KeyPress from "./input/KeyPress";
+import MousePosition from "./input/MousePosition";
 import Switch from "./logic/Switch";
 import ForEnd from "./loops/ForEnd";
 import ForStart from "./loops/ForStart";
@@ -22,4 +23,5 @@ export const nodeTypes = {
   Group,
   ForStart,
   ForEnd,
+  MousePosition,
 };
