@@ -118,6 +118,7 @@ export const LEVELS = {
       "Switch",
       "Group",
       "ForLoop",
+      "MousePosition",
     ],
   },
   "1.1": {

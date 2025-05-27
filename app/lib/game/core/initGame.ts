@@ -1,6 +1,7 @@
 import { useNodeStore } from "~/lib/node-editor/node-store/node-store";
 import { useGameStore } from "~/lib/zustand/game";
 import { useKeyStore } from "~/lib/zustand/key";
+import { useMouseStore } from "~/lib/zustand/mouse";
 import { useTimeStore } from "~/lib/zustand/time";
 import { globalKeyTracker } from "../utils/globalKeyTracker";
 import { getKaplayCtx } from "./kaplayCtx";
@@ -16,17 +17,19 @@ export const state = {
  * @returns Kaplay context
  */
 export default function initGame(canvas: HTMLCanvasElement) {
-  let pauseStart = 0;
-  let totalPausedTime = 0;
-
   if (!state.first) return; //TODO: remove just for react strict mode
   state.first = false; //TODO: remove just for react strict mode
+
+  let pauseStart = 0;
+  let totalPausedTime = 0;
 
   const { k, game } = getKaplayCtx(canvas);
 
   useKeyStore.getState().setKeyDownFunction(globalKeyTracker.isKeyDown);
   useKeyStore.getState().setKeyPressedFunction(globalKeyTracker.isKeyPressed);
   useKeyStore.getState().setKeyReleasedFunction(globalKeyTracker.isKeyReleased);
+
+  useMouseStore.getState().setMousePosFunction(() => k.mousePos());
 
   useTimeStore.getState().setTimeFunction(() => k.time() - totalPausedTime);
   useTimeStore.getState().setDeltaTimeFunction(() => k.dt());
@@ -35,7 +38,7 @@ export default function initGame(canvas: HTMLCanvasElement) {
   k.onUpdate(() => {
     if (useGameStore.getState().isPaused) {
       // Log pause start
-      if(!game.paused){
+      if (!game.paused) {
         pauseStart = k.time();
       }
       game.paused = true;
