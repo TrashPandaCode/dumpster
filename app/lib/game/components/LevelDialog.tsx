@@ -18,14 +18,14 @@ const LevelDialog = ({
   const goals = LEVELS[currentLevel]?.goals || [
     "No goals defined for this level yet.",
   ];
-  const descriptions = LEVELS[currentLevel]?.description || [
-    "No description available for this level.",
+  const dialogs = LEVELS[currentLevel]?.dialog || [
+    "No dialog available for this level.",
   ];
 
   const index = useRef(0);
 
   const [typedText, setTypedText] = useState("");
-  const [description, setDescription] = useState(descriptions[index.current]);
+  const [dialog, setDialog] = useState(dialogs[index.current]);
 
   const [showingGoals, setShowingGoals] = useState(skip);
 
@@ -34,8 +34,8 @@ const LevelDialog = ({
     let index = 0;
 
     const interval = setInterval(() => {
-      if (index <= description.length) {
-        setTypedText(description.slice(0, index));
+      if (index <= dialog.length) {
+        setTypedText(dialog.slice(0, index));
         index++;
       } else {
         clearInterval(interval);
@@ -46,29 +46,31 @@ const LevelDialog = ({
       clearInterval(interval);
       setTypedText("");
     };
-  }, [description]);
+  }, [dialog]);
 
+  /* Function to handle the "Next" button click */
   const handleNext = () => {
     if (!showingGoals) {
-      if (index.current < descriptions.length - 1) {
+      if (index.current < dialogs.length - 1) {
         index.current++;
-        setDescription(descriptions[index.current]);
+        setDialog(dialogs[index.current]);
       } else {
         index.current = 0;
         setShowingGoals(true);
-        setDescription("");
+        setDialog("");
       }
     }
   };
 
+  /* Function to handle the "Previous" button click */
   const handlePrevious = () => {
     if (showingGoals) {
       setShowingGoals(false);
-      index.current = descriptions.length - 1;
-      setDescription(descriptions[index.current]);
+      index.current = dialogs.length - 1;
+      setDialog(dialogs[index.current]);
     } else if (index.current > 0) {
       index.current--;
-      setDescription(descriptions[index.current]);
+      setDialog(dialogs[index.current]);
     }
   };
 

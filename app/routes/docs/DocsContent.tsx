@@ -8,16 +8,25 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "~/lib/core/components/Breadcrumb";
-import type { Route } from "../docs/+types/DocsContent";
 import DocsNodeEditor from "~/lib/core/DocsNodeEditor";
+import type { Route } from "../docs/+types/DocsContent";
 
 const docs = import.meta.glob("/content/docs/**/*.md");
 
 export async function clientLoader({ params }: Route.LoaderArgs) {
-  const { category, topic } = params;
-  const key = `/content/docs/${category}/${topic}.md`;
+  let { category, topic } = params;
 
-  const loader = docs[key];
+  // if there's only `topic`, treat it as coming from a flat file under /docs
+  if (!topic && category) {
+    topic = category;
+    category = undefined;
+  }
+
+  const path = category
+    ? `/content/docs/${category}/${topic}.md`
+    : `/content/docs/${topic}.md`;
+
+  const loader = docs[path];
   if (!loader) {
     throw new Response("Not found", { status: 404 });
   }
@@ -47,8 +56,12 @@ const Docs = ({ loaderData }: Route.ComponentProps) => {
               <NavLink to="/docs">Docs</NavLink>
             </BreadcrumbLink>
           </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem className="capitalize">{category}</BreadcrumbItem>
+          {category && (
+            <>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem className="capitalize">{category}</BreadcrumbItem>
+            </>
+          )}
           <BreadcrumbSeparator />
           <BreadcrumbItem>
             <BreadcrumbPage className="capitalize">

@@ -39,7 +39,7 @@ const ForEnd = memo(({ id, data }: { id: string; data: any }) => {
 
   return (
     <div className="min-w-60">
-      <NodeContent label="For End" type="loop">
+      <NodeContent label="For End" type="loop" docsName="forloop">
         <ConnectorHandle id={MAIN_LOOP_CONNECTOR} position={Position.Left} />
         <LabelHandle id={IN_HANDLE_1} label="Break" position={Position.Left} />
         {Array.from(loops.get(data.loopId) ?? []).map(([label, handleId]) => (

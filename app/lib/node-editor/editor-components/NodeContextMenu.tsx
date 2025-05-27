@@ -3,7 +3,7 @@ import { useCallback } from "react";
 
 import { useLoopStore } from "../node-store/loop-store";
 import { duplicateNodes } from "../utils";
-import AddNodesPanel from "./AddNodesPanel";
+import AddNodes from "./AddNodes";
 
 type NodeContextMenuProps = {
   nodeId: string;
@@ -27,7 +27,7 @@ const NodeContextMenu: React.FC<NodeContextMenuProps> = ({
   return (
     <div style={{ position: "absolute", top: y, left: x, zIndex: 1000 }}>
       {nodeType === "ForStart" || nodeType === "ForEnd" ? (
-        <AddNodesPanel
+        <AddNodes
           onClose={onClose}
           x={x}
           y={y}
@@ -36,7 +36,7 @@ const NodeContextMenu: React.FC<NodeContextMenuProps> = ({
         >
           <hr className="mx-auto h-1 w-44 rounded-sm border-0 bg-slate-700" />
           <DefaultNodeContextMenu nodeId={nodeId} onClose={onClose} />
-        </AddNodesPanel>
+        </AddNodes>
       ) : (
         <div className="flex w-36 flex-col gap-1 rounded bg-slate-800 p-2 font-mono shadow-lg outline-1 outline-slate-700 outline-solid">
           <DefaultNodeContextMenu nodeId={nodeId} onClose={onClose} />
@@ -136,13 +136,19 @@ const DefaultNodeContextMenu = ({
         className="w-full rounded px-2 py-1 text-left text-sm text-white hover:bg-slate-700"
         onClick={duplicateNode}
       >
-        Duplicate
+        <span>Duplicate</span>
+        <span className="ml-2 rounded bg-slate-600 px-1.5 py-0.5 font-mono text-xs text-gray-300">
+          Ctrl+D
+        </span>
       </button>
       <button
         className="w-full rounded px-2 py-1 text-left text-sm text-white hover:bg-slate-700"
         onClick={deleteNode}
       >
-        Delete
+        <span>Delete</span>
+        <span className="ml-2 rounded bg-slate-600 px-1.5 py-0.5 font-mono text-xs text-gray-300">
+          Del
+        </span>
       </button>
     </>
   );

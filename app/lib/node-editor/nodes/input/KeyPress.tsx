@@ -50,7 +50,12 @@ const KeyPress = memo(({ id, data }: { id: string; data: any }) => {
 
   return (
     <div className="min-w-60">
-      <NodeContent label="KeyPress" type="float" active={active}>
+      <NodeContent
+        label="KeyPress"
+        type="float"
+        active={active}
+        docsName="keypress"
+      >
         <div className="mb-2 flex w-full flex-row">
           <button
             className={classnames(

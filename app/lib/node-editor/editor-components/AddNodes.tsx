@@ -1,19 +1,19 @@
 import { ChevronRightIcon } from "@radix-ui/react-icons";
-import { Panel, useReactFlow, type PanelPosition } from "@xyflow/react";
+import { useReactFlow } from "@xyflow/react";
 import classnames from "classnames";
 import { useEffect, useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
+import { LEVELS } from "~/lib/game/core/levels";
+import { useGameStore } from "~/lib/zustand/game";
 import { GROUP_SIZE } from "../nodes/constants";
 import { TYPES } from "../nodes/math-float/types";
-import { searchNodeTypes } from "../nodes/node-types";
 import { connectNodesToLoop, createForLoop } from "../utils";
 
-const AddNodesPanel = ({
+const AddNodes = ({
   x,
   y,
   onClose,
-  position,
   parentLoopId,
   children,
   parentId,
@@ -21,11 +21,13 @@ const AddNodesPanel = ({
   x: number;
   y: number;
   onClose: () => void;
-  position?: PanelPosition;
   parentLoopId?: string;
   children?: React.ReactNode;
   parentId?: string;
 }) => {
+  const level = useGameStore((state) => state.currentLevel);
+  const searchNodeTypes = LEVELS[level].availableNodes;
+
   const MathFloatComputeTypes = Object.values(TYPES).flat();
 
   const {
@@ -65,7 +67,8 @@ const AddNodesPanel = ({
         return { nodeType: t };
       });
 
-    if (nodeSearch === "") return setFilteredTypes(types);
+    if (nodeSearch === "" || !searchNodeTypes.includes("MathFloat"))
+      return setFilteredTypes(types);
 
     const mathTypes = MathFloatComputeTypes.filter((type) =>
       type.toLowerCase().includes(nodeSearch.toLowerCase())
@@ -170,10 +173,7 @@ const AddNodesPanel = ({
   }, [filteredTypes, selectedIndex]);
 
   return (
-    <Panel
-      position={position}
-      className="flex w-65 flex-col gap-2 rounded bg-slate-800 p-2 font-mono shadow-lg outline-1 outline-slate-700 outline-solid"
-    >
+    <div className="flex w-65 flex-col gap-2 rounded bg-slate-800 p-2 font-mono shadow-lg outline-1 outline-slate-700 outline-solid">
       <div className="shadow">
         <input
           ref={inputRef}
@@ -190,7 +190,7 @@ const AddNodesPanel = ({
           <button
             key={`add_node_${type}_${index}`}
             className={classnames(
-              "w-full rounded px-2 py-1 text-left text-sm text-white",
+              "w-full cursor-pointer rounded px-2 py-1 text-left text-sm text-white",
               selectedIndex === index ? "bg-slate-700" : "hover:bg-slate-700"
             )}
             onClick={() => handleAddNode(type.nodeType, type.computeType)}
@@ -208,8 +208,8 @@ const AddNodesPanel = ({
         ))}
       </div>
       {nodeSearch === "" && <>{children}</>}
-    </Panel>
+    </div>
   );
 };
 
-export default AddNodesPanel;
+export default AddNodes;
