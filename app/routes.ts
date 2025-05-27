@@ -6,5 +6,8 @@ export default [
   route("/docs", "routes/docs/Overview.tsx", [
     route(":category/:topic", "routes/docs/DocsContent.tsx"),
   ]),
+  route("/imprint", "routes/Imprint.tsx"),
+  route("/privacy-policy", "routes/PrivacyPolicy.tsx"),
+  route("/cookie-policy", "routes/CookiePolicy.tsx"),
   route("*", "routes/NotFound.tsx"),
 ] satisfies RouteConfig;
