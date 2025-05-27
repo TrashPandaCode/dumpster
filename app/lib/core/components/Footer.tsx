@@ -29,10 +29,7 @@ const Footer = () => {
       </div>
       <div className="flex flex-col">
         <h1 className="pb-4 text-lg font-bold">Legal & Policies</h1>
-        <NavLink
-          to="/imprint"
-          className="self-start text-sm hover:underline"
-        >
+        <NavLink to="/imprint" className="self-start text-sm hover:underline">
           Imprint
         </NavLink>
         <NavLink
@@ -50,13 +47,13 @@ const Footer = () => {
       </div>
       <div className="flex flex-col">
         <h1 className="pb-4 text-lg font-bold">Get Help</h1>
-        <a
-          href=""
+        <NavLink
+          to="/faqs"
           target="_blank"
           className="self-start text-sm hover:underline"
         >
           FAQs
-        </a>
+        </NavLink>
         <a
           href=""
           target="_blank"
