@@ -57,7 +57,7 @@ const ExportToGameobject = memo(
           const index =
             selectedGameObjects.length === 1
               ? 0
-              : getInput(inputs, IN_HANDLE_1, -1);
+              : Math.round(getInput(inputs, IN_HANDLE_1, -1));
 
           if (0 > index || index >= selectedGameObjects.length) return;
 

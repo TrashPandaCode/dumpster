@@ -44,7 +44,7 @@ const ImportFromGameobject = memo(({ id, data }: { id: string; data: any }) => {
         const index =
           selectedGameObjects.length === 1
             ? 0
-            : getInput(inputs, IN_HANDLE_1, -1);
+            : Math.round(getInput(inputs, IN_HANDLE_1, -1));
         if (0 > index || index >= selectedGameObjects.length) {
           results.clear(); //TODO: what behaviour do we want here?
           return;
