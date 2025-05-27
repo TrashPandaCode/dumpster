@@ -1,0 +1,3 @@
+import{t as e}from"./chunk-AYJ5UCUI-DfzbB4N7.js";const r={title:"FAQs"},c=`<h1>FAQs</h1>
+<p>This section provides answers to frequently asked questions about the project. If you have a question that is not answered here, feel free to reach out to the community or check the project’s documentation.</p>
+`,a=function(t){return Object.keys(t).forEach(function(o){t[o]}),e.createElement("div",null,e.createElement("h1",null,"FAQs"),e.createElement("p",null,"This section provides answers to frequently asked questions about the project. If you have a question that is not answered here, feel free to reach out to the community or check the project’s documentation."))};export{a as ReactComponent,r as attributes,c as html};
