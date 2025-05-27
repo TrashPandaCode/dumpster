@@ -35,6 +35,10 @@
         "path": "/docs/nodes/keypress"
       },
       {
+        "title": "Mouse Position",
+        "path": "/docs/nodes/mousepos"
+      },
+      {
         "title": "Time",
         "path": "/docs/nodes/time"
       },
