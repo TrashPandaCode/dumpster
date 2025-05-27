@@ -94,7 +94,12 @@ export const LEVELS = {
       nodes: [],
       edges: [],
     },
-    hints: [],
+    hints: [
+      "This is a playground level",
+      "You don't need hints here",
+      "stop clicking there is nothing coming",
+      "42",
+    ],
     modifiableGameObjects: [
       {
         id: "raccoon",
