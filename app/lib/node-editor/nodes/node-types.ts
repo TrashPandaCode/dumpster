@@ -25,3 +25,6 @@ export const nodeTypes = {
   ForEnd,
   MousePosition,
 };
+
+// ForLoop is a special case that combines ForStart and ForEnd
+export type NodeType = Exclude<keyof typeof nodeTypes, "ForEnd" | "ForStart"> | "ForLoop";

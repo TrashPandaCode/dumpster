@@ -3,6 +3,7 @@ import type { Edge, Node } from "@xyflow/react";
 import alleyOne from "~/assets/alley_one.jpg";
 import alleyTwo from "~/assets/alley_two.png";
 import houseImage from "~/assets/house.png";
+import type { NodeType } from "~/lib/node-editor/nodes/node-types";
 import { initialize1_1 } from "../levels/1.1";
 import { initializePlayground } from "../levels/playground";
 
@@ -60,7 +61,7 @@ export type Level = {
     id: string;
     connections: { label: string; access: ConnectionAccess }[];
   }[];
-  availableNodes: string[];
+  availableNodes: NodeType[];
 };
 
 /**
