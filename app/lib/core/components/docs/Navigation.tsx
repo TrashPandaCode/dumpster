@@ -48,11 +48,27 @@ const Navigation = () => {
               )
             )}
           </Collapsible>
-        ) : (
-          <NavLink key={section.title} to={"/docs"} className="hover:underline">
-            {section.title}
-          </NavLink>
-        )
+        ) : section.path ? (
+          // This handles standalone entries (without items)
+          section.path === location.pathname ? (
+            <NavLink
+              key={section.path}
+              to={section.path}
+              className="flex items-center gap-2 font-bold hover:underline px-2 py-1"
+            >
+              {section.title}
+              <div className="bg-jam-600 h-[6px] w-[6px] rounded-full" />
+            </NavLink>
+          ) : (
+            <NavLink
+              key={section.path}
+              to={section.path}
+              className="hover:underline px-2 py-1"
+            >
+              {section.title}
+            </NavLink>
+          )
+        ) : null
       )}
     </nav>
   );
