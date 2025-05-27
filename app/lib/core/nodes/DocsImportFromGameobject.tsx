@@ -1,16 +1,14 @@
 import { Position } from "@xyflow/react";
 import { memo, useMemo, useRef } from "react";
 
+import { type GameObject } from "~/lib/game/constants";
 import { useGameobjectSelect } from "~/lib/node-editor/hooks/useGameobjectSelect";
 import BaseHandle from "~/lib/node-editor/node-components/BaseHandle";
 import LabelHandle from "~/lib/node-editor/node-components/LabelHandle";
 import MultiSelectDropDown from "~/lib/node-editor/node-components/MultiSelectDropDown";
 import NodeContent from "~/lib/node-editor/node-components/NodeContent";
 import { IN_HANDLE_1 } from "~/lib/node-editor/nodes/constants";
-import {
-  getHandleIntersection,
-  type GameObject,
-} from "~/lib/node-editor/utils";
+import { getHandleIntersection } from "~/lib/node-editor/utils";
 import { type GameObjectsData } from "~/lib/zustand/data";
 
 const DocsImportFromGameobject = memo(

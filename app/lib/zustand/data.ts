@@ -1,9 +1,10 @@
 import { create } from "zustand";
 
 import type { ConnectionAccess } from "../game/core/levels";
+import type { GameObject } from "../game/constants";
 
 export type GameObjectsData = Map<
-  string, // gameobject label
+  GameObject, // gameobject label
   Map<
     string, // handle display name and id
     {
@@ -15,9 +16,9 @@ export type GameObjectsData = Map<
 
 interface DataState {
   gameObjects: GameObjectsData;
-  setData: (gameObject: string, label: string, value: number) => void;
-  addHandle: (gameObject: string, label: string) => void;
-  removeHandle: (gameObject: string, label: string) => void;
+  setData: (gameObject: GameObject, label: string, value: number) => void;
+  addHandle: (gameObject: GameObject, label: string) => void;
+  removeHandle: (gameObject: GameObject, label: string) => void;
 }
 
 export const useDataStore = create<DataState>((set, get) => ({

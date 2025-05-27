@@ -40,14 +40,14 @@ export const initialize1_1 = () => {
     // racoon.move(RACOON_SPEED * k.dt(), 0);
     racoon.pos.x = (racoon.pos.x + 1) % 1000;
     // Write racoon position to store
-    const { access } = gameObjects.get("racoon")!.get("xpos")!;
-    gameObjects.get("racoon")!.set("xpos", {
+    const { access } = gameObjects.get("raccoon")!.get("xpos")!;
+    gameObjects.get("raccoon")!.set("xpos", {
       access,
       value: racoon.pos.x,
     });
 
     //Move TrashCan
-    trashCan.pos.x = gameObjects.get("trashCan")?.get("xpos")?.value ?? 0;
-    trashCan.pos.y = gameObjects.get("trashCan")?.get("ypos")?.value ?? 0;
+    trashCan.pos.x = gameObjects.get("trashcan")?.get("xpos")?.value ?? 0;
+    trashCan.pos.y = gameObjects.get("trashcan")?.get("ypos")?.value ?? 0;
   });
 };
