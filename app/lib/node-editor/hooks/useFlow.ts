@@ -207,19 +207,18 @@ export function useFlow() {
           ...selectedNodes.map((n) => n.position.y + n.measured!.height!)
         ) - Math.min(...selectedNodes.map((n) => n.position.y)),
     };
-    console.log("fetching intersecting nodes for bounding rect");
+
+    // only unselected groups can become new parents
     const intersectingNodes = getIntersectingNodes(selectedBoundingRect).filter(
       (n) => n.type === "Group" && n.selected === false
     );
-    console.log("done fetching");
-    console.log("moving to select new parent");
+
     // choose Group with largest intersection area as new parent
     const newParentNode = intersectingNodes.reduce((largest, current) => {
       const currentArea = current.measured!.width! * current.measured!.height!;
       const largestArea = largest.measured!.width! * largest.measured!.height!;
       return currentArea > largestArea ? current : largest;
     }, intersectingNodes[0]);
-    console.log("newParentNode", newParentNode);
 
     const updatedNodes: Node[] = [];
     const parentsToUpdate: Node[] = [];
@@ -230,19 +229,20 @@ export function useFlow() {
 
       if (!newParentNode) {
         // no new parent found
-        console.log("no new parent found", node.id);
         if (node.parentId === undefined) {
           // the node is an orphan and stays an orphan
-          console.log("orphan stayed orphan", node.id);
-          return; // skip this node
         } else if (selectedNodes.some((n) => n.id === node.parentId)) {
           // the nodes family is moving, it is not being put up for adoption
-          console.log("node moved with its family", node.id);
-          return; // skip this node
         } else {
           // the node is being put up for adoption
-          console.log("node became orphan", node.id);
-          const oldParentNode = getNode(node.parentId)!;
+          const oldParentNode = getNode(node.parentId);
+
+          if (!oldParentNode) {
+            console.warn(
+              `recently moved node ${node.id} has an invalid parentId of ${node.parentId}`
+            );
+            return; // skip this node
+          }
 
           updatedNodes.push({
             ...node,
@@ -258,10 +258,8 @@ export function useFlow() {
         }
       } else {
         // a new parent was found
-        console.log("new parent found", node.id);
         if (node.parentId === undefined) {
           // the node is an orphan and can be freely adopted into a new family
-          console.log("orphan adopted", node.id);
           updatedNodes.push({
             ...node,
             parentId: newParentNode.id,
@@ -273,25 +271,31 @@ export function useFlow() {
         } else if (newParentNode.id === node.parentId) {
           // the node is moving within its family
           // only parent needs to be updated just march on
-          console.log("node moved within its family", node.id);
         } else if (selectedNodes.some((n) => n.id === node.parentId)) {
           // the nodes family is moving, it is not up for adoption
-          console.log("node moved with its family", node.id);
         } else {
           // the node is directly adopted from it's old family, paperwork with old parent is required
-          console.log("node adopted from old family", node.id);
+          console.log("node is directly adopted", node.id);
           const oldParentNode = getNode(node.parentId)!;
+
+          if (!oldParentNode) {
+            console.warn(
+              `recently moved node ${node.id} has an invalid parentId of ${node.parentId}`
+            );
+            return; // skip this node
+          }
+
           updatedNodes.push({
             ...node,
             parentId: newParentNode.id,
             position: {
               x:
-                node.position.x -
-                oldParentNode.position.x +
+                node.position.x +
+                oldParentNode.position.x -
                 newParentNode.position.x,
               y:
-                node.position.y -
-                oldParentNode.position.y +
+                node.position.y +
+                oldParentNode.position.y -
                 newParentNode.position.y,
             },
           });
@@ -300,16 +304,18 @@ export function useFlow() {
           }
         }
       }
-      parentsToUpdate.push(newParentNode);
+      if (newParentNode) parentsToUpdate.push(newParentNode);
     });
 
     // update all parents
     updatedNodes.push(
       ...parentsToUpdate.map((p) => {
         const updatedChildren = updatedNodes.filter((n) => n.parentId === p.id);
+        console.log("updatedChildren", updatedChildren);
         const nonUpdatedChildren = getNodes().filter(
           (n) => n.parentId === p.id && !updatedNodes.some((c) => c.id === n.id)
         );
+        console.log("nonUpdatedChildren", nonUpdatedChildren);
 
         const children = [...updatedChildren, ...nonUpdatedChildren];
         const pSizings = computeGroupSizings(p, children);
@@ -360,19 +366,13 @@ export function useFlow() {
 
     // finally update all nodes
     setNodes((nds) => {
-      return nds.map((n) => {
-        const updatedNode = updatedNodes.find((uN) => uN.id === n.id);
-        if (updatedNode) {
-          return {
-            ...updatedNode,
-            dragging: false,
-          };
-        }
-        return {
-          ...n,
-          dragging: false,
-        };
+      const updated = nds.map((n) => {
+        const updatedNode = updatedNodes.find((u) => u.id === n.id);
+        return updatedNode
+          ? { ...updatedNode, dragging: false }
+          : { ...n, dragging: false };
       });
+      return updated;
     });
   };
 
