@@ -12,7 +12,7 @@ import type { ConnectionAccess } from "../game/core/levels";
 import type { GameObjectsData } from "../zustand/data";
 import type { nodeInputs } from "./node-store/node-store";
 import {
-  GROUP_SIZE,
+  INITIAL_GROUP_SIZE,
   LOOP_CONNECTOR,
   MAIN_LOOP_CONNECTOR,
 } from "./nodes/constants";
@@ -701,10 +701,10 @@ export function computeGroupSizings(parentNode: Node, childNodes: Node[]) {
       bounds: {
         x: parentNode.position.x,
         y: parentNode.position.y,
-        width: GROUP_SIZE.width,
-        height: GROUP_SIZE.height,
-        minWidth: GROUP_SIZE.width,
-        minHeight: GROUP_SIZE.height,
+        width: INITIAL_GROUP_SIZE.width,
+        height: INITIAL_GROUP_SIZE.height,
+        minWidth: INITIAL_GROUP_SIZE.width,
+        minHeight: INITIAL_GROUP_SIZE.height,
       },
       offset: { x: 0, y: 0 },
     };
@@ -772,13 +772,13 @@ export function computeGroupSizings(parentNode: Node, childNodes: Node[]) {
       childBounds.x +
         childBounds.width -
         Math.min(childBounds.x, parentBounds.x),
-      GROUP_SIZE.width
+      INITIAL_GROUP_SIZE.width
     ),
     minHeight: Math.max(
       childBounds.y +
         childBounds.height -
         Math.min(childBounds.y, parentBounds.y),
-      GROUP_SIZE.height
+      INITIAL_GROUP_SIZE.height
     ),
   };
 
