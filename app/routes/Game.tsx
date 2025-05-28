@@ -1,5 +1,5 @@
 import { DragHandleDots2Icon } from "@radix-ui/react-icons";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 
 import initGame from "~/lib/game/core/initGame";
@@ -9,12 +9,12 @@ import type { Route } from "./+types/Game";
 
 import "./game.css";
 
-import LevelDialog from "~/lib/game/components/LevelDialog";
 import LevelCompleteDialog from "~/lib/game/components/LevelCompleteDialog";
+import LevelDialog from "~/lib/game/components/LevelDialog";
 import { cleanupKaplay } from "~/lib/game/core/kaplayCtx";
 import type { LEVELS } from "~/lib/game/core/levels";
-import { useGameStore } from "~/lib/zustand/game";
 import { globalKeyTracker } from "~/lib/game/utils/globalKeyTracker";
+import { useGameStore } from "~/lib/zustand/game";
 
 const Game = ({ params }: Route.ComponentProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -26,15 +26,14 @@ const Game = ({ params }: Route.ComponentProps) => {
 
   setCurrentLevel(level as keyof typeof LEVELS); // we can cast confidently here since we know the params.id is a valid level id, because loading the level will fail if it is not
 
-  const levelDialogOpen = useGameStore(
-    (state) => state.levelDialogOpen);
-  const setLevelDialogOpen = useGameStore(
-    (state) => state.setLevelDialogOpen);
+  const [levelDialogOpen, setLevelDialogOpen] = useState(false);
 
   const levelCompleteDialogOpen = useGameStore(
-    (state) => state.levelCompleteDialogOpen);
+    (state) => state.levelCompleteDialogOpen
+  );
   const setLevelCompleteDialogOpen = useGameStore(
-    (state) => state.setLevelCompleteDialogOpen);
+    (state) => state.setLevelCompleteDialogOpen
+  );
 
   useEffect(() => {
     if (!canvasRef.current) {
@@ -60,7 +59,7 @@ const Game = ({ params }: Route.ComponentProps) => {
 
   return (
     <>
-      <LevelDialog open={levelDialogOpen} onOpenChange={setLevelDialogOpen}/>
+      <LevelDialog open={levelDialogOpen} onOpenChange={setLevelDialogOpen} />
       <LevelCompleteDialog
         open={levelCompleteDialogOpen}
         onOpenChange={setLevelCompleteDialogOpen}

@@ -1,10 +1,10 @@
 import { DialogClose } from "@radix-ui/react-dialog";
+import classNames from "classnames";
 import React, { useEffect, useRef, useState } from "react";
 
 import { useGameStore } from "~/lib/zustand/game";
 import { LEVELS } from "../core/levels";
 import CustomDialog from "./CustomDialog";
-import classNames from "classnames";
 
 const LevelDialog = ({
   open,
@@ -12,8 +12,8 @@ const LevelDialog = ({
   skip = false,
   trigger,
 }: {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
   skip?: boolean;
   trigger?: React.ReactNode;
 }) => {
@@ -132,11 +132,12 @@ const LevelDialog = ({
           <button
             onClick={handlePrevious}
             disabled={showingGoals ? false : index.current === 0}
-            className={
-              classNames(
-                "rounded-lg bg-slate-700/80 px-3 py-2 focus:outline-1 focus:outline-blue-300",
-                 !showingGoals && index.current === 0 ? "opacity-50" : "cursor-pointer hover:bg-slate-600"
-                )}
+            className={classNames(
+              "rounded-lg bg-slate-700/80 px-3 py-2 focus:outline-1 focus:outline-blue-300",
+              !showingGoals && index.current === 0
+                ? "opacity-50"
+                : "cursor-pointer hover:bg-slate-600"
+            )}
           >
             Previous
           </button>
@@ -144,7 +145,8 @@ const LevelDialog = ({
             <DialogClose asChild>
               <button
                 ref={startButtonRef}
-                className="cursor-pointer rounded-lg bg-slate-700/80 px-3 py-2 hover:bg-slate-600 focus:outline-1 focus:outline-blue-300">
+                className="cursor-pointer rounded-lg bg-slate-700/80 px-3 py-2 hover:bg-slate-600 focus:outline-1 focus:outline-blue-300"
+              >
                 Start
               </button>
             </DialogClose>
