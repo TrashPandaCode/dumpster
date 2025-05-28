@@ -9,6 +9,11 @@ let initialized = false;
 let keydownHandler: (e: KeyboardEvent) => void;
 let keyupHandler: (e: KeyboardEvent) => void;
 
+/**
+ * Converts our key names to React/DOM key names.
+ * @param key The key name to normalize.
+ * @returns The normalized key name.
+ */
 function normalizeKey(key: string): string {
   const lower = key.toLowerCase();
   if (lower === "space") return " ";
