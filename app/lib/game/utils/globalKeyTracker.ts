@@ -2,8 +2,8 @@ const keysDown = new Set<string>();
 const keysPressed = new Set<string>();
 const keysReleased = new Set<string>();
 
-const defaultCombos = new Set<string>(["Control+d", "Control+n"]);
-const comboListeners = new Map<string, Set<(e: KeyboardEvent) => void>>();
+const defaultShortcuts = new Set<string>(["Control+d", "Control+n"]);
+const shortcutListeners = new Map<string, Set<(e: KeyboardEvent) => void>>();
 
 let initialized = false;
 let keydownHandler: (e: KeyboardEvent) => void;
@@ -21,7 +21,7 @@ function normalizeKey(key: string): string {
   return key;
 }
 
-function getComboString(e: KeyboardEvent): string {
+function getshortcutString(e: KeyboardEvent): string {
   const parts: string[] = [];
   if (e.ctrlKey) parts.push("Control");
   if (e.altKey) parts.push("Alt");
@@ -30,12 +30,15 @@ function getComboString(e: KeyboardEvent): string {
   parts.push(e.key.toLowerCase());
   return parts.join("+");
 }
-function shortcutListener(combo: string, callback: (e: KeyboardEvent) => void) {
-  if (!comboListeners.has(combo)) {
-    comboListeners.set(combo, new Set());
+function shortcutListener(
+  shortcut: string,
+  callback: (e: KeyboardEvent) => void
+) {
+  if (!shortcutListeners.has(shortcut)) {
+    shortcutListeners.set(shortcut, new Set());
   }
-  comboListeners.get(combo)!.add(callback);
-  return () => comboListeners.get(combo)?.delete(callback);
+  shortcutListeners.get(shortcut)!.add(callback);
+  return () => shortcutListeners.get(shortcut)?.delete(callback);
 }
 
 function initGlobalKeyTracker() {
@@ -43,8 +46,8 @@ function initGlobalKeyTracker() {
   initialized = true;
 
   keydownHandler = (e) => {
-    const combo = getComboString(e);
-    if (defaultCombos.has(combo)) {
+    const shortcut = getshortcutString(e);
+    if (defaultShortcuts.has(shortcut)) {
       e.preventDefault();
     }
 
@@ -54,7 +57,7 @@ function initGlobalKeyTracker() {
     }
     keysDown.add(key);
 
-    comboListeners.get(combo)?.forEach((cb) => cb(e));
+    shortcutListeners.get(shortcut)?.forEach((sc) => sc(e));
   };
 
   keyupHandler = (e) => {
