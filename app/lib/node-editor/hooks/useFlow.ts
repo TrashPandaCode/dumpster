@@ -181,8 +181,7 @@ export function useFlow() {
     [setEdges, getNode, addEdgeStore]
   );
 
-  const onNodeDragStop: OnNodeDrag = () => {
-    const selectedNodes = nodes.filter((n) => n.selected);
+  const onNodeDragStop: OnNodeDrag = (_event, _node, selectedNodes) => {
     const selectedBoundingRect = {
       x: Math.min(
         ...selectedNodes.map((n) =>
