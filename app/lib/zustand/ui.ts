@@ -1,9 +1,11 @@
 import { create } from "zustand";
 
-export const useUIStore = create<{
-  openAddNodeDropdown: () => void;
-  setOpenAddNodeDropdown: (fn: () => void) => void;
-}>((set) => ({
-  openAddNodeDropdown: () => {},
-  setOpenAddNodeDropdown: (fn) => set({ openAddNodeDropdown: fn }),
+type AddNodeDropdownState = {
+  open: boolean;
+  setOpen: (open: boolean) => void;
+};
+
+export const useAddNodeDropdownStore = create<AddNodeDropdownState>((set) => ({
+  open: false,
+  setOpen: (open) => set({ open }),
 }));

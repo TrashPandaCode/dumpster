@@ -4,9 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "generate:nav": "bun scripts/generateNavigation.js",
-    "build": "bun run generate:nav && react-router build",
-    "dev": "bun run generate:nav && react-router dev",
+    "build": "react-router build",
+    "dev": "react-router dev",
     "start": "react-router-serve ./build/server/index.js",
     "typecheck": "react-router typegen && tsc",
     "lint": "eslint ./app",

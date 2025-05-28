@@ -22,7 +22,12 @@ const Group = memo(({ data }: { data: any }) => {
         <SizeIcon className="absolute right-2 bottom-2 rotate-90 cursor-nw-resize text-slate-400" />
       </NodeResizeControl>
 
-      <NodeContent label="Group" type="group" className="h-full bg-slate-900">
+      <NodeContent
+        label="Group"
+        type="group"
+        className="h-full bg-slate-900"
+        docsName="group"
+      >
         {!data.isParent && ( // TODO: the hint doesn't come back after all nodes are removed, do we event want this?
           <div className="flex flex-col items-center justify-center p-2 text-xs italic opacity-60">
             <p>Drag and drop nodes here,</p>

@@ -1,7 +1,6 @@
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuPortal,
   DropdownMenuTrigger,
 } from "@radix-ui/react-dropdown-menu";
@@ -10,39 +9,42 @@ import {
   CopyIcon,
   CubeIcon,
   HamburgerMenuIcon,
+  QuestionMarkIcon,
 } from "@radix-ui/react-icons";
 import { Panel, useReactFlow, type ReactFlowInstance } from "@xyflow/react";
-import { useRef } from "react";
-import { v4 as uuidv4 } from "uuid";
+import classnames from "classnames";
+import { useState } from "react";
+import { NavLink } from "react-router";
 
-import { useUIStore } from "~/lib/zustand/ui";
+import { LEVELS } from "~/lib/game/core/levels";
+import { useGameStore } from "~/lib/zustand/game";
+import { useAddNodeDropdownStore } from "~/lib/zustand/ui";
 import { useNodeStore } from "../node-store/node-store";
-import { MAIN_LOOP_CONNECTOR } from "../nodes/constants";
-import { nodeTypes } from "../nodes/node-types";
+import AddNodes from "./AddNodes";
 import { IconButton } from "./IconButton";
 
 const RightPanel: React.FC<{ rfInstance: ReactFlowInstance | undefined }> = ({
   rfInstance,
 }) => {
-  const {
-    addNodes,
-    addEdges,
-    getNodes,
-    getEdges,
-    setViewport,
-    setEdges,
-    setNodes,
-  } = useReactFlow();
+  const { getNodes, getEdges, setViewport, setEdges, setNodes } =
+    useReactFlow();
+
   const nodeStateDebugPrint = useNodeStore((state) => state.debugPrint);
-  const triggerRef = useRef<HTMLButtonElement>(null);
-  const setOpenAddNodeDropdown = useUIStore((s) => s.setOpenAddNodeDropdown);
+  const isDropdownOpen = useAddNodeDropdownStore((s) => s.open);
+  const setIsDropdownOpen = useAddNodeDropdownStore((s) => s.setOpen);
+
+  const level = useGameStore((state) => state.currentLevel);
+  const hints = LEVELS[level].hints.length
+    ? LEVELS[level].hints
+    : ["No hints here"];
+  const [hintIndex, setHintIndex] = useState(0);
 
   return (
     <Panel
       position="top-right"
       className="flex flex-col items-end justify-center gap-2"
     >
-      <DropdownMenu>
+      <DropdownMenu open={isDropdownOpen} onOpenChange={setIsDropdownOpen}>
         <DropdownMenuTrigger asChild>
           <IconButton side="left" tooltip="Add Node" aria-label="Add Node">
             <HamburgerMenuIcon className="text-white" />
@@ -50,69 +52,76 @@ const RightPanel: React.FC<{ rfInstance: ReactFlowInstance | undefined }> = ({
         </DropdownMenuTrigger>
 
         <DropdownMenuPortal>
-          <DropdownMenuContent
-            className="mt-2 flex w-65 flex-col items-center gap-1 rounded bg-slate-800 p-2 font-mono shadow-lg !outline-1 !outline-slate-700"
-            align="end"
-          >
-            {Object.keys(nodeTypes).map((name) => (
-              <DropdownMenuItem asChild key={name}>
+          <DropdownMenuContent align="end">
+            <AddNodes
+              onClose={() => setIsDropdownOpen(false)}
+              x={1800}
+              y={400}
+            />
+          </DropdownMenuContent>
+        </DropdownMenuPortal>
+      </DropdownMenu>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <IconButton side="left" tooltip="Help Menu" aria-label="Help Menu">
+            <QuestionMarkIcon className="text-white" />
+          </IconButton>
+        </DropdownMenuTrigger>
+
+        <DropdownMenuPortal>
+          <DropdownMenuContent align="end">
+            <div className="flex w-200 flex-col gap-4 rounded bg-slate-800 p-4 font-mono text-white shadow-lg outline-1 outline-slate-700 outline-solid">
+              <h1 className="text-xl">Hints</h1>
+              {hints[hintIndex]}
+              <NavLink
+                className="text-slate-400 italic hover:underline"
+                target="_blank"
+                to="/docs/"
+              >
+                Find information on this topic here
+              </NavLink>
+              <hr className="mx-auto h-1 w-full rounded-sm border-0 bg-slate-700" />
+              <div className="flex flex-row justify-center gap-2">
                 <button
-                  className="w-full cursor-pointer rounded px-2 py-1 text-left text-sm text-white hover:bg-slate-700"
+                  disabled={hintIndex === 0}
+                  className={classnames(
+                    "rounded bg-slate-700 px-2 py-1 text-left text-sm text-white",
+                    hintIndex === 0
+                      ? "opacity-50"
+                      : "cursor-pointer hover:bg-slate-600"
+                  )}
                   onClick={() => {
-                    addNodes({
-                      id: uuidv4(),
-                      type: name,
-                      position: { x: 0, y: 0 },
-                      data: {},
-                    });
+                    if (hintIndex > 0) {
+                      setHintIndex(hintIndex - 1);
+                    }
                   }}
                 >
-                  {name}
+                  Previous Hint
                 </button>
-              </DropdownMenuItem>
-            ))}
-            <DropdownMenuItem asChild>
-              <button
-                className="w-full cursor-pointer rounded px-2 py-1 text-left text-sm text-white hover:bg-slate-700"
-                onClick={() => {
-                  const startId = uuidv4();
-                  const endId = uuidv4();
-                  const loopId = uuidv4();
-                  const edgeId = uuidv4();
-                  addNodes([
-                    {
-                      id: startId,
-                      type: "ForStart",
-                      position: { x: 0, y: 0 },
-                      data: { loopId },
-                    },
-                    {
-                      id: endId,
-                      type: "ForEnd",
-                      position: { x: 300, y: 0 },
-                      data: { loopId },
-                    },
-                  ]);
-                  addEdges({
-                    id: edgeId,
-                    type: "straight",
-                    source: startId,
-                    target: endId,
-                    sourceHandle: MAIN_LOOP_CONNECTOR,
-                    targetHandle: MAIN_LOOP_CONNECTOR,
-                    animated: true,
-                    deletable: false,
-                    selectable: false,
-                    style: {
-                      strokeWidth: 2,
-                      stroke: "var(--color-blue-300)",
-                    },
-                  });
-                }}
-              >
-                For Loop
-              </button>
-            </DropdownMenuItem>
+                <button
+                  disabled={hintIndex === hints.length - 1}
+                  className={classnames(
+                    "rounded bg-slate-700 px-2 py-1 text-left text-sm text-white",
+                    hintIndex === hints.length - 1
+                      ? "opacity-50"
+                      : "cursor-pointer hover:bg-slate-600"
+                  )}
+                  onClick={() => {
+                    if (hintIndex < hints.length - 1) {
+                      setHintIndex(hintIndex + 1);
+                    }
+                  }}
+                >
+                  Next Hint
+                </button>
+                <button className="cursor-pointer rounded bg-slate-700 px-2 py-1 text-left text-sm text-white hover:bg-slate-600">
+                  First Correct Node
+                </button>
+                <button className="hover:bg-jam-600 cursor-pointer rounded bg-slate-700 px-2 py-1 text-left text-sm text-white">
+                  Full Solution
+                </button>
+              </div>
+            </div>
           </DropdownMenuContent>
         </DropdownMenuPortal>
       </DropdownMenu>

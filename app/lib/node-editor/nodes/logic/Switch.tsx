@@ -50,7 +50,7 @@ const Switch = memo(({ id, data }: { id: string; data: any }) => {
 
   return (
     <div className="min-w-3xs">
-      <NodeContent label="Switch" type="float">
+      <NodeContent label="Switch" type="float" docsName="switch">
         <LabelHandle
           id={OUT_HANDLE_1}
           position={Position.Right}

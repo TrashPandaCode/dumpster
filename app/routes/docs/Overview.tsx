@@ -9,7 +9,7 @@ import {
 } from "~/lib/core/components/Breadcrumb";
 import Footer from "~/lib/core/components/Footer";
 import Header from "~/lib/core/components/Header";
-import Navigation from "./Navigation";
+import Navigation from "~/lib/core/components/docs/Navigation";
 
 const Docs = () => {
   const outlet = useOutlet();

@@ -1,6 +1,7 @@
 import { useReactFlow } from "@xyflow/react";
 import { use, useEffect } from "react";
 
+import { useAddNodeDropdownStore } from "~/lib/zustand/ui";
 import { globalKeyTracker } from "../../game/utils/globalKeyTracker";
 import { useNodeActions } from "../hooks/useNodeActions";
 
@@ -26,6 +27,11 @@ export function useDuplicateHotkey() {
 
 export function useNewNodeHotkey() {
   useEffect(() => {
-    const remove = globalKeyTracker.shortcutListener("Control+n", (e) => {});
-  });
+    const remove = globalKeyTracker.shortcutListener("Control+n", (e) => {
+      useAddNodeDropdownStore.getState().setOpen(true);
+    });
+    return () => {
+      remove();
+    };
+  }, []);
 }

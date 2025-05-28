@@ -1,6 +1,6 @@
 import React from "react";
 
-import AddNodesPanel from "./AddNodesPanel";
+import AddNodes from "./AddNodes";
 
 type PaneContextMenuProps = {
   x: number;
@@ -11,7 +11,7 @@ type PaneContextMenuProps = {
 const PaneContextMenu: React.FC<PaneContextMenuProps> = ({ x, y, onClose }) => {
   return (
     <div style={{ position: "absolute", top: y, left: x, zIndex: 1000 }}>
-      <AddNodesPanel onClose={onClose} x={x} y={y} />
+      <AddNodes onClose={onClose} x={x} y={y} />
     </div>
   );
 };

@@ -1,6 +1,6 @@
 import { CrossCircledIcon } from "@radix-ui/react-icons";
 import { Position, useNodeConnections, useReactFlow } from "@xyflow/react";
-import { memo, useEffect, useRef, useState } from "react";
+import { memo, useEffect, useMemo, useRef, useState } from "react";
 
 import AddHandle from "../../node-components/AddHandle";
 import BaseHandle from "../../node-components/BaseHandle";
@@ -29,6 +29,10 @@ const ForStart = memo(
     const curLabel = useRef("");
 
     const { updateNodeData } = useReactFlow();
+    const handles = useMemo(
+      () => Array.from(loops.get(data.loopId) ?? []),
+      [data.loopId, loops]
+    );
 
     useEffect(() => {
       updateNodeData(id, {
@@ -67,7 +71,7 @@ const ForStart = memo(
 
     return (
       <div className="min-w-60">
-        <NodeContent label="For Start" type="loop">
+        <NodeContent label="For Start" type="loop" docsName="forloop">
           <div className="text-left">
             Iterations
             <NumberInput
@@ -89,7 +93,7 @@ const ForStart = memo(
             position={Position.Right}
             label="Index"
           />
-          {Array.from(loops.get(data.loopId) ?? []).map(([label, handleId]) => (
+          {handles.map(([label, handleId]) => (
             <div
               className={
                 "flex w-full items-center justify-between [&>*:nth-child(even)]:pointer-events-none [&>*:nth-child(even)]:opacity-0 hover:[&>*:nth-child(even)]:pointer-events-auto hover:[&>*:nth-child(even)]:opacity-100 " +

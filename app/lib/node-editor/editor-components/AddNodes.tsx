@@ -1,35 +1,33 @@
 import { ChevronRightIcon } from "@radix-ui/react-icons";
-import { Panel, useReactFlow, type PanelPosition } from "@xyflow/react";
+import { useReactFlow } from "@xyflow/react";
 import classnames from "classnames";
 import { useEffect, useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
-import { GROUP_SIZE } from "../nodes/constants";
+import { LEVELS } from "~/lib/game/core/levels";
+import { useGameStore } from "~/lib/zustand/game";
 import { TYPES } from "../nodes/math-float/types";
-import { searchNodeTypes } from "../nodes/node-types";
 import { connectNodesToLoop, createForLoop } from "../utils";
 
-const AddNodesPanel = ({
+const AddNodes = ({
   x,
   y,
   onClose,
-  position,
   parentLoopId,
   children,
-  parentId,
 }: {
   x: number;
   y: number;
   onClose: () => void;
-  position?: PanelPosition;
   parentLoopId?: string;
   children?: React.ReactNode;
-  parentId?: string;
 }) => {
+  const level = useGameStore((state) => state.currentLevel);
+  const searchNodeTypes = LEVELS[level].availableNodes;
+
   const MathFloatComputeTypes = Object.values(TYPES).flat();
 
-  const { addNodes, addEdges, screenToFlowPosition, getNodes, getNode } =
-    useReactFlow();
+  const { addNodes, addEdges, screenToFlowPosition, getNodes } = useReactFlow();
   const inputRef = useRef<HTMLInputElement>(null);
 
   const [nodeSearch, setNodeSearch] = useState("");
@@ -41,8 +39,6 @@ const AddNodesPanel = ({
       return { nodeType: t };
     })
   );
-
-  const parentNode = getNode(parentId ?? "");
 
   // focus the input field when the component mounts
   useEffect(() => {
@@ -59,7 +55,11 @@ const AddNodesPanel = ({
         return { nodeType: t };
       });
 
-    if (nodeSearch === "") return setFilteredTypes(types);
+    if (
+      nodeSearch === "" ||
+      !searchNodeTypes.some((type) => type === "MathFloat")
+    )
+      return setFilteredTypes(types);
 
     const mathTypes = MathFloatComputeTypes.filter((type) =>
       type.toLowerCase().includes(nodeSearch.toLowerCase())
@@ -73,33 +73,16 @@ const AddNodesPanel = ({
   }, [nodeSearch]);
 
   const handleAddNode = (type: string, computeType?: string) => {
-    const sFPosition1 = screenToFlowPosition({
-      x,
-      y,
-    });
-    const sFPosition2 = screenToFlowPosition({
-      x: x + 300,
-      y,
-    });
-
-    const positions = {
-      x1: parentNode ? sFPosition1.x - parentNode.position.x : sFPosition1.x,
-      y1: parentNode ? sFPosition1.y - parentNode.position.y : sFPosition1.y,
-      x2: parentNode ? sFPosition2.x - parentNode.position.x : sFPosition2.x,
-      y2: parentNode ? sFPosition2.y - parentNode.position.y : sFPosition2.y,
-    };
     // Create nodes based on type
     const ids =
       type === "ForLoop"
         ? createForLoop(
             addNodes,
+            x,
+            y,
             addEdges,
-            positions.x1,
-            positions.y1,
-            positions.x2,
-            positions.y2,
-            parentLoopId,
-            parentId
+            screenToFlowPosition,
+            parentLoopId
           )
         : [createSingleNode(type, computeType)];
 
@@ -114,26 +97,14 @@ const AddNodesPanel = ({
   // Helper function to create a single node and return its ID
   const createSingleNode = (type: string, computeType?: string) => {
     const id = uuidv4();
-    const sFPosition = screenToFlowPosition({
-      x,
-      y,
-    });
-    const position = {
-      x: parentNode ? sFPosition.x - parentNode.position.x : sFPosition.x,
-      y: parentNode ? sFPosition.y - parentNode.position.y : sFPosition.y,
-    };
-
     addNodes({
       id,
       type,
-      position: position,
-      parentId,
+      position: screenToFlowPosition({ x, y }),
       data: {
         initialComputeType: computeType,
         parentLoopId,
       },
-      height: type === "Group" ? GROUP_SIZE.height : undefined,
-      width: type === "Group" ? GROUP_SIZE.width : undefined,
     });
     return id;
   };
@@ -164,10 +135,7 @@ const AddNodesPanel = ({
   }, [filteredTypes, selectedIndex]);
 
   return (
-    <Panel
-      position={position}
-      className="flex w-65 flex-col gap-2 rounded bg-slate-800 p-2 font-mono shadow-lg outline-1 outline-slate-700 outline-solid"
-    >
+    <div className="flex w-65 flex-col gap-2 rounded bg-slate-800 p-2 font-mono shadow-lg outline-1 outline-slate-700 outline-solid">
       <div className="shadow">
         <input
           ref={inputRef}
@@ -184,7 +152,7 @@ const AddNodesPanel = ({
           <button
             key={`add_node_${type}_${index}`}
             className={classnames(
-              "w-full rounded px-2 py-1 text-left text-sm text-white",
+              "w-full cursor-pointer rounded px-2 py-1 text-left text-sm text-white",
               selectedIndex === index ? "bg-slate-700" : "hover:bg-slate-700"
             )}
             onClick={() => handleAddNode(type.nodeType, type.computeType)}
@@ -202,8 +170,8 @@ const AddNodesPanel = ({
         ))}
       </div>
       {nodeSearch === "" && <>{children}</>}
-    </Panel>
+    </div>
   );
 };
 
-export default AddNodesPanel;
+export default AddNodes;

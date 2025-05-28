@@ -1,15 +1,14 @@
 import { useReactFlow } from "@xyflow/react";
 import { useCallback } from "react";
+import { v4 as uuidv4 } from "uuid";
 
-import { useLoopStore } from "../node-store/loop-store";
-import { duplicateNodes } from "../utils";
-import AddNodesPanel from "./AddNodesPanel";
+import { connectNodesToLoop, createForLoop } from "../utils";
+import AddNodes from "./AddNodes";
 
 type NodeContextMenuProps = {
   nodeId: string;
   nodeType: string | undefined;
   nodeLoopId: string | undefined;
-  nodeParentId: string | undefined;
   x: number;
   y: number;
   onClose: () => void;
@@ -22,21 +21,14 @@ const NodeContextMenu: React.FC<NodeContextMenuProps> = ({
   x,
   y,
   onClose,
-  nodeParentId,
 }) => {
   return (
     <div style={{ position: "absolute", top: y, left: x, zIndex: 1000 }}>
       {nodeType === "ForStart" || nodeType === "ForEnd" ? (
-        <AddNodesPanel
-          onClose={onClose}
-          x={x}
-          y={y}
-          parentLoopId={nodeLoopId}
-          parentId={nodeParentId}
-        >
+        <AddNodes onClose={onClose} x={x} y={y} parentLoopId={nodeLoopId}>
           <hr className="mx-auto h-1 w-44 rounded-sm border-0 bg-slate-700" />
           <DefaultNodeContextMenu nodeId={nodeId} onClose={onClose} />
-        </AddNodesPanel>
+        </AddNodes>
       ) : (
         <div className="flex w-36 flex-col gap-1 rounded bg-slate-800 p-2 font-mono shadow-lg outline-1 outline-slate-700 outline-solid">
           <DefaultNodeContextMenu nodeId={nodeId} onClose={onClose} />
@@ -58,69 +50,44 @@ const DefaultNodeContextMenu = ({
   const { getNode, getNodes, setNodes, addNodes, setEdges, addEdges } =
     useReactFlow();
 
-  const addHandle = useLoopStore((state) => state.addHandle);
-  const getHandles = useLoopStore((state) => state.getHandles);
-
-  // handle node duplication
   const duplicateNode = useCallback(() => {
     const node = getNode(nodeId);
     if (!node) return;
 
-    const nodesToDuplicate = getNodes().filter(
-      (n) =>
-        n.id === node.id || // always duplicate the node itself
-        n.parentId === node.id || // if the node is a group, duplicate all its children
-        ((n.data.loopId === node.data.loopId || // if node is part of a loop, duplicate both start and end nodes
-          n.data.parentLoopId === node.data.loopId) && // also get all children if its a loop node
-          node.data.loopId != undefined) // ensure we are dealing with a loop node
-    );
-    console.log("Nodes to duplicate:", nodesToDuplicate);
+    const position = {
+      x: node.position.x + 50,
+      y: node.position.y + 50,
+    };
 
-    duplicateNodes(
-      nodesToDuplicate,
-      addNodes,
-      addEdges,
-      setNodes,
-      addHandle,
-      getHandles
-    );
+    if (node.data.loopStart || node.data.loopEnd) {
+      createForLoop(addNodes, position.x, position.y, addEdges);
+    } else {
+      const id = uuidv4();
+      addNodes({
+        ...node,
+        selected: false,
+        dragging: false,
+        id: id,
+        position,
+      });
 
-    onClose();
-  }, [
-    addEdges,
-    addHandle,
-    addNodes,
-    getHandles,
-    getNode,
-    getNodes,
-    nodeId,
-    onClose,
-    setNodes,
-  ]);
-
-  const deleteNode = useCallback(() => {
-    const idsToDelete = [nodeId];
-    if (getNode(nodeId)?.type === "Group") {
-      // if the node is a group, delete all its children
-      const children = getNodes().filter((n) => n.parentId === nodeId);
-      idsToDelete.push(...children.map((child) => child.id));
+      if (node.data.parentLoopId)
+        connectNodesToLoop(
+          getNodes,
+          addEdges,
+          [id],
+          node.data.parentLoopId as string
+        );
     }
 
-    // remove all nodes with the ids in idsToDelete
-    setNodes((nodes) => nodes.filter((node) => !idsToDelete.includes(node.id)));
-    // remove all edges that connect to the nodes with the ids in idsToDelete
-    setEdges((edges) =>
-      edges.filter(
-        (edge) =>
-          !(
-            idsToDelete.includes(edge.source) ||
-            idsToDelete.includes(edge.target)
-          )
-      )
-    );
-
     onClose();
-  }, [nodeId, getNode, setNodes, setEdges, onClose, getNodes]);
+  }, [getNode, nodeId, onClose, addNodes, addEdges, getNodes]);
+
+  const deleteNode = useCallback(() => {
+    setNodes((nodes) => nodes.filter((node) => node.id !== nodeId));
+    setEdges((edges) => edges.filter((edge) => edge.source !== nodeId));
+    onClose();
+  }, [setNodes, setEdges, onClose, nodeId]);
 
   return (
     <>
@@ -128,13 +95,19 @@ const DefaultNodeContextMenu = ({
         className="w-full rounded px-2 py-1 text-left text-sm text-white hover:bg-slate-700"
         onClick={duplicateNode}
       >
-        Duplicate
+        <span>Duplicate</span>
+        <span className="ml-2 rounded bg-slate-600 px-1.5 py-0.5 font-mono text-xs text-gray-300">
+          Ctrl+D
+        </span>
       </button>
       <button
         className="w-full rounded px-2 py-1 text-left text-sm text-white hover:bg-slate-700"
         onClick={deleteNode}
       >
-        Delete
+        <span>Delete</span>
+        <span className="ml-2 rounded bg-slate-600 px-1.5 py-0.5 font-mono text-xs text-gray-300">
+          Del
+        </span>
       </button>
     </>
   );
