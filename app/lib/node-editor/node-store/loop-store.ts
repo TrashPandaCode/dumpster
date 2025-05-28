@@ -15,7 +15,7 @@ interface LoopStoreState {
   getHandles: (loopId: string) => Map<string, string>;
 }
 
-export const useLoopStore = create<LoopStoreState>((set) => ({
+export const useLoopStore = create<LoopStoreState>((set, get) => ({
   loops: new Map(),
   addHandle: (loopId, label) => {
     const newHandleId = handleUUID();
@@ -41,7 +41,7 @@ export const useLoopStore = create<LoopStoreState>((set) => ({
       return { loops: newLoops };
     }),
   getHandles: (loopId) => {
-    const loop = useLoopStore.getState().loops.get(loopId);
+    const loop = get().loops.get(loopId);
     if (!loop) return new Map();
     const handles = new Map<string, string>();
     loop.forEach((handleId, label) => {
