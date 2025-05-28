@@ -199,7 +199,7 @@ export const LEVELS = {
         ],
       },
       {
-        id: "trashCan",
+        id: "trashcan",
         connections: [
           { label: "xpos", access: "set" },
           { label: "ypos", access: "set" },

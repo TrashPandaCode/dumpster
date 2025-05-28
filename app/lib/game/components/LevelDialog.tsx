@@ -9,10 +9,12 @@ import classNames from "classnames";
 const LevelDialog = ({
   open,
   onOpenChange,
+  skip = false,
   trigger,
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  skip?: boolean;
   trigger?: React.ReactNode;
 }) => {
   const currentLevel = useGameStore((state) => state.currentLevel);
@@ -28,7 +30,7 @@ const LevelDialog = ({
   const [typedText, setTypedText] = useState("");
   const [dialog, setDialog] = useState(dialogs[index.current]);
 
-  const [showingGoals, setShowingGoals] = useState(false);
+  const [showingGoals, setShowingGoals] = useState(skip);
 
   // Typing effect
   useEffect(() => {
