@@ -8,8 +8,9 @@ import LabelHandle from "../../node-components/LabelHandle";
 import MultiSelectDropDown from "../../node-components/MultiSelectDropDown";
 import NodeContent from "../../node-components/NodeContent";
 import type { nodeData, nodeInputs } from "../../node-store/node-store";
-import { getHandleIntersection, getInput, type GameObject } from "../../utils";
+import { getHandleIntersection, getInput } from "../../utils";
 import { IN_HANDLE_1 } from "../constants";
+import type { GameObject } from "~/lib/game/constants";
 
 const ImportFromGameobject = memo(({ id, data }: { id: string; data: any }) => {
   const gameObjects = useDataStore((state) => state.gameObjects);

@@ -67,7 +67,7 @@ const AddNodes = ({
         return { nodeType: t };
       });
 
-    if (nodeSearch === "" || !searchNodeTypes.includes("MathFloat"))
+    if (nodeSearch === "" || !searchNodeTypes.some(type => type === "MathFloat"))
       return setFilteredTypes(types);
 
     const mathTypes = MathFloatComputeTypes.filter((type) =>

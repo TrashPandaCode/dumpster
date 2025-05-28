@@ -7,6 +7,7 @@ import type {
 } from "@xyflow/react";
 import { v4 as uuidv4 } from "uuid";
 
+import type { GameObject } from "../game/constants";
 import type { ConnectionAccess } from "../game/core/levels";
 import type { GameObjectsData } from "../zustand/data";
 import type { nodeInputs } from "./node-store/node-store";
@@ -436,7 +437,6 @@ export function getContextMenuPosition(event: MouseEvent | React.MouseEvent): {
   return { x: x - 15, y: y - 15 };
 }
 
-export type GameObject = string;
 export function getHandleIntersection(
   handleAccess: ConnectionAccess,
   gameObjects: GameObjectsData,
@@ -444,7 +444,7 @@ export function getHandleIntersection(
 ): string[] {
   if (selectedGameObjects.length === 0) return [];
 
-  const getFilteredHandles = (gameObjectLabel: string): Set<string> => {
+  const getFilteredHandles = (gameObjectLabel: GameObject): Set<string> => {
     const gameObject = gameObjects.get(gameObjectLabel)!;
 
     const handles = new Set<string>();

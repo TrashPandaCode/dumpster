@@ -2,6 +2,8 @@ import { CrossCircledIcon } from "@radix-ui/react-icons";
 import { Position, useReactFlow } from "@xyflow/react";
 import { memo, useMemo, useRef, useState } from "react";
 
+import { type GameObject } from "~/lib/game/constants";
+import type { ModifiableGameObject } from "~/lib/game/core/levels";
 import { useGameobjectSelect } from "~/lib/node-editor/hooks/useGameobjectSelect";
 import AddHandle from "~/lib/node-editor/node-components/AddHandle";
 import BaseHandle from "~/lib/node-editor/node-components/BaseHandle";
@@ -9,10 +11,7 @@ import LabelHandle from "~/lib/node-editor/node-components/LabelHandle";
 import MultiSelectDropDown from "~/lib/node-editor/node-components/MultiSelectDropDown";
 import NodeContent from "~/lib/node-editor/node-components/NodeContent";
 import { IN_HANDLE_1 } from "~/lib/node-editor/nodes/constants";
-import {
-  getHandleIntersection,
-  type GameObject,
-} from "~/lib/node-editor/utils";
+import { getHandleIntersection } from "~/lib/node-editor/utils";
 import type { GameObjectsData } from "~/lib/zustand/data";
 
 const DocsExportToGameobject = memo(
@@ -32,7 +31,7 @@ const DocsExportToGameobject = memo(
           { label: "ypos", access: "set" },
         ],
       },
-    ];
+    ] satisfies ModifiableGameObject[];
 
     const [gameObjects, setGameObjects] = useState<GameObjectsData>(
       new Map([
@@ -83,14 +82,16 @@ const DocsExportToGameobject = memo(
       [gameObjects, selectedGameObjects]
     );
 
-    const addHandle = (id: string, label: string) => {
-      if (gameObjects.has(label)) return;
+    const addHandle = (handleIdentifier: string, label: string) => {
+      const id = handleIdentifier as GameObject;
+
+      if (gameObjects.get(id)!.has(label)) return;
 
       const newGameObjectsMap = new Map(gameObjects);
       newGameObjectsMap.get(id)!.set(label, { access: "all", value: 0 });
       setGameObjects(newGameObjectsMap);
     };
-    const removeHandle = (id: string, label: string) => {
+    const removeHandle = (id: GameObject, label: string) => {
       const newGameObjectsMap = new Map(gameObjects);
       newGameObjectsMap.get(id)!.delete(label);
       setGameObjects(newGameObjectsMap);
