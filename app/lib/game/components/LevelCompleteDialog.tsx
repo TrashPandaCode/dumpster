@@ -65,7 +65,7 @@ const LevelCompleteDialog = ({
                             useDataStore.getState().reset();
                             onOpenChange(false);
                             cleanupKaplay();
-                            navigate("/");
+                            window.location.href = "/";
                         }}
                     >
                         To Menu

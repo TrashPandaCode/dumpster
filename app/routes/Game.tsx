@@ -25,15 +25,15 @@ const Game = ({ params }: Route.ComponentProps) => {
 
   setCurrentLevel(level as keyof typeof LEVELS); // we can cast confidently here since we know the params.id is a valid level id, because loading the level will fail if it is not
 
-  const open = useGameStore(
-    (state) => state.levelCompleteDialogOpen);
-  const setOpen = useGameStore(
-    (state) => state.setLevelCompleteDialogOpen);
-
   const levelDialogOpen = useGameStore(
     (state) => state.levelDialogOpen);
   const setLevelDialogOpen = useGameStore(
     (state) => state.setLevelDialogOpen);
+
+  const levelCompleteDialogOpen = useGameStore(
+    (state) => state.levelCompleteDialogOpen);
+  const setLevelCompleteDialogOpen = useGameStore(
+    (state) => state.setLevelCompleteDialogOpen);
 
   useEffect(() => {
     if (!canvasRef.current) {
@@ -49,6 +49,9 @@ const Game = ({ params }: Route.ComponentProps) => {
 
     return () => {
       cleanupKaplay();
+      setLevelCompleteDialogOpen(false);
+      useGameStore.getState().setLevelCompleted(false);
+
     };
   }, [level]);
 
@@ -56,8 +59,8 @@ const Game = ({ params }: Route.ComponentProps) => {
     <>
       <LevelDialog open={levelDialogOpen} onOpenChange={setLevelDialogOpen}/>
       <LevelCompleteDialog
-        open={open}
-        onOpenChange={setOpen}
+        open={levelCompleteDialogOpen}
+        onOpenChange={setLevelCompleteDialogOpen}
         currentLevel={level}
       />
       <PanelGroup direction="horizontal">
