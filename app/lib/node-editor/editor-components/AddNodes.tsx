@@ -1,5 +1,10 @@
 import { ChevronRightIcon } from "@radix-ui/react-icons";
-import { useReactFlow } from "@xyflow/react";
+import {
+  useReactFlow,
+  type Edge,
+  type Node,
+  type XYPosition,
+} from "@xyflow/react";
 import classnames from "classnames";
 import { useEffect, useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
@@ -30,14 +35,8 @@ const AddNodes = ({
 
   const MathFloatComputeTypes = Object.values(TYPES).flat();
 
-  const {
-    addNodes,
-    addEdges,
-    screenToFlowPosition,
-    getNodes,
-    getEdges,
-    getNode,
-  } = useReactFlow();
+  const { addNodes, addEdges, screenToFlowPosition, getNodes, getNode } =
+    useReactFlow();
   const inputRef = useRef<HTMLInputElement>(null);
 
   const [nodeSearch, setNodeSearch] = useState("");
@@ -85,45 +84,53 @@ const AddNodes = ({
   }, [nodeSearch]);
 
   const handleAddNode = (type: string, computeType?: string) => {
-    const sFPosition1 = screenToFlowPosition({
+    const sFPosition = screenToFlowPosition({
       x,
       y,
     });
-    const sFPosition2 = screenToFlowPosition({
-      x: x + 300,
-      y,
-    });
 
-    const positions = {
-      x1: parentNode ? sFPosition1.x - parentNode.position.x : sFPosition1.x,
-      y1: parentNode ? sFPosition1.y - parentNode.position.y : sFPosition1.y,
-      x2: parentNode ? sFPosition2.x - parentNode.position.x : sFPosition2.x,
-      y2: parentNode ? sFPosition2.y - parentNode.position.y : sFPosition2.y,
+    const startPos: XYPosition = {
+      x: parentNode ? sFPosition.x - parentNode.position.x : sFPosition.x,
+      y: parentNode ? sFPosition.y - parentNode.position.y : sFPosition.y,
     };
-    // Create nodes based on type
-    const ids =
-      type === "ForLoop"
-        ? createForLoop(
-            addNodes,
-            addEdges,
-            positions.x1,
-            positions.y1,
-            positions.x2,
-            positions.y2,
-            parentLoopId,
-            parentId
-          )
-        : [createSingleNode(type, computeType)];
+
+    const endPos: XYPosition = {
+      x: parentNode
+        ? sFPosition.x - parentNode.position.x + 300
+        : sFPosition.x + 300,
+      y: parentNode ? sFPosition.y - parentNode.position.y : sFPosition.y,
+    };
+
+    // Create nodes and edges based on type
+    const newEdges: Edge[] = [];
+    const newNodes: Node[] = [];
+    if (type === "ForLoop") {
+      const loopBox = createForLoop(startPos, endPos, parentLoopId, parentId);
+
+      newEdges.push(loopBox.mainConnectorEdge);
+      newNodes.push(...loopBox.nodes);
+    } else newNodes.push(createSingleNode(type, computeType));
+
+    addNodes(newNodes);
 
     // Connect nodes if inside a loop
     if (parentLoopId) {
-      connectNodesToLoop(getNodes, addEdges, ids, parentLoopId);
+      const parentLoop = getNodes().filter(
+        (n) => n.data.loopId === parentLoopId
+      );
+      newEdges.push(
+        ...connectNodesToLoop(
+          parentLoop,
+          newNodes.map((n) => n.id)
+        )
+      );
     }
+    addEdges(newEdges);
 
     onClose();
   };
 
-  // Helper function to create a single node and return its ID
+  // Helper function to create a single node and return it
   const createSingleNode = (type: string, computeType?: string) => {
     const id = uuidv4();
     const sFPosition = screenToFlowPosition({
@@ -135,7 +142,7 @@ const AddNodes = ({
       y: parentNode ? sFPosition.y - parentNode.position.y : sFPosition.y,
     };
 
-    addNodes({
+    return {
       id,
       type,
       position: position,
@@ -148,8 +155,7 @@ const AddNodes = ({
       width: type === "Group" ? GROUP_SIZE.width : undefined,
       selected: false,
       dragging: false,
-    });
-    return id;
+    } as Node;
   };
 
   // handle keyboard navigation
