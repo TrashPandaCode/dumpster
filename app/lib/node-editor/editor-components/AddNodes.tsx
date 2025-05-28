@@ -67,7 +67,10 @@ const AddNodes = ({
         return { nodeType: t };
       });
 
-    if (nodeSearch === "" || !searchNodeTypes.some(type => type === "MathFloat"))
+    if (
+      nodeSearch === "" ||
+      !searchNodeTypes.some((type) => type === "MathFloat")
+    )
       return setFilteredTypes(types);
 
     const mathTypes = MathFloatComputeTypes.filter((type) =>
@@ -143,6 +146,8 @@ const AddNodes = ({
       },
       height: type === "Group" ? GROUP_SIZE.height : undefined,
       width: type === "Group" ? GROUP_SIZE.width : undefined,
+      selected: false,
+      dragging: false,
     });
     return id;
   };
