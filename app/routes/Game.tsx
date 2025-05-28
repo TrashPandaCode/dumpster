@@ -30,6 +30,11 @@ const Game = ({ params }: Route.ComponentProps) => {
   const setOpen = useGameStore(
     (state) => state.setLevelCompleteDialogOpen);
 
+  const levelDialogOpen = useGameStore(
+    (state) => state.levelDialogOpen);
+  const setLevelDialogOpen = useGameStore(
+    (state) => state.setLevelDialogOpen);
+
   useEffect(() => {
     if (!canvasRef.current) {
       return;
@@ -40,6 +45,8 @@ const Game = ({ params }: Route.ComponentProps) => {
     // load the game level
     loadLevel(level);
 
+    setLevelDialogOpen(true);
+
     return () => {
       cleanupKaplay();
     };
@@ -47,7 +54,7 @@ const Game = ({ params }: Route.ComponentProps) => {
 
   return (
     <>
-      <LevelDialog defaultOpen={true} />
+      <LevelDialog open={levelDialogOpen} onOpenChange={setLevelDialogOpen}/>
       <LevelCompleteDialog
         open={open}
         onOpenChange={setOpen}

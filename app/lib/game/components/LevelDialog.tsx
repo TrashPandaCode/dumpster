@@ -7,12 +7,12 @@ import CustomDialog from "./CustomDialog";
 import classNames from "classnames";
 
 const LevelDialog = ({
-  defaultOpen = false,
-  skip = false,
+  open,
+  onOpenChange,
   trigger,
 }: {
-  defaultOpen?: boolean;
-  skip?: boolean;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
   trigger?: React.ReactNode;
 }) => {
   const currentLevel = useGameStore((state) => state.currentLevel);
@@ -28,7 +28,7 @@ const LevelDialog = ({
   const [typedText, setTypedText] = useState("");
   const [description, setDescription] = useState(descriptions[index.current]);
 
-  const [showingGoals, setShowingGoals] = useState(skip);
+  const [showingGoals, setShowingGoals] = useState(false);
 
   // Typing effect
   useEffect(() => {
@@ -82,7 +82,8 @@ const LevelDialog = ({
     <CustomDialog
       title={currentLevel}
       trigger={trigger}
-      defaultOpen={defaultOpen}
+      open={open}
+      onOpenChange={onOpenChange}
     >
       <div className="flex flex-col gap-5">
         <div className="flex flex-1 flex-row">

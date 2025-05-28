@@ -5,8 +5,6 @@ import { getKaplayCtx } from "../core/kaplayCtx";
 export const initialize1_1 = () => {
   const { k, game } = getKaplayCtx();
 
-  useGameStore.getState().setLevelCompleted(false);
-
   //Load Sprites
   k.loadSprite("raccoon", "/game/sprites/raccoon_spritesheet.png", {
     sliceX: 4,

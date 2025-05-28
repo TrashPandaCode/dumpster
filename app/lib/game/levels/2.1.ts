@@ -5,8 +5,6 @@ import { useDataStore } from "~/lib/zustand/data";
 export const initialize2_1 = () => {
     const { k, game } = getKaplayCtx();
 
-    useGameStore.getState().setLevelCompleted(false);
-
     //Load Sprites
     k.loadSprite("raccoon", "/game/sprites/raccoon_spritesheet.png", {
         sliceX: 4,
