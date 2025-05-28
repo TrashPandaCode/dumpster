@@ -157,7 +157,11 @@ export const LEVELS = {
     modifiableGameObjects: [
       {
         id: "raccoon",
-        connections: [{ label: "xpos", access: "get" }],
+        connections: [
+          { label: "xpos", access: "get" },
+
+          {label: "value", access: "set" },
+        ],
       },
       {
         id: "trashcan",
@@ -205,6 +209,6 @@ export const LEVELS = {
           { label: "ypos", access: "set" },
         ],
       },],
-    availableNodes: ["Display"],
+    availableNodes: ["Display", "ExportToGameobject"],
   },
 } satisfies Record<string, Level>;
