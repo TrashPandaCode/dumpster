@@ -1,5 +1,5 @@
 import { useReactFlow } from "@xyflow/react";
-import { useEffect } from "react";
+import { use, useEffect } from "react";
 
 import { globalKeyTracker } from "../../game/utils/globalKeyTracker";
 import { useNodeActions } from "../hooks/useNodeActions";
@@ -22,4 +22,10 @@ export function useDuplicateHotkey() {
       remove();
     };
   }, [duplicateNodes, getNodes]);
+}
+
+export function useNewNodeHotkey() {
+  useEffect(() => {
+    const remove = globalKeyTracker.shortcutListener("Control+n", (e) => {});
+  });
 }

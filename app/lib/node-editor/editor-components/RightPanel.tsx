@@ -12,8 +12,10 @@ import {
   HamburgerMenuIcon,
 } from "@radix-ui/react-icons";
 import { Panel, useReactFlow, type ReactFlowInstance } from "@xyflow/react";
+import { useRef } from "react";
 import { v4 as uuidv4 } from "uuid";
 
+import { useUIStore } from "~/lib/zustand/ui";
 import { useNodeStore } from "../node-store/node-store";
 import { MAIN_LOOP_CONNECTOR } from "../nodes/constants";
 import { nodeTypes } from "../nodes/node-types";
@@ -32,6 +34,8 @@ const RightPanel: React.FC<{ rfInstance: ReactFlowInstance | undefined }> = ({
     setNodes,
   } = useReactFlow();
   const nodeStateDebugPrint = useNodeStore((state) => state.debugPrint);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const setOpenAddNodeDropdown = useUIStore((s) => s.setOpenAddNodeDropdown);
 
   return (
     <Panel

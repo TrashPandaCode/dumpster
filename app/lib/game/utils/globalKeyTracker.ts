@@ -21,7 +21,7 @@ function normalizeKey(key: string): string {
   return key;
 }
 
-function getshortcutString(e: KeyboardEvent): string {
+function getShortcutString(e: KeyboardEvent): string {
   const parts: string[] = [];
   if (e.ctrlKey) parts.push("Control");
   if (e.altKey) parts.push("Alt");
@@ -46,7 +46,7 @@ function initGlobalKeyTracker() {
   initialized = true;
 
   keydownHandler = (e) => {
-    const shortcut = getshortcutString(e);
+    const shortcut = getShortcutString(e);
     if (defaultShortcuts.has(shortcut)) {
       e.preventDefault();
     }
