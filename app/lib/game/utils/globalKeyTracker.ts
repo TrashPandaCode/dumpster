@@ -2,7 +2,7 @@ const keysDown = new Set<string>();
 const keysPressed = new Set<string>();
 const keysReleased = new Set<string>();
 
-const defaultShortcuts = new Set<string>(["Control+d", "Control+n"]);
+const defaultShortcuts = new Set<string>(["Control+d", "Control+j"]);
 const shortcutListeners = new Map<string, Set<(e: KeyboardEvent) => void>>();
 
 let initialized = false;
