@@ -124,7 +124,7 @@ export function addBackgrounds(backgrounds: Background[]) {
     game.add([
       k.sprite("background1"),
       k.anchor("bot"),
-      k.scale(k.height() * (1 / 180)),
+      k.scale(8),
       k.pos(0, BACKGROUND_OFFSET),
       k.z(0),
     ]);
@@ -132,8 +132,8 @@ export function addBackgrounds(backgrounds: Background[]) {
     game.add([
       k.sprite("background1light"),
       k.anchor("bot"),
-      k.scale(k.height() * (1 / 180)),
-      k.pos(k.width() / 2 + 200, BACKGROUND_OFFSET),
+      k.scale(8),
+      k.pos(0, BACKGROUND_OFFSET),
       k.z(100),
       k.opacity(0.75),
     ]);

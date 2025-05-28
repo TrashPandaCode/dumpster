@@ -45,6 +45,10 @@
       {
         "title": "Switch",
         "path": "/docs/nodes/switch"
+      },
+      {
+        "title": "Group",
+        "path": "/docs/nodes/group"
       }
     ]
   },
@@ -56,5 +60,9 @@
         "path": "/docs/animations/motion-capture"
       }
     ]
+  },
+  {
+    "title": "FAQ",
+    "path": "/docs/faq"
   }
 ]
