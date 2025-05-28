@@ -6,3 +6,4 @@ export const GAME_OBJECTS = [RACCOON, TRASHCAN, GOAL_FLAG] as const;
 export type GameObject = (typeof GAME_OBJECTS)[number];
 
 export const RACCOON_SCALE = 5;
+export const BACKGROUND_OFFSET = 300;

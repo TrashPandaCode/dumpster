@@ -1,4 +1,5 @@
 import { useDataStore } from "~/lib/zustand/data";
+import { BACKGROUND_OFFSET } from "../constants";
 import { getKaplayCtx } from "../core/kaplayCtx";
 import {
   addBackgrounds,
@@ -16,6 +17,7 @@ export const initializePlayground = () => {
     "trashcan",
     "goalFlag",
   ]);
+  k.setCamPos(raccoon!.pos.add(0, -k.height() / 2 + BACKGROUND_OFFSET));
 
   game.onUpdate(() => {
     animPLayer(raccoon!, k);

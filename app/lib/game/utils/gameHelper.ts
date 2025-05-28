@@ -10,7 +10,11 @@ import type {
 } from "kaplay";
 
 import { useDataStore } from "~/lib/zustand/data";
-import { RACCOON_SCALE, type GameObject } from "../constants";
+import {
+  BACKGROUND_OFFSET,
+  RACCOON_SCALE,
+  type GameObject,
+} from "../constants";
 import { getKaplayCtx } from "../core/kaplayCtx";
 
 type Background = "background1";
@@ -121,7 +125,7 @@ export function addBackgrounds(backgrounds: Background[]) {
       k.sprite("background1"),
       k.anchor("bot"),
       k.scale(k.height() * (1 / 180)),
-      k.pos(0, 0),
+      k.pos(0, BACKGROUND_OFFSET),
       k.z(0),
     ]);
 
@@ -129,7 +133,7 @@ export function addBackgrounds(backgrounds: Background[]) {
       k.sprite("background1light"),
       k.anchor("bot"),
       k.scale(k.height() * (1 / 180)),
-      k.pos(k.width() / 2 + 200, 0),
+      k.pos(k.width() / 2 + 200, BACKGROUND_OFFSET),
       k.z(100),
       k.opacity(0.75),
     ]);
@@ -145,7 +149,13 @@ export function animPLayer(player: PlayerType, k: KAPLAYCtx) {
   player.pos.y =
     useDataStore.getState().gameObjects.get("raccoon")?.get("ypos")?.value ?? 0;
 
-  k.setCamPos(player.pos.add(0, -k.height() / 2));
+  k.setCamPos(
+    k.lerp(
+      k.getCamPos(),
+      player.pos.add(0, -k.height() / 2 + BACKGROUND_OFFSET),
+      0.1
+    )
+  );
 
   //Handle anim change
   const deltaX = player.pos.x - lastX;
