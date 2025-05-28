@@ -107,6 +107,5 @@ export const initialize1_1 = () => {
       useGameStore.getState().setLevelCompleteDialogOpen(true);
       useGameStore.getState().setLevelCompleted(true);
     }
-
   });
 };

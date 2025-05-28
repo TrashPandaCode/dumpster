@@ -1,7 +1,9 @@
 import { type Connection, type Edge, type Node } from "@xyflow/react";
 import { create } from "zustand";
 
+import { toast } from "../editor-components/Toast";
 import { connectionToEdgeId } from "../utils";
+import { useNodeSetterStore } from "./node-setter";
 
 export type LoopStatus = {
   // just externally manage loops (from the compute Map function) using this object to which the end node can write to (and start node read from)
@@ -241,6 +243,7 @@ function computeMap(sortedNodes: AppNode[]) {
 
 function orderMap(mapErrors: MapErrors, map: Map<string, AppNode>): AppNode[] {
   mapErrors.cycle = false;
+  useNodeSetterStore.getState().resetHighlight("cycle");
   // remove all marks
   map.forEach((node) => {
     node.mark = null;
@@ -263,7 +266,12 @@ function visit(node: AppNode, sortedMap: AppNode[], mapErrors: MapErrors) {
     return;
   }
   if (node.mark == Mark.Temporary) {
-    console.log("Found cycle");
+    useNodeSetterStore.getState().highlightNode(node.nodeId, "cycle", "red");
+    toast({
+      title: "Cycle!",
+      description:
+        "A cycle was detected in the node graph. Your graph won't execute unless you remove the cyclic connection.",
+    });
     mapErrors.cycle = true;
     return;
   }

@@ -23,7 +23,7 @@ const Time = memo(({ id }: { id: string }) => {
 
   return (
     <div className="min-w-48">
-      <NodeContent label="Time" type="float">
+      <NodeContent label="Time" type="float" docsName="time">
         <LabelHandle id={OUT_HANDLE_1} position={Position.Right} label="Time" />
         <LabelHandle
           id={OUT_HANDLE_2}

@@ -1,7 +1,9 @@
 import { useNodeStore } from "~/lib/node-editor/node-store/node-store";
 import { useGameStore } from "~/lib/zustand/game";
 import { useKeyStore } from "~/lib/zustand/key";
+import { useMouseStore } from "~/lib/zustand/mouse";
 import { useTimeStore } from "~/lib/zustand/time";
+import { globalKeyTracker } from "../utils/globalKeyTracker";
 import { getKaplayCtx } from "./kaplayCtx";
 
 export const state = {
@@ -18,25 +20,41 @@ export default function initGame(canvas: HTMLCanvasElement) {
   if (!state.first) return; //TODO: remove just for react strict mode
   state.first = false; //TODO: remove just for react strict mode
 
+  let pauseStart = 0;
+  let totalPausedTime = 0;
+
   const { k, game } = getKaplayCtx(canvas);
 
-  useKeyStore.getState().setKeyDownFunction((key) => k.isKeyDown(key));
-  useKeyStore.getState().setKeyPressedFunction((key) => k.isKeyPressed(key));
-  useKeyStore.getState().setKeyReleasedFunction((key) => k.isKeyReleased(key));
+  useKeyStore.getState().setKeyDownFunction(globalKeyTracker.isKeyDown);
+  useKeyStore.getState().setKeyPressedFunction(globalKeyTracker.isKeyPressed);
+  useKeyStore.getState().setKeyReleasedFunction(globalKeyTracker.isKeyReleased);
 
-  useTimeStore.getState().setTimeFunction(() => k.time());
+  useMouseStore.getState().setMousePosFunction(() => k.mousePos());
+
+  useTimeStore.getState().setTimeFunction(() => k.time() - totalPausedTime);
   useTimeStore.getState().setDeltaTimeFunction(() => k.dt());
 
   //Game Loop, runs at 60 frames per second
   k.onUpdate(() => {
     if (useGameStore.getState().isPaused) {
+      // Log pause start
+      if (!game.paused) {
+        pauseStart = k.time();
+      }
       game.paused = true;
       return;
     }
-    game.paused = false; // TODO: run this only once (maybe in store)
+    // Will run once on game resume
+    if (game.paused) {
+      totalPausedTime += k.time() - pauseStart;
+      pauseStart = 0;
+      game.paused = false;
+    }
 
-    // compute node map
+    // Compute node map
     useNodeStore.getState().compute();
+
+    globalKeyTracker.clearPressedAndReleased();
   });
 
   return k;

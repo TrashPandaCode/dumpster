@@ -1,5 +1,6 @@
-import { v4 as uuidv4 } from "uuid";
 import { create } from "zustand";
+
+import { handleUUID } from "../utils";
 
 interface LoopStoreState {
   loops: Map<
@@ -24,7 +25,7 @@ export const useLoopStore = create<LoopStoreState>((set) => ({
       if (state.loops.get(loopId)!.has(label)) return state;
 
       const newLoops = new Map(state.loops);
-      newLoops.get(loopId)!.set(label, uuidv4());
+      newLoops.get(loopId)!.set(label, handleUUID());
       return { loops: newLoops };
     }),
   removeHandle: (loopId, label) =>

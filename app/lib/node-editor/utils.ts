@@ -7,8 +7,11 @@ import type {
 } from "@xyflow/react";
 import { v4 as uuidv4 } from "uuid";
 
+import type { ConnectionAccess } from "../game/core/levels";
+import type { GameObjectsData } from "../zustand/data";
 import type { nodeInputs } from "./node-store/node-store";
 import { LOOP_CONNECTOR, MAIN_LOOP_CONNECTOR } from "./nodes/constants";
+import type { GameObject } from "../game/constants";
 
 /*
  * This function applies changes to nodes or edges that are triggered by React Flow internally.
@@ -412,4 +415,62 @@ export function connectNodesToLoop(
       });
     });
   });
+}
+
+export function handleUUID() {
+  return uuidv4().replace(/-/g, "");
+}
+
+export function getContextMenuPosition(event: MouseEvent | React.MouseEvent): {
+  x: number;
+  y: number;
+} {
+  //Specific numbers for ContextMenu size might need to be changed later depending on if the ContextMenu receives any changes
+  //TODO: if this is really needed, calculate the size of the ContextMenu dynamically
+  const x =
+    (event as React.MouseEvent).clientX > window.innerWidth - 274
+      ? window.innerWidth - 274
+      : (event as React.MouseEvent).clientX;
+  const y =
+    (event as React.MouseEvent).clientY > window.innerHeight - 284
+      ? window.innerHeight - 284
+      : (event as React.MouseEvent).clientY;
+  return { x: x - 15, y: y - 15 };
+}
+
+export function getHandleIntersection(
+  handleAccess: ConnectionAccess,
+  gameObjects: GameObjectsData,
+  selectedGameObjects: GameObject[]
+): string[] {
+  if (selectedGameObjects.length === 0) return [];
+
+  const getFilteredHandles = (gameObjectLabel: GameObject): Set<string> => {
+    const gameObject = gameObjects.get(gameObjectLabel)!;
+
+    const handles = new Set<string>();
+    for (const [handle, data] of gameObject) {
+      if (data.access === handleAccess || data.access === "all") {
+        handles.add(handle);
+      }
+    }
+    return handles;
+  };
+
+  // Get the first game object's handles as the starting set
+  const intersection = getFilteredHandles(selectedGameObjects[0]);
+
+  // Intersect with each subsequent game object's handles
+  for (let i = 1; i < selectedGameObjects.length; i++) {
+    const currentHandles = getFilteredHandles(selectedGameObjects[i]);
+    // Keep only handles that exist in both sets
+    for (const handle of intersection) {
+      if (!currentHandles.has(handle)) {
+        intersection.delete(handle);
+      }
+    }
+    // Early exit if intersection becomes empty
+    if (intersection.size === 0) break;
+  }
+  return Array.from(intersection);
 }
