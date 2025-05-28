@@ -1,5 +1,5 @@
 import { Position, useReactFlow } from "@xyflow/react";
-import { memo, useEffect } from "react";
+import { memo, useEffect, useMemo } from "react";
 
 import ConnectorHandle from "../../node-components/ConnectorHandle";
 import LabelHandle from "../../node-components/LabelHandle";
@@ -17,6 +17,10 @@ const ForEnd = memo(({ id, data }: { id: string; data: any }) => {
   const loops = useLoopStore((state) => state.loops);
 
   const { updateNodeData } = useReactFlow();
+  const handles = useMemo(
+    () => Array.from(loops.get(data.loopId) ?? []),
+    [data.loopId, loops]
+  );
 
   useEffect(() => {
     updateNodeData(id, {
@@ -42,7 +46,7 @@ const ForEnd = memo(({ id, data }: { id: string; data: any }) => {
       <NodeContent label="For End" type="loop" docsName="forloop">
         <ConnectorHandle id={MAIN_LOOP_CONNECTOR} position={Position.Left} />
         <LabelHandle id={IN_HANDLE_1} label="Break" position={Position.Left} />
-        {Array.from(loops.get(data.loopId) ?? []).map(([label, handleId]) => (
+        {handles.map(([label, handleId]) => (
           <div
             className={"flex w-full items-center justify-between"}
             key={handleId}
