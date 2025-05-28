@@ -348,6 +348,10 @@ export function createForLoop(
         parentId,
         position: startPos,
         data: { loopId, parentLoopId, loopStart: true, loopEnd: false },
+        selectable: true,
+        selected: false,
+        draggable: true,
+        dragging: false,
       },
       {
         id: endId,
@@ -355,6 +359,10 @@ export function createForLoop(
         parentId,
         position: endPos,
         data: { loopId, parentLoopId, loopStart: false, loopEnd: true },
+        selectable: true,
+        selected: false,
+        draggable: true,
+        dragging: false,
       },
     ],
     mainConnectorEdge: {
@@ -488,7 +496,7 @@ export function duplicateNodes(
   getHandles: (loopId: string) => Map<string, string>
 ) {
   // if this is called with no nodes, return
-  if (!nodes) return;
+  if (!nodes || nodes.length === 0) return;
 
   // this map will keep track of which new parent ids should be assigned to children
   const oldToNewIdMap = new Map<string, string>();
