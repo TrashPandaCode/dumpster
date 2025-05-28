@@ -4,7 +4,7 @@ import { getKaplayCtx } from "../core/kaplayCtx";
 import {
   addBackgrounds,
   addGameobjects,
-  animPLayer,
+  animPlayer,
 } from "../utils/gameHelper";
 
 export const initializePlayground = () => {
@@ -20,7 +20,7 @@ export const initializePlayground = () => {
   k.setCamPos(raccoon!.pos.add(0, -k.height() / 2 + BACKGROUND_OFFSET));
 
   game.onUpdate(() => {
-    animPLayer(raccoon!, k);
+    animPlayer(raccoon!, k);
 
     trashcan!.pos.x =
       useDataStore.getState().gameObjects.get("trashcan")?.get("xpos")?.value ??

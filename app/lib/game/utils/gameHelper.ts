@@ -140,7 +140,7 @@ export function addBackgrounds(backgrounds: Background[]) {
   }
 }
 
-export function animPLayer(player: PlayerType, k: KAPLAYCtx) {
+export function animPlayer(player: PlayerType, k: KAPLAYCtx) {
   const lastX = player.pos.x;
 
   //Move
