@@ -1,0 +1,60 @@
+[
+  {
+    "title": "Gettings Started",
+    "path": "/docs/getting-started"
+  },
+  {
+    "title": "Nodes",
+    "items": [
+      {
+        "title": "Display",
+        "path": "/docs/nodes/display"
+      },
+      {
+        "title": "Math Float",
+        "path": "/docs/nodes/mathfloat"
+      },
+      {
+        "title": "Export To Gameobject",
+        "path": "/docs/nodes/export"
+      },
+      {
+        "title": "Import From Gameobject",
+        "path": "/docs/nodes/import"
+      },
+      {
+        "title": "For Loop",
+        "path": "/docs/nodes/forloop"
+      },
+      {
+        "title": "Value",
+        "path": "/docs/nodes/value"
+      },
+      {
+        "title": "KeyPress",
+        "path": "/docs/nodes/keypress"
+      },
+      {
+        "title": "Mouse Position",
+        "path": "/docs/nodes/mousepos"
+      },
+      {
+        "title": "Time",
+        "path": "/docs/nodes/time"
+      },
+      {
+        "title": "Switch",
+        "path": "/docs/nodes/switch"
+      }
+    ]
+  },
+  {
+    "title": "Animations",
+    "items": [
+      {
+        "title": "Motion Capture",
+        "path": "/docs/animations/motion-capture"
+      }
+    ]
+  }
+]

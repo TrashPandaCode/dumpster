@@ -1,5 +1,5 @@
 import { useDataStore } from "~/lib/zustand/data";
-import { useGameStore } from "~/lib/zustand/game";
+import { RACCOON_SCALE } from "../constants";
 import { getKaplayCtx } from "../core/kaplayCtx";
 
 export const initializePlayground = () => {
@@ -10,15 +10,15 @@ export const initializePlayground = () => {
 
   const background = game.add([
     k.sprite("background1"),
-    k.anchor("top"),
+    k.anchor("bot"),
     k.scale(k.height() * (1 / 180)),
-    k.pos(k.width() / 2 + 400, 0),
+    k.pos(0, 0),
     k.z(0),
   ]);
 
   const backgroundLight = game.add([
     k.sprite("background1light"),
-    k.anchor("top"),
+    k.anchor("bot"),
     k.scale(k.height() * (1 / 180)),
     k.pos(k.width() / 2 + 200, 0),
     k.z(100),
@@ -51,13 +51,12 @@ export const initializePlayground = () => {
     },
   });
 
-  const raccScale = 5;
   const raccoon = game.add([
     k.sprite("raccoon", {
       anim: "walkHolding",
     }),
-    k.pos(100, k.height() - 100),
-    k.scale(raccScale),
+    k.pos(0, 0),
+    k.scale(RACCOON_SCALE),
     k.anchor("bot"),
     k.z(2),
     k.state("idle", ["idle", "walkLeft", "walkRight"]),
@@ -67,18 +66,19 @@ export const initializePlayground = () => {
   });
   raccoon.onStateEnter("walkLeft", () => {
     raccoon.play("walk");
-    raccoon.scaleTo(k.vec2(-raccScale, raccScale));
+    raccoon.scaleTo(k.vec2(-RACCOON_SCALE, RACCOON_SCALE));
   });
   raccoon.onStateEnter("walkRight", () => {
     raccoon.play("walk");
-    raccoon.scaleTo(k.vec2(raccScale, raccScale));
+    raccoon.scaleTo(k.vec2(RACCOON_SCALE, RACCOON_SCALE));
   });
 
   const trashcan = game.add([
     k.sprite("trashcan", {
       anim: "filled",
     }),
-    k.pos(200, 200),
+    k.anchor("bot"),
+    k.pos(0, 0),
     k.scale(5),
     k.z(1),
   ]);
@@ -87,7 +87,8 @@ export const initializePlayground = () => {
     k.sprite("flag", {
       anim: "default",
     }),
-    k.pos(0, 0),
+    k.anchor("bot"),
+    k.pos(200, 0),
     k.scale(5),
     k.z(1),
   ]);
@@ -110,19 +111,15 @@ export const initializePlayground = () => {
       useDataStore.getState().gameObjects.get("trashcan")?.get("ypos")?.value ??
       0;
 
+    k.setCamPos(raccoon.pos.add(0, -k.height() / 2));
+
     //Handle anim change
-    if (raccoon.pos.x - lastX == 0) {
-      if (raccoon.state != "idle") {
-        raccoon.enterState("idle");
-      }
-    } else if (raccoon.pos.x - lastX < 0) {
-      if (raccoon.state != "walkLeft") {
-        raccoon.enterState("walkLeft");
-      }
-    } else {
-      if (raccoon.state != "walkRight") {
-        raccoon.enterState("walkRight");
-      }
+    const deltaX = raccoon.pos.x - lastX;
+    const newState =
+      deltaX === 0 ? "idle" : deltaX < 0 ? "walkLeft" : "walkRight";
+
+    if (raccoon.state !== newState) {
+      raccoon.enterState(newState);
     }
   });
 };

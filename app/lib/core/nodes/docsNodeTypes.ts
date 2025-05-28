@@ -1,3 +1,4 @@
+import MousePosition from "~/lib/node-editor/nodes/input/MousePosition";
 import Display from "../../node-editor/nodes/debug/Display";
 import Time from "../../node-editor/nodes/game-get/Time";
 import Group from "../../node-editor/nodes/groups/Group";
@@ -22,4 +23,5 @@ export const docsNodeTypes = {
   Group,
   ForStart,
   ForEnd,
+  MousePosition
 };

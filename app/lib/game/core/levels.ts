@@ -3,6 +3,8 @@ import type { Edge, Node } from "@xyflow/react";
 import alleyOne from "~/assets/alley_one.jpg";
 import alleyTwo from "~/assets/alley_two.png";
 import houseImage from "~/assets/house.png";
+import type { NodeType } from "~/lib/node-editor/nodes/node-types";
+import { type GameObject } from "../constants";
 import { initialize1_1 } from "../levels/1.1";
 import { initializePlayground } from "../levels/playground";
 
@@ -56,11 +58,13 @@ export type Level = {
    * Modifiable game objects in the level.
    * Each object has an ID and a list of connections with access levels.
    */
-  modifiableGameObjects: {
-    id: string;
-    connections: { label: string; access: ConnectionAccess }[];
-  }[];
-  availableNodes: string[];
+  modifiableGameObjects: ModifiableGameObject[];
+  availableNodes: NodeType[];
+};
+
+export type ModifiableGameObject = {
+  id: GameObject;
+  connections: { label: string; access: ConnectionAccess }[];
 };
 
 /**
@@ -90,7 +94,12 @@ export const LEVELS = {
       nodes: [],
       edges: [],
     },
-    hints: [],
+    hints: [
+      "This is a playground level",
+      "You don't need hints here",
+      "stop clicking there is nothing coming",
+      "42",
+    ],
     modifiableGameObjects: [
       {
         id: "raccoon",
@@ -118,6 +127,7 @@ export const LEVELS = {
       "Switch",
       "Group",
       "ForLoop",
+      "MousePosition",
     ],
   },
   "1.1": {
@@ -144,11 +154,11 @@ export const LEVELS = {
     hints: [],
     modifiableGameObjects: [
       {
-        id: "racoon",
+        id: "raccoon",
         connections: [{ label: "xpos", access: "get" }],
       },
       {
-        id: "trashCan",
+        id: "trashcan",
         connections: [
           { label: "xpos", access: "set" },
           { label: "ypos", access: "set" },

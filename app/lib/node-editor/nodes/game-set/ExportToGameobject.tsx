@@ -12,8 +12,9 @@ import LabelHandle from "../../node-components/LabelHandle";
 import MultiSelectDropDown from "../../node-components/MultiSelectDropDown";
 import NodeContent from "../../node-components/NodeContent";
 import type { nodeData, nodeInputs } from "../../node-store/node-store";
-import { getHandleIntersection, getInput, type GameObject } from "../../utils";
+import { getHandleIntersection, getInput } from "../../utils";
 import { IN_HANDLE_1 } from "../constants";
+import type { GameObject } from "~/lib/game/constants";
 
 const ExportToGameobject = memo(
   ({ id, data, selected }: { id: string; data: any; selected: boolean }) => {
@@ -57,7 +58,7 @@ const ExportToGameobject = memo(
           const index =
             selectedGameObjects.length === 1
               ? 0
-              : getInput(inputs, IN_HANDLE_1, -1);
+              : Math.round(getInput(inputs, IN_HANDLE_1, -1));
 
           if (0 > index || index >= selectedGameObjects.length) return;
 
@@ -126,7 +127,7 @@ const ExportToGameobject = memo(
           ))}
           {selectedGameObjects.length && (
             <AddHandle
-              addHandle={addHandle}
+              addHandle={(id, label) => addHandle(id as GameObject, label)}
               handleIdentifiers={selectedGameObjects}
               handleLabel={curLabel}
               nodeId={id}

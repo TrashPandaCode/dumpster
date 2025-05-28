@@ -11,6 +11,7 @@ import type { ConnectionAccess } from "../game/core/levels";
 import type { GameObjectsData } from "../zustand/data";
 import type { nodeInputs } from "./node-store/node-store";
 import { LOOP_CONNECTOR, MAIN_LOOP_CONNECTOR } from "./nodes/constants";
+import type { GameObject } from "../game/constants";
 
 /*
  * This function applies changes to nodes or edges that are triggered by React Flow internally.
@@ -437,7 +438,6 @@ export function getContextMenuPosition(event: MouseEvent | React.MouseEvent): {
   return { x: x - 15, y: y - 15 };
 }
 
-export type GameObject = string;
 export function getHandleIntersection(
   handleAccess: ConnectionAccess,
   gameObjects: GameObjectsData,
@@ -445,7 +445,7 @@ export function getHandleIntersection(
 ): string[] {
   if (selectedGameObjects.length === 0) return [];
 
-  const getFilteredHandles = (gameObjectLabel: string): Set<string> => {
+  const getFilteredHandles = (gameObjectLabel: GameObject): Set<string> => {
     const gameObject = gameObjects.get(gameObjectLabel)!;
 
     const handles = new Set<string>();

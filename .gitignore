@@ -26,6 +26,3 @@ dist-ssr
 # React Router
 /.react-router/
 /build/
-
-# Navigation
-app/lib/core/navigation.json
