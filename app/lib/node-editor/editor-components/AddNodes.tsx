@@ -11,7 +11,7 @@ import { v4 as uuidv4 } from "uuid";
 
 import { LEVELS } from "~/lib/game/core/levels";
 import { useGameStore } from "~/lib/zustand/game";
-import { GROUP_SIZE } from "../nodes/constants";
+import { INITIAL_GROUP_SIZE } from "../nodes/constants";
 import { TYPES } from "../nodes/math-float/types";
 import { connectNodesToLoop, createForLoop } from "../utils";
 
@@ -151,8 +151,8 @@ const AddNodes = ({
         initialComputeType: computeType,
         parentLoopId,
       },
-      height: type === "Group" ? GROUP_SIZE.height : undefined,
-      width: type === "Group" ? GROUP_SIZE.width : undefined,
+      height: type === "Group" ? INITIAL_GROUP_SIZE.height : undefined,
+      width: type === "Group" ? INITIAL_GROUP_SIZE.width : undefined,
       selected: false,
       dragging: false,
     } as Node;
