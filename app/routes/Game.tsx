@@ -33,12 +33,6 @@ const Game = ({ params }: Route.ComponentProps) => {
     if (!canvasRef.current) {
       return;
     }
-    console.log("mount");
-    // console.log(useGameStore.getState());
-    // console.log(useDataStore.getState());
-    // console.log(useNodeSetterStore.getState());
-    // console.log(useNodeStore.getState());
-    // console.log(useLoopStore.getState());
 
     globalKeyTracker.init();
     initGame(canvasRef.current);
@@ -48,8 +42,6 @@ const Game = ({ params }: Route.ComponentProps) => {
     loadLevel(level);
 
     return () => {
-      console.log("unmount");
-
       cleanupKaplay();
 
       useGameStore.getState().reset();
