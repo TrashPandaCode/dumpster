@@ -10,9 +10,6 @@ import {
 export const initializePlayground = () => {
   const { k, game } = getKaplayCtx();
 
-
-  k.setGravity(2000);
-  
   addBackgrounds(["background1"]);
 
   const { raccoon, trashcan, goalFlag } = addGameobjects([
@@ -23,7 +20,6 @@ export const initializePlayground = () => {
   k.setCamPos(raccoon!.pos.add(0, -k.height() / 2 + BACKGROUND_OFFSET));
 
   game.onUpdate(() => {
-
     animPlayer(raccoon!, k);
 
     trashcan!.pos.x =

@@ -24,8 +24,6 @@ const Game = ({ params }: Route.ComponentProps) => {
   const setCurrentLevel = useGameStore((state) => state.setCurrentLevel);
   const level = params.id || "playground";
 
-  setCurrentLevel(level as keyof typeof LEVELS); // we can cast confidently here since we know the params.id is a valid level id, because loading the level will fail if it is not
-
   const [levelDialogOpen, setLevelDialogOpen] = useState(false);
 
   const levelCompleteDialogOpen = useGameStore(
@@ -34,24 +32,37 @@ const Game = ({ params }: Route.ComponentProps) => {
   const setLevelCompleteDialogOpen = useGameStore(
     (state) => state.setLevelCompleteDialogOpen
   );
+  const setLevelCompleted = useGameStore((state) => state.setLevelCompleted);
 
   useEffect(() => {
     if (!canvasRef.current) {
       return;
     }
+    console.log("mount");
+    console.log(useGameStore.getState());
 
     globalKeyTracker.init();
     initGame(canvasRef.current);
 
     // load the game level
+    setCurrentLevel(level as keyof typeof LEVELS); // we can cast confidently here since we know the params.id is a valid level id, because loading the level will fail if it is not
     loadLevel(level);
 
     setLevelDialogOpen(true);
 
     return () => {
+      console.log("unmount");
+
       cleanupKaplay();
+
       setLevelCompleteDialogOpen(false);
-      useGameStore.getState().setLevelCompleted(false);
+      setLevelCompleted(false);
+
+      // RESET NODE SETTER STORE
+      // RESET NODE LOOPS STORE
+      // RESET NODE STORE
+
+      console.log(useGameStore.getState());
 
       globalKeyTracker.cleanup();
     };
@@ -63,7 +74,6 @@ const Game = ({ params }: Route.ComponentProps) => {
       <LevelCompleteDialog
         open={levelCompleteDialogOpen}
         onOpenChange={setLevelCompleteDialogOpen}
-        currentLevel={level}
       />
       <PanelGroup direction="horizontal">
         {/* autoSaveId="main-layout" */}
