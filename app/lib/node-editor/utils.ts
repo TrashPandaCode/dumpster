@@ -325,7 +325,8 @@ export function createForLoop(
   startPos: XYPosition,
   endPos: XYPosition,
   parentLoopId?: string,
-  parentId?: string
+  startParentId?: string,
+  endParentId?: string
 ) {
   const startId = uuidv4();
   const endId = uuidv4();
@@ -345,7 +346,7 @@ export function createForLoop(
       {
         id: startId,
         type: "ForStart",
-        parentId,
+        parentId: startParentId,
         position: startPos,
         data: { loopId, parentLoopId, loopStart: true, loopEnd: false },
         selectable: true,
@@ -356,7 +357,7 @@ export function createForLoop(
       {
         id: endId,
         type: "ForEnd",
-        parentId,
+        parentId: endParentId,
         position: endPos,
         data: { loopId, parentLoopId, loopStart: false, loopEnd: true },
         selectable: true,
@@ -567,7 +568,8 @@ export function duplicateNodes(
       },
       oldToNewIdMap.get(loop.start.data.parentLoopId as string) ??
         (loop.start.data.parentLoopId as string),
-      oldToNewIdMap.get(loop.start.parentId as string) ?? loop.start.parentId
+      oldToNewIdMap.get(loop.start.parentId as string) ?? loop.start.parentId,
+      oldToNewIdMap.get(loop.end.parentId as string) ?? loop.end.parentId
     );
 
     newNodes.push(...loopBox.nodes);
