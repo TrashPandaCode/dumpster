@@ -13,6 +13,7 @@ interface NodeSetterState {
   resetHighlight: (type: HighlightType) => void;
   highlightNode: (id: string, type: HighlightType, color: string) => void;
   highlightDuplicateNodes: () => void;
+  reset: () => void;
 }
 
 export const useNodeSetterStore = create<NodeSetterState>((set, get) => ({
@@ -90,4 +91,5 @@ export const useNodeSetterStore = create<NodeSetterState>((set, get) => ({
       }
     }
   },
+  reset: () => set({ nodes: debugNodes, highlightNodes: new Map() }),
 }));

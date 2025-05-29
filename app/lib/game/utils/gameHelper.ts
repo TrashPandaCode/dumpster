@@ -56,6 +56,9 @@ export function addGameobjects(gameobjects: GameObject[]) {
       k.scale(RACCOON_SCALE),
       k.anchor("bot"),
       k.z(2),
+      k.area(),
+      k.body(),
+      "raccoon",
       k.state("idle", ["idle", "walkLeft", "walkRight"]),
     ]);
     raccoon.onStateEnter("idle", () => {
@@ -88,6 +91,9 @@ export function addGameobjects(gameobjects: GameObject[]) {
       k.pos(0, 0),
       k.scale(5),
       k.z(1),
+      k.area(),
+      k.body(),
+      "trashcan",
     ]);
     instances.trashcan = trashcan;
   }
