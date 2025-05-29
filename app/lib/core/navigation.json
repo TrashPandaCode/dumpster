@@ -53,6 +53,27 @@
     ]
   },
   {
+    "title": "Hierarchies in Scenes",
+    "items": [
+      {
+        "title": "Scene API",
+        "path": "/docs/hierarchies/scene-api"
+      },
+      {
+        "title": "Coordinate Systems",
+        "path": "/docs/hierarchies/coordinate-systems"
+      },
+      {
+        "title": "Transformation Hierarchies",
+        "path": "/docs/hierarchies/transformation-hierarchies"
+      },
+      {
+        "title": "Scene Graphs",
+        "path": "/docs/hierarchies/scene-graphs"
+      }
+    ]
+  },
+  {
     "title": "Animations",
     "items": [
       {
