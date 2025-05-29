@@ -50,6 +50,8 @@ const Game = ({ params }: Route.ComponentProps) => {
       useNodeStore.getState().reset();
       useLoopStore.getState().reset();
 
+      setLevelDialogOpen(true);
+
       globalKeyTracker.cleanup();
     };
   }, [level]);

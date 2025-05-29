@@ -1,10 +1,7 @@
 import { DialogClose } from "@radix-ui/react-dialog";
-import classNames from "classnames";
-import { NavLink, useNavigate } from "react-router";
+import { NavLink } from "react-router";
 
-import { useDataStore } from "~/lib/zustand/data";
 import { useGameStore } from "~/lib/zustand/game";
-import { cleanupKaplay } from "../core/kaplayCtx";
 import { LEVELS } from "../core/levels";
 import CustomDialog from "./CustomDialog";
 
