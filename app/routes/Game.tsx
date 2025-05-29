@@ -14,55 +14,49 @@ import LevelDialog from "~/lib/game/components/LevelDialog";
 import { cleanupKaplay } from "~/lib/game/core/kaplayCtx";
 import type { LEVELS } from "~/lib/game/core/levels";
 import { globalKeyTracker } from "~/lib/game/utils/globalKeyTracker";
+import { useLoopStore } from "~/lib/node-editor/node-store/loop-store";
+import { useNodeSetterStore } from "~/lib/node-editor/node-store/node-setter";
+import { useNodeStore } from "~/lib/node-editor/node-store/node-store";
+import { useDataStore } from "~/lib/zustand/data";
 import { useGameStore } from "~/lib/zustand/game";
 
 const Game = ({ params }: Route.ComponentProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   // load current level from params
-  // also set the current level in the game store
-  const setCurrentLevel = useGameStore((state) => state.setCurrentLevel);
   const level = params.id || "playground";
 
-  const [levelDialogOpen, setLevelDialogOpen] = useState(false);
-
-  const levelCompleteDialogOpen = useGameStore(
-    (state) => state.levelCompleteDialogOpen
-  );
-  const setLevelCompleteDialogOpen = useGameStore(
-    (state) => state.setLevelCompleteDialogOpen
-  );
-  const setLevelCompleted = useGameStore((state) => state.setLevelCompleted);
+  const setCurrentLevel = useGameStore((state) => state.setCurrentLevel);
+  const [levelDialogOpen, setLevelDialogOpen] = useState(true);
 
   useEffect(() => {
     if (!canvasRef.current) {
       return;
     }
     console.log("mount");
-    console.log(useGameStore.getState());
+    // console.log(useGameStore.getState());
+    // console.log(useDataStore.getState());
+    // console.log(useNodeSetterStore.getState());
+    // console.log(useNodeStore.getState());
+    // console.log(useLoopStore.getState());
 
     globalKeyTracker.init();
     initGame(canvasRef.current);
 
-    // load the game level
+    // load and set the game level
     setCurrentLevel(level as keyof typeof LEVELS); // we can cast confidently here since we know the params.id is a valid level id, because loading the level will fail if it is not
     loadLevel(level);
-
-    setLevelDialogOpen(true);
 
     return () => {
       console.log("unmount");
 
       cleanupKaplay();
 
-      setLevelCompleteDialogOpen(false);
-      setLevelCompleted(false);
-
-      // RESET NODE SETTER STORE
-      // RESET NODE LOOPS STORE
-      // RESET NODE STORE
-
-      console.log(useGameStore.getState());
+      useGameStore.getState().reset();
+      useDataStore.getState().reset();
+      useNodeSetterStore.getState().reset();
+      useNodeStore.getState().reset();
+      useLoopStore.getState().reset();
 
       globalKeyTracker.cleanup();
     };
@@ -71,10 +65,7 @@ const Game = ({ params }: Route.ComponentProps) => {
   return (
     <>
       <LevelDialog open={levelDialogOpen} onOpenChange={setLevelDialogOpen} />
-      <LevelCompleteDialog
-        open={levelCompleteDialogOpen}
-        onOpenChange={setLevelCompleteDialogOpen}
-      />
+      <LevelCompleteDialog />
       <PanelGroup direction="horizontal">
         {/* autoSaveId="main-layout" */}
 

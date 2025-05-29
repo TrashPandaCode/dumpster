@@ -95,6 +95,7 @@ interface NodeStoreState {
   removeEdge: (edgeId: string) => void;
   compute: () => void;
   debugPrint: () => void;
+  reset: () => void;
 }
 
 export const useNodeStore = create<NodeStoreState>((set, get) => ({
@@ -180,6 +181,12 @@ export const useNodeStore = create<NodeStoreState>((set, get) => ({
       console.log(node.type, node);
     });
   },
+  reset: () =>
+    set({
+      nodeMap: new Map<string, AppNode>(),
+      sortedNodes: [],
+      mapErrors: { cycle: false },
+    }),
 }));
 
 // edge source, edge source handle, edge target, edge target handle

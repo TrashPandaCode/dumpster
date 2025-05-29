@@ -8,30 +8,33 @@ import { cleanupKaplay } from "../core/kaplayCtx";
 import { LEVELS } from "../core/levels";
 import CustomDialog from "./CustomDialog";
 
-const getNextLevelUrl = (currentLevel: string) => {
-  const levelIds = Object.keys(LEVELS).filter((id) => id !== "playground");
-  const idx = levelIds.indexOf(currentLevel);
+function getNextLevel(curLevel: string) {
+  const keys = Object.keys(LEVELS);
+  const currentIndex = keys.indexOf(curLevel);
 
-  return idx < levelIds.length - 1 ? `/game/${levelIds[idx + 1]}` : undefined;
-};
+  if (currentIndex === -1 || currentIndex === keys.length - 1) {
+    return undefined;
+  }
 
-const LevelCompleteDialog = ({
-  open,
-  onOpenChange,
-}: {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-}) => {
+  return keys[currentIndex + 1];
+}
+
+const LevelCompleteDialog = () => {
   const currentLevel = useGameStore((state) => state.currentLevel);
+  const nextLevel = getNextLevel(currentLevel);
 
-  const navigate = useNavigate();
-  const nextLevelUrl = getNextLevelUrl(currentLevel);
+  const levelCompleteDialogOpen = useGameStore(
+    (state) => state.levelCompleteDialogOpen
+  );
+  const setLevelCompleteDialogOpen = useGameStore(
+    (state) => state.setLevelCompleteDialogOpen
+  );
 
   return (
     <CustomDialog
       title={currentLevel}
-      open={open}
-      onOpenChange={onOpenChange}
+      open={levelCompleteDialogOpen}
+      onOpenChange={setLevelCompleteDialogOpen}
       desc={`This dialog displays the level completion dialog of the
             ${currentLevel} level. You can close it by clicking the close button or
             pressing the escape key.`}
@@ -60,17 +63,6 @@ const LevelCompleteDialog = ({
           </div>
         </div>
         <div className="flex flex-row justify-end gap-5">
-          <button
-            className="cursor-pointer rounded-lg bg-slate-700/80 px-4 py-2 text-white hover:bg-slate-600 focus:outline-1 focus:outline-blue-300"
-            onClick={() => {
-              useGameStore.getState().reset();
-              onOpenChange(false);
-              cleanupKaplay();
-              window.location.href = "/";
-            }}
-          >
-            To Menu old
-          </button>
           <DialogClose asChild>
             <NavLink
               to={"/"}
@@ -79,31 +71,16 @@ const LevelCompleteDialog = ({
               To Menu
             </NavLink>
           </DialogClose>
-          <DialogClose asChild>
-            <button
-              className="cursor-pointer rounded-lg bg-slate-700/80 px-4 py-2 text-white hover:bg-slate-600 focus:outline-1 focus:outline-blue-300"
-              onClick={() => onOpenChange(false)}
-            >
-              Continue
-            </button>
-          </DialogClose>
-          <button
-            className={classNames(
-              "rounded-lg bg-slate-700/80 px-4 py-2 text-white focus:outline-1 focus:outline-blue-300",
-              nextLevelUrl ? "cursor-pointer hover:bg-slate-600" : "opacity-50"
-            )}
-            onClick={() => {
-              if (nextLevelUrl) {
-                useGameStore.getState().reset();
-                onOpenChange(false);
-                cleanupKaplay();
-                navigate(nextLevelUrl);
-              }
-            }}
-            disabled={!nextLevelUrl}
-          >
-            Next Level
-          </button>
+          {nextLevel && (
+            <DialogClose asChild>
+              <NavLink
+                to={`/game/${nextLevel}`}
+                className="cursor-pointer rounded-lg bg-slate-700/80 px-4 py-2 text-white hover:bg-slate-600 focus:outline-1 focus:outline-blue-300"
+              >
+                Next Level
+              </NavLink>
+            </DialogClose>
+          )}
         </div>
       </div>
     </CustomDialog>
