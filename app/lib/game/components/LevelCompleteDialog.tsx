@@ -33,8 +33,10 @@ const LevelCompleteDialog = () => {
       open={levelCompleteDialogOpen}
       onOpenChange={setLevelCompleteDialogOpen}
       desc={`This dialog displays the level completion dialog of the
-            ${currentLevel} level. You can close it by clicking the close button or
-            pressing the escape key.`}
+            ${currentLevel} level. You can now get to the main menu 
+            using the To Menu button or to the next level using the 
+            Next Level button.`}
+      showClose={false}
     >
       <div className="flex flex-col gap-5">
         <div className="flex flex-1 flex-row">

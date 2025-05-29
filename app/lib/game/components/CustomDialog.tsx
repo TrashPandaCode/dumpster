@@ -16,6 +16,7 @@ const CustomDialog = ({
   trigger,
   defaultOpen,
   open,
+  showClose = true,
   onOpenChange,
   desc,
   children,
@@ -24,16 +25,13 @@ const CustomDialog = ({
   trigger?: React.ReactNode;
   defaultOpen?: boolean;
   open?: boolean;
+  showClose?: boolean;
   onOpenChange?: (open: boolean) => void;
   desc?: string;
   children?: React.ReactNode;
 }) => {
   return (
-    <Dialog
-      defaultOpen={defaultOpen}
-      open={open}
-      onOpenChange={onOpenChange}
-    >
+    <Dialog defaultOpen={defaultOpen} open={open} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
       <DialogPortal>
         <DialogOverlay className="fixed inset-0 bg-slate-800/25" />
@@ -46,15 +44,16 @@ const CustomDialog = ({
           </DialogTitle>
 
           <div id="dialog">{children}</div>
-
-          <DialogClose asChild>
-            <button
-              className="absolute top-2.5 right-2.5 inline-flex size-[25px] cursor-pointer appearance-none items-center justify-center rounded-full bg-slate-700 focus:outline-1 focus:outline-blue-300"
-              aria-label="Close"
-            >
-              <Cross2Icon />
-            </button>
-          </DialogClose>
+          {showClose && (
+            <DialogClose asChild>
+              <button
+                className="absolute top-2.5 right-2.5 inline-flex size-[25px] cursor-pointer appearance-none items-center justify-center rounded-full bg-slate-700 focus:outline-1 focus:outline-blue-300"
+                aria-label="Close"
+              >
+                <Cross2Icon />
+              </button>
+            </DialogClose>
+          )}
         </DialogContent>
       </DialogPortal>
     </Dialog>
