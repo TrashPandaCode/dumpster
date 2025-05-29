@@ -103,6 +103,11 @@ export const useNodeStore = create<NodeStoreState>((set, get) => ({
   sortedNodes: [],
   mapErrors: { cycle: false },
   replaceNode: (node: Node) => {
+    // if the node is a group, we don't want to add it to the map since they are purely visual
+    if (node.type === "Group") {
+      return;
+    }
+
     const nodeMap = get().nodeMap;
     if (nodeMap.has(node.id)) {
       nodeMap.get(node.id)?.updateData(node.data);
