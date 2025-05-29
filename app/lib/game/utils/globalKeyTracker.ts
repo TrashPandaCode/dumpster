@@ -2,7 +2,8 @@ const keysDown = new Set<string>();
 const keysPressed = new Set<string>();
 const keysReleased = new Set<string>();
 
-const defaultShortcuts = new Set<string>(["Control+d", "Control+j"]);
+//Set of default shortcuts that we want to prevent default behavior for
+const defaultShortcuts = new Set<string>(["Control+d", "Control+ "]);
 const shortcutListeners = new Map<string, Set<(e: KeyboardEvent) => void>>();
 
 let initialized = false;
@@ -21,6 +22,7 @@ function normalizeKey(key: string): string {
   return key;
 }
 
+// Generates a string representation of the keyboard shortcut
 function getShortcutString(e: KeyboardEvent): string {
   const parts: string[] = [];
   if (e.ctrlKey) parts.push("Control");
@@ -30,6 +32,8 @@ function getShortcutString(e: KeyboardEvent): string {
   parts.push(e.key.toLowerCase());
   return parts.join("+");
 }
+
+// Registers a listener for a specific keyboard shortcut
 function shortcutListener(
   shortcut: string,
   callback: (e: KeyboardEvent) => void
@@ -46,6 +50,7 @@ function initGlobalKeyTracker() {
   initialized = true;
 
   keydownHandler = (e) => {
+    //Check if the pressed key is a default shortcut and prevent default behavior
     const shortcut = getShortcutString(e);
     if (defaultShortcuts.has(shortcut)) {
       e.preventDefault();

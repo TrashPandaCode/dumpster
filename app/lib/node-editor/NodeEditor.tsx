@@ -7,7 +7,7 @@ import {
 
 import "@xyflow/react/dist/style.css";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Toaster } from "sonner";
 
 import LeftPanel from "./editor-components/LeftPanel";
@@ -19,6 +19,8 @@ import { ShortcutManager } from "./editor-components/ShortcutManager";
 import { TooltipProvider } from "./editor-components/Tooltip";
 import { useContextMenu } from "./hooks/useContextMenu";
 import { useFlow } from "./hooks/useFlow";
+import { useMouseTrackingInPane } from "./hooks/useGlobalMouseTracker";
+import { useNodeAddMenuStore } from "./node-store/node-add-menu-store";
 import { nodeTypes } from "./nodes/node-types";
 
 const Editor = () => {
@@ -45,6 +47,10 @@ const Editor = () => {
     setPaneContextMenu,
     setSelectionContextMenu,
   } = useContextMenu();
+
+  const { x, y, visible, close } = useNodeAddMenuStore();
+  const containerRef = useRef<HTMLDivElement>(null);
+  useMouseTrackingInPane(containerRef);
   return (
     <>
       <ReactFlow
@@ -65,6 +71,7 @@ const Editor = () => {
         proOptions={{ hideAttribution: true }}
         deleteKeyCode={["Delete", "Backspace"]}
         onNodeDragStop={onNodeDragStop}
+        ref={containerRef}
       >
         <Background bgColor="#14141d" color="#a7abc2" />
         <RightPanel rfInstance={rfInstance} />
@@ -98,6 +105,7 @@ const Editor = () => {
           onClose={() => setSelectionContextMenu(null)}
         />
       )}
+      {visible && <PaneContextMenu x={x} y={y} onClose={close} />}
     </>
   );
 };

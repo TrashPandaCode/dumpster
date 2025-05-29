@@ -1,9 +1,10 @@
 import { useReactFlow } from "@xyflow/react";
 import { use, useEffect } from "react";
 
-import { useAddNodeDropdownStore } from "~/lib/zustand/ui";
+import { flowMouseTracker } from "~/lib/game/utils/flowMouseTracker";
 import { globalKeyTracker } from "../../game/utils/globalKeyTracker";
 import { useLoopStore } from "../node-store/loop-store";
+import { useNodeAddMenuStore } from "../node-store/node-add-menu-store";
 import { duplicateNodes } from "../utils";
 
 export function useDuplicateHotkey() {
@@ -39,9 +40,11 @@ export function useDuplicateHotkey() {
 
 export function useNewNodeHotkey() {
   useEffect(() => {
-    const remove = globalKeyTracker.shortcutListener("Control+j", (e) => {
-      console.log("Add node hotkey pressed");
-      useAddNodeDropdownStore.getState().setOpen(true);
+    const remove = globalKeyTracker.shortcutListener("Control+ ", (e) => {
+      const position = flowMouseTracker.getPosition();
+      if (position) {
+        useNodeAddMenuStore.getState().open(position.x, position.y);
+      }
     });
     return () => {
       remove();
