@@ -74,13 +74,8 @@
     ]
   },
   {
-    "title": "Animations",
-    "items": [
-      {
-        "title": "Motion Capture",
-        "path": "/docs/animations/motion-capture"
-      }
-    ]
+    "title": "Animation Systems",
+    "path": "/docs/animation-systems"
   },
   {
     "title": "FAQ",
