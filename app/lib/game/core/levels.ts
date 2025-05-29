@@ -6,8 +6,8 @@ import houseImage from "~/assets/house.png";
 import type { NodeType } from "~/lib/node-editor/nodes/node-types";
 import { type GameObject } from "../constants";
 import { initialize1_1 } from "../levels/1.1";
-import { initialize2_1 } from "../levels/2.1";
 import { initialize1_2 } from "../levels/1.2";
+import { initialize2_1 } from "../levels/2.1";
 import { initializePlayground } from "../levels/playground";
 
 export type ConnectionAccess = "set" | "get" | "all";
@@ -36,6 +36,10 @@ export type Level = {
    * Goals for the level, outlining objectives to be achieved.
    */
   goals: string[];
+  /**
+   * Message displayed on level completion.
+   */
+  success: string;
   /**
    * Category of the level, used for grouping or filtering levels.
    */
@@ -85,6 +89,7 @@ export const LEVELS = {
     goals: [
       "No goals, this level is designed for experimentation and testing.",
     ],
+    success: "How did you complete a sandbox level?",
     category: "Sandbox",
     image: alleyOne,
     nodes: [],
@@ -139,10 +144,8 @@ export const LEVELS = {
       "This is the first level of the game. It introduces the basic mechanics and objectives.",
       "You will learn how to create nodes and solve simple equations.",
     ],
-    goals: [
-      "Create your first nodes.",
-      "Solve the equation.",
-    ],
+    goals: ["Create your first nodes.", "Solve the equation."],
+    success: "You solved the equation!",
     category: "Introduction",
     image: alleyTwo,
     nodes: [],
@@ -156,9 +159,7 @@ export const LEVELS = {
     modifiableGameObjects: [
       {
         id: "raccoon",
-        connections: [
-          {label: "value", access: "set" },
-        ],
+        connections: [{ label: "value", access: "set" }],
       },
     ],
     availableNodes: ["Value", "Display", "MathFloat", "ExportToGameobject"],
@@ -172,9 +173,8 @@ export const LEVELS = {
       "This is the second level of the game. Complete level 1.1 first, If you haven't done yet.",
       "You will learn how to manipulate the position of game objects.",
     ],
-    goals: [
-      "Make the position of the raccoon and the trashcan match."
-    ],
+    goals: ["Make the position of the raccoon and the trashcan match."],
+    success: "Yay!",
     category: "Introduction",
     image: alleyTwo,
     nodes: [],
@@ -195,9 +195,7 @@ export const LEVELS = {
       },
       {
         id: "trashcan",
-        connections: [
-          { label: "xpos", access: "set" },
-        ],
+        connections: [{ label: "xpos", access: "set" }],
       },
     ],
     availableNodes: ["Value", "ExportToGameobject"],
@@ -211,6 +209,7 @@ export const LEVELS = {
       "This is the second level of the game. It builds upon the mechanics introduced in Level 1.1.",
     ],
     goals: ["No goals defined yet."],
+    success: "Yay!",
     category: "Introduction",
     image: houseImage,
     nodes: [],
@@ -225,8 +224,8 @@ export const LEVELS = {
       {
         id: "raccoon",
         connections: [
-          {label: "value", access: "set"},
-          
+          { label: "value", access: "set" },
+
           { label: "xpos", access: "get" },
 
           { label: "xpos", access: "set" },
@@ -238,7 +237,8 @@ export const LEVELS = {
           { label: "xpos", access: "set" },
           { label: "ypos", access: "set" },
         ],
-      },],
+      },
+    ],
     availableNodes: ["Display", "ExportToGameobject"],
   },
 } satisfies Record<string, Level>;

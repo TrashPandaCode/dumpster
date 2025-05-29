@@ -57,7 +57,9 @@ const LevelCompleteDialog = () => {
           {/* Right side: Success text */}
           <div className="relative my-auto flex h-36 w-full flex-col items-center justify-center rounded-lg bg-slate-700 p-4 text-white shadow-lg">
             <div className="absolute top-1/2 -left-2.5 h-0 w-0 -translate-y-1/2 border-t-10 border-r-10 border-b-10 border-t-transparent border-r-slate-700 border-b-transparent"></div>
-            <p className="mb-2 text-2xl font-bold">You solved the equation!</p>
+            <p className="mb-2 text-2xl font-bold">
+              {LEVELS[currentLevel].success}
+            </p>
             <p className="text-lg italic">Congratulations!</p>
           </div>
         </div>
