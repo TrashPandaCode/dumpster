@@ -57,9 +57,6 @@ const DefaultNodeContextMenu = ({
 }) => {
   const { getNode, getNodes, getEdges, setNodes, setEdges } = useReactFlow();
 
-  const addHandle = useLoopStore((state) => state.addHandle);
-  const getHandles = useLoopStore((state) => state.getHandles);
-
   // handle node duplication
   const duplicateNode = useCallback(() => {
     const node = getNode(nodeId);
@@ -74,28 +71,10 @@ const DefaultNodeContextMenu = ({
           node.data.loopId != undefined) // ensure we are dealing with a loop node
     );
 
-    duplicateNodes(
-      nodesToDuplicate,
-      getEdges,
-      getNodes,
-      setEdges,
-      setNodes,
-      addHandle,
-      getHandles
-    );
+    duplicateNodes(nodesToDuplicate, getEdges, getNodes, setEdges, setNodes);
 
     onClose();
-  }, [
-    addHandle,
-    getEdges,
-    getHandles,
-    getNode,
-    getNodes,
-    nodeId,
-    onClose,
-    setEdges,
-    setNodes,
-  ]);
+  }, [getEdges, getNode, getNodes, nodeId, onClose, setEdges, setNodes]);
 
   const deleteNode = useCallback(() => {
     const idsToDelete = [nodeId];

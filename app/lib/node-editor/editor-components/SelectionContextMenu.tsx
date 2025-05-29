@@ -17,8 +17,6 @@ const SelectionContextMenu: React.FC<SelectionContextMenuProps> = ({
   y,
   onClose,
 }) => {
-  const addHandle = useLoopStore((state) => state.addHandle);
-  const getHandles = useLoopStore((state) => state.getHandles);
   const { getNodes, getEdges, setNodes, setEdges } = useReactFlow();
 
   const deleteNodes = useCallback(() => {
@@ -42,9 +40,7 @@ const SelectionContextMenu: React.FC<SelectionContextMenuProps> = ({
               getEdges,
               getNodes,
               setEdges,
-              setNodes,
-              addHandle,
-              getHandles
+              setNodes
             );
             onClose();
           }}

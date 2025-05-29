@@ -10,6 +10,7 @@ import { v4 as uuidv4 } from "uuid";
 import type { GameObject } from "../game/constants";
 import type { ConnectionAccess } from "../game/core/levels";
 import type { GameObjectsData } from "../zustand/data";
+import { useLoopStore } from "./node-store/loop-store";
 import type { nodeInputs } from "./node-store/node-store";
 import {
   INITIAL_GROUP_SIZE,
@@ -357,7 +358,7 @@ export function createForLoop(
       {
         id: endId,
         type: "ForEnd",
-        parentId: endParentId,
+        parentId: endParentId ?? startParentId, // fallback to startParentId if endParentId is not provided
         position: endPos,
         data: { loopId, parentLoopId, loopStart: false, loopEnd: true },
         selectable: true,
@@ -492,9 +493,7 @@ export function duplicateNodes(
   getEdges: () => Edge[],
   getNodes: () => Node[],
   setEdges: (payload: Edge[] | ((edges: Edge[]) => Edge[])) => void,
-  setNodes: (payload: Node[] | ((nodes: Node[]) => Node[])) => void,
-  addHandle: (loopId: string, label: string) => string,
-  getHandles: (loopId: string) => Map<string, string>
+  setNodes: (payload: Node[] | ((nodes: Node[]) => Node[])) => void
 ) {
   // if this is called with no nodes, return
   if (!nodes || nodes.length === 0) return;
@@ -617,6 +616,8 @@ export function duplicateNodes(
   });
 
   // handles copying of handles from the old loop to the new loop
+  const addHandle = useLoopStore.getState().addHandle;
+  const getHandles = useLoopStore.getState().getHandles;
   loops.forEach((loop) => {
     const newLoopId = oldToNewIdMap.get(loop.start.data.loopId as string);
     if (!newLoopId) return;
