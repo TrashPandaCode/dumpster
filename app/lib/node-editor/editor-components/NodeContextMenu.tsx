@@ -81,7 +81,27 @@ const DefaultNodeContextMenu = ({
     if (getNode(nodeId)?.type === "Group") {
       // if the node is a group, delete all its children
       const children = getNodes().filter((n) => n.parentId === nodeId);
-      idsToDelete.push(...children.map((child) => child.id));
+      const parent = getNode(nodeId);
+
+      setNodes((nodes) => {
+        return nodes.map((node) => {
+          if (children.some((child) => child.id === node.id)) {
+            return {
+              ...node,
+              position: {
+                x: parent
+                  ? node.position.x + parent.position.x
+                  : node.position.x,
+                y: parent
+                  ? node.position.y + parent.position.y
+                  : node.position.y,
+              },
+              parentId: undefined, // remove parentId to ungroup the children
+            };
+          }
+          return node;
+        });
+      });
     }
 
     // remove all nodes with the ids in idsToDelete
