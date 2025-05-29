@@ -13,6 +13,7 @@ interface LoopStoreState {
   addHandle: (loopId: string, label: string) => string; // returns the new handleId
   removeHandle: (loopId: string, label: string) => void;
   getHandles: (loopId: string) => Map<string, string>;
+  reset: () => void;
 }
 
 export const useLoopStore = create<LoopStoreState>((set, get) => ({
@@ -49,4 +50,5 @@ export const useLoopStore = create<LoopStoreState>((set, get) => ({
     });
     return handles;
   },
+  reset: () => set({ loops: new Map() }),
 }));

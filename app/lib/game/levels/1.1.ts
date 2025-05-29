@@ -1,53 +1,53 @@
 import { useDataStore } from "~/lib/zustand/data";
 import { useGameStore } from "~/lib/zustand/game";
+import { BACKGROUND_OFFSET } from "../constants";
 import { getKaplayCtx } from "../core/kaplayCtx";
-
-const RACOON_SPEED = 3000;
+import { addBackgrounds, addGameobjects } from "../utils/gameHelper";
 
 export const initialize1_1 = () => {
   const { k, game } = getKaplayCtx();
 
-  k.loadBean();
-  const racoon = game.add([k.sprite("bean"), k.pos(20, 130)]);
+  addBackgrounds(["background1"]);
 
-  const trashCan = game.add([
-    k.sprite("bean"),
-    k.color(0, 0, 0),
-    k.pos(400, 400), // this is overridden by the node data
-    k.scale(0.5),
+  const { raccoon } = addGameobjects(["raccoon"]);
+  k.setCamPos(raccoon!.pos.add(0, -k.height() / 2 + BACKGROUND_OFFSET));
+
+  const floor = game.add([
+    k.rect(k.width(), 5),
+    k.pos(0, 0),
+    k.color(255, 200, 200),
     k.area(),
+    k.body({ isStatic: true }),
+    k.anchor("center"),
+    "floor",
   ]);
-  trashCan.tag("trashCan");
 
-  const finishLine = game.add([
-    k.sprite("bean"),
-    k.color(255, 0, 0),
-    k.pos(600, 100), // this is overridden by the node data
-    k.scale(4, 0.5),
-    k.area(),
+  //sample equation
+  const equation = "7 + 5 * 2 - 3 / 3 = ?";
+  const result = 16;
+
+  const label = game.add([
+    k.text(equation, { size: 32 }),
+    k.pos(0, 100),
+    k.anchor("center"),
+    k.scale(2),
+    "text",
   ]);
-  finishLine.tag("finishLine");
-
-  k.onCollide("trashCan", "finishLine", (trashCan, finishLine) => {
-    console.log("Collided with finish line");
-  });
 
   game.onUpdate(() => {
+    k.setCamPos(raccoon!.pos.add(0, -k.height() / 2 + BACKGROUND_OFFSET));
     if (useGameStore.getState().isPaused) return;
 
-    const gameObjects = useDataStore.getState().gameObjects;
+    // Get value from exportToGameObject node
+    const value =
+      useDataStore.getState().gameObjects.get("raccoon")?.get("value")?.value ??
+      0;
 
-    // racoon.move(RACOON_SPEED * k.dt(), 0);
-    racoon.pos.x = (racoon.pos.x + 1) % 1000;
-    // Write racoon position to store
-    const { access } = gameObjects.get("raccoon")!.get("xpos")!;
-    gameObjects.get("raccoon")!.set("xpos", {
-      access,
-      value: racoon.pos.x,
-    });
+    if (value == result) {
+      label.text = "Equation solved!";
 
-    //Move TrashCan
-    trashCan.pos.x = gameObjects.get("trashcan")?.get("xpos")?.value ?? 0;
-    trashCan.pos.y = gameObjects.get("trashcan")?.get("ypos")?.value ?? 0;
+      useGameStore.getState().setLevelCompleteDialogOpen(true);
+      useGameStore.getState().setLevelCompleted(true);
+    }
   });
 };

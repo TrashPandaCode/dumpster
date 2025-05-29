@@ -30,6 +30,10 @@ export function getKaplayCtx(canvas?: HTMLCanvasElement) {
 
 export function cleanupKaplay() {
   if (!ctx) return;
+  const { game, app } = ctx.k._k;
+  game.events.onOnce("frameEnd", () => {
+    app.quit();
+  });
   ctx = undefined;
   state.first = true; //TODO: remove just for react strict mode
 }
