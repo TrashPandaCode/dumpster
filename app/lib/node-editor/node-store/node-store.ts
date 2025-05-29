@@ -95,6 +95,7 @@ interface NodeStoreState {
   removeEdge: (edgeId: string) => void;
   compute: () => void;
   debugPrint: () => void;
+  reset: () => void;
 }
 
 export const useNodeStore = create<NodeStoreState>((set, get) => ({
@@ -102,6 +103,11 @@ export const useNodeStore = create<NodeStoreState>((set, get) => ({
   sortedNodes: [],
   mapErrors: { cycle: false },
   replaceNode: (node: Node) => {
+    // if the node is a group, we don't want to add it to the map since they are purely visual
+    if (node.type === "Group") {
+      return;
+    }
+
     const nodeMap = get().nodeMap;
     if (nodeMap.has(node.id)) {
       nodeMap.get(node.id)?.updateData(node.data);
@@ -180,6 +186,12 @@ export const useNodeStore = create<NodeStoreState>((set, get) => ({
       console.log(node.type, node);
     });
   },
+  reset: () =>
+    set({
+      nodeMap: new Map<string, AppNode>(),
+      sortedNodes: [],
+      mapErrors: { cycle: false },
+    }),
 }));
 
 // edge source, edge source handle, edge target, edge target handle

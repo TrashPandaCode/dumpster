@@ -12,6 +12,7 @@ export function useContextMenu() {
     nodeId: string;
     nodeType: string | undefined;
     nodeLoopId: string | undefined;
+    nodeParentId: string | undefined;
     x: number;
     y: number;
   } | null>(null);
@@ -41,6 +42,7 @@ export function useContextMenu() {
         nodeId: node.id,
         nodeType: node.type,
         nodeLoopId: node.data.loopId as string | undefined,
+        nodeParentId: node.parentId,
         x: position.x,
         y: position.y,
       });

@@ -6,21 +6,36 @@ import {
   addGameobjects,
   animPlayer,
 } from "../utils/gameHelper";
+import { useGameStore } from "~/lib/zustand/game";
 
-export const initializePlayground = () => {
+export const initialize1_2 = () => {
   const { k, game } = getKaplayCtx();
-
+ 
   addBackgrounds(["background1"]);
 
-  const { raccoon, trashcan, goalFlag } = addGameobjects([
+  const { raccoon, trashcan } = addGameobjects([
     "raccoon",
     "trashcan",
-    "goalFlag",
   ]);
   k.setCamPos(raccoon!.pos.add(0, -k.height() / 2 + BACKGROUND_OFFSET));
 
+  trashcan!.z = 3;
+  raccoon!.pos.x = -200;
+
+  k.onCollide("raccoon", "trashcan", (raccoon, trashcan) => {
+    useGameStore.getState().setLevelCompleteDialogOpen(true);
+    useGameStore.getState().setLevelCompleted(true);
+    console.log("Raccoon collided with trashcan");
+  });
+
   game.onUpdate(() => {
-    animPlayer(raccoon!, k);
+
+    if ( useDataStore.getState().gameObjects.get("raccoon")?.get("setTo1ActivateNode")?.value == 1) {
+
+        animPlayer(raccoon!, k);
+    } else {
+        raccoon!.pos.x = -200;
+    }
 
     trashcan!.pos.x =
       useDataStore.getState().gameObjects.get("trashcan")?.get("xpos")?.value ??

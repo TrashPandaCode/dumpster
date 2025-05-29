@@ -1,14 +1,15 @@
 import { useReactFlow } from "@xyflow/react";
 import { useCallback } from "react";
-import { v4 as uuidv4 } from "uuid";
 
-import { connectNodesToLoop, createForLoop } from "../utils";
+import { useLoopStore } from "../node-store/loop-store";
+import { duplicateNodes } from "../utils";
 import AddNodes from "./AddNodes";
 
 type NodeContextMenuProps = {
   nodeId: string;
   nodeType: string | undefined;
   nodeLoopId: string | undefined;
+  nodeParentId: string | undefined;
   x: number;
   y: number;
   onClose: () => void;
@@ -21,11 +22,18 @@ const NodeContextMenu: React.FC<NodeContextMenuProps> = ({
   x,
   y,
   onClose,
+  nodeParentId,
 }) => {
   return (
     <div style={{ position: "absolute", top: y, left: x, zIndex: 1000 }}>
       {nodeType === "ForStart" || nodeType === "ForEnd" ? (
-        <AddNodes onClose={onClose} x={x} y={y} parentLoopId={nodeLoopId}>
+        <AddNodes
+          onClose={onClose}
+          x={x}
+          y={y}
+          parentLoopId={nodeLoopId}
+          parentId={nodeParentId}
+        >
           <hr className="mx-auto h-1 w-44 rounded-sm border-0 bg-slate-700" />
           <DefaultNodeContextMenu nodeId={nodeId} onClose={onClose} />
         </AddNodes>
@@ -47,47 +55,70 @@ const DefaultNodeContextMenu = ({
   nodeId: string;
   onClose: () => void;
 }) => {
-  const { getNode, getNodes, setNodes, addNodes, setEdges, addEdges } =
-    useReactFlow();
+  const { getNode, getNodes, getEdges, setNodes, setEdges } = useReactFlow();
 
+  // handle node duplication
   const duplicateNode = useCallback(() => {
     const node = getNode(nodeId);
     if (!node) return;
 
-    const position = {
-      x: node.position.x + 50,
-      y: node.position.y + 50,
-    };
+    const nodesToDuplicate = getNodes().filter(
+      (n) =>
+        n.id === node.id || // always duplicate the node itself
+        n.parentId === node.id || // if the node is a group, duplicate all its children
+        ((n.data.loopId === node.data.loopId || // if node is part of a loop, duplicate both start and end nodes
+          n.data.parentLoopId === node.data.loopId) && // also get all children if its a loop node
+          node.data.loopId != undefined) // ensure we are dealing with a loop node
+    );
 
-    if (node.data.loopStart || node.data.loopEnd) {
-      createForLoop(addNodes, position.x, position.y, addEdges);
-    } else {
-      const id = uuidv4();
-      addNodes({
-        ...node,
-        selected: false,
-        dragging: false,
-        id: id,
-        position,
-      });
-
-      if (node.data.parentLoopId)
-        connectNodesToLoop(
-          getNodes,
-          addEdges,
-          [id],
-          node.data.parentLoopId as string
-        );
-    }
+    duplicateNodes(nodesToDuplicate, getEdges, getNodes, setEdges, setNodes);
 
     onClose();
-  }, [getNode, nodeId, onClose, addNodes, addEdges, getNodes]);
+  }, [getEdges, getNode, getNodes, nodeId, onClose, setEdges, setNodes]);
 
   const deleteNode = useCallback(() => {
-    setNodes((nodes) => nodes.filter((node) => node.id !== nodeId));
-    setEdges((edges) => edges.filter((edge) => edge.source !== nodeId));
+    const idsToDelete = [nodeId];
+    if (getNode(nodeId)?.type === "Group") {
+      // if the node is a group, delete all its children
+      const children = getNodes().filter((n) => n.parentId === nodeId);
+      const parent = getNode(nodeId);
+
+      setNodes((nodes) => {
+        return nodes.map((node) => {
+          if (children.some((child) => child.id === node.id)) {
+            return {
+              ...node,
+              position: {
+                x: parent
+                  ? node.position.x + parent.position.x
+                  : node.position.x,
+                y: parent
+                  ? node.position.y + parent.position.y
+                  : node.position.y,
+              },
+              parentId: undefined, // remove parentId to ungroup the children
+            };
+          }
+          return node;
+        });
+      });
+    }
+
+    // remove all nodes with the ids in idsToDelete
+    setNodes((nodes) => nodes.filter((node) => !idsToDelete.includes(node.id)));
+    // remove all edges that connect to the nodes with the ids in idsToDelete
+    setEdges((edges) =>
+      edges.filter(
+        (edge) =>
+          !(
+            idsToDelete.includes(edge.source) ||
+            idsToDelete.includes(edge.target)
+          )
+      )
+    );
+
     onClose();
-  }, [setNodes, setEdges, onClose, nodeId]);
+  }, [nodeId, getNode, setNodes, setEdges, onClose, getNodes]);
 
   return (
     <>
