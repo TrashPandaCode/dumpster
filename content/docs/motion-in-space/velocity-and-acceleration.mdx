@@ -1,0 +1,38 @@
+---
+title: Velocity and Acceleration
+---
+
+## Velocity and Acceleration
+
+* **Instantaneous velocity** is the rate of change of position at time $t$. It's defined as the derivative of the curve:
+
+Let $f: I \to \mathbb{R}^d$ be a differentiable curve. Then
+
+$$
+v(t) = f'(t)
+$$
+
+is called the **velocity vector**, and its norm $\|v(t)\|$ is the **speed** at time $t$.
+
+* **Acceleration** is the rate of change of velocity:
+
+$$
+a(t) = v'(t) = f''(t)
+$$
+
+A curve is differentiable if all component functions $f_i$ are differentiable:
+
+$$
+f'(t) = \left(f_1'(t), \dots, f_d'(t)\right), \quad f''(t) = \left(f_1''(t), \dots, f_d''(t)\right)
+$$
+
+
+## Tangent Vectors
+
+To visualize **tangent vectors**, we can draw velocity vectors along the trace. The direction shows the increasing parameter $t$, and the length corresponds to the speed.
+
+
+**Figure:**
+Cool tornado example with tangent vectors at different points.
+
+![tornado](/docs/tornado.png)

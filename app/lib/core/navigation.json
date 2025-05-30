@@ -99,6 +99,31 @@
     ]
   },
   {
+    "title": "Motion in Space",
+    "items": [
+      {
+        "title": "Parametrized Curve",
+        "path": "/docs/motion-in-space/parametrized-curve"
+      },
+      {
+        "title": "Trace and Graph of Curves",
+        "path": "/docs/motion-in-space/trace-and-graph-of-curves"
+      },
+      {
+        "title": "Velocity and Acceleration",
+        "path": "/docs/motion-in-space/velocity-and-acceleration"
+      },
+      {
+        "title": "Parametric vs. Geometric Continuity",
+        "path": "/docs/motion-in-space/parametric-geometric-continuity"
+      },
+      {
+        "title": "Arc Length",
+        "path": "/docs/motion-in-space/arc-length"
+      }
+    ]
+  },
+  {
     "title": "FAQ",
     "path": "/docs/faq"
   }
