@@ -17,7 +17,7 @@ export const initializeSitting = () => {
 
   trashcan!.z = 3;
   trashcan!.pos.x = -400;
-  trashcan!.pos.y = -200;
+  trashcan!.pos.y = -205;
 
   game.onUpdate(() => {
     if (useGameStore.getState().isPaused) return;
@@ -27,11 +27,9 @@ export const initializeSitting = () => {
     const dist = raccoon!.pos.dist(trashcan!.pos);
 
     if (dist <= 10 && !useGameStore.getState().levelCompleted) {
-
       useGameStore.getState().setLevelCompleted(true);
       useGameStore.getState().setLevelCompleteDialogOpen(true);
       useGameStore.getState().setLevelCompleted(true);
     }
-
   });
 };

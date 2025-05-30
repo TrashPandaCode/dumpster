@@ -6,10 +6,10 @@ import houseImage from "~/assets/house.png";
 import type { NodeType } from "~/lib/node-editor/nodes/node-types";
 import { type GameObject } from "../constants";
 import { initializeCalculator } from "../levels/calculator";
+import { initializeIffies } from "../levels/iffies";
 import { initializeMove } from "../levels/move";
 import { initializePlayground } from "../levels/playground";
 import { initializeSitting } from "../levels/sitting";
-import { initializeIffies } from "../levels/iffies";
 
 export type ConnectionAccess = "set" | "get" | "all";
 
@@ -115,8 +115,8 @@ export const LEVELS = {
       },
     ],
     availableNodes: [
-      "Value",
       "Display",
+      "Value",
       "Time",
       "KeyPress",
       "MathFloat",
@@ -151,7 +151,7 @@ export const LEVELS = {
         connections: [{ label: "equationSolution", access: "set" }],
       },
     ],
-    availableNodes: ["Value", "Display", "MathFloat", "ExportToGameobject"],
+    availableNodes: ["Display", "Value", "MathFloat", "ExportToGameobject"],
   },
   sitting: {
     slug: "sitting",
@@ -159,7 +159,7 @@ export const LEVELS = {
     description:
       "This is the second level of the game, introducing position of game objects.",
     dialog: [
-      "This is the second level of the game. Complete the \"calculator\" level first, If you haven't done yet.",
+      'This is the second level of the game. Complete the "calculator" level first, If you haven\'t done yet.',
       "You will learn how to manipulate the position of a game object.",
     ],
     goals: ["Move the raccoon into the trashcan by changing his position."],
@@ -179,7 +179,7 @@ export const LEVELS = {
         ],
       },
     ],
-    availableNodes: ["Value", "ExportToGameobject"],
+    availableNodes: ["Display", "Value", "ExportToGameobject"],
   },
   iffies: {
     slug: "iffies",
@@ -187,11 +187,14 @@ export const LEVELS = {
     description:
       "This is the third level of the game, introducing if statements.",
     dialog: [
-      "This is the third level of the game. Complete the \"sitting\" level first, If you haven't done yet.",
+      'This is the third level of the game. Complete the "sitting" level first, If you haven\'t done yet.',
       "You will learn how to use if statements to control game object behavior.",
     ],
-    goals: ["Use an if statement to make the raccoon move into the filled trashcan."],
-    success: "Luckily the raccoon doesn't have to search for food in an empty trashcan!",
+    goals: [
+      "Use an if statement to make the raccoon move into the filled trashcan.",
+    ],
+    success:
+      "Luckily the raccoon doesn't have to search for food in an empty trashcan!",
     category: "Introduction",
     image: alleyTwo,
     nodes: [],
@@ -209,13 +212,28 @@ export const LEVELS = {
       {
         id: "trashcan",
         connections: [
-          { label: "filled", access: "set" },
+          { label: "filled", access: "get" },
           { label: "xpos", access: "get" },
           { label: "ypos", access: "get" },
         ],
       },
+      // {
+      //   id: "trashcanEmpty",
+      //   connections: [
+      //     { label: "filled", access: "get" },
+      //     { label: "xpos", access: "get" },
+      //     { label: "ypos", access: "get" },
+      //   ],
+      // },
     ],
-    availableNodes: ["Value", "MathFloat", "ImportFromGameobject", "Switch", "ExportToGameobject"],
+    availableNodes: [
+      "Display",
+      "Value",
+      "MathFloat",
+      "ImportFromGameobject",
+      "Switch",
+      "ExportToGameobject",
+    ],
   },
   move: {
     slug: "move",
@@ -224,7 +242,7 @@ export const LEVELS = {
       "This is the first level of the main game, introducing movement mechanics.",
     dialog: [
       "This is the first level of the main game. It introduces movement mechanics.",
-      "You will learn how to move a game object using key inputs.",  
+      "You will learn how to move a game object using key inputs.",
     ],
     goals: ["Move the raccoon to the flag."],
     success: "Look, he just learned how to use his feet!",

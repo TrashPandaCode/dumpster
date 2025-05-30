@@ -1,3 +1,4 @@
+import { useDataStore } from "~/lib/zustand/data";
 import { useGameStore } from "~/lib/zustand/game";
 import { BACKGROUND_OFFSET } from "../constants";
 import { getKaplayCtx } from "../core/kaplayCtx";
@@ -12,17 +13,37 @@ export const initializeIffies = () => {
 
   addBackgrounds(["background1"]);
 
-  const { raccoon, trashcan: trashcanFilled } = addGameobjects(["raccoon", "trashcan"], {trashcanAnim: "filled"});
+  const { raccoon, trashcan: trashcanFilled } = addGameobjects(
+    ["raccoon", "trashcan"],
+    { trashcanAnim: "filled" }
+  );
   k.setCamPos(raccoon!.pos.add(0, -k.height() / 2 + BACKGROUND_OFFSET));
 
   trashcanFilled!.z = 3;
   trashcanFilled!.pos.x = -400;
-  trashcanFilled!.pos.y = -200;
+  trashcanFilled!.pos.y = -205;
 
-  const { trashcan: trashcanEmpty } = addGameobjects(["trashcan"], { trashcanAnim: "empty" });
+  const { trashcan: trashcanEmpty } = addGameobjects(["trashcan"], {
+    trashcanAnim: "empty",
+  });
 
   trashcanEmpty!.z = 3;
   trashcanEmpty!.pos.x = 400;
+  trashcanEmpty!.tag("trashcanEmpty");
+
+  useDataStore.getState().gameObjects.set(
+    "trashcan",
+    new Map([
+      ["filled", { access: "get", value: 1 }],
+      ["xpos", { access: "get", value: -400 }],
+      ["ypos", { access: "get", value: -205 }],
+    ])
+  );
+  // useDataStore.getState().gameObjects.set("trashcanEmpty", new Map([
+  //   ["filled", { access: "get", value: 0 }],
+  //   ["xpos", { access: "get", value: 400 }],
+  //   ["ypos", { access: "get", value: 0 }],
+  // ]));
 
   game.onUpdate(() => {
     if (useGameStore.getState().isPaused) return;
@@ -32,11 +53,9 @@ export const initializeIffies = () => {
     const distFilled = raccoon!.pos.dist(trashcanFilled!.pos);
 
     if (distFilled <= 10 && !useGameStore.getState().levelCompleted) {
-
       useGameStore.getState().setLevelCompleted(true);
       useGameStore.getState().setLevelCompleteDialogOpen(true);
       useGameStore.getState().setLevelCompleted(true);
     }
-
   });
 };
