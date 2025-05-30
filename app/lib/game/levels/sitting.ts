@@ -1,4 +1,5 @@
 import { useDataStore } from "~/lib/zustand/data";
+import { useGameStore } from "~/lib/zustand/game";
 import { BACKGROUND_OFFSET } from "../constants";
 import { getKaplayCtx } from "../core/kaplayCtx";
 import {
@@ -6,17 +7,13 @@ import {
   addGameobjects,
   animPlayer,
 } from "../utils/gameHelper";
-import { useGameStore } from "~/lib/zustand/game";
 
-export const initialize1_2 = () => {
+export const initializeSitting = () => {
   const { k, game } = getKaplayCtx();
- 
+
   addBackgrounds(["background1"]);
 
-  const { raccoon, trashcan } = addGameobjects([
-    "raccoon",
-    "trashcan",
-  ]);
+  const { raccoon, trashcan } = addGameobjects(["raccoon", "trashcan"]);
   k.setCamPos(raccoon!.pos.add(0, -k.height() / 2 + BACKGROUND_OFFSET));
 
   trashcan!.z = 3;
@@ -29,12 +26,15 @@ export const initialize1_2 = () => {
   });
 
   game.onUpdate(() => {
-
-    if ( useDataStore.getState().gameObjects.get("raccoon")?.get("setTo1ActivateNode")?.value == 1) {
-
-        animPlayer(raccoon!, k);
+    if (
+      useDataStore
+        .getState()
+        .gameObjects.get("raccoon")
+        ?.get("setTo1ActivateNode")?.value == 1
+    ) {
+      animPlayer(raccoon!, k);
     } else {
-        raccoon!.pos.x = -200;
+      raccoon!.pos.x = -200;
     }
 
     trashcan!.pos.x =
