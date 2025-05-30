@@ -8,7 +8,9 @@ import { LEVELS, type Level } from "~/lib/game/core/levels";
 import arrowDownIcon from "../assets/arrow_down.svg";
 
 const Home = () => {
-  const [currentHoverCard, setCurrentHoverCard] = useState<Level>(LEVELS["1.1"]); // Default to the first level
+  const [currentHoverCard, setCurrentHoverCard] = useState<Level>(
+    LEVELS["move"]
+  ); // Default to the first level
   const CARDS = Object.values(LEVELS).slice(0, 6); // Get the first 6 levels for the cards
 
   const [showAll, setShowAll] = useState(false);
@@ -185,7 +187,7 @@ const LevelCard: React.FC<{ level: Level; onMouseEnter: () => void }> = ({
   onMouseEnter,
 }) => (
   <NavLink
-    to={`/game/${level.id}`}
+    to={`/game/${level.slug}`}
     className="outline-jam-600 relative h-full w-full cursor-pointer overflow-hidden rounded-xl hover:outline-5"
     onMouseEnter={onMouseEnter}
   >

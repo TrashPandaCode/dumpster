@@ -17,6 +17,10 @@ export type ConnectionAccess = "set" | "get" | "all";
  */
 export type Level = {
   /**
+   * Unique identifying part of the web address.
+   */
+  slug: string;
+  /**
    * (Human Readable) Name of the level.
    */
   name: string;
@@ -70,6 +74,7 @@ export type ModifiableGameObject = {
  */
 export const LEVELS = {
   playground: {
+    slug: "playground",
     name: "Playground",
     description:
       "This is a sandbox level where you can freely test game mechanics.",
@@ -123,6 +128,7 @@ export const LEVELS = {
     ],
   },
   calculator: {
+    slug: "calculator",
     name: "Calculator",
     description:
       "This is the first level of the game, introducing basic mechanics.",
@@ -147,6 +153,7 @@ export const LEVELS = {
     availableNodes: ["Value", "Display", "MathFloat", "ExportToGameobject"],
   },
   sitting: {
+    slug: "sitting",
     name: "Sitting",
     description:
       "This is the second level of the game, introducing position of game objects.",
@@ -178,6 +185,7 @@ export const LEVELS = {
     availableNodes: ["Value", "ExportToGameobject"],
   },
   move: {
+    slug: "move",
     name: "Move",
     description:
       "This is the second level of the game, building upon Level 1.1.",
