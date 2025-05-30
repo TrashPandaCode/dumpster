@@ -12,26 +12,28 @@ import {
 import { useCallback, useState } from "react";
 import { useShallow } from "zustand/shallow";
 
-import { useNodeSetterStore } from "../node-store/node-setter";
+import { useFlowStore } from "../node-store/flow-store";
 import { useNodeStore } from "../node-store/node-store";
 import { applyNodeChanges, computeGroupSizings } from "../utils";
 
 const selector = (state: {
   nodes: Node[];
+  edges: Edge[];
   setNodes: (updater: (nodes: Node[]) => Node[]) => void;
+  setEdges: (updater: (edges: Edge[]) => Edge[]) => void;
   highlightDuplicateNodes: () => void;
 }) => ({
   nodes: state.nodes,
+  edges: state.edges,
   setNodes: state.setNodes,
+  setEdges: state.setEdges,
   highlightDuplicateNodes: state.highlightDuplicateNodes,
 });
 
 export function useFlow() {
   const { getIntersectingNodes, getNode, getNodes } = useReactFlow();
-  const { nodes, setNodes, highlightDuplicateNodes } = useNodeSetterStore(
-    useShallow(selector)
-  );
-  const [edges, setEdges] = useState<Edge[]>([]);
+  const { nodes, edges, setNodes, setEdges, highlightDuplicateNodes } =
+    useFlowStore(useShallow(selector));
 
   const replaceNode = useNodeStore((state) => state.replaceNode);
   const removeNode = useNodeStore((state) => state.removeNode);
@@ -101,11 +103,12 @@ export function useFlow() {
     [
       setNodes,
       replaceNode,
-      highlightDuplicateNodes,
       getNode,
       removeNode,
       getNodes,
+      setEdges,
       removeEdge,
+      highlightDuplicateNodes,
     ]
   );
 
