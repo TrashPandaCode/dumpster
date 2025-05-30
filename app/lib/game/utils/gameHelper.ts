@@ -33,7 +33,10 @@ interface GameObjectInstances {
   goalFlag?: GameObj<PosComp | ScaleComp | SpriteComp | AnchorComp | ZComp>;
 }
 
-export function addGameobjects(gameobjects: GameObject[]) {
+export function addGameobjects(
+  gameobjects: GameObject[],
+  options?: { trashcanAnim?: "filled" | "empty" }
+) {
   const { k, game } = getKaplayCtx();
   const instances: GameObjectInstances = {};
 
@@ -55,6 +58,7 @@ export function addGameobjects(gameobjects: GameObject[]) {
       k.pos(0, 0),
       k.scale(RACCOON_SCALE),
       k.anchor("bot"),
+      k.area(),
       k.z(2),
       "raccoon",
       k.state("idle", ["idle", "walkLeft", "walkRight"]),
@@ -83,11 +87,12 @@ export function addGameobjects(gameobjects: GameObject[]) {
     });
     const trashcan = game.add([
       k.sprite("trashcan", {
-        anim: "filled",
+        anim: options?.trashcanAnim ?? "filled",
       }),
       k.anchor("bot"),
       k.pos(0, 0),
       k.scale(5),
+      k.area(),
       k.z(1),
       "trashcan",
     ]);
@@ -108,6 +113,7 @@ export function addGameobjects(gameobjects: GameObject[]) {
       }),
       k.anchor("bot"),
       k.pos(200, 0),
+      k.area(),
       k.scale(5),
       k.z(1),
     ]);

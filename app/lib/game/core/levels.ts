@@ -6,6 +6,7 @@ import houseImage from "~/assets/house.png";
 import type { NodeType } from "~/lib/node-editor/nodes/node-types";
 import { type GameObject } from "../constants";
 import { initializeCalculator } from "../levels/calculator";
+import { initializeIffies } from "../levels/iffies";
 import { initializeMove } from "../levels/move";
 import { initializePlayground } from "../levels/playground";
 import { initializeSitting } from "../levels/sitting";
@@ -114,8 +115,8 @@ export const LEVELS = {
       },
     ],
     availableNodes: [
-      "Value",
       "Display",
+      "Value",
       "Time",
       "KeyPress",
       "MathFloat",
@@ -134,7 +135,7 @@ export const LEVELS = {
       "This is the first level of the game, introducing basic mechanics.",
     dialog: [
       "This is the first level of the game. It introduces the basic mechanics and objectives.",
-      "You will learn how to create nodes and solve simple equations.",
+      "You will learn how to create nodes and solve a simple equation.",
     ],
     goals: ["Create your first nodes.", "Solve the equation."],
     success: "You solved the equation!",
@@ -147,10 +148,10 @@ export const LEVELS = {
     modifiableGameObjects: [
       {
         id: "raccoon",
-        connections: [{ label: "value", access: "set" }],
+        connections: [{ label: "equationSolution", access: "set" }],
       },
     ],
-    availableNodes: ["Value", "Display", "MathFloat", "ExportToGameobject"],
+    availableNodes: ["Display", "Value", "MathFloat", "ExportToGameobject"],
   },
   sitting: {
     slug: "sitting",
@@ -158,11 +159,11 @@ export const LEVELS = {
     description:
       "This is the second level of the game, introducing position of game objects.",
     dialog: [
-      "This is the second level of the game. Complete level 1.1 first, If you haven't done yet.",
-      "You will learn how to manipulate the position of game objects.",
+      'This is the second level of the game. Complete the "calculator" level first, If you haven\'t done yet.',
+      "You will learn how to manipulate the position of a game object.",
     ],
-    goals: ["Make the position of the raccoon and the trashcan match."],
-    success: "Yay!",
+    goals: ["Move the raccoon into the trashcan by changing his position."],
+    success: "The raccoon is now happily searching for food in the trashcan!",
     category: "Introduction",
     image: alleyTwo,
     nodes: [],
@@ -173,28 +174,79 @@ export const LEVELS = {
       {
         id: "raccoon",
         connections: [
-          { label: "setTo1ActivateNode", access: "set" },
           { label: "xpos", access: "set" },
+          { label: "ypos", access: "set" },
+        ],
+      },
+    ],
+    availableNodes: ["Display", "Value", "ExportToGameobject"],
+  },
+  iffies: {
+    slug: "iffies",
+    name: "Iffies",
+    description:
+      "This is the third level of the game, introducing if statements.",
+    dialog: [
+      'This is the third level of the game. Complete the "sitting" level first, If you haven\'t done yet.',
+      "You will learn how to use if statements to control game object behavior.",
+    ],
+    goals: [
+      "Use an if statement to make the raccoon move into the filled trashcan.",
+    ],
+    success:
+      "Luckily the raccoon doesn't have to search for food in an empty trashcan!",
+    category: "Introduction",
+    image: alleyTwo,
+    nodes: [],
+    edges: [],
+    initialState: initializeIffies,
+    hints: [],
+    modifiableGameObjects: [
+      {
+        id: "raccoon",
+        connections: [
+          { label: "xpos", access: "set" },
+          { label: "ypos", access: "set" },
         ],
       },
       {
         id: "trashcan",
-        connections: [{ label: "xpos", access: "set" }],
+        connections: [
+          { label: "filled", access: "get" },
+          { label: "xpos", access: "get" },
+          { label: "ypos", access: "get" },
+        ],
       },
+      // {
+      //   id: "trashcanEmpty",
+      //   connections: [
+      //     { label: "filled", access: "get" },
+      //     { label: "xpos", access: "get" },
+      //     { label: "ypos", access: "get" },
+      //   ],
+      // },
     ],
-    availableNodes: ["Value", "ExportToGameobject"],
+    availableNodes: [
+      "Display",
+      "Value",
+      "MathFloat",
+      "ImportFromGameobject",
+      "Switch",
+      "ExportToGameobject",
+    ],
   },
   move: {
     slug: "move",
     name: "Move",
     description:
-      "This is the second level of the game, building upon Level 1.1.",
+      "This is the first level of the main game, introducing movement mechanics.",
     dialog: [
-      "This is the second level of the game. It builds upon the mechanics introduced in Level 1.1.",
+      "This is the first level of the main game. It introduces movement mechanics.",
+      "You will learn how to move a game object using key inputs.",
     ],
-    goals: ["No goals defined yet."],
-    success: "Yay!",
-    category: "Introduction",
+    goals: ["Move the raccoon to the flag."],
+    success: "Look, he just learned how to use his feet!",
+    category: "Main Game",
     image: houseImage,
     nodes: [],
     edges: [],
@@ -203,16 +255,6 @@ export const LEVELS = {
     modifiableGameObjects: [
       {
         id: "raccoon",
-        connections: [
-          { label: "value", access: "set" },
-
-          { label: "xpos", access: "get" },
-
-          { label: "xpos", access: "set" },
-        ],
-      },
-      {
-        id: "trashcan",
         connections: [
           { label: "xpos", access: "set" },
           { label: "ypos", access: "set" },
