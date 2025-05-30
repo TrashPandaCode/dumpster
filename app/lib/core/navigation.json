@@ -187,6 +187,27 @@
     ]
   },
   {
+    "title": "Kinematics",
+    "items": [
+      {
+        "title": "Joint Structures",
+        "path": "/docs/kinematics/joint-structures"
+      },
+      {
+        "title": "Forward Kinematics",
+        "path": "/docs/kinematics/forward-kinematics"
+      },
+      {
+        "title": "Inverse Kinematics",
+        "path": "/docs/kinematics/inverse-kinematics"
+      },
+      {
+        "title": "Cyclic Coordinate Descent (CCD)",
+        "path": "/docs/kinematics/ccd"
+      }
+    ]
+  },
+  {
     "title": "FAQ",
     "path": "/docs/faq"
   }
