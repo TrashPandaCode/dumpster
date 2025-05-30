@@ -12,16 +12,6 @@ export const initialize1_1 = () => {
   const { raccoon } = addGameobjects(["raccoon"]);
   k.setCamPos(raccoon!.pos.add(0, -k.height() / 2 + BACKGROUND_OFFSET));
 
-  const floor = game.add([
-    k.rect(k.width(), 5),
-    k.pos(0, 0),
-    k.color(255, 200, 200),
-    k.area(),
-    k.body({ isStatic: true }),
-    k.anchor("center"),
-    "floor",
-  ]);
-
   //sample equation
   const equation = "7 + 5 * 2 - 3 / 3 = ?";
   const result = 16;
@@ -44,7 +34,6 @@ export const initialize1_1 = () => {
       0;
 
     if (value == result) {
-      label.text = "Equation solved!";
 
       useGameStore.getState().setLevelCompleteDialogOpen(true);
       useGameStore.getState().setLevelCompleted(true);
