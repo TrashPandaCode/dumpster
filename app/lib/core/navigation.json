@@ -124,6 +124,27 @@
     ]
   },
   {
+    "title": "Control of Time, Speed, and Distance Traveled",
+    "items": [
+      {
+        "title": "Speed Control",
+        "path": "/docs/control-of-time-speed-distance/speed-control"
+      },
+      {
+        "title": "Reparameterization by Arc Length",
+        "path": "/docs/control-of-time-speed-distance/reparameterization-by-arc-length"
+      },
+      {
+        "title": "Ease-In and Ease-Out",
+        "path": "/docs/control-of-time-speed-distance/ease-in-ease-out"
+      },
+      {
+        "title": "Distance Control",
+        "path": "/docs/control-of-time-speed-distance/distance-control"
+      }
+    ]
+  },
+  {
     "title": "FAQ",
     "path": "/docs/faq"
   }

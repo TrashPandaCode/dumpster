@@ -1,0 +1,16 @@
+---
+title: Ease-In and Ease-Out
+---
+
+## Ease-In and Ease-Out
+
+There are many ways to reparameterize a curve such that the speed starts slowly, increases to a maximum, and slows down to zero by the end of the domain.
+
+We assume the curve is a $C^1$-curve parameterized by arc length. That is:
+
+$$
+\|f'(t)\| = 1 \quad \text{and} \quad l_f(t) = t
+$$
+
+To achieve an **ease-in and ease-out** effect, we can define a "trapezoid-shaped" function for the speed and integrate it.
+
