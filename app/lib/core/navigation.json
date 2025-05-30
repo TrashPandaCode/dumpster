@@ -208,6 +208,23 @@
     ]
   },
   {
+    "title": "Skinning",
+    "items": [
+      {
+        "title": "Definition",
+        "path": "/docs/skinning/definition"
+      },
+      {
+        "title": "Rigid Binding",
+        "path": "/docs/skinning/rigid-binding"
+      },
+      {
+        "title": "Smooth Binding",
+        "path": "/docs/skinning/smooth-binding"
+      }
+    ]
+  },
+  {
     "title": "FAQ",
     "path": "/docs/faq"
   }
