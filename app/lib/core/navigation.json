@@ -225,6 +225,23 @@
     ]
   },
   {
+    "title": "Blendshapes",
+    "items": [
+      {
+        "title": "Definition",
+        "path": "/docs/blendshapes/definition"
+      },
+      {
+        "title": "Delta Blendshapes",
+        "path": "/docs/blendshapes/delta-blendshapes"
+      },
+      {
+        "title": "Animation and User Interface",
+        "path": "/docs/blendshapes/animation-ui"
+      }
+    ]
+  },
+  {
     "title": "FAQ",
     "path": "/docs/faq"
   }
