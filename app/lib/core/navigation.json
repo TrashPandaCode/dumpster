@@ -145,6 +145,27 @@
     ]
   },
   {
+    "title": "Interpolation",
+    "items": [
+      {
+        "title": "Definition",
+        "path": "/docs/interpolation/definition"
+      },
+      {
+        "title": "Bézier Curves",
+        "path": "/docs/interpolation/bezier-curves"
+      },
+      {
+        "title": "The de Casteljau Algorithm",
+        "path": "/docs/interpolation/de-casteljau-algorithm"
+      },
+      {
+        "title": "Composite Bézier Curves",
+        "path": "/docs/interpolation/composite-bezier-curves"
+      }
+    ]
+  },
+  {
     "title": "FAQ",
     "path": "/docs/faq"
   }
