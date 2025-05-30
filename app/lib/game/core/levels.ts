@@ -159,7 +159,7 @@ export const LEVELS = {
     description:
       "This is the second level of the game, introducing position of game objects.",
     dialog: [
-      'This is the second level of the game. Complete the "calculator" level first, If you haven\'t done yet.',
+      'This is the second level of the game. Complete the "calculator" level first, if you haven\'t done so yet.',
       "You will learn how to manipulate the position of a game object.",
     ],
     goals: ["Move the raccoon into the trashcan by changing his position."],
@@ -187,7 +187,7 @@ export const LEVELS = {
     description:
       "This is the third level of the game, introducing if statements.",
     dialog: [
-      'This is the third level of the game. Complete the "sitting" level first, If you haven\'t done yet.',
+      'This is the third level of the game. Complete the "sitting" level first, if you haven\'t done so yet.',
       "You will learn how to use if statements to control game object behavior.",
     ],
     goals: [

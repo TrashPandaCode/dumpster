@@ -56,7 +56,7 @@ const LevelDialog = ({
     setDialog(dialogs[0]);
     setShowingGoals(skip);
     setTypedText("");
-  }, [currentLevel, dialogs, skip]);
+  }, [currentLevel]);
 
   const startButtonRef = useRef<HTMLButtonElement>(null);
 
