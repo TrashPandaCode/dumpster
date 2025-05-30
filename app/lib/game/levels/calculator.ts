@@ -25,15 +25,16 @@ export const initializeCalculator = () => {
   ]);
 
   game.onUpdate(() => {
-    k.setCamPos(raccoon!.pos.add(0, -k.height() / 2 + BACKGROUND_OFFSET));
     if (useGameStore.getState().isPaused) return;
 
     // Get value from exportToGameObject node
     const value =
-      useDataStore.getState().gameObjects.get("raccoon")?.get("value")?.value ??
+      useDataStore.getState().gameObjects.get("raccoon")?.get("equationSolution")?.value ??
       0;
 
-    if (value == result) {
+    if (value == result && !useGameStore.getState().levelCompleted) {
+
+      useGameStore.getState().setLevelCompleted(true);
       useGameStore.getState().setLevelCompleteDialogOpen(true);
       useGameStore.getState().setLevelCompleted(true);
     }

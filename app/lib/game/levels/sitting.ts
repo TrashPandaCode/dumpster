@@ -17,31 +17,22 @@ export const initializeSitting = () => {
   k.setCamPos(raccoon!.pos.add(0, -k.height() / 2 + BACKGROUND_OFFSET));
 
   trashcan!.z = 3;
-  raccoon!.pos.x = -200;
-
-  k.onCollide("raccoon", "trashcan", (raccoon, trashcan) => {
-    useGameStore.getState().setLevelCompleteDialogOpen(true);
-    useGameStore.getState().setLevelCompleted(true);
-    console.log("Raccoon collided with trashcan");
-  });
+  trashcan!.pos.x = -400;
+  trashcan!.pos.y = -200;
 
   game.onUpdate(() => {
-    if (
-      useDataStore
-        .getState()
-        .gameObjects.get("raccoon")
-        ?.get("setTo1ActivateNode")?.value == 1
-    ) {
-      animPlayer(raccoon!, k);
-    } else {
-      raccoon!.pos.x = -200;
+    if (useGameStore.getState().isPaused) return;
+
+    animPlayer(raccoon!, k);
+
+    const dist = raccoon!.pos.dist(trashcan!.pos);
+
+    if (dist <= 10 && !useGameStore.getState().levelCompleted) {
+
+      useGameStore.getState().setLevelCompleted(true);
+      useGameStore.getState().setLevelCompleteDialogOpen(true);
+      useGameStore.getState().setLevelCompleted(true);
     }
 
-    trashcan!.pos.x =
-      useDataStore.getState().gameObjects.get("trashcan")?.get("xpos")?.value ??
-      0;
-    trashcan!.pos.y =
-      useDataStore.getState().gameObjects.get("trashcan")?.get("ypos")?.value ??
-      0;
   });
 };

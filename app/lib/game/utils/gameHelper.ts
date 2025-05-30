@@ -55,6 +55,7 @@ export function addGameobjects(gameobjects: GameObject[]) {
       k.pos(0, 0),
       k.scale(RACCOON_SCALE),
       k.anchor("bot"),
+      k.area(),
       k.z(2),
       "raccoon",
       k.state("idle", ["idle", "walkLeft", "walkRight"]),
@@ -88,6 +89,7 @@ export function addGameobjects(gameobjects: GameObject[]) {
       k.anchor("bot"),
       k.pos(0, 0),
       k.scale(5),
+      k.area(),
       k.z(1),
       "trashcan",
     ]);
@@ -108,6 +110,7 @@ export function addGameobjects(gameobjects: GameObject[]) {
       }),
       k.anchor("bot"),
       k.pos(200, 0),
+      k.area(),
       k.scale(5),
       k.z(1),
     ]);
