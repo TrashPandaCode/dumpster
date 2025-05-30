@@ -78,6 +78,27 @@
     "path": "/docs/animation-systems"
   },
   {
+    "title": "Time and Game Loop",
+    "items": [
+      {
+        "title": "Time Axes",
+        "path": "/docs/time-and-game-loop/time-axes"
+      },
+      {
+        "title": "Global and Local Time Axes",
+        "path": "/docs/time-and-game-loop/global-and-local-time-axes"
+      },
+      {
+        "title": "Frames",
+        "path": "/docs/time-and-game-loop/frames"
+      },
+      {
+        "title": "Game Loop",
+        "path": "/docs/time-and-game-loop/game-loop"
+      }
+    ]
+  },
+  {
     "title": "FAQ",
     "path": "/docs/faq"
   }
