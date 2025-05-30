@@ -29,11 +29,12 @@ export const initializeCalculator = () => {
 
     // Get value from exportToGameObject node
     const value =
-      useDataStore.getState().gameObjects.get("raccoon")?.get("equationSolution")?.value ??
-      0;
+      useDataStore
+        .getState()
+        .gameObjects.get("raccoon")
+        ?.get("equationSolution")?.value ?? 0;
 
     if (value == result && !useGameStore.getState().levelCompleted) {
-
       useGameStore.getState().setLevelCompleted(true);
       useGameStore.getState().setLevelCompleteDialogOpen(true);
       useGameStore.getState().setLevelCompleted(true);
