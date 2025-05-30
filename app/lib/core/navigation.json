@@ -309,6 +309,35 @@
     ]
   },
   {
+    "title": "Particle Systems",
+    "items": [
+      {
+        "title": "Definition",
+        "path": "/docs/particle-systems/definition"
+      },
+      {
+        "title": "Structure of a Particle System",
+        "path": "/docs/particle-systems/structure"
+      },
+      {
+        "title": "Particle Properties",
+        "path": "/docs/particle-systems/particle-properties"
+      },
+      {
+        "title": "Emitters",
+        "path": "/docs/particle-systems/emitters"
+      },
+      {
+        "title": "Dynamics",
+        "path": "/docs/particle-systems/dynamics"
+      },
+      {
+        "title": "Rendering",
+        "path": "/docs/particle-systems/rendering"
+      }
+    ]
+  },
+  {
     "title": "FAQ",
     "path": "/docs/faq"
   }
