@@ -9,6 +9,7 @@ import { initializeCalculator } from "../levels/calculator";
 import { initializeMove } from "../levels/move";
 import { initializePlayground } from "../levels/playground";
 import { initializeSitting } from "../levels/sitting";
+import { initializeIffies } from "../levels/iffies";
 
 export type ConnectionAccess = "set" | "get" | "all";
 
@@ -179,6 +180,42 @@ export const LEVELS = {
       },
     ],
     availableNodes: ["Value", "ExportToGameobject"],
+  },
+  iffies: {
+    slug: "iffies",
+    name: "Iffies",
+    description:
+      "This is the third level of the game, introducing if statements.",
+    dialog: [
+      "This is the third level of the game. Complete the \"sitting\" level first, If you haven't done yet.",
+      "You will learn how to use if statements to control game object behavior.",
+    ],
+    goals: ["Use an if statement to make the raccoon move into the filled trashcan."],
+    success: "Luckily the raccoon doesn't have to search for food in an empty trashcan!",
+    category: "Introduction",
+    image: alleyTwo,
+    nodes: [],
+    edges: [],
+    initialState: initializeIffies,
+    hints: [],
+    modifiableGameObjects: [
+      {
+        id: "raccoon",
+        connections: [
+          { label: "xpos", access: "set" },
+          { label: "ypos", access: "set" },
+        ],
+      },
+      {
+        id: "trashcan",
+        connections: [
+          { label: "filled", access: "set" },
+          { label: "xpos", access: "get" },
+          { label: "ypos", access: "get" },
+        ],
+      },
+    ],
+    availableNodes: ["Value", "MathFloat", "ImportFromGameobject", "Switch", "ExportToGameobject"],
   },
   move: {
     slug: "move",
