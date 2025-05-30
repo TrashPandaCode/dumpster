@@ -1,0 +1,34 @@
+---
+title: Definition of Interpolation
+---
+
+Let a grid $\mathcal{G} = (t_0, \dots, t_n)$ and points $p_0, \dots, p_n \in \mathbb{R}^d$ be given. The goal is to find a continuous curve $f : I \to \mathbb{R}^d$ on some interval $I \subset \mathbb{R}$ such that:
+
+$$
+f(t_i) = p_i,\quad \text{for } i = 0, \dots, n
+$$
+
+The points $p_0, \dots, p_n$ are called **control points**. This task is often referred to as the **basic interpolation problem**.
+
+There may be many solutions to this problem, so we impose additional conditions:
+
+* Require $C^1$ or $C^n$ continuity
+* Low computational cost
+* Derivatives may be prescribed (tangent vectors may be given)
+* The curve should stay close to the control points
+
+Common simple approaches to solving this problem:
+
+* **Weighting functions**: Weighting functions $w_i(t)$ assign each control point a factor for each $t$, mixing the points to form the curve:
+
+  $$
+  f(t) = \sum_{k=0}^n w_k(t) p_k
+  $$
+
+* **Polynomial curve**: A curve $f: [a, b] \to \mathbb{R}^d$ with control points $p_i \in \mathbb{R}^d$ and weighting functions/polynomials $w_i: [a, b] \to \mathbb{R}$ of the form
+
+  $$
+  f(t) = w_0(t) p_0 + \dots + w_n(t) p_n
+  $$
+
+  is called a **polynomial curve**. If all $w_i$ are of degree 2 (or 3), then $f$ is called a **quadratic curve** (or **cubic curve**).

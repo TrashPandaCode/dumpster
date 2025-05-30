@@ -68,7 +68,7 @@ const Docs = ({ loaderData }: Route.ComponentProps) => {
           {category && (
             <>
               <BreadcrumbSeparator />
-              <BreadcrumbItem className="capitalize">{category}</BreadcrumbItem>
+              <BreadcrumbItem className="capitalize">{category.replaceAll("-", " ")}</BreadcrumbItem>
             </>
           )}
           <BreadcrumbSeparator />

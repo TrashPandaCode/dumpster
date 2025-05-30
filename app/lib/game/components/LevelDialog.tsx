@@ -51,6 +51,13 @@ const LevelDialog = ({
     };
   }, [dialog]);
 
+  useEffect(() => {
+    index.current = 0;
+    setDialog(dialogs[0]);
+    setShowingGoals(skip);
+    setTypedText("");
+  }, [currentLevel, dialogs, skip]);
+
   const startButtonRef = useRef<HTMLButtonElement>(null);
 
   /* Function to handle the "Next" button click */

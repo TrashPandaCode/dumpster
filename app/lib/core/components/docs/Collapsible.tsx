@@ -19,7 +19,7 @@ const Collapsible = ({
     <Root open={open} onOpenChange={setOpen}>
       <CollapsibleTrigger
         className={classnames(
-          "group flex w-full items-baseline justify-between rounded px-2 py-1",
+          "group flex w-full items-baseline justify-between text-left rounded px-2 py-1",
           open ? "bg-slate-100" : ""
         )}
       >

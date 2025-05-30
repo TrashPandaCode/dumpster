@@ -1,0 +1,23 @@
+---
+title: Composite Bézier Curves
+---
+
+## Composite Bézier Curves
+
+Instead of one large Bézier curve with many control points, we can use **composite Bézier curves**:
+
+* Each control point affects the entire Bézier curve—often undesirable.
+* So we define a **piecewise Bézier curve**, composed of smaller Bézier segments.
+
+Requirements for a **piecewise Bézier curve** $S$:
+
+* $S$ must match each Bézier segment exactly.
+* The last point of $B_i(t)$ must equal the first point of $B_{i+1}(t)$.
+* The first point of $S$ equals the first of $B_0$, and similarly for the last point.
+
+### Smoothness
+
+To achieve **differentiability** or at least **$G^1$-continuity**, we need extra conditions on the control points:
+
+* Using the tangent property, derivatives at the start and end of each segment can be used to align control points.
+* For **$C^1$-continuity**, the derivatives at joint points must be exactly equal.
