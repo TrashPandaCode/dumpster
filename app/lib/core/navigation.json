@@ -292,6 +292,23 @@
     ]
   },
   {
+    "title": "Physically Based Animation",
+    "items": [
+      {
+        "title": "Dynamics of a Point Mass",
+        "path": "/docs/physically-based-animation/dynamics-of-a-point-mass"
+      },
+      {
+        "title": "Systems of Mass Points",
+        "path": "/docs/physically-based-animation/systems-of-mass-points"
+      },
+      {
+        "title": "Numerical Solution Methods",
+        "path": "/docs/physically-based-animation/numerical-solution-methods"
+      }
+    ]
+  },
+  {
     "title": "FAQ",
     "path": "/docs/faq"
   }

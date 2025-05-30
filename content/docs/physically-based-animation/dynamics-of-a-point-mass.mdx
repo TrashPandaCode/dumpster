@@ -1,0 +1,112 @@
+---
+title: Dynamics of a Mass Point
+---
+
+# Physically-Based Animation
+
+In addition to animation through interpolation curves or motion capture, physically-based animation is another fundamental method to animate objects.
+
+## Dynamics of a Mass Point
+
+In mechanics, there are the fields of _kinematics_ and _dynamics_. Kinematics describes the motion of a body (using terms like velocity, position, and movement), while dynamics also considers the causes (the relationship between mass and forces).
+
+### Newtonian Equations
+
+To describe the trajectory of a mass point, we use the following notation, where $x: I \rightarrow \mathbb{R}^d$:
+- Trajectory: $r(t) := x(t)$
+- Velocity: $v(t) := \dot{r}(t)$
+- Acceleration: $a(t) := \ddot{r}(t) = \dot{v}(t)$
+
+All of this is based on the _Newtonian principle of determinism_, which states that all motion can be uniquely determined if the _initial state_ is known. The initial state requires position and velocity, but not acceleration. The tuple of position and velocity $(x_0, v_0)$ at time $t_0$ is called the _initial value pair_.
+
+According to Newton, there exists an ordinary differential equation
+
+$$
+\ddot{x} = f(t, x, \dot{x})
+$$
+
+called the _Newtonian equation_, which uniquely determines the acceleration for each initial tuple.
+
+This gives us the initial value problem:
+
+$$
+\text{"Solve"} \quad \ddot{x} = f(t, x, \dot{x}) \quad \text{"with"} \quad x(t_0) = x_0 \quad \text{and} \quad \dot{x}(t_0) = v_0
+$$
+
+which has a unique solution $x(t)$ for $t_0 \in J \subset \mathbb{R}$.
+
+### Mass, Momentum, Force
+
+The ratio of two masses is given by:
+
+$$
+\frac{\ddot{x}_1}{\ddot{x}_2} = c = \frac{m_2}{m_1}
+$$
+
+Thus, the mass of a body can be determined based on a reference object.
+
+If the motion of a mass point is given by $x: I \rightarrow \mathbb{R}^d$ and its mass by $m: I \rightarrow \mathbb{R}$, we define:
+
+- **Linear momentum** (or simply momentum):  
+  $$p: I \rightarrow \mathbb{R}^d, \quad p(t) = m(t) v(t) = m(t) \dot{x}(t)$$  
+  (_Momentum is mass times velocity_)
+
+- **Force**:  
+  $$F: I \rightarrow \mathbb{R}^d, \quad F(t) = \dot{p}(t)$$  
+  This is also known as the _second Newtonian axiom_.
+
+From $a = \dot{v} = \ddot{x}$ it follows that:  
+$$
+F(t) = \dot{m}(t)\dot{x}(t) + m(t)\ddot{x}(t)
+$$
+
+If the mass is constant, this simplifies to:  
+$$
+F(t) = m a(t) = m \ddot{x}(t)
+$$
+
+Force can also be viewed as a function:  
+$$
+F: \mathbb{R} \times \mathbb{R}^d \times \mathbb{R}^d \rightarrow \mathbb{R}^d
+$$  
+Then the Newton equation becomes:  
+$$
+\ddot{x} = \frac{1}{m} F(t, x, \dot{x})
+$$  
+This form is useful because it's often easier to express equations in terms of force, which are then transformed into Newtonian equations.
+
+### Gravitational Force
+
+On Earth, the gravitational force is given by:
+
+$$
+F(t, x, \dot{x}) = m g
+$$
+
+with $g = \vec{0, -g, 0}$ and $g \approx 9.81 \approx 10$. Since gravity is independent of time, position, and velocity, we can write:
+
+$$
+F = m g \quad \text{or} \quad \ddot{x} = \frac{1}{m}F = g
+$$
+
+### Viscous Force
+
+_Acts on a body in a viscous medium. The force opposes the direction of motion._
+
+$$
+F(t, x, \dot{x}) = -c \dot{x} \quad \text{and} \quad \ddot{x} = -\frac{c}{m} \dot{x}
+$$
+
+### Wind Force
+
+There is a wind velocity $w(t, x)$ at each time and position. The direction in which the body moves relative to the wind (_relative velocity_ $\dot{x} - w(t, x)$) determines the force strength.
+
+$$
+F(t, x, \dot{x}) = -c(\dot{x} - w(t, x))
+$$
+
+as a Newton equation:
+
+$$
+\ddot{x} = -\frac{c}{m} (\dot{x} - w(t, x))
+$$
