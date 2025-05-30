@@ -275,6 +275,23 @@
     ]
   },
   {
+    "title": "Editing Motion Data",
+    "items": [
+      {
+        "title": "Definition",
+        "path": "/docs/editing-motion-data/definition"
+      },
+      {
+        "title": "Blending and Transitions",
+        "path": "/docs/editing-motion-data/blending-transitions"
+      },
+      {
+        "title": "Motion Warping",
+        "path": "/docs/editing-motion-data/motion-warping"
+      }
+    ]
+  },
+  {
     "title": "FAQ",
     "path": "/docs/faq"
   }
