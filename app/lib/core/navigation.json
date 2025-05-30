@@ -166,6 +166,27 @@
     ]
   },
   {
+    "title": "Rotation",
+    "items": [
+      {
+        "title": "Rotation Matrices",
+        "path": "/docs/rotation/rotation-matrices"
+      },
+      {
+        "title": "Axis-Angle Rotation",
+        "path": "/docs/rotation/axis-angle-rotation"
+      },
+      {
+        "title": "Euler Angles (Three Rotation Matrices)",
+        "path": "/docs/rotation/euler-angles"
+      },
+      {
+        "title": "Quaternions",
+        "path": "/docs/rotation/quaternions"
+      }
+    ]
+  },
+  {
     "title": "FAQ",
     "path": "/docs/faq"
   }

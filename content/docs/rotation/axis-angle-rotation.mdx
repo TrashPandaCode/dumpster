@@ -1,0 +1,28 @@
+
+
+## Axis-Angle Rotation
+
+Given a rotation axis represented by a normalized vector $u = (u_1, u_2, u_3) \in \mathbb{R}^3$ and a rotation angle $\alpha \in \mathbb{R}$, the corresponding rotation matrix $R_u(\alpha) \in \mathrm{SO}(3)$ is defined as:
+
+$$
+R_u(\alpha) = \cos(\alpha) \cdot I + (1 - \cos(\alpha)) \cdot uu^T + \sin(\alpha) \cdot U_\times
+$$
+
+Where $U_\times$ is the **skew-symmetric matrix**:
+
+$$
+U_\times = 
+\begin{pmatrix}
+0 & -u_3 & u_2 \\
+u_3 & 0 & -u_1 \\
+-u_2 & u_1 & 0
+\end{pmatrix}
+$$
+
+Properties of $R_u$:
+
+* $R_u(0) = I$
+* $R_u^{-1}(\alpha) = R_u(-\alpha)$
+* $R_u(\alpha) = R_{-u}(-\alpha)$
+
+This representation uses only **4 parameters** (angle + axis), but animating both the axis and the angle can still be unintuitive.
