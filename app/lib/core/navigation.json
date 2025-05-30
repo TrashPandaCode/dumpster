@@ -242,6 +242,39 @@
     ]
   },
   {
+    "title": "Motion Capturing",
+    "items": [
+      {
+        "title": "Definition",
+        "path": "/docs/motion-capturing/definition"
+      },
+      {
+        "title": "Classification of Technologies",
+        "path": "/docs/motion-capturing/classification-of-technologies"
+      },
+      {
+        "title": "Optical Systems",
+        "path": "/docs/motion-capturing/optical-systems"
+      },
+      {
+        "title": "Marker Position Reconstruction",
+        "path": "/docs/motion-capturing/marker-position-reconstruction"
+      },
+      {
+        "title": "Data Cleanup and Post-Processing",
+        "path": "/docs/motion-capturing/data-cleanup"
+      },
+      {
+        "title": "Using Motion Capture Data",
+        "path": "/docs/motion-capturing/using-data"
+      },
+      {
+        "title": "File Formats",
+        "path": "/docs/motion-capturing/file-formats"
+      }
+    ]
+  },
+  {
     "title": "FAQ",
     "path": "/docs/faq"
   }
