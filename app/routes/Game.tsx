@@ -14,8 +14,8 @@ import LevelDialog from "~/lib/game/components/LevelDialog";
 import { cleanupKaplay } from "~/lib/game/core/kaplayCtx";
 import type { LEVELS } from "~/lib/game/core/levels";
 import { globalKeyTracker } from "~/lib/game/utils/globalKeyTracker";
+import { useFlowStore } from "~/lib/node-editor/node-store/flow-store";
 import { useLoopStore } from "~/lib/node-editor/node-store/loop-store";
-import { useNodeSetterStore } from "~/lib/node-editor/node-store/node-setter";
 import { useNodeStore } from "~/lib/node-editor/node-store/node-store";
 import { useDataStore } from "~/lib/zustand/data";
 import { useGameStore } from "~/lib/zustand/game";
@@ -46,7 +46,7 @@ const Game = ({ params }: Route.ComponentProps) => {
 
       useGameStore.getState().reset();
       useDataStore.getState().reset();
-      useNodeSetterStore.getState().reset();
+      useFlowStore.getState().reset();
       useNodeStore.getState().reset();
       useLoopStore.getState().reset();
 

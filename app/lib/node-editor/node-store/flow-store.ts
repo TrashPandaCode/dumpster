@@ -1,26 +1,33 @@
-import { type Node } from "@xyflow/react";
+import { type Edge, type Node } from "@xyflow/react";
 import { create } from "zustand";
 
 import { toast } from "../editor-components/Toast";
 
 type HighlightType = "cycle" | "duplicate";
 
-interface NodeSetterState {
+interface FlowState {
   nodes: Node[];
+  edges: Edge[];
   highlightNodes: Map<HighlightType, string[]>;
   setNodes: (updater: (nodes: Node[]) => Node[]) => void;
+  setEdges: (updater: (edges: Edge[]) => Edge[]) => void;
   resetHighlight: (type: HighlightType) => void;
   highlightNode: (id: string, type: HighlightType, color: string) => void;
   highlightDuplicateNodes: () => void;
   reset: () => void;
 }
 
-export const useNodeSetterStore = create<NodeSetterState>((set, get) => ({
+export const useFlowStore = create<FlowState>((set, get) => ({
   nodes: [],
+  edges: [],
   highlightNodes: new Map(),
   setNodes: (updater) =>
     set((state) => ({
       nodes: updater(state.nodes),
+    })),
+  setEdges: (updater) =>
+    set((state) => ({
+      edges: updater(state.edges),
     })),
   resetHighlight: (type) => {
     set((state) => {
@@ -90,5 +97,5 @@ export const useNodeSetterStore = create<NodeSetterState>((set, get) => ({
       }
     }
   },
-  reset: () => set({ nodes: [], highlightNodes: new Map() }),
+  reset: () => set({ nodes: [], highlightNodes: new Map(), edges: [] }),
 }));
