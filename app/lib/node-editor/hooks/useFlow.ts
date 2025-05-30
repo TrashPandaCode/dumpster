@@ -14,7 +14,6 @@ import { useShallow } from "zustand/shallow";
 
 import { useNodeSetterStore } from "../node-store/node-setter";
 import { useNodeStore } from "../node-store/node-store";
-import { debugEdges } from "../solutions/debug";
 import { applyNodeChanges, computeGroupSizings } from "../utils";
 
 const selector = (state: {
@@ -32,7 +31,7 @@ export function useFlow() {
   const { nodes, setNodes, highlightDuplicateNodes } = useNodeSetterStore(
     useShallow(selector)
   );
-  const [edges, setEdges] = useState<Edge[]>(debugEdges);
+  const [edges, setEdges] = useState<Edge[]>([]);
 
   const replaceNode = useNodeStore((state) => state.replaceNode);
   const removeNode = useNodeStore((state) => state.removeNode);

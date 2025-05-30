@@ -2,7 +2,6 @@ import { type Node } from "@xyflow/react";
 import { create } from "zustand";
 
 import { toast } from "../editor-components/Toast";
-import { debugNodes } from "../solutions/debug";
 
 type HighlightType = "cycle" | "duplicate";
 
@@ -17,7 +16,7 @@ interface NodeSetterState {
 }
 
 export const useNodeSetterStore = create<NodeSetterState>((set, get) => ({
-  nodes: debugNodes,
+  nodes: [],
   highlightNodes: new Map(),
   setNodes: (updater) =>
     set((state) => ({
@@ -91,5 +90,5 @@ export const useNodeSetterStore = create<NodeSetterState>((set, get) => ({
       }
     }
   },
-  reset: () => set({ nodes: debugNodes, highlightNodes: new Map() }),
+  reset: () => set({ nodes: [], highlightNodes: new Map() }),
 }));

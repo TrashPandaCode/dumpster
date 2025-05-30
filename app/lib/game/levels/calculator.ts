@@ -4,7 +4,7 @@ import { BACKGROUND_OFFSET } from "../constants";
 import { getKaplayCtx } from "../core/kaplayCtx";
 import { addBackgrounds, addGameobjects } from "../utils/gameHelper";
 
-export const initialize1_1 = () => {
+export const initializeCalculator = () => {
   const { k, game } = getKaplayCtx();
 
   addBackgrounds(["background1"]);
@@ -34,7 +34,6 @@ export const initialize1_1 = () => {
       0;
 
     if (value == result) {
-
       useGameStore.getState().setLevelCompleteDialogOpen(true);
       useGameStore.getState().setLevelCompleted(true);
     }

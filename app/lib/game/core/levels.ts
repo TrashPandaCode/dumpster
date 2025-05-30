@@ -5,10 +5,10 @@ import alleyTwo from "~/assets/alley_two.png";
 import houseImage from "~/assets/house.png";
 import type { NodeType } from "~/lib/node-editor/nodes/node-types";
 import { type GameObject } from "../constants";
-import { initialize1_1 } from "../levels/1.1";
-import { initialize1_2 } from "../levels/1.2";
-import { initialize2_1 } from "../levels/2.1";
+import { initializeCalculator } from "../levels/calculator";
+import { initializeMove } from "../levels/move";
 import { initializePlayground } from "../levels/playground";
+import { initializeSitting } from "../levels/sitting";
 
 export type ConnectionAccess = "set" | "get" | "all";
 
@@ -17,9 +17,9 @@ export type ConnectionAccess = "set" | "get" | "all";
  */
 export type Level = {
   /**
-   * Unique identifier for the level.
+   * Unique identifying part of the web address.
    */
-  id: string;
+  slug: string;
   /**
    * (Human Readable) Name of the level.
    */
@@ -55,10 +55,6 @@ export type Level = {
    * This function is called when the level is loaded (after initGame).
    */
   initialState: () => void;
-  solution: {
-    nodes: Node[];
-    edges: Edge[];
-  };
   hints: string[];
   /**
    * Modifiable game objects in the level.
@@ -78,7 +74,7 @@ export type ModifiableGameObject = {
  */
 export const LEVELS = {
   playground: {
-    id: "playground",
+    slug: "playground",
     name: "Playground",
     description:
       "This is a sandbox level where you can freely test game mechanics.",
@@ -95,10 +91,6 @@ export const LEVELS = {
     nodes: [],
     edges: [],
     initialState: initializePlayground,
-    solution: {
-      nodes: [],
-      edges: [],
-    },
     hints: [
       "This is a playground level",
       "You don't need hints here",
@@ -135,9 +127,9 @@ export const LEVELS = {
       "MousePosition",
     ],
   },
-  "1.1": {
-    id: "1.1",
-    name: "Level 1.1",
+  calculator: {
+    slug: "calculator",
+    name: "Calculator",
     description:
       "This is the first level of the game, introducing basic mechanics.",
     dialog: [
@@ -150,11 +142,7 @@ export const LEVELS = {
     image: alleyTwo,
     nodes: [],
     edges: [],
-    initialState: initialize1_1,
-    solution: {
-      nodes: [],
-      edges: [],
-    },
+    initialState: initializeCalculator,
     hints: [],
     modifiableGameObjects: [
       {
@@ -164,9 +152,9 @@ export const LEVELS = {
     ],
     availableNodes: ["Value", "Display", "MathFloat", "ExportToGameobject"],
   },
-  "1.2": {
-    id: "1.2",
-    name: "Level 1.2",
+  sitting: {
+    slug: "sitting",
+    name: "Sitting",
     description:
       "This is the second level of the game, introducing position of game objects.",
     dialog: [
@@ -179,11 +167,7 @@ export const LEVELS = {
     image: alleyTwo,
     nodes: [],
     edges: [],
-    initialState: initialize1_2,
-    solution: {
-      nodes: [],
-      edges: [],
-    },
+    initialState: initializeSitting,
     hints: [],
     modifiableGameObjects: [
       {
@@ -200,9 +184,9 @@ export const LEVELS = {
     ],
     availableNodes: ["Value", "ExportToGameobject"],
   },
-  "2.1": {
-    id: "2.1",
-    name: "Level 2.1",
+  move: {
+    slug: "move",
+    name: "Move",
     description:
       "This is the second level of the game, building upon Level 1.1.",
     dialog: [
@@ -214,11 +198,7 @@ export const LEVELS = {
     image: houseImage,
     nodes: [],
     edges: [],
-    initialState: initialize2_1,
-    solution: {
-      nodes: [],
-      edges: [],
-    },
+    initialState: initializeMove,
     hints: [],
     modifiableGameObjects: [
       {

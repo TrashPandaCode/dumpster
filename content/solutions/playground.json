@@ -1,0 +1,50 @@
+{
+  "nodes": [
+    {
+      "id": "d6855d28-50e3-49d0-8fa2-fbda404d7535",
+      "type": "Value",
+      "position": { "x": 0, "y": 0 },
+      "data": { "value": { "current": 0 } },
+      "measured": { "width": 192, "height": 104 }
+    },
+    {
+      "id": "e2faa488-c1ee-4c8e-9244-ca1ce7da3581",
+      "type": "MathFloat",
+      "position": { "x": 0, "y": 200 },
+      "data": {
+        "initialComputeType": "Addition",
+        "xInputData": { "current": 0 },
+        "yInputData": { "current": 0 }
+      },
+      "measured": { "width": 256, "height": 204 }
+    },
+    {
+      "id": "d97b01c4-5ed3-4eb5-9a5e-76a3f833da1b",
+      "type": "Display",
+      "position": { "x": 0, "y": 500 },
+      "data": {},
+      "measured": { "width": 192, "height": 102 }
+    }
+  ],
+  "edges": [
+    {
+      "source": "d6855d28-50e3-49d0-8fa2-fbda404d7535",
+      "sourceHandle": "output-handle-x",
+      "target": "e2faa488-c1ee-4c8e-9244-ca1ce7da3581",
+      "targetHandle": "input-handle-x",
+      "id": "xy-edge__d6855d28-50e3-49d0-8fa2-fbda404d7535output-handle-x-e2faa488-c1ee-4c8e-9244-ca1ce7da3581input-handle-x"
+    },
+    {
+      "source": "e2faa488-c1ee-4c8e-9244-ca1ce7da3581",
+      "sourceHandle": "output-handle-x",
+      "target": "d97b01c4-5ed3-4eb5-9a5e-76a3f833da1b",
+      "targetHandle": "input-handle-x",
+      "id": "xy-edge__e2faa488-c1ee-4c8e-9244-ca1ce7da3581output-handle-x-d97b01c4-5ed3-4eb5-9a5e-76a3f833da1binput-handle-x"
+    }
+  ],
+  "viewport": {
+    "x": 467.7085365782222,
+    "y": 167.59591990765955,
+    "zoom": 1.3195079107728942
+  }
+}

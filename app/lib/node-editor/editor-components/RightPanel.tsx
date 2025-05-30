@@ -9,17 +9,13 @@ import {
   CopyIcon,
   CubeIcon,
   HamburgerMenuIcon,
-  QuestionMarkIcon,
 } from "@radix-ui/react-icons";
 import { Panel, useReactFlow, type ReactFlowInstance } from "@xyflow/react";
-import classnames from "classnames";
 import { useState } from "react";
-import { NavLink } from "react-router";
 
-import { LEVELS } from "~/lib/game/core/levels";
-import { useGameStore } from "~/lib/zustand/game";
 import { useNodeStore } from "../node-store/node-store";
 import AddNodes from "./AddNodes";
+import HelpMenu from "./HelpMenu";
 import { IconButton } from "./IconButton";
 
 const RightPanel: React.FC<{ rfInstance: ReactFlowInstance | undefined }> = ({
@@ -30,12 +26,6 @@ const RightPanel: React.FC<{ rfInstance: ReactFlowInstance | undefined }> = ({
 
   const nodeStateDebugPrint = useNodeStore((state) => state.debugPrint);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
-  const level = useGameStore((state) => state.currentLevel);
-  const hints = LEVELS[level].hints.length
-    ? LEVELS[level].hints
-    : ["No hints here"];
-  const [hintIndex, setHintIndex] = useState(0);
 
   return (
     <Panel
@@ -59,70 +49,9 @@ const RightPanel: React.FC<{ rfInstance: ReactFlowInstance | undefined }> = ({
           </DropdownMenuContent>
         </DropdownMenuPortal>
       </DropdownMenu>
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <IconButton side="left" tooltip="Help Menu" aria-label="Help Menu">
-            <QuestionMarkIcon className="text-white" />
-          </IconButton>
-        </DropdownMenuTrigger>
 
-        <DropdownMenuPortal>
-          <DropdownMenuContent align="end">
-            <div className="flex w-200 flex-col gap-4 rounded bg-slate-800 p-4 font-mono text-white shadow-lg outline-1 outline-slate-700 outline-solid">
-              <h1 className="text-xl">Hints</h1>
-              {hints[hintIndex]}
-              <NavLink
-                className="text-slate-400 italic hover:underline"
-                target="_blank"
-                to="/docs/"
-              >
-                Find information on this topic here
-              </NavLink>
-              <hr className="mx-auto h-1 w-full rounded-sm border-0 bg-slate-700" />
-              <div className="flex flex-row justify-center gap-2">
-                <button
-                  disabled={hintIndex === 0}
-                  className={classnames(
-                    "rounded bg-slate-700 px-2 py-1 text-left text-sm text-white",
-                    hintIndex === 0
-                      ? "opacity-50"
-                      : "cursor-pointer hover:bg-slate-600"
-                  )}
-                  onClick={() => {
-                    if (hintIndex > 0) {
-                      setHintIndex(hintIndex - 1);
-                    }
-                  }}
-                >
-                  Previous Hint
-                </button>
-                <button
-                  disabled={hintIndex === hints.length - 1}
-                  className={classnames(
-                    "rounded bg-slate-700 px-2 py-1 text-left text-sm text-white",
-                    hintIndex === hints.length - 1
-                      ? "opacity-50"
-                      : "cursor-pointer hover:bg-slate-600"
-                  )}
-                  onClick={() => {
-                    if (hintIndex < hints.length - 1) {
-                      setHintIndex(hintIndex + 1);
-                    }
-                  }}
-                >
-                  Next Hint
-                </button>
-                <button className="cursor-pointer rounded bg-slate-700 px-2 py-1 text-left text-sm text-white hover:bg-slate-600">
-                  First Correct Node
-                </button>
-                <button className="hover:bg-jam-600 cursor-pointer rounded bg-slate-700 px-2 py-1 text-left text-sm text-white">
-                  Full Solution
-                </button>
-              </div>
-            </div>
-          </DropdownMenuContent>
-        </DropdownMenuPortal>
-      </DropdownMenu>
+      <HelpMenu />
+
       {process.env.NODE_ENV === "development" && (
         <>
           <IconButton
