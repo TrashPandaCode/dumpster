@@ -1,4 +1,4 @@
-import{o as e}from"./chunk-AYJ5UCUI-DfzbB4N7.js";const i={title:"Time and Game Loop"};function a(n){const s={annotation:"annotation",em:"em",h2:"h2",li:"li",math:"math",mi:"mi",mo:"mo",mrow:"mrow",p:"p",semantics:"semantics",span:"span",strong:"strong",ul:"ul",...n.components};return e.jsxs(e.Fragment,{children:[e.jsx(s.h2,{children:"Time Axes"}),`
+import{o as e}from"./chunk-AYJ5UCUI-DfzbB4N7.js";const i={title:"Time Axes"};function a(n){const s={annotation:"annotation",em:"em",h2:"h2",li:"li",math:"math",mi:"mi",mo:"mo",mrow:"mrow",p:"p",semantics:"semantics",span:"span",strong:"strong",ul:"ul",...n.components};return e.jsxs(e.Fragment,{children:[e.jsx(s.h2,{children:"Time Axes"}),`
 `,e.jsx(s.p,{children:"In animation systems, we work with two different time axes that can run independently:"}),`
 `,e.jsxs(s.ul,{children:[`
 `,e.jsxs(s.li,{children:[e.jsx(s.strong,{children:"Physical/real-world time"})," is the time as we perceive it, measured as ",e.jsx(s.em,{children:"real-time"})," by computer hardware. It cannot be paused or accelerated."]}),`

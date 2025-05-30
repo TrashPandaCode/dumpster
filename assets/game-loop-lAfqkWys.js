@@ -1,4 +1,4 @@
-import{o as s}from"./chunk-AYJ5UCUI-DfzbB4N7.js";const l={title:"Time and Game Loop"};function n(a){const e={annotation:"annotation",em:"em",h2:"h2",img:"img",li:"li",math:"math",mi:"mi",mo:"mo",mrow:"mrow",p:"p",semantics:"semantics",span:"span",strong:"strong",ul:"ul",...a.components};return s.jsxs(s.Fragment,{children:[s.jsx(e.h2,{children:"Game Loop"}),`
+import{o as s}from"./chunk-AYJ5UCUI-DfzbB4N7.js";const l={title:"Game Loop"};function n(a){const e={annotation:"annotation",em:"em",h2:"h2",img:"img",li:"li",math:"math",mi:"mi",mo:"mo",mrow:"mrow",p:"p",semantics:"semantics",span:"span",strong:"strong",ul:"ul",...a.components};return s.jsxs(s.Fragment,{children:[s.jsx(e.h2,{children:"Game Loop"}),`
 `,s.jsxs(e.p,{children:["If physical time matches animation time, we call this a ",s.jsx(e.strong,{children:"real-time system"}),`.
 In such systems, object states must be updated continuously — this is known as the `,s.jsx(e.strong,{children:"Game Loop"}),"."]}),`
 `,s.jsxs(e.p,{children:[`Ideally, the time required to update all objects and render the scene remains constant.
