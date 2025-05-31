@@ -27,7 +27,7 @@ const DocsImportFromGameobject = memo(
           ]),
         ],
         [
-          "trashcan",
+          "trashcanFilled",
           new Map([
             ["xpos", { access: "set", value: 145.7 }],
             ["ypos", { access: "set", value: 89.3 }],

@@ -13,9 +13,9 @@ export const initializePlayground = () => {
 
   addBackgrounds(["background1"]);
 
-  const { raccoon, trashcan, goalFlag } = addGameobjects([
+  const { raccoon, trashcanFilled, goalFlag } = addGameobjects([
     "raccoon",
-    "trashcan",
+    "trashcanFilled",
     "goalFlag",
   ]);
   k.setCamPos(raccoon!.pos.add(0, -k.height() / 2 + BACKGROUND_OFFSET));
@@ -25,11 +25,11 @@ export const initializePlayground = () => {
 
     animPlayer(raccoon!, k);
 
-    trashcan!.pos.x =
-      useDataStore.getState().gameObjects.get("trashcan")?.get("xpos")?.value ??
+    trashcanFilled!.pos.x =
+      useDataStore.getState().gameObjects.get("trashcanFilled")?.get("xpos")?.value ??
       0;
-    trashcan!.pos.y =
-      useDataStore.getState().gameObjects.get("trashcan")?.get("ypos")?.value ??
+    trashcanFilled!.pos.y =
+      useDataStore.getState().gameObjects.get("trashcanFilled")?.get("ypos")?.value ??
       0;
   });
 };

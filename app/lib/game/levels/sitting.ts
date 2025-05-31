@@ -12,19 +12,19 @@ export const initializeSitting = () => {
 
   addBackgrounds(["background1"]);
 
-  const { raccoon, trashcan } = addGameobjects(["raccoon", "trashcan"]);
+  const { raccoon, trashcanFilled } = addGameobjects(["raccoon", "trashcanFilled"]);
   k.setCamPos(raccoon!.pos.add(0, -k.height() / 2 + BACKGROUND_OFFSET));
 
-  trashcan!.z = 3;
-  trashcan!.pos.x = -400;
-  trashcan!.pos.y = -205;
+  trashcanFilled!.z = 3;
+  trashcanFilled!.pos.x = -400;
+  trashcanFilled!.pos.y = -205;
 
   game.onUpdate(() => {
     if (useGameStore.getState().isPaused) return;
 
     animPlayer(raccoon!, k);
 
-    const dist = raccoon!.pos.dist(trashcan!.pos);
+    const dist = raccoon!.pos.dist(trashcanFilled!.pos);
 
     if (dist <= 10 && !useGameStore.getState().levelCompleted) {
       useGameStore.getState().setLevelCompleted(true);

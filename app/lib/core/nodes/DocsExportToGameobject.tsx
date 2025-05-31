@@ -25,7 +25,7 @@ const DocsExportToGameobject = memo(
         ],
       },
       {
-        id: "trashcan",
+        id: "trashcanFilled",
         connections: [
           { label: "xpos", access: "set" },
           { label: "ypos", access: "set" },
@@ -47,7 +47,7 @@ const DocsExportToGameobject = memo(
           ]),
         ],
         [
-          "trashcan",
+          "trashcanFilled",
           new Map([
             ["xpos", { access: "set", value: 145.7 }],
             ["ypos", { access: "set", value: 89.3 }],
