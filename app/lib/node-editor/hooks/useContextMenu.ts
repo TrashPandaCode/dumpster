@@ -1,7 +1,9 @@
 import type { Node } from "@xyflow/react";
-import { useCallback, useState } from "react";
+import { use, useCallback, useState } from "react";
 
+import { useNodeAddMenuStore } from "../node-store/node-add-menu-store";
 import { getContextMenuPosition } from "../utils";
+import { useEscapeClose } from "./useEscapeClose";
 
 export function useContextMenu() {
   const [paneContextMenu, setPaneContextMenu] = useState<{
@@ -66,11 +68,24 @@ export function useContextMenu() {
     [setSelectionContextMenu]
   );
 
-  const onPaneClick = useCallback(() => {
+  const closeAllMenus = useCallback(() => {
     setPaneContextMenu(null);
     setNodeContextMenu(null);
     setSelectionContextMenu(null);
-  }, [setPaneContextMenu, setNodeContextMenu, setSelectionContextMenu]);
+    if (useNodeAddMenuStore.getState().visible) {
+      useNodeAddMenuStore.getState().closeAddMenu();
+    }
+  }, []);
+
+  const onPaneClick = closeAllMenus;
+
+  const anyOpen =
+    paneContextMenu !== null ||
+    nodeContextMenu !== null ||
+    selectionContextMenu !== null ||
+    useNodeAddMenuStore.getState().visible;
+
+  useEscapeClose(closeAllMenus, anyOpen);
 
   return {
     paneContextMenu,

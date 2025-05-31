@@ -43,7 +43,9 @@ export function useNewNodeHotkey() {
     const remove = globalKeyTracker.shortcutListener("Control+ ", (e) => {
       const position = flowMouseTracker.getPosition();
       if (position) {
-        useNodeAddMenuStore.getState().open(position.x, position.y);
+        useNodeAddMenuStore
+          .getState()
+          .openAddMenu(position.clientX, position.clientY);
       }
     });
     return () => {

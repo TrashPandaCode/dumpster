@@ -48,7 +48,7 @@ const Editor = () => {
     setSelectionContextMenu,
   } = useContextMenu();
 
-  const { x, y, visible, close } = useNodeAddMenuStore();
+  const { x, y, visible, closeAddMenu } = useNodeAddMenuStore();
   const containerRef = useRef<HTMLDivElement>(null);
   useMouseTrackingInPane(containerRef);
   return (
@@ -79,6 +79,7 @@ const Editor = () => {
         <ShortcutManager />
         <Toaster />
       </ReactFlow>
+
       {paneContextMenu && (
         <PaneContextMenu
           x={paneContextMenu.x}
@@ -105,7 +106,7 @@ const Editor = () => {
           onClose={() => setSelectionContextMenu(null)}
         />
       )}
-      {visible && <PaneContextMenu x={x} y={y} onClose={close} />}
+      {visible && <PaneContextMenu x={x} y={y} onClose={closeAddMenu} />}
     </>
   );
 };
