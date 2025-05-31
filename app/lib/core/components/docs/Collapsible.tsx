@@ -6,6 +6,7 @@ import {
 import { ChevronDownIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 import classnames from "classnames";
 import { useState, type ReactNode } from "react";
+import { useLocation } from "react-router";
 
 const Collapsible = ({
   title,
@@ -14,12 +15,19 @@ const Collapsible = ({
   title: string;
   children: ReactNode;
 }) => {
-  const [open, setOpen] = useState(false);
+  const location = useLocation();
+
+  const isTitleActive = (title: string): boolean =>
+    location.pathname.split("/")[2] ===
+    title.toLowerCase().replace(/\s+/g, "-");
+  const isActive = isTitleActive(title);
+
+  const [open, setOpen] = useState(isActive);
   return (
     <Root open={open} onOpenChange={setOpen}>
       <CollapsibleTrigger
         className={classnames(
-          "group flex w-full items-baseline justify-between text-left rounded px-2 py-1",
+          "group flex w-full items-baseline justify-between rounded px-2 py-1 text-left",
           open ? "bg-slate-100" : ""
         )}
       >

@@ -64,7 +64,7 @@ const Navigation: React.FC = () => {
   ): React.ReactNode => {
     const elements: React.ReactNode[] = [];
 
-    if (section.title === "Hierarchies in Scenes") {
+    if (section.title === "Hierarchies") {
       elements.push(<Divider title="Concepts" />);
     }
 
