@@ -60,7 +60,11 @@ const Editor: React.FC<{ type: string }> = ({ type }) => {
   );
 
   useEffect(() => {
-    if (type === "ForLoop") createForLoop(addNodes, 0, 0, addEdges); //TODO: these nodes will access the same store as the "actual" nodes
+    if (type === "ForLoop") {
+      const loopBox = createForLoop({ x: 0, y: 0 }, { x: 300, y: 0 });
+      addNodes(loopBox.nodes);
+      addEdges(loopBox.mainConnectorEdge);
+    }
   }, []);
 
   return (
