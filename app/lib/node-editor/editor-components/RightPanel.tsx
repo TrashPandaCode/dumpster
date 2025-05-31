@@ -18,7 +18,6 @@ import { NavLink } from "react-router";
 
 import { LEVELS } from "~/lib/game/core/levels";
 import { useGameStore } from "~/lib/zustand/game";
-import { useAddNodeDropdownStore } from "~/lib/zustand/ui";
 import { useNodeStore } from "../node-store/node-store";
 import AddNodes from "./AddNodes";
 import { IconButton } from "./IconButton";
@@ -30,8 +29,7 @@ const RightPanel: React.FC<{ rfInstance: ReactFlowInstance | undefined }> = ({
     useReactFlow();
 
   const nodeStateDebugPrint = useNodeStore((state) => state.debugPrint);
-  const isDropdownOpen = useAddNodeDropdownStore((s) => s.open);
-  const setIsDropdownOpen = useAddNodeDropdownStore((s) => s.setOpen);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const level = useGameStore((state) => state.currentLevel);
   const hints = LEVELS[level].hints.length
