@@ -210,7 +210,7 @@ export const LEVELS = {
         ],
       },
       {
-        id: "trashcanEmpty",
+        id: "trashcan1",
         connections: [
           { label: "filled", access: "get" },
           { label: "xpos", access: "get" },
@@ -218,7 +218,7 @@ export const LEVELS = {
         ],
       },
       {
-        id: "trashcanFilled",
+        id: "trashcan2",
         connections: [
           { label: "filled", access: "get" },
           { label: "xpos", access: "get" },
