@@ -16,11 +16,12 @@ export const initializeSitting = () => {
     "raccoon",
     "trashcanFilled",
   ]);
-  k.setCamPos(raccoon!.pos.add(0, -k.height() / 2 + BACKGROUND_OFFSET));
+  k.setCamPos(0, -BACKGROUND_OFFSET);
+  k.setCamScale(k.height() / 947);
 
   trashcanFilled!.z = 3;
-  trashcanFilled!.pos.x = -400;
-  trashcanFilled!.pos.y = -205;
+  trashcanFilled!.pos.x = -280;
+  trashcanFilled!.pos.y = -110;
 
   game.onUpdate(() => {
     if (useGameStore.getState().isPaused) return;

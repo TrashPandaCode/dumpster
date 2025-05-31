@@ -19,8 +19,8 @@ export const initializeIffies = () => {
   addBackgrounds(["background1"]);
 
   const { raccoon } = addGameobjects(["raccoon"]);
-
-  k.setCamPos(raccoon!.pos.add(0, -k.height() / 2 + BACKGROUND_OFFSET));
+  k.setCamPos(0, -BACKGROUND_OFFSET);
+  k.setCamScale(k.height() / 947);
 
   k.loadSprite("trashcan", "/game/sprites/trashcan_spritesheet.png", {
     sliceX: 2,
@@ -55,18 +55,18 @@ export const initializeIffies = () => {
 
   trashcanEmpty!.z = 3;
   trashcanEmpty!.pos.x = 350;
-  trashcanEmpty!.pos.y = -75;
+  trashcanEmpty!.pos.y = 0;
 
   trashcanFilled!.z = 3;
-  trashcanFilled!.pos.x = -400;
-  trashcanFilled!.pos.y = -205;
+  trashcanFilled!.pos.x = -280;
+  trashcanFilled!.pos.y = -110;
 
   useDataStore.getState().gameObjects.set(
     "trashcan1",
     new Map([
       ["filled", { access: "get", value: 0 }],
       ["xpos", { access: "get", value: 350 }],
-      ["ypos", { access: "get", value: -75 }],
+      ["ypos", { access: "get", value: 0 }],
     ])
   );
 
@@ -74,8 +74,8 @@ export const initializeIffies = () => {
     "trashcan2",
     new Map([
       ["filled", { access: "get", value: 1 }],
-      ["xpos", { access: "get", value: -400 }],
-      ["ypos", { access: "get", value: -205 }],
+      ["xpos", { access: "get", value: -280 }],
+      ["ypos", { access: "get", value: -110 }],
     ])
   );
 

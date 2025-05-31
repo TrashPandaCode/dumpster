@@ -17,7 +17,7 @@ import {
 } from "../constants";
 import { getKaplayCtx } from "../core/kaplayCtx";
 
-type Background = "background1";
+type Background = "background1"  | "backgroundCalc";
 type PlayerType = GameObj<
   | PosComp
   | ScaleComp
@@ -96,7 +96,7 @@ export function addGameobjects(gameobjects: GameObject[]) {
       }),
       k.anchor("bot"),
       k.pos(0, 0),
-      k.scale(5),
+      k.scale(RACCOON_SCALE),
       k.area(),
       k.z(1),
       "trashcanEmpty",
@@ -129,9 +129,9 @@ export function addGameobjects(gameobjects: GameObject[]) {
         anim: "default",
       }),
       k.anchor("bot"),
-      k.pos(200, 0),
+      k.pos(0, 0),
       k.area(),
-      k.scale(5),
+      k.scale(RACCOON_SCALE),
       k.z(1),
     ]);
     instances.goalFlag = flag;
@@ -139,30 +139,34 @@ export function addGameobjects(gameobjects: GameObject[]) {
   return instances;
 }
 
-export function addBackgrounds(backgrounds: Background[]) {
+export function addBackgrounds(backgrounds: Background[], lightOffset: number = 0) {
   const { k, game } = getKaplayCtx();
 
   if (backgrounds.includes("background1")) {
-    k.loadSprite("background1", "/game/backgrounds/background1.png");
-    k.loadSprite("background1light", "/game/backgrounds/background1_light.png");
-
-    game.add([
-      k.sprite("background1"),
-      k.anchor("bot"),
-      k.scale(8),
-      k.pos(0, BACKGROUND_OFFSET),
-      k.z(0),
-    ]);
-
-    game.add([
-      k.sprite("background1light"),
-      k.anchor("bot"),
-      k.scale(8),
-      k.pos(0, BACKGROUND_OFFSET),
-      k.z(100),
-      k.opacity(0.75),
-    ]);
+    k.loadSprite("background", "/game/backgrounds/background1.png");
+    k.loadSprite("backgroundLight", "/game/backgrounds/background1_light.png");
   }
+  if (backgrounds.includes("backgroundCalc")) {
+    k.loadSprite("background", "/game/backgrounds/background_calculator.png");
+    k.loadSprite("backgroundLight", "/game/backgrounds/background1_light.png");
+  }
+
+  game.add([
+    k.sprite("background"),
+    k.anchor("center"),
+    k.scale(RACCOON_SCALE),
+    k.pos(0, -BACKGROUND_OFFSET),
+    k.z(0),
+  ]);
+
+  game.add([
+    k.sprite("backgroundLight"),
+    k.anchor("center"),
+    k.scale(RACCOON_SCALE),
+    k.pos(lightOffset, -BACKGROUND_OFFSET),
+    k.z(100),
+    k.opacity(0.75),
+  ]);
 }
 
 export function animPlayer(player: PlayerType, k: KAPLAYCtx) {
@@ -177,7 +181,7 @@ export function animPlayer(player: PlayerType, k: KAPLAYCtx) {
   k.setCamPos(
     k.lerp(
       k.getCamPos(),
-      player.pos.add(0, -k.height() / 2 + BACKGROUND_OFFSET),
+      k.vec2(player.pos.x, -BACKGROUND_OFFSET),
       0.1
     )
   );

@@ -6,23 +6,18 @@ import { addBackgrounds, addGameobjects } from "../utils/gameHelper";
 
 export const initializeCalculator = () => {
   const { k, game } = getKaplayCtx();
+  console.log(k.height());
 
-  addBackgrounds(["background1"]);
+  addBackgrounds(["backgroundCalc"], -200);
 
   const { raccoon } = addGameobjects(["raccoon"]);
-  k.setCamPos(raccoon!.pos.add(0, -k.height() / 2 + BACKGROUND_OFFSET));
+  k.setCamPos(-300, -BACKGROUND_OFFSET);
+  k.setCamScale(k.height() / 947);
+  raccoon!.scaleBy(-1, 1);
 
   //sample equation
   const equation = "7 + 5 * 2 - 3 / 3 = ?";
   const result = 16;
-
-  const label = game.add([
-    k.text(equation, { size: 32 }),
-    k.pos(0, 100),
-    k.anchor("center"),
-    k.scale(2),
-    "text",
-  ]);
 
   game.onUpdate(() => {
     if (useGameStore.getState().isPaused) return;
