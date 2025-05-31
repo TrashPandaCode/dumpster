@@ -30,17 +30,18 @@ export const initializeIffies = () => {
   useDataStore.getState().gameObjects.set(
     "trashcanEmpty",
     new Map([
-      ["filled", { access: "get", value: 1 }],
-      ["xpos", { access: "get", value: -400 }],
-      ["ypos", { access: "get", value: -205 }],
-    ])
-  );
-  useDataStore.getState().gameObjects.set(
-    "trashcanFilled",
-    new Map([
       ["filled", { access: "get", value: 0 }],
       ["xpos", { access: "get", value: 400 }],
       ["ypos", { access: "get", value: 0 }],
+    ])
+  );
+
+  useDataStore.getState().gameObjects.set(
+    "trashcanFilled",
+    new Map([
+      ["filled", { access: "get", value: 1 }],
+      ["xpos", { access: "get", value: -400 }],
+      ["ypos", { access: "get", value: -205 }],
     ])
   );
 
