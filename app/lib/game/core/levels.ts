@@ -107,7 +107,7 @@ export const LEVELS = {
         ],
       },
       {
-        id: "trashcan",
+        id: "trashcanFilled",
         connections: [
           { label: "xpos", access: "set" },
           { label: "ypos", access: "set" },
@@ -210,21 +210,21 @@ export const LEVELS = {
         ],
       },
       {
-        id: "trashcan",
+        id: "trashcanEmpty",
         connections: [
           { label: "filled", access: "get" },
           { label: "xpos", access: "get" },
           { label: "ypos", access: "get" },
         ],
       },
-      // {
-      //   id: "trashcanEmpty",
-      //   connections: [
-      //     { label: "filled", access: "get" },
-      //     { label: "xpos", access: "get" },
-      //     { label: "ypos", access: "get" },
-      //   ],
-      // },
+      {
+        id: "trashcanFilled",
+        connections: [
+          { label: "filled", access: "get" },
+          { label: "xpos", access: "get" },
+          { label: "ypos", access: "get" },
+        ],
+      },
     ],
     availableNodes: [
       "Display",

@@ -13,37 +13,37 @@ export const initializeIffies = () => {
 
   addBackgrounds(["background1"]);
 
-  const { raccoon, trashcan: trashcanFilled } = addGameobjects(
-    ["raccoon", "trashcan"],
-    { trashcanAnim: "filled" }
-  );
+  const { raccoon, trashcanEmpty, trashcanFilled } = addGameobjects([
+    "raccoon",
+    "trashcanEmpty",
+    "trashcanFilled",
+  ]);
   k.setCamPos(raccoon!.pos.add(0, -k.height() / 2 + BACKGROUND_OFFSET));
 
   trashcanFilled!.z = 3;
   trashcanFilled!.pos.x = -400;
   trashcanFilled!.pos.y = -205;
 
-  const { trashcan: trashcanEmpty } = addGameobjects(["trashcan"], {
-    trashcanAnim: "empty",
-  });
-
   trashcanEmpty!.z = 3;
   trashcanEmpty!.pos.x = 400;
-  trashcanEmpty!.tag("trashcanEmpty");
 
   useDataStore.getState().gameObjects.set(
-    "trashcan",
+    "trashcanEmpty",
+    new Map([
+      ["filled", { access: "get", value: 0 }],
+      ["xpos", { access: "get", value: 400 }],
+      ["ypos", { access: "get", value: 0 }],
+    ])
+  );
+
+  useDataStore.getState().gameObjects.set(
+    "trashcanFilled",
     new Map([
       ["filled", { access: "get", value: 1 }],
       ["xpos", { access: "get", value: -400 }],
       ["ypos", { access: "get", value: -205 }],
     ])
   );
-  // useDataStore.getState().gameObjects.set("trashcanEmpty", new Map([
-  //   ["filled", { access: "get", value: 0 }],
-  //   ["xpos", { access: "get", value: 400 }],
-  //   ["ypos", { access: "get", value: 0 }],
-  // ]));
 
   game.onUpdate(() => {
     if (useGameStore.getState().isPaused) return;
