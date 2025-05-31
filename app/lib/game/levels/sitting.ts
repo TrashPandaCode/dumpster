@@ -13,11 +13,11 @@ export const initializeSitting = () => {
   addBackgrounds(["background1"]);
 
   const { raccoon, trashcan } = addGameobjects(["raccoon", "trashcan"]);
-  k.setCamPos(0, -BACKGROUND_OFFSET);
+  k.setCamPos(raccoon!.pos.add(0, -k.height() / 2 + BACKGROUND_OFFSET));
 
   trashcan!.z = 3;
-  trashcan!.pos.x = -280;
-  trashcan!.pos.y = -110;
+  trashcan!.pos.x = -400;
+  trashcan!.pos.y = -205;
 
   game.onUpdate(() => {
     if (useGameStore.getState().isPaused) return;
