@@ -89,7 +89,7 @@ const Navigation: React.FC = () => {
         <Collapsible
           key={section.title}
           title={section.title}
-          open={!!searchTerm}
+          open={searchTerm === "" ? undefined : !!searchTerm}
         >
           {filteredItems.map((item) => (
             <NavLinkItem key={item.path} item={item} />
