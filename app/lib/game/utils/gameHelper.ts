@@ -29,14 +29,16 @@ type PlayerType = GameObj<
 
 interface GameObjectInstances {
   raccoon?: PlayerType;
-  trashcan?: GameObj<PosComp | ScaleComp | SpriteComp | AnchorComp | ZComp>;
+  trashcanEmpty?: GameObj<
+    PosComp | ScaleComp | SpriteComp | AnchorComp | ZComp
+  >;
+  trashcanFilled?: GameObj<
+    PosComp | ScaleComp | SpriteComp | AnchorComp | ZComp
+  >;
   goalFlag?: GameObj<PosComp | ScaleComp | SpriteComp | AnchorComp | ZComp>;
 }
 
-export function addGameobjects(
-  gameobjects: GameObject[],
-  options?: { trashcanAnim?: "filled" | "empty" }
-) {
+export function addGameobjects(gameobjects: GameObject[]) {
   const { k, game } = getKaplayCtx();
   const instances: GameObjectInstances = {};
 
@@ -76,7 +78,10 @@ export function addGameobjects(
     });
     instances.raccoon = raccoon;
   }
-  if (gameobjects.includes("trashcan")) {
+  if (
+    gameobjects.includes("trashcanEmpty") ||
+    gameobjects.includes("trashcanFilled")
+  ) {
     k.loadSprite("trashcan", "/game/sprites/trashcan_spritesheet.png", {
       sliceX: 2,
       sliceY: 1,
@@ -85,18 +90,30 @@ export function addGameobjects(
         filled: { from: 1, to: 1, loop: false },
       },
     });
-    const trashcan = game.add([
+    const trashcanEmpty = game.add([
       k.sprite("trashcan", {
-        anim: options?.trashcanAnim ?? "filled",
+        anim: "empty",
       }),
       k.anchor("bot"),
       k.pos(0, 0),
       k.scale(5),
       k.area(),
       k.z(1),
-      "trashcan",
+      "trashcanEmpty",
     ]);
-    instances.trashcan = trashcan;
+    instances.trashcanEmpty = trashcanEmpty;
+    const trashcanFilled = game.add([
+      k.sprite("trashcan", {
+        anim: "filled",
+      }),
+      k.anchor("bot"),
+      k.pos(0, 0),
+      k.scale(5),
+      k.area(),
+      k.z(1),
+      "trashcanFilled",
+    ]);
+    instances.trashcanFilled = trashcanFilled;
   }
   if (gameobjects.includes("goalFlag")) {
     k.loadSprite("flag", "/game/sprites/flag_spritesheet.png", {
