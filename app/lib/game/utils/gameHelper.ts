@@ -17,7 +17,7 @@ import {
 } from "../constants";
 import { getKaplayCtx } from "../core/kaplayCtx";
 
-type Background = "background1"  | "backgroundCalc";
+type Background = "background1" | "backgroundCalc";
 type PlayerType = GameObj<
   | PosComp
   | ScaleComp
@@ -90,6 +90,8 @@ export function addGameobjects(gameobjects: GameObject[]) {
         filled: { from: 1, to: 1, loop: false },
       },
     });
+  }
+  if (gameobjects.includes("trashcanEmpty")) {
     const trashcanEmpty = game.add([
       k.sprite("trashcan", {
         anim: "empty",
@@ -102,6 +104,8 @@ export function addGameobjects(gameobjects: GameObject[]) {
       "trashcanEmpty",
     ]);
     instances.trashcanEmpty = trashcanEmpty;
+  }
+  if (gameobjects.includes("trashcanFilled")) {
     const trashcanFilled = game.add([
       k.sprite("trashcan", {
         anim: "filled",
@@ -139,7 +143,10 @@ export function addGameobjects(gameobjects: GameObject[]) {
   return instances;
 }
 
-export function addBackgrounds(backgrounds: Background[], lightOffset: number = 0) {
+export function addBackgrounds(
+  backgrounds: Background[],
+  lightOffset: number = 0
+) {
   const { k, game } = getKaplayCtx();
 
   if (backgrounds.includes("background1")) {
@@ -179,11 +186,7 @@ export function animPlayer(player: PlayerType, k: KAPLAYCtx) {
     useDataStore.getState().gameObjects.get("raccoon")?.get("ypos")?.value ?? 0;
 
   k.setCamPos(
-    k.lerp(
-      k.getCamPos(),
-      k.vec2(player.pos.x, -BACKGROUND_OFFSET),
-      0.1
-    )
+    k.lerp(k.getCamPos(), k.vec2(player.pos.x, -BACKGROUND_OFFSET), 0.1)
   );
 
   //Handle anim change
