@@ -6,7 +6,6 @@ import { addBackgrounds, addGameobjects } from "../utils/gameHelper";
 
 export const initializeCalculator = () => {
   const { k, game } = getKaplayCtx();
-  console.log(k.height());
 
   addBackgrounds(["backgroundCalc"], -200);
 

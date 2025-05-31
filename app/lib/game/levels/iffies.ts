@@ -54,8 +54,8 @@ export const initializeIffies = () => {
   ]);
 
   trashcanEmpty!.z = 3;
-  trashcanEmpty!.pos.x = 350;
-  trashcanEmpty!.pos.y = 0;
+  trashcanEmpty!.pos.x = 200;
+  trashcanEmpty!.pos.y = -25;
 
   trashcanFilled!.z = 3;
   trashcanFilled!.pos.x = -280;
@@ -65,8 +65,8 @@ export const initializeIffies = () => {
     "trashcan1",
     new Map([
       ["filled", { access: "get", value: 0 }],
-      ["xpos", { access: "get", value: 350 }],
-      ["ypos", { access: "get", value: 0 }],
+      ["xpos", { access: "get", value: 200 }],
+      ["ypos", { access: "get", value: -25 }],
     ])
   );
 
