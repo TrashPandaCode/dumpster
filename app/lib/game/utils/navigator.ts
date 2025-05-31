@@ -4,7 +4,7 @@ export function getNeighborLevels(curLevel: string) {
   const keys = Object.keys(LEVELS);
   const currentIndex = keys.indexOf(curLevel);
 
-  if (currentIndex === -1 || currentIndex === keys.length - 1) {
+  if (currentIndex === -1) {
     return undefined;
   }
 
