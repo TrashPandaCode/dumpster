@@ -11,5 +11,5 @@ export const GAME_OBJECTS = [
 ] as const;
 export type GameObject = (typeof GAME_OBJECTS)[number];
 
-export const RACCOON_SCALE = 5;
-export const BACKGROUND_OFFSET = 300;
+export const RACCOON_SCALE = 5.5;
+export const BACKGROUND_OFFSET = 260;

@@ -18,22 +18,22 @@ export const initializeIffies = () => {
     "trashcanEmpty",
     "trashcanFilled",
   ]);
-  k.setCamPos(raccoon!.pos.add(0, -k.height() / 2 + BACKGROUND_OFFSET));
+  k.setCamPos(0, -BACKGROUND_OFFSET);
 
   trashcanFilled!.z = 3;
-  trashcanFilled!.pos.x = -400;
-  trashcanFilled!.pos.y = -205;
+  trashcanFilled!.pos.x = -280;
+  trashcanFilled!.pos.y = -110;
 
   trashcanEmpty!.z = 3;
   trashcanEmpty!.pos.x = 350;
-  trashcanEmpty!.pos.y = -75;
+  trashcanEmpty!.pos.y = 0;
 
   useDataStore.getState().gameObjects.set(
     "trashcanEmpty",
     new Map([
       ["filled", { access: "get", value: 0 }],
       ["xpos", { access: "get", value: 350 }],
-      ["ypos", { access: "get", value: -75 }],
+      ["ypos", { access: "get", value: 0 }],
     ])
   );
 
@@ -41,8 +41,8 @@ export const initializeIffies = () => {
     "trashcanFilled",
     new Map([
       ["filled", { access: "get", value: 1 }],
-      ["xpos", { access: "get", value: -400 }],
-      ["ypos", { access: "get", value: -205 }],
+      ["xpos", { access: "get", value: -280 }],
+      ["ypos", { access: "get", value: -110 }],
     ])
   );
 
