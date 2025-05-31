@@ -5,15 +5,17 @@ import {
 } from "@radix-ui/react-collapsible";
 import { ChevronDownIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 import classnames from "classnames";
-import { useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { useLocation } from "react-router";
 
 const Collapsible = ({
   title,
   children,
+  open
 }: {
   title: string;
   children: ReactNode;
+  open?: boolean;
 }) => {
   const location = useLocation();
 
@@ -22,23 +24,30 @@ const Collapsible = ({
     title.toLowerCase().replace(/\s+/g, "-");
   const isActive = isTitleActive(title);
 
-  const [open, setOpen] = useState(isActive);
+  const [internalOpen, setInternalOpen] = useState(open ?? isActive);
+
+  useEffect(() => {
+    if (open !== undefined) {
+      setInternalOpen(open);
+    }
+  }, [open]);
+
   return (
-    <Root open={open} onOpenChange={setOpen}>
+    <Root open={internalOpen} onOpenChange={setInternalOpen}>
       <CollapsibleTrigger
         className={classnames(
           "group flex w-full items-baseline justify-between rounded px-2 py-1 text-left",
-          open ? "bg-slate-100" : ""
+          internalOpen ? "bg-slate-100" : ""
         )}
       >
         <span>{title}</span>
         <span
           className={classnames(
             "ml-2 transition-opacity",
-            open ? "opacity-100" : "opacity-0 group-hover:opacity-100"
+            internalOpen ? "opacity-100" : "opacity-0 group-hover:opacity-100"
           )}
         >
-          {open ? <ChevronDownIcon /> : <ChevronRightIcon />}
+          {internalOpen ? <ChevronDownIcon /> : <ChevronRightIcon />}
         </span>
       </CollapsibleTrigger>
       <CollapsibleContent className="flex flex-col gap-2 pl-8 nth-[2]:pt-2">
