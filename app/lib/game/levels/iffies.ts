@@ -25,14 +25,15 @@ export const initializeIffies = () => {
   trashcanFilled!.pos.y = -205;
 
   trashcanEmpty!.z = 3;
-  trashcanEmpty!.pos.x = 400;
+  trashcanEmpty!.pos.x = 350;
+  trashcanEmpty!.pos.y = -75;
 
   useDataStore.getState().gameObjects.set(
     "trashcanEmpty",
     new Map([
       ["filled", { access: "get", value: 0 }],
-      ["xpos", { access: "get", value: 400 }],
-      ["ypos", { access: "get", value: 0 }],
+      ["xpos", { access: "get", value: 350 }],
+      ["ypos", { access: "get", value: -75 }],
     ])
   );
 
