@@ -10,6 +10,7 @@ import "@xyflow/react/dist/style.css";
 import { useState } from "react";
 import { Toaster } from "sonner";
 
+import CenterPanel from "./editor-components/CenterPanel";
 import LeftPanel from "./editor-components/LeftPanel";
 import NodeContextMenu from "./editor-components/NodeContextMenu";
 import PaneContextMenu from "./editor-components/PaneContextMenu";
@@ -67,6 +68,7 @@ const Editor = () => {
       >
         <Background bgColor="#14141d" color="#a7abc2" />
         <RightPanel rfInstance={rfInstance} />
+        <CenterPanel />
         <LeftPanel />
         <Toaster />
       </ReactFlow>

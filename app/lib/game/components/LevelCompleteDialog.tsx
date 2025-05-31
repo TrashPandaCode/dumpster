@@ -3,22 +3,12 @@ import { NavLink } from "react-router";
 
 import { useGameStore } from "~/lib/zustand/game";
 import { LEVELS } from "../core/levels";
+import { getNeighborLevels } from "../utils/navigator";
 import CustomDialog from "./CustomDialog";
-
-function getNextLevel(curLevel: string) {
-  const keys = Object.keys(LEVELS);
-  const currentIndex = keys.indexOf(curLevel);
-
-  if (currentIndex === -1 || currentIndex === keys.length - 1) {
-    return undefined;
-  }
-
-  return keys[currentIndex + 1];
-}
 
 const LevelCompleteDialog = () => {
   const currentLevel = useGameStore((state) => state.currentLevel);
-  const nextLevel = getNextLevel(currentLevel);
+  const nextLevel = getNeighborLevels(currentLevel)?.next;
 
   const levelCompleteDialogOpen = useGameStore(
     (state) => state.levelCompleteDialogOpen
