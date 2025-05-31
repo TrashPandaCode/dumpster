@@ -53,6 +53,10 @@
     ]
   },
   {
+    "title": "FAQ",
+    "path": "/docs/faq"
+  },
+  {
     "title": "Hierarchies in Scenes",
     "items": [
       {
@@ -336,9 +340,5 @@
         "path": "/docs/particle-systems/rendering"
       }
     ]
-  },
-  {
-    "title": "FAQ",
-    "path": "/docs/faq"
   }
 ]
