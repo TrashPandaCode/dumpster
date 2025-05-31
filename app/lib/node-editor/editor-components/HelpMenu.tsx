@@ -1,10 +1,10 @@
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuPortal,
-  DropdownMenuTrigger,
-} from "@radix-ui/react-dropdown-menu";
 import { QuestionMarkIcon } from "@radix-ui/react-icons";
+import {
+  Popover,
+  PopoverContent,
+  PopoverPortal,
+  PopoverTrigger,
+} from "@radix-ui/react-popover";
 import { useReactFlow, type Edge, type Node } from "@xyflow/react";
 import classnames from "classnames";
 import { useState } from "react";
@@ -43,15 +43,14 @@ const HelpMenu = () => {
   };
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
+    <Popover>
+      <PopoverTrigger asChild>
         <IconButton side="left" tooltip="Help Menu" aria-label="Help Menu">
           <QuestionMarkIcon className="text-white" />
         </IconButton>
-      </DropdownMenuTrigger>
-
-      <DropdownMenuPortal>
-        <DropdownMenuContent align="end">
+      </PopoverTrigger>
+      <PopoverPortal>
+        <PopoverContent side="bottom" className="mr-3">
           <div className="flex w-200 flex-col gap-4 rounded bg-slate-800 p-4 font-mono text-white shadow-lg outline-1 outline-slate-700 outline-solid">
             <h1 className="text-xl">Hints</h1>
             {hints[hintIndex]}
@@ -107,9 +106,9 @@ const HelpMenu = () => {
               </button>
             </div>
           </div>
-        </DropdownMenuContent>
-      </DropdownMenuPortal>
-    </DropdownMenu>
+        </PopoverContent>
+      </PopoverPortal>
+    </Popover>
   );
 };
 
