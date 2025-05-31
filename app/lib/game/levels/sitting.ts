@@ -12,7 +12,10 @@ export const initializeSitting = () => {
 
   addBackgrounds(["background1"]);
 
-  const { raccoon, trashcanFilled } = addGameobjects(["raccoon", "trashcanFilled"]);
+  const { raccoon, trashcanFilled } = addGameobjects([
+    "raccoon",
+    "trashcanFilled",
+  ]);
   k.setCamPos(raccoon!.pos.add(0, -k.height() / 2 + BACKGROUND_OFFSET));
 
   trashcanFilled!.z = 3;
@@ -27,7 +30,6 @@ export const initializeSitting = () => {
     const dist = raccoon!.pos.dist(trashcanFilled!.pos);
 
     if (dist <= 10 && !useGameStore.getState().levelCompleted) {
-      useGameStore.getState().setLevelCompleted(true);
       useGameStore.getState().setLevelCompleteDialogOpen(true);
       useGameStore.getState().setLevelCompleted(true);
     }

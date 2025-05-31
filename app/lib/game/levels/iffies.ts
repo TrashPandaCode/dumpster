@@ -54,7 +54,6 @@ export const initializeIffies = () => {
     const distFilled = raccoon!.pos.dist(trashcanFilled!.pos);
 
     if (distFilled <= 10 && !useGameStore.getState().levelCompleted) {
-      useGameStore.getState().setLevelCompleted(true);
       useGameStore.getState().setLevelCompleteDialogOpen(true);
       useGameStore.getState().setLevelCompleted(true);
     }
