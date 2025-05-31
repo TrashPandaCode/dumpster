@@ -17,19 +17,23 @@ const CenterPanel = () => {
     >
       {neighborLevels?.prev && (
         <NavLink to={`/game/${neighborLevels?.prev}`}>
-          <IconButton tooltip="Home" side="right" className="text-white">
+          <IconButton
+            tooltip="Previous Level"
+            side="left"
+            className="text-white"
+          >
             <ArrowLeftIcon className="text-white" />
           </IconButton>
         </NavLink>
       )}
       <NavLink to={"/"}>
-        <IconButton tooltip="Home" side="right">
+        <IconButton tooltip="Home" side="bottom">
           <HomeIcon className="text-white" />
         </IconButton>
       </NavLink>
       {neighborLevels?.next && (
         <NavLink to={`/game/${neighborLevels?.next}`}>
-          <IconButton tooltip="Home" side="right">
+          <IconButton tooltip="Next Level" side="right">
             <ArrowRightIcon className="text-white" />
           </IconButton>
         </NavLink>

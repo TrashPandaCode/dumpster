@@ -35,7 +35,6 @@ export const initializeCalculator = () => {
         ?.get("equationSolution")?.value ?? 0;
 
     if (value == result && !useGameStore.getState().levelCompleted) {
-      useGameStore.getState().setLevelCompleted(true);
       useGameStore.getState().setLevelCompleteDialogOpen(true);
       useGameStore.getState().setLevelCompleted(true);
     }

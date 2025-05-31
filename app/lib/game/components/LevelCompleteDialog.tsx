@@ -26,7 +26,6 @@ const LevelCompleteDialog = () => {
             ${currentLevel} level. You can now get to the main menu 
             using the To Menu button or to the next level using the 
             Next Level button.`}
-      showClose={false}
     >
       <div className="flex flex-col gap-5">
         <div className="flex flex-1 flex-row">
@@ -61,6 +60,11 @@ const LevelCompleteDialog = () => {
             >
               To Menu
             </NavLink>
+          </DialogClose>
+          <DialogClose asChild>
+            <button className="cursor-pointer rounded-lg bg-slate-700/80 px-3 py-2 hover:bg-slate-600 focus:outline-1 focus:outline-blue-300">
+              Continue Playing
+            </button>
           </DialogClose>
           {nextLevel && (
             <DialogClose asChild>
