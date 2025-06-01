@@ -178,7 +178,7 @@ export const LEVELS = {
     ],
     goals: ["Move the raccoon into the trashcan by changing his position."],
     success:
-      "Aaaahhh… perfect! Crunchy banana peels, the scent of mystery leftovers… this is luxury.",
+      "Aaaahhh... perfect! Crunchy banana peels, the scent of mystery leftovers... this is luxury.",
     category: "Introduction",
     image: alleyTwo,
     nodes: [],
