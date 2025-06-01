@@ -12,22 +12,6 @@ export const loadLevel = (level: string) => {
 
   const curLevel = LEVELS[level as keyof typeof LEVELS];
 
-  // load initial gameobjects data
-  useDataStore.setState(() => {
-    const result = new Map(
-      curLevel.modifiableGameObjects.map((item) => [
-        item.id,
-        new Map(
-          item.connections.map((conn) => [
-            conn.label,
-            { access: conn.access, value: 0 },
-          ])
-        ),
-      ])
-    );
-
-    return { gameObjects: result };
-  });
-
+  useDataStore.getState().init(curLevel.modifiableGameObjects);
   curLevel.initialState();
 };
