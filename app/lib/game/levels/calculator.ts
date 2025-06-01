@@ -14,8 +14,6 @@ export const initializeCalculator = () => {
   k.setCamScale(k.height() / 947);
   raccoon!.scaleBy(-1, 1);
 
-  //sample equation
-  const equation = "7 + 5 * 2 - 3 / 3 = ?";
   const result = 16;
 
   game.onUpdate(() => {
@@ -26,7 +24,7 @@ export const initializeCalculator = () => {
       useDataStore
         .getState()
         .gameObjects.get("raccoon")
-        ?.get("equationSolution")?.value ?? 0;
+        ?.get("solution")?.value ?? 0;
 
     if (value == result && !useGameStore.getState().levelCompleted) {
       useGameStore.getState().setLevelCompleteDialogOpen(true);
