@@ -9,7 +9,7 @@ import {
   type OnNodeDrag,
   type OnNodesChange,
 } from "@xyflow/react";
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 import { useShallow } from "zustand/shallow";
 
 import { useFlowStore } from "../node-store/flow-store";
