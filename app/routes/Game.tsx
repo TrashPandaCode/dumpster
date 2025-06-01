@@ -45,7 +45,6 @@ const Game = ({ params }: Route.ComponentProps) => {
       cleanupKaplay();
 
       useGameStore.getState().reset();
-      useDataStore.getState().reset();
       useFlowStore.getState().reset();
       useNodeStore.getState().reset();
       useLoopStore.getState().reset();
