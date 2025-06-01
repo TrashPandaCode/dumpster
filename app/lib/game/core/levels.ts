@@ -2,6 +2,10 @@ import type { Edge, Node } from "@xyflow/react";
 
 import alleyOne from "~/assets/alley_one.jpg";
 import alleyTwo from "~/assets/alley_two.png";
+import calcCard from "~/assets/home-cards/calc_card.png";
+import sittingCard from "~/assets/home-cards/sitting_card.png";
+import iffiesCard from "~/assets/home-cards/iffies_card.png";
+import playgroundCard from "~/assets/home-cards/playground_card.png";
 import houseImage from "~/assets/house.png";
 import type { NodeType } from "~/lib/node-editor/nodes/node-types";
 import { type GameObject } from "../constants";
@@ -90,7 +94,7 @@ export const LEVELS = {
     ],
     success: "How did you complete a sandbox level?",
     category: "Sandbox",
-    image: alleyOne,
+    image: playgroundCard,
     nodes: [],
     edges: [],
     initialState: initializePlayground,
@@ -147,7 +151,7 @@ export const LEVELS = {
     goals: ["Create your first nodes.", "Solve the equation."],
     success: "Yesss! You nailed it! That number was exactly what we needed.",
     category: "Introduction",
-    image: alleyTwo,
+    image: calcCard,
     nodes: [],
     edges: [],
     initialState: initializeCalculator,
@@ -181,7 +185,7 @@ export const LEVELS = {
     success:
       "Aaaahhh... perfect! Crunchy banana peels, the scent of mystery leftovers... this is luxury.",
     category: "Introduction",
-    image: alleyTwo,
+    image: sittingCard,
     nodes: [],
     edges: [],
     initialState: initializeSitting,
@@ -213,7 +217,7 @@ export const LEVELS = {
     success:
       "Luckily the raccoon doesn't have to search for food in an empty trashcan!",
     category: "Introduction",
-    image: alleyTwo,
+    image: iffiesCard,
     nodes: [],
     edges: [],
     initialState: initializeIffies,
