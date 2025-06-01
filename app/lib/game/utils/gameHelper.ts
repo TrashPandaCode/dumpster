@@ -176,15 +176,31 @@ export function addBackgrounds(
   ]);
 }
 
-export function animPlayer(player: PlayerType, k: KAPLAYCtx) {
+export function animPlayer(
+  player: PlayerType,
+  k: KAPLAYCtx,
+  movementMode: "Node" | "Input" | "Loop" = "Node",
+  loopConfig?: { minX: number; maxX: number; speed: number } // For Loop movement mode
+) {
   const lastX = player.pos.x;
 
   //Move
-  player.pos.x =
-    useDataStore.getState().gameObjects.get("raccoon")?.get("xpos")?.value ?? 0;
-  player.pos.y =
-    useDataStore.getState().gameObjects.get("raccoon")?.get("ypos")?.value ?? 0;
-
+  if (movementMode === "Node") {
+    player.pos.x =
+      useDataStore.getState().gameObjects.get("raccoon")?.get("xpos")?.value ??
+      0;
+    player.pos.y =
+      useDataStore.getState().gameObjects.get("raccoon")?.get("ypos")?.value ??
+      0;
+  } else if (movementMode === "Input") {
+    if (k.isKeyDown("left")) player.pos.x -= 5;
+    if (k.isKeyDown("right")) player.pos.x += 5;
+  } else if (movementMode === "Loop" && loopConfig) {
+    player.pos.x += loopConfig.speed;
+    if (player.pos.x > loopConfig.maxX) {
+      player.pos.x = loopConfig.minX;
+    }
+  }
   k.setCamPos(
     k.lerp(k.getCamPos(), k.vec2(player.pos.x, -BACKGROUND_OFFSET), 0.1)
   );
