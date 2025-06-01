@@ -1,7 +1,6 @@
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuPortal,
   DropdownMenuTrigger,
 } from "@radix-ui/react-dropdown-menu";
@@ -12,33 +11,28 @@ import {
   HamburgerMenuIcon,
 } from "@radix-ui/react-icons";
 import { Panel, useReactFlow, type ReactFlowInstance } from "@xyflow/react";
-import { v4 as uuidv4 } from "uuid";
+import { useState } from "react";
 
 import { useNodeStore } from "../node-store/node-store";
-import { MAIN_LOOP_CONNECTOR } from "../nodes/constants";
-import { nodeTypes } from "../nodes/node-types";
+import AddNodes from "./AddNodes";
+import HelpMenu from "./HelpMenu";
 import { IconButton } from "./IconButton";
 
 const RightPanel: React.FC<{ rfInstance: ReactFlowInstance | undefined }> = ({
   rfInstance,
 }) => {
-  const {
-    addNodes,
-    addEdges,
-    getNodes,
-    getEdges,
-    setViewport,
-    setEdges,
-    setNodes,
-  } = useReactFlow();
+  const { getNodes, getEdges, setViewport, setEdges, setNodes } =
+    useReactFlow();
+
   const nodeStateDebugPrint = useNodeStore((state) => state.debugPrint);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   return (
     <Panel
       position="top-right"
       className="flex flex-col items-end justify-center gap-2"
     >
-      <DropdownMenu>
+      <DropdownMenu open={isDropdownOpen} onOpenChange={setIsDropdownOpen}>
         <DropdownMenuTrigger asChild>
           <IconButton side="left" tooltip="Add Node" aria-label="Add Node">
             <HamburgerMenuIcon className="text-white" />
@@ -46,72 +40,18 @@ const RightPanel: React.FC<{ rfInstance: ReactFlowInstance | undefined }> = ({
         </DropdownMenuTrigger>
 
         <DropdownMenuPortal>
-          <DropdownMenuContent
-            className="mt-2 flex w-65 flex-col items-center gap-1 rounded bg-slate-800 p-2 font-mono shadow-lg !outline-1 !outline-slate-700"
-            align="end"
-          >
-            {Object.keys(nodeTypes).map((name) => (
-              <DropdownMenuItem asChild key={name}>
-                <button
-                  className="w-full cursor-pointer rounded px-2 py-1 text-left text-sm text-white hover:bg-slate-700"
-                  onClick={() => {
-                    addNodes({
-                      id: uuidv4(),
-                      type: name,
-                      position: { x: 0, y: 0 },
-                      data: {},
-                    });
-                  }}
-                >
-                  {name}
-                </button>
-              </DropdownMenuItem>
-            ))}
-            <DropdownMenuItem asChild>
-              <button
-                className="w-full cursor-pointer rounded px-2 py-1 text-left text-sm text-white hover:bg-slate-700"
-                onClick={() => {
-                  const startId = uuidv4();
-                  const endId = uuidv4();
-                  const loopId = uuidv4();
-                  const edgeId = uuidv4();
-                  addNodes([
-                    {
-                      id: startId,
-                      type: "ForStart",
-                      position: { x: 0, y: 0 },
-                      data: { loopId },
-                    },
-                    {
-                      id: endId,
-                      type: "ForEnd",
-                      position: { x: 300, y: 0 },
-                      data: { loopId },
-                    },
-                  ]);
-                  addEdges({
-                    id: edgeId,
-                    type: "straight",
-                    source: startId,
-                    target: endId,
-                    sourceHandle: MAIN_LOOP_CONNECTOR,
-                    targetHandle: MAIN_LOOP_CONNECTOR,
-                    animated: true,
-                    deletable: false,
-                    selectable: false,
-                    style: {
-                      strokeWidth: 2,
-                      stroke: "var(--color-blue-300)",
-                    },
-                  });
-                }}
-              >
-                For Loop
-              </button>
-            </DropdownMenuItem>
+          <DropdownMenuContent align="end">
+            <AddNodes
+              onClose={() => setIsDropdownOpen(false)}
+              x={1800}
+              y={400}
+            />
           </DropdownMenuContent>
         </DropdownMenuPortal>
       </DropdownMenu>
+
+      <HelpMenu />
+
       {process.env.NODE_ENV === "development" && (
         <>
           <IconButton

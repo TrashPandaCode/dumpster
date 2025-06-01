@@ -1,0 +1,30 @@
+---
+title: Motion Warping
+---
+
+## Motion Warping
+
+To slightly alter motion data, **constraints** can be imposed on the movement — for instance, ensuring that a foot is at a specific position at a certain time.
+
+Constraints are specified as a set of poses $x_0, \dots, x_l \in \mathcal{X}$ defined on a **grid** $\mathcal{S} = \{s_0, \dots, s_l\}$, which is tied to a time interval. These poses and $\mathcal{S}$ define **keyframes**. A second grid $\mathcal{T} = \{t_0, \dots, t_l\}$ is also needed.
+
+The first step is the **keyframe constraint**, which adjusts the motion so that the given poses are achieved at the specified times:
+
+$$
+\tilde{m}(s_i) = g(s_i) m(s_i) + d(s_i) = x_i \quad \text{for } i = 0, \dots, l
+$$
+
+Here, either the **scaling function** $g(s)$ is assumed to be constant, or the **offset function** $d(s)$ is. Solving the equation is again an interpolation problem — hence one function must be fixed.
+
+
+* The **first approach** (constant scaling function) is suitable when the relative dynamics of the motion should be preserved, as the time distortion is evenly distributed.
+
+* The **second approach** (constant offset function) is preferred when specific keyframes or events must occur at exact times — even at the cost of changing relative motion dynamics.
+
+* The **temporal constraint** is defined via the grid $\mathcal{T}$. A curve can then be modified through a time-axis transformation so that the poses match the times in $\mathcal{T}$.
+
+**Figure:** Modified motion $\tilde{m}(s)$ as a sum of original motion and offset $d(s)$
+
+![Modified Motion](/docs/modified-motion.png)
+
+The **warping technique** can also be used to make blends more realistic. For example, if the second motion is faster, the first can be warped to better align in timing and flow.

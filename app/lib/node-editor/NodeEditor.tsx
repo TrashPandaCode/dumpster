@@ -8,17 +8,19 @@ import {
 import "@xyflow/react/dist/style.css";
 
 import { useState } from "react";
+import { Toaster } from "sonner";
 
+import CenterPanel from "./editor-components/CenterPanel";
 import LeftPanel from "./editor-components/LeftPanel";
 import NodeContextMenu from "./editor-components/NodeContextMenu";
 import PaneContextMenu from "./editor-components/PaneContextMenu";
 import RightPanel from "./editor-components/RightPanel";
 import SelectionContextMenu from "./editor-components/SelectionContextMenu";
-import Toaster from "./editor-components/Toaster";
 import { TooltipProvider } from "./editor-components/Tooltip";
 import { useContextMenu } from "./hooks/useContextMenu";
 import { useFlow } from "./hooks/useFlow";
 import { nodeTypes } from "./nodes/node-types";
+import { edgeTypes } from "./edges/edge-types";
 
 const Editor = () => {
   const [rfInstance, setRfInstance] = useState<ReactFlowInstance>();
@@ -50,6 +52,7 @@ const Editor = () => {
         id="node-editor"
         onInit={setRfInstance}
         nodeTypes={nodeTypes}
+        edgeTypes={edgeTypes}
         nodes={nodes}
         edges={edges}
         onNodesChange={onNodesChange}
@@ -64,9 +67,13 @@ const Editor = () => {
         proOptions={{ hideAttribution: true }}
         deleteKeyCode={["Delete", "Backspace"]}
         onNodeDragStop={onNodeDragStop}
+        defaultEdgeOptions={{
+          type: "Deletable"
+        }}
       >
         <Background bgColor="#14141d" color="#a7abc2" />
         <RightPanel rfInstance={rfInstance} />
+        <CenterPanel />
         <LeftPanel />
         <Toaster />
       </ReactFlow>
@@ -82,6 +89,7 @@ const Editor = () => {
           nodeId={nodeContextMenu.nodeId}
           nodeType={nodeContextMenu.nodeType}
           nodeLoopId={nodeContextMenu.nodeLoopId}
+          nodeParentId={nodeContextMenu.nodeParentId}
           x={nodeContextMenu.x}
           y={nodeContextMenu.y}
           onClose={() => setNodeContextMenu(null)}

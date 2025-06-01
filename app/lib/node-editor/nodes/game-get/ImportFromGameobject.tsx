@@ -1,64 +1,96 @@
-import { Position, useReactFlow, useUpdateNodeInternals } from "@xyflow/react";
-import { memo, useEffect, useRef } from "react";
+import { Position, useReactFlow } from "@xyflow/react";
+import { memo, useEffect, useMemo } from "react";
 
-import { LEVELS } from "~/lib/game/core/levels";
 import { useDataStore } from "~/lib/zustand/data";
-import { useGameStore } from "~/lib/zustand/game";
+import { useGameobjectSelect } from "../../hooks/useGameobjectSelect";
+import BaseHandle from "../../node-components/BaseHandle";
 import LabelHandle from "../../node-components/LabelHandle";
+import MultiSelectDropDown from "../../node-components/MultiSelectDropDown";
 import NodeContent from "../../node-components/NodeContent";
-import SelectDropDown from "../../node-components/SelectDropDown";
 import type { nodeData, nodeInputs } from "../../node-store/node-store";
+import { getHandleIntersection, getInput } from "../../utils";
+import { IN_HANDLE_1 } from "../constants";
+import type { GameObject } from "~/lib/game/constants";
 
 const ImportFromGameobject = memo(({ id, data }: { id: string; data: any }) => {
-  const level = useGameStore((state) => state.currentLevel);
-  const modifiableGameObjects = LEVELS[level].modifiableGameObjects;
-
   const gameObjects = useDataStore((state) => state.gameObjects);
-  const gameObject = useRef(
-    data.gameObject ? data.gameObject.current : modifiableGameObjects[0].id
-  ); // we assume there is at least one game object editable if this node is enabled
+  const selectableGameObjects: GameObject[] = Array.from(gameObjects.keys());
 
-  const { updateNodeData, setEdges } = useReactFlow();
-  const updateNodeInternals = useUpdateNodeInternals();
+  const {
+    isOpen,
+    getToggleButtonProps,
+    getMenuProps,
+    getLabelProps,
+    highlightedIndex,
+    getItemProps,
+    selectedGameObjects,
+  } = useGameobjectSelect(
+    selectableGameObjects,
+    data.selectedGameObjects
+      ? data.selectedGameObjects
+      : [selectableGameObjects[0]],
+    id
+  );
+
+  const handleIntersection = useMemo(
+    () => getHandleIntersection("get", gameObjects, selectedGameObjects),
+    [gameObjects, selectedGameObjects]
+  );
+
+  const { updateNodeData } = useReactFlow();
 
   useEffect(() => {
     updateNodeData(id, {
-      compute: (_: nodeInputs, results: nodeData) => {
-        gameObjects.get(gameObject.current)!.forEach(({ handleId, value }) => {
-          results.set(handleId, value);
+      compute: (inputs: nodeInputs, results: nodeData) => {
+        const index =
+          selectedGameObjects.length === 1
+            ? 0
+            : Math.round(getInput(inputs, IN_HANDLE_1, -1));
+        if (0 > index || index >= selectedGameObjects.length) {
+          results.clear(); //TODO: what behaviour do we want here?
+          return;
+        }
+        const gob = selectedGameObjects[index];
+        handleIntersection.forEach((handle) => {
+          results.set(handle, gameObjects.get(gob)!.get(handle)!.value);
         });
       },
+      selectedGameObjects,
     });
-  }, []);
-
-  const handleSelect = (selected: string) => {
-    gameObject.current = selected;
-    updateNodeData(id, { gameObject });
-    updateNodeInternals(id);
-
-    // remove all edges with import node as source
-    setEdges((edgs) => edgs.filter((edg) => edg.source !== id));
-  };
+  }, [selectedGameObjects]);
 
   return (
     <div className="min-w-48">
-      <NodeContent label="Import From Gameobject" type="import">
-        <SelectDropDown
-          items={{ "Game objects": Array.from(gameObjects.keys()) }}
-          setSelected={handleSelect}
-          defaultValue={gameObject.current}
-        />
-        {Array.from(gameObjects.get(gameObject.current) ?? []).map(
-          ([label, { handleId, access }]) =>
-            access !== "set" && (
-              <LabelHandle
-                key={handleId}
-                id={handleId}
-                position={Position.Right}
-                label={label}
-              />
-            )
-        )}
+      <NodeContent
+        label="Import From Gameobject"
+        type="import"
+        docsName="import"
+      >
+        <div className="text-left">
+          {selectedGameObjects.length > 1 && (
+            <BaseHandle id={IN_HANDLE_1} position={Position.Left} />
+          )}
+          <MultiSelectDropDown
+            highlightedIndex={highlightedIndex}
+            isOpen={isOpen}
+            selectableObjects={selectableGameObjects}
+            selectedObjects={selectedGameObjects}
+            useSelectProps={{
+              getItemProps: getItemProps,
+              getLabelProps: getLabelProps,
+              getMenuProps: getMenuProps,
+              getToggleButtonProps: getToggleButtonProps,
+            }}
+          />
+        </div>
+        {handleIntersection.map((label) => (
+          <LabelHandle
+            key={label}
+            id={label}
+            position={Position.Right}
+            label={label}
+          />
+        ))}
       </NodeContent>
     </div>
   );

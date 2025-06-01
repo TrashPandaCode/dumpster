@@ -1,0 +1,51 @@
+---
+title: Smooth Binding
+---
+
+## Smooth Binding
+
+In **smooth binding**, a vertex is influenced by the movement of multiple joints.
+
+We now define a mapping that assigns each vertex to a *set* of joints:
+
+$$
+g: \mathcal{V} \rightarrow \mathcal{P}(\mathcal{G})
+$$
+
+(where $\mathcal{P}(\mathcal{G})$ is the power set of $\mathcal{G}$, i.e., all subsets)
+
+As with rigid binding, we compute the vertex coordinates in joint-local coordinates. This set is collected as:
+
+$$
+\mathcal{B}_i = \{ b_i^{[k]} : k \in g(i) \}
+$$
+
+To determine the influence of the various joints on a vertex, we define a **weight function**:
+
+$$
+\omega : \mathcal{V} \times \mathcal{G} \rightarrow \mathbb{R}
+$$
+
+which assigns each vertex $i$ and joint $k$ a weight $\omega(i, k) \in \mathbb{R}$.
+If $\omega(i, k) = 0$, then vertex $i$ is not influenced by joint $k$. The sum of all weights for a vertex should be 1.
+
+Animation is now defined just like rigid binding, but with multiple joints per vertex. For each vertex $i$, and joint $k \in g(i)$, we define individual trajectories:
+
+$$
+v_{i,k}(t) = M^{[k]}(t) \cdot b_i^{[k]}
+$$
+
+The final position is a weighted sum:
+
+$$
+v_i(t) = \sum_{k \in g(i)} \omega(i, k) \cdot v_{i,k}(t)
+$$
+
+
+Due to linear interpolation of different vertex positions, the center vertex may collapse — this is referred to as the **candy wrapper effect** (see figure). This effect also appears in real human joints, like elbows. A potential solution is to use **blendshapes** (see [Blendshapes](/docs/blendshapes/definition)).
+
+
+**Figure:**
+Position of the vertex after a rotation of $\alpha = \pi$ around the x-axis.
+
+![Candy wrapper effect](/docs/candy.png)

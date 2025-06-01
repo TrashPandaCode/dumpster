@@ -1,9 +1,9 @@
 import { type Connection, type Edge, type Node } from "@xyflow/react";
 import { create } from "zustand";
 
+import { toast } from "../editor-components/Toast";
 import { connectionToEdgeId } from "../utils";
-import { useNodeSetterStore } from "./node-setter";
-import { useToastStore } from "./toast-store";
+import { useFlowStore } from "./flow-store";
 
 export type LoopStatus = {
   // just externally manage loops (from the compute Map function) using this object to which the end node can write to (and start node read from)
@@ -95,6 +95,7 @@ interface NodeStoreState {
   removeEdge: (edgeId: string) => void;
   compute: () => void;
   debugPrint: () => void;
+  reset: () => void;
 }
 
 export const useNodeStore = create<NodeStoreState>((set, get) => ({
@@ -102,6 +103,11 @@ export const useNodeStore = create<NodeStoreState>((set, get) => ({
   sortedNodes: [],
   mapErrors: { cycle: false },
   replaceNode: (node: Node) => {
+    // if the node is a group, we don't want to add it to the map since they are purely visual
+    if (node.type === "Group") {
+      return;
+    }
+
     const nodeMap = get().nodeMap;
     if (nodeMap.has(node.id)) {
       nodeMap.get(node.id)?.updateData(node.data);
@@ -180,6 +186,12 @@ export const useNodeStore = create<NodeStoreState>((set, get) => ({
       console.log(node.type, node);
     });
   },
+  reset: () =>
+    set({
+      nodeMap: new Map<string, AppNode>(),
+      sortedNodes: [],
+      mapErrors: { cycle: false },
+    }),
 }));
 
 // edge source, edge source handle, edge target, edge target handle
@@ -243,7 +255,7 @@ function computeMap(sortedNodes: AppNode[]) {
 
 function orderMap(mapErrors: MapErrors, map: Map<string, AppNode>): AppNode[] {
   mapErrors.cycle = false;
-  useNodeSetterStore.getState().resetHighlight("cycle");
+  useFlowStore.getState().resetHighlight("cycle");
   // remove all marks
   map.forEach((node) => {
     node.mark = null;
@@ -266,13 +278,12 @@ function visit(node: AppNode, sortedMap: AppNode[], mapErrors: MapErrors) {
     return;
   }
   if (node.mark == Mark.Temporary) {
-    useNodeSetterStore.getState().highlightNode(node.nodeId, "cycle", "red");
-    useToastStore
-      .getState()
-      .triggerToast(
-        "Cycle detected",
-        "A cycle was detected in the node graph. Please check your node connections."
-      );
+    useFlowStore.getState().highlightNode(node.nodeId, "cycle", "red");
+    toast({
+      title: "Cycle!",
+      description:
+        "A cycle was detected in the node graph. Your graph won't execute unless you remove the cyclic connection.",
+    });
     mapErrors.cycle = true;
     return;
   }

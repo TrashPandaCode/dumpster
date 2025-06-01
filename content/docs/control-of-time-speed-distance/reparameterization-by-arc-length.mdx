@@ -1,0 +1,25 @@
+---
+title: Reparameterization by Arc Length
+---
+
+## Reparameterization by Arc Length
+
+Let $f: [a, b] \rightarrow \mathbb{R}^d$ be a rectifiable curve and let the arc length function satisfy:
+
+$$
+l(t) = t - a \quad \text{for all } t \in [a, b]
+$$
+
+Then the curve is called **parameterized by arc length**. The speed of the curve is now constant 1.
+
+A $C^1$-curve is called **regular** if $f'(t) \neq 0$ for all $t$.
+
+Every regular $C^1$-curve can be reparameterized by arc length.
+
+The reparameterization function $\varphi$ that reparameterizes a curve by its arc length is:
+
+$$
+\varphi: [0, L] \rightarrow [a, b],\quad \varphi(t) = l^{-1}(t)
+$$
+
+Then with $g = f \circ \varphi$, the curve $g$ is parameterized by arc length. As described earlier (in the Arc Length section), we can also use numerical approximations $\tilde{l}$ and $\tilde{l}^{-1}$.

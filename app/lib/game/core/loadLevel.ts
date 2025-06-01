@@ -1,4 +1,3 @@
-import { handleUUID } from "~/lib/node-editor/utils";
 import { useDataStore } from "~/lib/zustand/data";
 import { LEVELS } from "./levels";
 
@@ -13,22 +12,6 @@ export const loadLevel = (level: string) => {
 
   const curLevel = LEVELS[level as keyof typeof LEVELS];
 
-  // load initial gameobjects data
-  useDataStore.setState(() => {
-    const result = new Map(
-      curLevel.modifiableGameObjects.map((item) => [
-        item.id,
-        new Map(
-          item.connections.map((conn) => [
-            conn.label,
-            { handleId: handleUUID(), access: conn.access, value: 0 },
-          ])
-        ),
-      ])
-    );
-
-    return { gameObjects: result };
-  });
-
+  useDataStore.getState().init(curLevel.modifiableGameObjects);
   curLevel.initialState();
 };

@@ -2,9 +2,19 @@ import type { Edge, Node } from "@xyflow/react";
 
 import alleyOne from "~/assets/alley_one.jpg";
 import alleyTwo from "~/assets/alley_two.png";
+import calcCard from "~/assets/home-cards/calc_card.png";
+import sittingCard from "~/assets/home-cards/sitting_card.png";
+import iffiesCard from "~/assets/home-cards/iffies_card.png";
+import playgroundCard from "~/assets/home-cards/playground_card.png";
 import houseImage from "~/assets/house.png";
-import { initialize1_1 } from "../levels/1.1";
+import type { NodeType } from "~/lib/node-editor/nodes/node-types";
+import { type GameObject } from "../constants";
+import { initializeCalculator } from "../levels/calculator";
+import { initializeIffies } from "../levels/iffies";
+import { initializeMove } from "../levels/move";
 import { initializePlayground } from "../levels/playground";
+import { initializeSitting } from "../levels/sitting";
+import { initializeTimeTransform } from "../levels/timeTransform";
 
 export type ConnectionAccess = "set" | "get" | "all";
 
@@ -12,56 +22,88 @@ export type ConnectionAccess = "set" | "get" | "all";
  * The Level type represents a game level.
  */
 export type Level = {
-  id: string;
+  /**
+   * Unique identifying part of the web address.
+   */
+  slug: string;
+  /**
+   * (Human Readable) Name of the level.
+   */
   name: string;
-  description: string[];
+  /**
+   * Description of the level.
+   */
+  description: string;
+  /**
+   * Dialog for the level, providing context or instructions.
+   */
+  dialog: string[];
+  /**
+   * Goals for the level, outlining objectives to be achieved.
+   */
   goals: string[];
+  /**
+   * Message displayed on level completion.
+   */
+  success: string;
+  /**
+   * Category of the level, used for grouping or filtering levels.
+   */
   category: string;
+  /**
+   * Image representing the level, used for visual identification.
+   */
   image: string;
   nodes: Node[];
   edges: Edge[];
+  /**
+   * Function to initialize the state of the level.
+   * This function is called when the level is loaded (after initGame).
+   */
   initialState: () => void;
-  solution: {
-    nodes: Node[];
-    edges: Edge[];
-  };
   hints: string[];
-  modifiableGameObjects: {
-    id: string;
-    connections: { label: string; access: ConnectionAccess }[];
-  }[];
-  // TODO
-  // allowedNodes
+  /**
+   * Modifiable game objects in the level.
+   * Each object has an ID and a list of connections with access levels.
+   */
+  modifiableGameObjects: ModifiableGameObject[];
+  availableNodes: NodeType[];
+  difficulty: 0 | 1 | 2;
+};
+
+export type ModifiableGameObject = {
+  id: GameObject;
+  connections: { label: string; access: ConnectionAccess }[];
 };
 
 /**
  * The LEVELS object contains all the levels of the game.
- * Each level has a name, description, category, image, nodes, edges,
- * initial state function, solution, and hints.
  */
 export const LEVELS = {
   playground: {
-    id: "playground",
+    slug: "playground",
     name: "Playground",
-    description: [
-      "This is a playground level where you can test your game mechanics.",
-      "Use of all nodes is permitted.",
+    description:
+      "This is a sandbox level where you can freely test game mechanics.",
+    dialog: [
+      "This is a playground level where you can freely implement game mechanics.",
+      "You are allowed to use all available nodes.",
     ],
     goals: [
-      "Test all features freely.",
-      "Experiment with different setups.",
-      "No restrictions in this mode.",
+      "No goals, this level is designed for experimentation and testing.",
     ],
+    success: "How did you complete a sandbox level?",
     category: "Sandbox",
-    image: alleyOne,
+    image: playgroundCard,
     nodes: [],
     edges: [],
     initialState: initializePlayground,
-    solution: {
-      nodes: [],
-      edges: [],
-    },
-    hints: [],
+    hints: [
+      "This is a playground level",
+      "You don't need hints here",
+      "stop clicking there is nothing coming",
+      "42",
+    ],
     modifiableGameObjects: [
       {
         id: "raccoon",
@@ -71,65 +113,210 @@ export const LEVELS = {
         ],
       },
       {
-        id: "trashcan",
+        id: "trashcanFilled",
         connections: [
           { label: "xpos", access: "set" },
           { label: "ypos", access: "set" },
         ],
       },
     ],
+    availableNodes: [
+      "Display",
+      "Value",
+      "Time",
+      "KeyPress",
+      "MathFloat",
+      "ExportToGameobject",
+      "ImportFromGameobject",
+      "Switch",
+      "Group",
+      "ForLoop",
+      "MousePosition",
+    ],
+    difficulty: 0,
   },
-  "1.1": {
-    id: "1.1",
-    name: "Level 1.1",
-    description: [
-      "This is the first level of the game. It introduces the basic mechanics and objectives.",
+  calculator: {
+    slug: "calculator",
+    name: "Calculator",
+    description:
+      "This is the first level of the game, introducing basic mechanics.",
+    dialog: [
+      "Whoa... what's this on that wall? Some kinda ancient scribble? Wait... it looks like an equation!",
+      "Hmm... maybe it's a clue - maybe if I solve it, I'll figure out what this place is hiding",
+      "Quick, human buddy - help me solve it before my brain melts into raccoon soup!!",
+      "You! Yes you - my opposable-thumbed hero!",
+      "I bet we can solve it using the math nodes in your toolbox.",
+      "Once you've figured it out, plug the result into the 'solution' handle on the Export node",
     ],
-    goals: [
-      "Create a character controller for the raccoon.",
-      "Navigate the raccoon to the goal flag.",
-    ],
+    goals: ["Create your first nodes.", "Solve the equation."],
+    success: "Yesss! You nailed it! That number was exactly what we needed.",
     category: "Introduction",
-    image: alleyTwo,
+    image: calcCard,
     nodes: [],
     edges: [],
-    initialState: initialize1_1,
-    solution: {
-      nodes: [],
-      edges: [],
-    },
+    initialState: initializeCalculator,
+    hints: [
+      "Start by placing Value nodes to represent the numbers in the equation.",
+      "Use Math nodes like Add, Subtract, Multiply, or Divide to build the equation step by step.",
+      "Connect the result of your math operation to the 'solution' input on the Export node.",
+      "Check that each node has the correct inputs - missing values will result in an incorrect or empty output.",
+      "Double-check your order of operation.",
+    ],
+    modifiableGameObjects: [
+      {
+        id: "raccoon",
+        connections: [{ label: "solution", access: "set" }],
+      },
+    ],
+    availableNodes: ["Display", "Value", "MathFloat", "ExportToGameobject"],
+    difficulty: 0,
+  },
+  sitting: {
+    slug: "sitting",
+    name: "Sitting",
+    description:
+      "This is the second level of the game, introducing position of game objects.",
+    dialog: [
+      "Okay okay okay listen - I've had a long day solving equations and being adorable.",
+      "Now all I want... is to plop into that cozy, slightly smelly trash can over there.",
+      "Can you move me into it? Please? I promise not to knock it over. (Maybe.)",
+    ],
+    goals: ["Move the raccoon into the trashcan by changing his position."],
+    success:
+      "Aaaahhh... perfect! Crunchy banana peels, the scent of mystery leftovers... this is luxury.",
+    category: "Introduction",
+    image: sittingCard,
+    nodes: [],
+    edges: [],
+    initialState: initializeSitting,
     hints: [],
     modifiableGameObjects: [
       {
-        id: "racoon",
-        connections: [{ label: "xpos", access: "get" }],
-      },
-      {
-        id: "trashCan",
+        id: "raccoon",
         connections: [
           { label: "xpos", access: "set" },
           { label: "ypos", access: "set" },
         ],
       },
     ],
+    availableNodes: ["Display", "Value", "ExportToGameobject"],
+    difficulty: 0,
   },
-  "1.2": {
-    id: "1.2",
-    name: "Level 1.2",
-    description: [
-      "This is the second level of the game. It builds upon the mechanics introduced in Level 1.1.",
+  iffies: {
+    slug: "iffies",
+    name: "Iffies",
+    description:
+      "This is the third level of the game, introducing if statements.",
+    dialog: [
+      'This is the third level of the game. Complete the "sitting" level first, if you haven\'t done so yet.',
+      "You will learn how to use if statements to control game object behavior.",
     ],
-    goals: ["No goals defined yet."],
+    goals: [
+      "Use an if statement to make the raccoon move into the filled trashcan.",
+    ],
+    success:
+      "Luckily the raccoon doesn't have to search for food in an empty trashcan!",
     category: "Introduction",
+    image: iffiesCard,
+    nodes: [],
+    edges: [],
+    initialState: initializeIffies,
+    hints: [],
+    modifiableGameObjects: [
+      {
+        id: "raccoon",
+        connections: [
+          { label: "xpos", access: "set" },
+          { label: "ypos", access: "set" },
+        ],
+      },
+      {
+        id: "trashcan1",
+        connections: [
+          { label: "filled", access: "get" },
+          { label: "xpos", access: "get" },
+          { label: "ypos", access: "get" },
+        ],
+      },
+      {
+        id: "trashcan2",
+        connections: [
+          { label: "filled", access: "get" },
+          { label: "xpos", access: "get" },
+          { label: "ypos", access: "get" },
+        ],
+      },
+    ],
+    availableNodes: [
+      "Display",
+      "Value",
+      "MathFloat",
+      "ImportFromGameobject",
+      "Switch",
+      "ExportToGameobject",
+    ],
+    difficulty: 1,
+  },
+  timeTransform: {
+    slug: "timeTransform",
+    name: "Time Transform",
+    description:
+      "This is a level of the main game, introducing time-based transformations.",
+    dialog: [
+      "In this level, you will learn how time transformations can affect game objects.",
+    ],
+    goals: ["Do something!"],
+    success: "Wow!",
+    category: "Main Game",
+    image: alleyOne,
+    nodes: [],
+    edges: [],
+    initialState: initializeTimeTransform,
+    hints: [],
+    modifiableGameObjects: [
+      {
+        id: "raccoon",
+        connections: [{ label: "speed", access: "set" }],
+      },
+    ],
+    availableNodes: [
+      "Display",
+      "Value",
+      "MathFloat",
+      "ImportFromGameobject",
+      "Switch",
+      "ExportToGameobject",
+      "Time",
+    ],
+    difficulty: 1,
+  },
+  move: {
+    slug: "move",
+    name: "Move",
+    description:
+      "This is the first level of the main game, introducing movement mechanics.",
+    dialog: [
+      "This is the first level of the main game. It introduces movement mechanics.",
+      "You will learn how to move a game object using key inputs.",
+    ],
+    goals: ["Move the raccoon to the flag."],
+    success: "Look, he just learned how to use his feet!",
+    category: "Main Game",
     image: houseImage,
     nodes: [],
     edges: [],
-    initialState: initialize1_1,
-    solution: {
-      nodes: [],
-      edges: [],
-    },
+    initialState: initializeMove,
     hints: [],
-    modifiableGameObjects: [],
+    modifiableGameObjects: [
+      {
+        id: "raccoon",
+        connections: [
+          { label: "xpos", access: "set" },
+          { label: "ypos", access: "set" },
+        ],
+      },
+    ],
+    availableNodes: ["Display", "ExportToGameobject"],
+    difficulty: 2,
   },
 } satisfies Record<string, Level>;

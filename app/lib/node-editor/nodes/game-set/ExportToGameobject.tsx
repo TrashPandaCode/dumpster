@@ -1,102 +1,139 @@
 import { CrossCircledIcon } from "@radix-ui/react-icons";
-import { Position, useReactFlow, useUpdateNodeInternals } from "@xyflow/react";
-import { memo, useEffect, useRef } from "react";
+import { Position, useReactFlow } from "@xyflow/react";
+import { memo, useEffect, useMemo, useRef } from "react";
 
+import type { GameObject } from "~/lib/game/constants";
 import { LEVELS } from "~/lib/game/core/levels";
 import { useDataStore } from "~/lib/zustand/data";
 import { useGameStore } from "~/lib/zustand/game";
+import { useGameobjectSelect } from "../../hooks/useGameobjectSelect";
 import AddHandle from "../../node-components/AddHandle";
+import BaseHandle from "../../node-components/BaseHandle";
 import LabelHandle from "../../node-components/LabelHandle";
+import MultiSelectDropDown from "../../node-components/MultiSelectDropDown";
 import NodeContent from "../../node-components/NodeContent";
-import SelectDropDown from "../../node-components/SelectDropDown";
 import type { nodeData, nodeInputs } from "../../node-store/node-store";
-import { getInput } from "../../utils";
+import { getHandleIntersection, getInput } from "../../utils";
+import { IN_HANDLE_1 } from "../constants";
 
 const ExportToGameobject = memo(
   ({ id, data, selected }: { id: string; data: any; selected: boolean }) => {
     const level = useGameStore((state) => state.currentLevel);
     const modifiableGameObjects = LEVELS[level].modifiableGameObjects;
 
-    const { updateNodeData, setEdges } = useReactFlow();
-    const updateNodeInternals = useUpdateNodeInternals();
-
-    const gameObject = useRef(
-      data.gameObject ? data.gameObject.current : modifiableGameObjects[0].id
-    ); // we assume there is at least one game object editable if this node is enabled
     const gameObjects = useDataStore((state) => state.gameObjects);
+    const selectableGameObjects: GameObject[] = Array.from(gameObjects.keys());
+
+    const {
+      isOpen,
+      getToggleButtonProps,
+      getMenuProps,
+      getLabelProps,
+      highlightedIndex,
+      getItemProps,
+      selectedGameObjects,
+    } = useGameobjectSelect(
+      selectableGameObjects,
+      data.selectedGameObjects
+        ? data.selectedGameObjects
+        : [selectableGameObjects[0]],
+      id
+    );
+
+    const handleIntersection = useMemo(
+      () => getHandleIntersection("set", gameObjects, selectedGameObjects),
+      [gameObjects, selectedGameObjects]
+    );
 
     const setData = useDataStore((state) => state.setData);
     const addHandle = useDataStore((state) => state.addHandle);
     const removeHandle = useDataStore((state) => state.removeHandle);
     const curLabel = useRef(data.curLabel ? data.curLabel.current : "");
 
+    const { updateNodeData } = useReactFlow();
+
     useEffect(() => {
       updateNodeData(id, {
         compute: (inputs: nodeInputs, _: nodeData) => {
-          gameObjects
-            .get(gameObject.current)!
-            .forEach(({ handleId, access }, label) => {
-              if (access === "get") return;
-              setData(gameObject.current, label, getInput(inputs, handleId, 0));
-            });
-        },
-        gameObject,
-      });
-    }, []);
+          const index =
+            selectedGameObjects.length === 1
+              ? 0
+              : Math.round(getInput(inputs, IN_HANDLE_1, -1));
 
-    const handleSelect = (selected: string) => {
-      gameObject.current = selected;
-      updateNodeData(id, { gameObject });
-      updateNodeInternals(id);
-      // remove all edges with export node as target
-      setEdges((edgs) => edgs.filter((edg) => edg.target !== id));
-    };
+          if (0 > index || index >= selectedGameObjects.length) return;
+
+          const gob = selectedGameObjects[index];
+          handleIntersection.forEach((handle) => {
+            setData(gob, handle, getInput(inputs, handle, 0));
+          });
+        },
+        selectedGameObjects,
+      });
+    }, [selectedGameObjects]);
 
     return (
       <div>
-        <NodeContent label="Export To Gameobject" type="export">
-          <SelectDropDown
-            items={{ "Game objects": Array.from(gameObjects.keys()) }}
-            setSelected={handleSelect}
-            defaultValue={gameObject.current}
-          />
-          {Array.from(gameObjects.get(gameObject.current) ?? []).map(
-            ([label, { handleId, access }]) =>
-              access !== "get" && (
-                <div
-                  className={
-                    "flex w-full items-center [&>*:nth-child(even)]:pointer-events-none [&>*:nth-child(even)]:opacity-0 hover:[&>*:nth-child(even)]:pointer-events-auto hover:[&>*:nth-child(even)]:opacity-100 " +
-                    (selected ? "hover:bg-slate-800" : "hover:bg-slate-700")
-                  }
-                  key={handleId}
-                >
-                  <LabelHandle
-                    id={handleId}
-                    position={Position.Left}
-                    label={label}
-                  />
-                  {!modifiableGameObjects
-                    .find((g) => g.id === gameObject.current)
-                    ?.connections.find(
-                      (connection) => connection.label === label
-                    ) && (
-                    <CrossCircledIcon
-                      className="mt-[1px] ml-2 cursor-pointer text-red-400"
-                      onClick={() => {
-                        removeHandle(gameObject.current, label);
-                      }}
-                    />
-                  )}
-                </div>
-              )
+        <NodeContent
+          label="Export To Gameobject"
+          type="export"
+          docsName="export"
+        >
+          <div className="text-left">
+            {selectedGameObjects.length > 1 && (
+              <BaseHandle id={IN_HANDLE_1} position={Position.Left} />
+            )}
+            <MultiSelectDropDown
+              highlightedIndex={highlightedIndex}
+              isOpen={isOpen}
+              selectableObjects={selectableGameObjects}
+              selectedObjects={selectedGameObjects}
+              useSelectProps={{
+                getItemProps: getItemProps,
+                getLabelProps: getLabelProps,
+                getMenuProps: getMenuProps,
+                getToggleButtonProps: getToggleButtonProps,
+              }}
+            />
+          </div>
+          {handleIntersection.map((label) => (
+            <div
+              className={
+                "flex w-full items-center [&>*:nth-child(even)]:pointer-events-none [&>*:nth-child(even)]:opacity-0 hover:[&>*:nth-child(even)]:pointer-events-auto hover:[&>*:nth-child(even)]:opacity-100 " +
+                (selected ? "hover:bg-slate-800" : "hover:bg-slate-700")
+              }
+              key={label}
+            >
+              <LabelHandle
+                key={label}
+                id={label}
+                position={Position.Left}
+                label={label}
+              />
+              {!modifiableGameObjects.some(
+                ({ id, connections }) =>
+                  selectedGameObjects.includes(id) &&
+                  connections.some((connection) => connection.label === label)
+              ) && (
+                <CrossCircledIcon
+                  className="mt-[1px] ml-2 cursor-pointer text-red-400"
+                  onClick={() => {
+                    selectedGameObjects.forEach((gameObject) =>
+                      removeHandle(gameObject, label)
+                    );
+                  }}
+                />
+              )}
+            </div>
+          ))}
+          {!!selectedGameObjects.length && (
+            <AddHandle
+              addHandle={(id, label) => addHandle(id as GameObject, label)}
+              handleIdentifiers={selectedGameObjects}
+              handleLabel={curLabel}
+              nodeId={id}
+              updateNodeData={updateNodeData}
+            />
           )}
-          <AddHandle
-            addHandle={addHandle}
-            handleIdentifier={gameObject.current}
-            handleLabel={curLabel}
-            nodeId={id}
-            updateNodeData={updateNodeData}
-          />
         </NodeContent>
       </div>
     );
