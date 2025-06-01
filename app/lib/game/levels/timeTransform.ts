@@ -26,10 +26,14 @@ export const initializeTimeTransform = () => {
     const deltaTime = currentTime - lastTime;
     lastTime = currentTime;
 
+    const speedT =
+      useDataStore.getState().gameObjects.get("raccoon")?.get("speed")?.value ??
+      0;
+
     animPlayer(raccoon!, k, "Loop", {
       minX: -500,
       maxX: 500,
-      speed: 100 * deltaTime,
+      speed: speedT * deltaTime,
     });
   });
 };

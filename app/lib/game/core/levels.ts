@@ -272,10 +272,7 @@ export const LEVELS = {
     modifiableGameObjects: [
       {
         id: "raccoon",
-        connections: [
-          { label: "xpos", access: "set" },
-          { label: "ypos", access: "set" },
-        ],
+        connections: [{ label: "speed", access: "set" }],
       },
     ],
     availableNodes: [
