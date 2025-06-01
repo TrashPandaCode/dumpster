@@ -98,10 +98,9 @@ const Home = () => {
             Join the community
           </h1>
           <p className="text-center text-sm text-white">
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry's standard dummy text
-            ever since the 1500s, when an unknown printer took a galley of type
-            and scrambled it to make a type specimen book.
+            Join our Discord community to connect with other students, share your
+            experiences, and get help with the game. Whether you're a beginner
+            or a seasoned player, there's a place for you in our community!
           </p>
           <a
             href="https://discord.gg/yourdiscordlink"
