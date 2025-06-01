@@ -38,10 +38,7 @@ const Home = () => {
             </h1>
             <hr className="my-6 h-1 w-100 rounded-sm border-0 bg-white" />
             <p className="w-200 text-center text-white">
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit. Non
-              sequi eum, quaerat dignissimos enim quos laborum magnam
-              exercitationem in eos eius incidunt blanditiis illo iusto deserunt
-              reiciendis numquam. Quas, facilis?
+              Help our raccoon collect trash by solving puzzles and learning animation principles. Control every action with an intuitive node-based system and bring our small friend's world to life!
             </p>
             <PlayButton />
           </div>
