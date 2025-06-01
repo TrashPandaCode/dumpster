@@ -63,6 +63,7 @@ export type Level = {
    */
   modifiableGameObjects: ModifiableGameObject[];
   availableNodes: NodeType[];
+  difficulty: 0 | 1 | 2;
 };
 
 export type ModifiableGameObject = {
@@ -127,6 +128,7 @@ export const LEVELS = {
       "ForLoop",
       "MousePosition",
     ],
+    difficulty: 0,
   },
   calculator: {
     slug: "calculator",
@@ -152,6 +154,7 @@ export const LEVELS = {
       },
     ],
     availableNodes: ["Display", "Value", "MathFloat", "ExportToGameobject"],
+    difficulty: 1,
   },
   sitting: {
     slug: "sitting",
@@ -180,6 +183,7 @@ export const LEVELS = {
       },
     ],
     availableNodes: ["Display", "Value", "ExportToGameobject"],
+    difficulty: 1,
   },
   iffies: {
     slug: "iffies",
@@ -234,6 +238,7 @@ export const LEVELS = {
       "Switch",
       "ExportToGameobject",
     ],
+    difficulty: 1,
   },
   move: {
     slug: "move",
@@ -262,5 +267,6 @@ export const LEVELS = {
       },
     ],
     availableNodes: ["Display", "ExportToGameobject"],
+    difficulty: 2,
   },
 } satisfies Record<string, Level>;

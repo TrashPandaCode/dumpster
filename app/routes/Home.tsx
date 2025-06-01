@@ -13,7 +13,6 @@ const Home = () => {
   ); // Default to the first level
   const CARDS = Object.values(LEVELS).slice(0, 6); // Get the first 6 levels for the cards
 
-  const [showAll, setShowAll] = useState(false);
   const scrollTargetRef = useRef<HTMLDivElement>(null);
   const scrollToTarget = () => {
     scrollTargetRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -23,93 +22,44 @@ const Home = () => {
     <>
       <div className="flex h-screen flex-col overflow-hidden">
         <Header />
-
         <img
-          className="absolute bottom-8 left-1/2 z-1 w-6 cursor-pointer text-red-700 transition-transform hover:translate-y-1"
+          className="absolute bottom-8 left-1/2 z-1 w-6 cursor-pointer transition-transform hover:translate-y-1"
           src={arrowDownIcon}
           onClick={scrollToTarget}
           alt="Scroll down"
         />
 
-        <main className="relative flex h-full overflow-hidden">
+        <main className="relative flex h-full flex-col items-center justify-evenly overflow-hidden">
+          <div className="flex flex-col items-center">
+            <h1 className="font-pixel text-9xl font-bold text-white">
+              Dumpster Diving
+            </h1>
+            <hr className="my-6 h-1 w-100 rounded-sm border-0 bg-white" />
+            <p className="w-200 text-center text-white">
+              Lorem ipsum dolor sit amet consectetur, adipisicing elit. Non
+              sequi eum, quaerat dignissimos enim quos laborum magnam
+              exercitationem in eos eius incidunt blanditiis illo iusto deserunt
+              reiciendis numquam. Quas, facilis?
+            </p>
+            <PlayButton />
+          </div>
+
+          <div className="grid w-8/12 grid-cols-[repeat(auto-fit,minmax(200px,_1fr))] gap-4 overflow-hidden p-2">
+            {CARDS.map((level) => (
+              <LevelCard
+                key={level.name}
+                level={level}
+                onMouseEnter={() => {
+                  setCurrentHoverCard(level);
+                }}
+              />
+            ))}
+          </div>
           <img
             className="pointer-events-none absolute z-[-1] h-full w-full scale-110 object-cover blur-md"
-            src={currentHoverCard.image}
+            src="/game/backgrounds/background_calculator.png"
             alt=""
           />
-
-          <div className="h-full overflow-hidden p-12">
-            <div className="grid h-full grid-cols-3 gap-12 overflow-hidden">
-              <div className="h-full overflow-hidden rounded-xl bg-blue-950 p-4 text-white">
-                <h1 className="font-pixel text-4xl font-bold">
-                  {currentHoverCard.name}
-                </h1>
-                <br />
-                <p className="text-sm">{currentHoverCard.description}</p>
-              </div>
-              <div className="col-span-2 col-start-2 flex h-[calc(100%)] flex-col">
-                <div
-                  className={`relative overflow-hidden transition-all duration-500`}
-                  style={{
-                    WebkitMaskImage: showAll
-                      ? ""
-                      : "linear-gradient(to bottom, black 60%, transparent 100%)",
-                    maskImage: showAll
-                      ? ""
-                      : "linear-gradient(to bottom, black 60%, transparent 100%)",
-                    height: showAll ? "85%" : "35%",
-                  }}
-                >
-                  <div className="grid w-full grid-cols-[repeat(auto-fit,minmax(200px,_1fr))] gap-4 overflow-hidden p-2">
-                    {CARDS.map((level) => (
-                      <LevelCard
-                        key={level.name}
-                        level={level}
-                        onMouseEnter={() => {
-                          setCurrentHoverCard(level);
-                        }}
-                      />
-                    ))}
-                  </div>
-                </div>
-
-                <div className="flex items-center justify-center">
-                  <div className="mr-[-2px] h-1 w-full rounded-l-full bg-white"></div>
-                  <a
-                    className="flex-1/2 cursor-pointer rounded-full bg-white px-4 py-2 text-center text-sm font-bold transition-transform"
-                    onClick={() => setShowAll(!showAll)}
-                  >
-                    {showAll ? "show less" : "show all"}
-                  </a>
-                  <div className="ml-[-2px] h-1 w-full rounded-r-full bg-white"></div>
-                </div>
-
-                <div
-                  className={`p-2 transition-all duration-500 ${showAll ? "h-fit opacity-0" : "h-fit opacity-100"}`}
-                >
-                  <h1 className="font-pixel pt-6 text-7xl font-bold text-white">
-                    <p className="">Dumpster</p>
-                    <p>Diving</p>
-                  </h1>
-                  <br />
-                  <p className="text-sm text-white">
-                    Lorem Ipsum is simply dummy text of the printing and
-                    typesetting industry. Lorem Ipsum has been the industry's
-                    standard dummy text ever since the 1500s, when an unknown
-                    printer took a galley of type and scrambled it to make a
-                    type specimen book. It has survived not only five centuries,
-                    but also the leap into electronic typesetting, remaining
-                    essentially unchanged. It was popularised in the 1960s with
-                    the release of Letraset sheets containing Lorem Ipsum
-                    passages, and more recently with desktop publishing software
-                    like Aldus PageMaker including versions of Lorem Ipsum.
-                  </p>
-                </div>
-
-                <PlayButton />
-              </div>
-            </div>
-          </div>
         </main>
       </div>
 
@@ -140,7 +90,7 @@ const Home = () => {
           </div>
         </div>
       </section>
-      <section className="flex h-96 items-center justify-center bg-blue-950">
+      <section className="flex h-96 items-center justify-center bg-slate-800">
         <div className="flex h-full w-full max-w-2xl flex-col items-center justify-center gap-4">
           <h1 className="font-pixel text-4xl font-bold text-white">
             Join the community
@@ -153,29 +103,11 @@ const Home = () => {
           </p>
           <a
             href="https://discord.gg/yourdiscordlink"
-            className="bg-jam-600 hover:bg-jam-500 rounded-full px-6 py-3 text-lg font-bold text-white transition-all duration-300 hover:scale-105 hover:shadow-2xl"
+            className="bg-jam-600 hover:bg-jam-700 rounded-full px-6 py-3 text-lg font-bold text-white transition-all duration-300"
           >
             Join Discord
           </a>
         </div>
-      </section>
-      <section className="p-12">
-        <h1 className="font-pixel text-4xl font-bold">About</h1>
-        <p className="text-sm">
-          Lorem Ipsum is simply dummy text of the printing and typesetting
-          industry. Lorem Ipsum has been the industry's standard dummy text ever
-          since the 1500s, when an unknown printer took a galley of type and
-          scrambled it to make a type specimen book.
-        </p>
-      </section>
-      <section className="bg-blue-950 p-12 text-white">
-        <h1 className="font-pixel text-4xl font-bold">About</h1>
-        <p className="text-sm">
-          Lorem Ipsum is simply dummy text of the printing and typesetting
-          industry. Lorem Ipsum has been the industry's standard dummy text ever
-          since the 1500s, when an unknown printer took a galley of type and
-          scrambled it to make a type specimen book.
-        </p>
       </section>
       <Footer />
     </>
@@ -191,6 +123,14 @@ const LevelCard: React.FC<{ level: Level; onMouseEnter: () => void }> = ({
     className="outline-jam-600 relative h-full w-full cursor-pointer overflow-hidden rounded-xl hover:outline-5"
     onMouseEnter={onMouseEnter}
   >
+    <div className="absolute z-1 m-5 flex gap-3">
+      {Array.from({ length: level.difficulty }, (_) => (
+        <div className="h-5 w-5 rounded-full bg-white" />
+      ))}
+    </div>
+    <div className="font-pixel bg-jam-600 absolute bottom-0 z-1 w-full p-1 text-center text-2xl text-white">
+      {level.category}
+    </div>
     <img
       className="h-full w-full scale-110 object-cover"
       src={level.image}
