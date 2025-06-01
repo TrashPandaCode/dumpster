@@ -1,6 +1,8 @@
+import { type EmblaOptionsType } from "embla-carousel";
 import { useRef, useState } from "react";
 import { NavLink } from "react-router";
 
+import EmblaCarousel from "~/lib/core/components/EmblaCarousel";
 import Footer from "~/lib/core/components/Footer";
 import Header from "~/lib/core/components/Header";
 import PlayButton from "~/lib/core/components/PlayButton";
@@ -11,7 +13,6 @@ const Home = () => {
   const [currentHoverCard, setCurrentHoverCard] = useState<Level>(
     LEVELS["move"]
   ); // Default to the first level
-  const CARDS = Object.values(LEVELS).slice(0, 6); // Get the first 6 levels for the cards
 
   const scrollTargetRef = useRef<HTMLDivElement>(null);
   const scrollToTarget = () => {
@@ -44,17 +45,8 @@ const Home = () => {
             <PlayButton />
           </div>
 
-          <div className="grid w-8/12 grid-cols-[repeat(auto-fit,minmax(200px,_1fr))] gap-4 overflow-hidden p-2">
-            {CARDS.map((level) => (
-              <LevelCard
-                key={level.name}
-                level={level}
-                onMouseEnter={() => {
-                  setCurrentHoverCard(level);
-                }}
-              />
-            ))}
-          </div>
+          <EmblaCarousel />
+
           <img
             className="pointer-events-none absolute z-[-1] h-full w-full scale-110 object-cover blur-md"
             src="/game/backgrounds/background_calculator.png"
@@ -113,30 +105,5 @@ const Home = () => {
     </>
   );
 };
-
-const LevelCard: React.FC<{ level: Level; onMouseEnter: () => void }> = ({
-  level,
-  onMouseEnter,
-}) => (
-  <NavLink
-    to={`/game/${level.slug}`}
-    className="outline-jam-600 relative h-full w-full cursor-pointer overflow-hidden rounded-xl hover:outline-5"
-    onMouseEnter={onMouseEnter}
-  >
-    <div className="absolute z-1 m-5 flex gap-3">
-      {Array.from({ length: level.difficulty }, (_) => (
-        <div className="h-5 w-5 rounded-full bg-white" />
-      ))}
-    </div>
-    <div className="font-pixel bg-jam-600 absolute bottom-0 z-1 w-full p-1 text-center text-2xl text-white">
-      {level.category}
-    </div>
-    <img
-      className="h-full w-full scale-110 object-cover"
-      src={level.image}
-      alt=""
-    />
-  </NavLink>
-);
 
 export default Home;
