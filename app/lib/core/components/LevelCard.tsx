@@ -1,5 +1,8 @@
 import { NavLink } from "react-router";
 
+import difficultyOneImage from "~/assets/D1.png";
+import difficultyTwoImage from "~/assets/D2.png";
+import difficultyThreeImage from "~/assets/D3.png";
 import type { Level } from "~/lib/game/core/levels";
 
 const LevelCard: React.FC<{ level: Level }> = ({ level }) => (
@@ -7,10 +10,43 @@ const LevelCard: React.FC<{ level: Level }> = ({ level }) => (
     to={`/game/${level.slug}`}
     className="group relative flex aspect-square cursor-pointer overflow-hidden rounded-xl"
   >
-    <div className="absolute z-1 m-2 flex gap-3">
-      {Array.from({ length: level.difficulty }, () => (
-        <div className="h-5 w-5 rounded-full bg-white" />
-      ))}
+    <div className="absolute z-1 m-2 flex items-center justify-center gap-[1px] rounded-full bg-white px-1 py-0.5">
+      <img
+        className="pixelate -mt-1 h-5 w-5"
+        src={difficultyOneImage}
+        alt="Difficulty 1"
+      />
+
+      {level.difficulty === 1 ? (
+        <img
+          className="pixelate -mt-1 h-5 w-5"
+          src={difficultyTwoImage}
+          alt="Difficulty 2"
+        />
+      ) : (
+        <img
+          className="pixelate -mt-1 h-5 w-5 opacity-40"
+          src={difficultyOneImage}
+          alt="Difficulty 1"
+        />
+      )}
+
+      {level.difficulty === 2 ? (
+        <img
+          className="pixelate -mt-1 h-5 w-5"
+          src={difficultyThreeImage}
+          alt="Difficulty 3"
+        />
+      ) : (
+        <img
+          className="pixelate -mt-1 h-5 w-5 opacity-40"
+          src={difficultyOneImage}
+          alt="Difficulty 1"
+        />
+      )}
+    </div>
+    <div className="absolute z-1 m-2 top-6 font-pixel text-[11px] flex items-center justify-center rounded-full bg-white px-2 py-0.5">
+      {level.category}
     </div>
     <div className="font-pixel bg-jam-600 absolute bottom-0 z-1 flex h-10 w-full items-center justify-center p-1 text-center text-2xl text-white transition-all duration-300 group-hover:h-12">
       {level.name}
