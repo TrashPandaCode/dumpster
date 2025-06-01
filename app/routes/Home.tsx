@@ -46,7 +46,7 @@ const Home = () => {
             <PlayButton />
           </div>
 
-          <Carousel className="w-full max-w-4xl">
+          <Carousel className="max-w-8/10">
             <CarouselContent className="-ml-1">
               {Object.values(LEVELS).map((level, index) => (
                 <CarouselItem key={index} className="basis-60 rounded-xl pl-1">
