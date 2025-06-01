@@ -1,19 +1,20 @@
-import { type EmblaOptionsType } from "embla-carousel";
-import { useRef, useState } from "react";
-import { NavLink } from "react-router";
+import { useRef } from "react";
 
-import EmblaCarousel from "~/lib/core/components/EmblaCarousel";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "~/lib/core/components/Carousel";
 import Footer from "~/lib/core/components/Footer";
 import Header from "~/lib/core/components/Header";
+import LevelCard from "~/lib/core/components/LevelCard";
 import PlayButton from "~/lib/core/components/PlayButton";
-import { LEVELS, type Level } from "~/lib/game/core/levels";
+import { LEVELS } from "~/lib/game/core/levels";
 import arrowDownIcon from "../assets/arrow_down.svg";
 
 const Home = () => {
-  const [currentHoverCard, setCurrentHoverCard] = useState<Level>(
-    LEVELS["move"]
-  ); // Default to the first level
-
   const scrollTargetRef = useRef<HTMLDivElement>(null);
   const scrollToTarget = () => {
     scrollTargetRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -45,7 +46,19 @@ const Home = () => {
             <PlayButton />
           </div>
 
-          <EmblaCarousel />
+          <Carousel className="w-full max-w-4xl">
+            <CarouselContent className="-ml-1">
+              {Object.values(LEVELS).map((level, index) => (
+                <CarouselItem key={index} className="basis-60 rounded-xl pl-1">
+                  <div className="p-1">
+                    <LevelCard level={level} />
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious />
+            <CarouselNext />
+          </Carousel>
 
           <img
             className="pointer-events-none absolute z-[-1] h-full w-full scale-110 object-cover blur-md"
