@@ -10,6 +10,7 @@ import { initializeIffies } from "../levels/iffies";
 import { initializeMove } from "../levels/move";
 import { initializePlayground } from "../levels/playground";
 import { initializeSitting } from "../levels/sitting";
+import { initializeTimeTransform } from "../levels/timeTransform";
 
 export type ConnectionAccess = "set" | "get" | "all";
 
@@ -136,7 +137,7 @@ export const LEVELS = {
     description:
       "This is the first level of the game, introducing basic mechanics.",
     dialog: [
-      "Whoa... what's this? Some kinda ancient scribble? Wait… it looks like an equation!",
+      "Whoa... what's this? Some kinda ancient scribble on that wall? Wait… it looks like an equation!",
       "Hmm… maybe it's a clue - maybe if I solve it, I'll figure out what this place is hiding",
       "Quick, human buddy - help me solve it before my brain melts into raccoon soup!!",
       "You! Yes you - my opposable-thumbed hero!",
@@ -154,11 +155,11 @@ export const LEVELS = {
     modifiableGameObjects: [
       {
         id: "raccoon",
-        connections: [{ label: "equationSolution", access: "set" }],
+        connections: [{ label: "solution", access: "set" }],
       },
     ],
     availableNodes: ["Display", "Value", "MathFloat", "ExportToGameobject"],
-    difficulty: 1,
+    difficulty: 0,
   },
   sitting: {
     slug: "sitting",
@@ -187,7 +188,7 @@ export const LEVELS = {
       },
     ],
     availableNodes: ["Display", "Value", "ExportToGameobject"],
-    difficulty: 1,
+    difficulty: 0,
   },
   iffies: {
     slug: "iffies",
