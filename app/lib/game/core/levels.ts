@@ -136,8 +136,12 @@ export const LEVELS = {
     description:
       "This is the first level of the game, introducing basic mechanics.",
     dialog: [
-      "This is the first level of the game. It introduces the basic mechanics and objectives.",
-      "You will learn how to create nodes and solve a simple equation.",
+      "Whoa... what's this? Some kinda ancient scribble? Wait… it looks like an equation!",
+      "Hmm… maybe it's a clue - maybe if I solve it, I'll figure out what this place is hiding",
+      "Quick, human buddy - help me solve it before my brain melts into raccoon soup!!",
+      "You! Yes you - my opposable-thumbed hero!",
+      "I bet we can solve it using the math nodes in your toolbox.",
+      "Once you've figured it out, plug the result into the 'solution' handle on the Export Node",
     ],
     goals: ["Create your first nodes.", "Solve the equation."],
     success: "You solved the equation!",
