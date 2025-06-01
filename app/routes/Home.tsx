@@ -56,8 +56,8 @@ const Home = () => {
                 </CarouselItem>
               ))}
             </CarouselContent>
-            <CarouselPrevious className="cursor-pointer transition-transform duration-200 hover:scale-105"/>
-            <CarouselNext className="cursor-pointer transition-transform duration-200 hover:scale-105"/>
+            <CarouselPrevious />
+            <CarouselNext />
           </Carousel>
 
           <img

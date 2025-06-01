@@ -38,7 +38,7 @@ const Button = React.forwardRef<
     <button
       ref={ref}
       className={classNames(
-        "flex items-center justify-center bg-white text-slate-800 hover:bg-slate-100 focus:ring-2 focus:ring-slate-500 focus:outline-none",
+        "flex items-center cursor-pointer transition-all duration-200 justify-center bg-white text-slate-800 hover:bg-slate-200 focus:ring-2 focus:ring-slate-500 focus:outline-none",
         className
       )}
       {...props}

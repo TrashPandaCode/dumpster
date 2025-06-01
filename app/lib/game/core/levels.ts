@@ -10,7 +10,6 @@ import { initializeIffies } from "../levels/iffies";
 import { initializeMove } from "../levels/move";
 import { initializePlayground } from "../levels/playground";
 import { initializeSitting } from "../levels/sitting";
-import { initializeTimeTransform } from "../levels/timeTransform";
 
 export type ConnectionAccess = "set" | "get" | "all";
 
@@ -137,8 +136,8 @@ export const LEVELS = {
     description:
       "This is the first level of the game, introducing basic mechanics.",
     dialog: [
-      "Whoa... what's this? Some kinda ancient scribble on that wall? Wait… it looks like an equation!",
-      "Hmm… maybe it's a clue - maybe if I solve it, I'll figure out what this place is hiding",
+      "Whoa... what's this on that wall? Some kinda ancient scribble? Wait... it looks like an equation!",
+      "Hmm... maybe it's a clue - maybe if I solve it, I'll figure out what this place is hiding",
       "Quick, human buddy - help me solve it before my brain melts into raccoon soup!!",
       "You! Yes you - my opposable-thumbed hero!",
       "I bet we can solve it using the math nodes in your toolbox.",
