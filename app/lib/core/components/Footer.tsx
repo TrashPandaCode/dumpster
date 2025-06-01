@@ -48,14 +48,14 @@ const Footer = () => {
       <div className="flex flex-col">
         <h1 className="pb-4 text-lg font-bold">Get Help</h1>
         <NavLink
-          to="/faqs"
+          to="/docs/faq"
           target="_blank"
           className="self-start text-sm hover:underline"
         >
-          FAQs
+          FAQ
         </NavLink>
         <a
-          href=""
+          href="/docs/getting-started"
           target="_blank"
           className="self-start text-sm hover:underline"
         >
