@@ -10,6 +10,7 @@ import { initializeIffies } from "../levels/iffies";
 import { initializeMove } from "../levels/move";
 import { initializePlayground } from "../levels/playground";
 import { initializeSitting } from "../levels/sitting";
+import { initializeTimeTransform } from "../levels/timeTransform";
 
 export type ConnectionAccess = "set" | "get" | "all";
 
@@ -249,6 +250,42 @@ export const LEVELS = {
       "ImportFromGameobject",
       "Switch",
       "ExportToGameobject",
+    ],
+    difficulty: 1,
+  },
+  timeTransform: {
+    slug: "timeTransform",
+    name: "Time Transform",
+    description:
+      "This is a level of the main game, introducing time-based transformations.",
+    dialog: [
+      "In this level, you will learn how time transformations can affect game objects.",
+    ],
+    goals: ["Do something!"],
+    success: "Wow!",
+    category: "Main Game",
+    image: alleyOne,
+    nodes: [],
+    edges: [],
+    initialState: initializeTimeTransform,
+    hints: [],
+    modifiableGameObjects: [
+      {
+        id: "raccoon",
+        connections: [
+          { label: "xpos", access: "set" },
+          { label: "ypos", access: "set" },
+        ],
+      },
+    ],
+    availableNodes: [
+      "Display",
+      "Value",
+      "MathFloat",
+      "ImportFromGameobject",
+      "Switch",
+      "ExportToGameobject",
+      "Time",
     ],
     difficulty: 1,
   },

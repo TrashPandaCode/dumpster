@@ -1,0 +1,35 @@
+import { useDataStore } from "~/lib/zustand/data";
+import { useGameStore } from "~/lib/zustand/game";
+import { BACKGROUND_OFFSET } from "../constants";
+import { getKaplayCtx } from "../core/kaplayCtx";
+import {
+  addBackgrounds,
+  addGameobjects,
+  animPlayer,
+} from "../utils/gameHelper";
+
+export const initializeTimeTransform = () => {
+  const { k, game } = getKaplayCtx();
+
+  addBackgrounds(["background1"]);
+
+  const { raccoon } = addGameobjects(["raccoon"]);
+  k.setCamPos(0, -BACKGROUND_OFFSET);
+  k.setCamScale(k.height() / 947);
+
+  let lastTime = 0;
+
+  game.onUpdate(() => {
+    if (useGameStore.getState().isPaused) return;
+
+    const currentTime = k.time();
+    const deltaTime = currentTime - lastTime;
+    lastTime = currentTime;
+
+    animPlayer(raccoon!, k, "Loop", {
+      minX: -500,
+      maxX: 500,
+      speed: 100 * deltaTime,
+    });
+  });
+};
