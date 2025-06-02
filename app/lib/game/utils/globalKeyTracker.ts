@@ -3,7 +3,7 @@ const keysPressed = new Set<string>();
 const keysReleased = new Set<string>();
 
 //Set of default shortcuts that we want to prevent default behavior for
-const defaultShortcuts = new Set<string>(["Control+d", "Control+ "]);
+const defaultShortcuts = new Set<string>(["Control+d", "Control+ , Escape"]);
 const shortcutListeners = new Map<string, Set<(e: KeyboardEvent) => void>>();
 
 let initialized = false;
@@ -29,7 +29,15 @@ function getShortcutString(e: KeyboardEvent): string {
   if (e.altKey) parts.push("Alt");
   if (e.metaKey) parts.push("Meta");
   if (e.shiftKey) parts.push("Shift");
-  parts.push(e.key.toLowerCase());
+
+  // Spezielle Tasten behalten ihre ursprüngliche Schreibweise
+  const specialKeys = ["Escape", "Enter", "Tab", "Backspace", "Delete"];
+  if (specialKeys.includes(e.key)) {
+    parts.push(e.key);
+  } else {
+    parts.push(e.key.toLowerCase());
+  }
+
   return parts.join("+");
 }
 
