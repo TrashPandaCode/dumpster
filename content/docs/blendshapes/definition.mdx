@@ -1,0 +1,45 @@
+---
+title: Blendshapes
+---
+
+# Blendshapes
+
+**Blendshapes** allow a base mesh to be morphed or interpolated into a deformed mesh (*blendshape target*). They are often used for complex animations—such as facial expressions—that would be too labor-intensive to animate using keyframes alone.
+
+* **Blendshape Target**: A set of vertices, typically representing a polygon mesh. The vertex count between the base mesh and each blendshape target must be the same.
+* **Blendshape Model**: A set of blendshape targets.
+
+Blendshape models linearly interpolate between different blendshape targets.
+
+To do this, we construct a **blendshape matrix** $B$, where each column contains all vertex positions of a target. A column is referred to as a **blendshape vector** $b_j$.
+
+$$
+B = 
+\begin{pmatrix}
+x_{1, 0} & \cdots & x_{1, n} \\
+y_{1, 0} & \cdots & y_{1, n} \\
+z_{1, 0} & \cdots & z_{1, n} \\
+\vdots & & \vdots \\
+x_{m, 0} & \cdots & x_{m, n} \\
+y_{m, 0} & \cdots & y_{m, n} \\
+z_{m, 0} & \cdots & z_{m, n}
+\end{pmatrix}
+\quad
+\begin{aligned}
+&\text{where } m = \text{number of vertices in the mesh} \\
+&\text{and } n = \text{number of blendshape targets}
+\end{aligned}
+$$
+
+We can now compute a **new mesh** using a weighted sum over the blendshape vectors:
+
+$$
+f = \sum_{k=0}^{n} w_k b_k \in \mathbb{R}^{3m}
+$$
+
+Here, $w = (w_0, \dots, w_n)^T \in \mathbb{R}^{n+1}$ is the **weight vector**.
+This can also be written as a matrix operation:
+
+$$
+f = B w
+$$

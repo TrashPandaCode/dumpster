@@ -11,7 +11,7 @@ import { getInput } from "../../utils";
 import { IN_HANDLE_1, IN_HANDLE_2, OUT_HANDLE_1 } from "../constants";
 import { COMPUTE, INPUTS, TYPES } from "./types";
 
-const MathFloat = memo(({ id, data }: { id: string; data: any }) => {
+const Math = memo(({ id, data }: { id: string; data: any }) => {
   const { updateNodeData } = useReactFlow();
 
   const computeType = useRef(data.initialComputeType ?? "Addition");
@@ -57,11 +57,7 @@ const MathFloat = memo(({ id, data }: { id: string; data: any }) => {
 
   return (
     <div className="min-w-3xs">
-      <NodeContent
-        label={computeType.current}
-        type="float"
-        docsName="mathfloat"
-      >
+      <NodeContent label={computeType.current} type="math" docsName="math">
         <SelectDropDown
           items={TYPES}
           setSelected={setComputeType}
@@ -104,4 +100,4 @@ const MathFloat = memo(({ id, data }: { id: string; data: any }) => {
   );
 });
 
-export default MathFloat;
+export default Math;

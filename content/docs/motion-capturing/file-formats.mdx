@@ -1,0 +1,33 @@
+---
+title: File Formats
+---
+
+## File Formats
+
+Common formats include **C3D, ASF/ACM, and BVA**.
+The most widely used format is **BVH** (BioVision Hierarchical file format), which stores data in ASCII format.
+
+Keywords in a BVH file include:
+
+* `HIERARCHY`
+* `ROOT`
+* `OFFSET`
+* `CHANNELS`
+* `JOINT`
+
+These are used to represent the skeleton's topology hierarchically.
+
+The second part of the file (`MOTION`) stores the animation data, which are linked to joints via the `CHANNELS` keyword.
+
+A common challenge in BVH is the **order of rotation multiplications** (extrinsic vs. intrinsic).
+
+### Advantages of BVH:
+
+* Easy to read and edit due to plain text format
+
+### Disadvantages:
+
+* Skeletal geometry only defines relative joint positions
+* No default pose with parallel joints
+* No formal standardization
+

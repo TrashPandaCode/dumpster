@@ -1,0 +1,14 @@
+---
+title: Time Axes
+---
+
+## Time Axes
+
+In animation systems, we work with two different time axes that can run independently:
+
+* **Physical/real-world time** is the time as we perceive it, measured as *real-time* by computer hardware. It cannot be paused or accelerated.
+* **Game time** exists only within the animation system. It can be paused, reset, or sped up.
+
+Both can be represented as real numbers $t \in \mathbb{R}$.
+
+We can convert real-time into **animation time (local time)** using functions known as *animation clocks* or *global clocks*.

@@ -11,8 +11,8 @@
         "path": "/docs/nodes/display"
       },
       {
-        "title": "Math Float",
-        "path": "/docs/nodes/mathfloat"
+        "title": "Math",
+        "path": "/docs/nodes/math"
       },
       {
         "title": "Export To Gameobject",
@@ -45,15 +45,299 @@
       {
         "title": "Switch",
         "path": "/docs/nodes/switch"
+      },
+      {
+        "title": "Group",
+        "path": "/docs/nodes/group"
       }
     ]
   },
   {
-    "title": "Animations",
+    "title": "FAQ",
+    "path": "/docs/faq"
+  },
+  {
+    "title": "Hierarchies",
     "items": [
       {
-        "title": "Motion Capture",
-        "path": "/docs/animations/motion-capture"
+        "title": "Scene API",
+        "path": "/docs/hierarchies/scene-api"
+      },
+      {
+        "title": "Coordinate Systems",
+        "path": "/docs/hierarchies/coordinate-systems"
+      },
+      {
+        "title": "Transformation Hierarchies",
+        "path": "/docs/hierarchies/transformation-hierarchies"
+      },
+      {
+        "title": "Scene Graphs",
+        "path": "/docs/hierarchies/scene-graphs"
+      }
+    ]
+  },
+  {
+    "title": "Animation Systems",
+    "path": "/docs/animation-systems"
+  },
+  {
+    "title": "Time and Game Loop",
+    "items": [
+      {
+        "title": "Time Axes",
+        "path": "/docs/time-and-game-loop/time-axes"
+      },
+      {
+        "title": "Global and Local Time Axes",
+        "path": "/docs/time-and-game-loop/global-and-local-time-axes"
+      },
+      {
+        "title": "Frames",
+        "path": "/docs/time-and-game-loop/frames"
+      },
+      {
+        "title": "Game Loop",
+        "path": "/docs/time-and-game-loop/game-loop"
+      }
+    ]
+  },
+  {
+    "title": "Motion in Space",
+    "items": [
+      {
+        "title": "Parametrized Curve",
+        "path": "/docs/motion-in-space/parametrized-curve"
+      },
+      {
+        "title": "Trace and Graph of Curves",
+        "path": "/docs/motion-in-space/trace-and-graph-of-curves"
+      },
+      {
+        "title": "Velocity and Acceleration",
+        "path": "/docs/motion-in-space/velocity-and-acceleration"
+      },
+      {
+        "title": "Parametric vs. Geometric Continuity",
+        "path": "/docs/motion-in-space/parametric-geometric-continuity"
+      },
+      {
+        "title": "Arc Length",
+        "path": "/docs/motion-in-space/arc-length"
+      }
+    ]
+  },
+  {
+    "title": "Control of Time, Speed, and Distance Traveled",
+    "items": [
+      {
+        "title": "Speed Control",
+        "path": "/docs/control-of-time-speed-distance/speed-control"
+      },
+      {
+        "title": "Reparameterization by Arc Length",
+        "path": "/docs/control-of-time-speed-distance/reparameterization-by-arc-length"
+      },
+      {
+        "title": "Ease-In and Ease-Out",
+        "path": "/docs/control-of-time-speed-distance/ease-in-ease-out"
+      },
+      {
+        "title": "Distance Control",
+        "path": "/docs/control-of-time-speed-distance/distance-control"
+      }
+    ]
+  },
+  {
+    "title": "Interpolation",
+    "items": [
+      {
+        "title": "Definition",
+        "path": "/docs/interpolation/definition"
+      },
+      {
+        "title": "Bézier Curves",
+        "path": "/docs/interpolation/bezier-curves"
+      },
+      {
+        "title": "The de Casteljau Algorithm",
+        "path": "/docs/interpolation/de-casteljau-algorithm"
+      },
+      {
+        "title": "Composite Bézier Curves",
+        "path": "/docs/interpolation/composite-bezier-curves"
+      }
+    ]
+  },
+  {
+    "title": "Rotation",
+    "items": [
+      {
+        "title": "Rotation Matrices",
+        "path": "/docs/rotation/rotation-matrices"
+      },
+      {
+        "title": "Axis-Angle Rotation",
+        "path": "/docs/rotation/axis-angle-rotation"
+      },
+      {
+        "title": "Euler Angles (Three Rotation Matrices)",
+        "path": "/docs/rotation/euler-angles"
+      },
+      {
+        "title": "Quaternions",
+        "path": "/docs/rotation/quaternions"
+      }
+    ]
+  },
+  {
+    "title": "Kinematics",
+    "items": [
+      {
+        "title": "Joint Structures",
+        "path": "/docs/kinematics/joint-structures"
+      },
+      {
+        "title": "Forward Kinematics",
+        "path": "/docs/kinematics/forward-kinematics"
+      },
+      {
+        "title": "Inverse Kinematics",
+        "path": "/docs/kinematics/inverse-kinematics"
+      },
+      {
+        "title": "Cyclic Coordinate Descent (CCD)",
+        "path": "/docs/kinematics/ccd"
+      }
+    ]
+  },
+  {
+    "title": "Skinning",
+    "items": [
+      {
+        "title": "Definition",
+        "path": "/docs/skinning/definition"
+      },
+      {
+        "title": "Rigid Binding",
+        "path": "/docs/skinning/rigid-binding"
+      },
+      {
+        "title": "Smooth Binding",
+        "path": "/docs/skinning/smooth-binding"
+      }
+    ]
+  },
+  {
+    "title": "Blendshapes",
+    "items": [
+      {
+        "title": "Definition",
+        "path": "/docs/blendshapes/definition"
+      },
+      {
+        "title": "Delta Blendshapes",
+        "path": "/docs/blendshapes/delta-blendshapes"
+      },
+      {
+        "title": "Animation and User Interface",
+        "path": "/docs/blendshapes/animation-ui"
+      }
+    ]
+  },
+  {
+    "title": "Motion Capturing",
+    "items": [
+      {
+        "title": "Definition",
+        "path": "/docs/motion-capturing/definition"
+      },
+      {
+        "title": "Classification of Technologies",
+        "path": "/docs/motion-capturing/classification-of-technologies"
+      },
+      {
+        "title": "Optical Systems",
+        "path": "/docs/motion-capturing/optical-systems"
+      },
+      {
+        "title": "Marker Position Reconstruction",
+        "path": "/docs/motion-capturing/marker-position-reconstruction"
+      },
+      {
+        "title": "Data Cleanup and Post-Processing",
+        "path": "/docs/motion-capturing/data-cleanup"
+      },
+      {
+        "title": "Using Motion Capture Data",
+        "path": "/docs/motion-capturing/using-data"
+      },
+      {
+        "title": "File Formats",
+        "path": "/docs/motion-capturing/file-formats"
+      }
+    ]
+  },
+  {
+    "title": "Editing Motion Data",
+    "items": [
+      {
+        "title": "Definition",
+        "path": "/docs/editing-motion-data/definition"
+      },
+      {
+        "title": "Blending and Transitions",
+        "path": "/docs/editing-motion-data/blending-transitions"
+      },
+      {
+        "title": "Motion Warping",
+        "path": "/docs/editing-motion-data/motion-warping"
+      }
+    ]
+  },
+  {
+    "title": "Physically Based Animation",
+    "items": [
+      {
+        "title": "Dynamics of a Point Mass",
+        "path": "/docs/physically-based-animation/dynamics-of-a-point-mass"
+      },
+      {
+        "title": "Systems of Mass Points",
+        "path": "/docs/physically-based-animation/systems-of-mass-points"
+      },
+      {
+        "title": "Numerical Solution Methods",
+        "path": "/docs/physically-based-animation/numerical-solution-methods"
+      }
+    ]
+  },
+  {
+    "title": "Particle Systems",
+    "items": [
+      {
+        "title": "Definition",
+        "path": "/docs/particle-systems/definition"
+      },
+      {
+        "title": "Structure of a Particle System",
+        "path": "/docs/particle-systems/structure"
+      },
+      {
+        "title": "Particle Properties",
+        "path": "/docs/particle-systems/particle-properties"
+      },
+      {
+        "title": "Emitters",
+        "path": "/docs/particle-systems/emitters"
+      },
+      {
+        "title": "Dynamics",
+        "path": "/docs/particle-systems/dynamics"
+      },
+      {
+        "title": "Rendering",
+        "path": "/docs/particle-systems/rendering"
       }
     ]
   }

@@ -1,0 +1,91 @@
+---
+title: Quaternions and Rotation
+---
+
+## Quaternions and Rotation
+
+**Quaternions** extend the real number system. Every quaternion can be uniquely written as:
+
+$$
+\underbrace{w}_{\text{real part}} + \underbrace{xi + yj + zk}_{\text{imaginary part}}
+$$
+
+with real numbers $w, x, y, z$. The basis vectors $1, i, j, k$ follow the rule: $i^2 = j^2 = k^2 = ijk = -1$
+
+Often written as:
+
+$$
+q = (w, \mathbf{v}) \quad \text{with} \quad \mathbf{v} = (x, y, z)
+$$
+
+### Quaternion Operations
+
+* Treat them as 4D vectors, but with special multiplication rules.
+* The **conjugate** of a quaternion is:
+
+  $$
+  q^* = (w, -x, -y, -z)
+  $$
+* The **norm** (magnitude) is the Euclidean norm.
+* A **unit quaternion** satisfies $|q| = 1$; these form the **3-sphere**:
+
+  $$
+  S^3 = \{ q \in \mathbb{H} : |q| = 1 \}
+  $$
+* Alternative representation:
+
+  $$
+  q = (\cos \alpha, \sin \alpha \cdot \hat{v}) \quad \text{with} \quad \hat{v} = \frac{v}{|v|}
+  $$
+* The inverse of a quaternion is:
+
+  $$
+  q^{-1} = \frac{q^*}{|q|}
+  $$
+
+  For unit quaternions: $q^{-1} = q^*$, and $q q^* = 1$
+
+### Representing Rotations with Quaternions
+
+Any 3D rotation can be represented by a unit quaternion.
+
+Let $q = (\cos \alpha, \sin \alpha \cdot u) \in S^3$ with unit vector $u \in \mathbb{R}^3$. Define:
+
+* $h: \mathbb{R}^3 \rightarrow \mathbb{H}, \quad h(v) = (0, v)$
+* $h^{-1}(q) = v$
+
+Then the rotation of a vector $v$ is:
+
+$$
+R_q(v) = h^{-1}(q \cdot h(v) \cdot q^*)
+$$
+
+This is a rotation by angle $2\alpha$ around axis $u$. So,
+
+$$
+R_q(v) = R_u(2\alpha) \cdot v \quad \text{(as a matrix without quaternions)}
+$$
+
+## Interpolation
+
+**Quaternions are well-suited for interpolation.**
+
+### Spherical Linear Interpolation (SLERP)
+
+* $\text{slerp} : [0, 1] \rightarrow S^3$
+* Interpolates along the **great arc** between two unit quaternions $p$ and $q$
+* Moves with **constant speed** along the shortest path
+
+### Spherical Quadrangle Interpolation (SQUAD)
+
+* SLERP works well between two quaternions
+* For **more than two**, we need a more advanced method:
+
+  * Between two quaternions $q_i$ and $q_{i+1}$, introduce helper quaternions $a_i$ and $a_{i+1}$
+  * Set $a_0 = q_0$ and $a_n = q_n$
+
+$$
+\text{squad}(t; q_i, q_{i+1}, a_i, a_{i+1}) = \text{slerp}(2t(1-t), \text{slerp}(t, q_i, q_{i+1}), \text{slerp}(t, a_i, a_{i+1}))
+$$
+
+This provides **smooth, continuous rotations** over longer sequences.

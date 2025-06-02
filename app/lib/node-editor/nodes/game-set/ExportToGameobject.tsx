@@ -2,6 +2,7 @@ import { CrossCircledIcon } from "@radix-ui/react-icons";
 import { Position, useReactFlow } from "@xyflow/react";
 import { memo, useEffect, useMemo, useRef } from "react";
 
+import type { GameObject } from "~/lib/game/constants";
 import { LEVELS } from "~/lib/game/core/levels";
 import { useDataStore } from "~/lib/zustand/data";
 import { useGameStore } from "~/lib/zustand/game";
@@ -14,7 +15,6 @@ import NodeContent from "../../node-components/NodeContent";
 import type { nodeData, nodeInputs } from "../../node-store/node-store";
 import { getHandleIntersection, getInput } from "../../utils";
 import { IN_HANDLE_1 } from "../constants";
-import type { GameObject } from "~/lib/game/constants";
 
 const ExportToGameobject = memo(
   ({ id, data, selected }: { id: string; data: any; selected: boolean }) => {
@@ -125,7 +125,7 @@ const ExportToGameobject = memo(
               )}
             </div>
           ))}
-          {selectedGameObjects.length && (
+          {!!selectedGameObjects.length && (
             <AddHandle
               addHandle={(id, label) => addHandle(id as GameObject, label)}
               handleIdentifiers={selectedGameObjects}

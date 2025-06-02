@@ -3,7 +3,7 @@ import { create } from "zustand";
 
 import { toast } from "../editor-components/Toast";
 import { connectionToEdgeId } from "../utils";
-import { useNodeSetterStore } from "./node-setter";
+import { useFlowStore } from "./flow-store";
 
 export type LoopStatus = {
   // just externally manage loops (from the compute Map function) using this object to which the end node can write to (and start node read from)
@@ -95,6 +95,7 @@ interface NodeStoreState {
   removeEdge: (edgeId: string) => void;
   compute: () => void;
   debugPrint: () => void;
+  reset: () => void;
 }
 
 export const useNodeStore = create<NodeStoreState>((set, get) => ({
@@ -185,6 +186,12 @@ export const useNodeStore = create<NodeStoreState>((set, get) => ({
       console.log(node.type, node);
     });
   },
+  reset: () =>
+    set({
+      nodeMap: new Map<string, AppNode>(),
+      sortedNodes: [],
+      mapErrors: { cycle: false },
+    }),
 }));
 
 // edge source, edge source handle, edge target, edge target handle
@@ -248,7 +255,7 @@ function computeMap(sortedNodes: AppNode[]) {
 
 function orderMap(mapErrors: MapErrors, map: Map<string, AppNode>): AppNode[] {
   mapErrors.cycle = false;
-  useNodeSetterStore.getState().resetHighlight("cycle");
+  useFlowStore.getState().resetHighlight("cycle");
   // remove all marks
   map.forEach((node) => {
     node.mark = null;
@@ -271,7 +278,7 @@ function visit(node: AppNode, sortedMap: AppNode[], mapErrors: MapErrors) {
     return;
   }
   if (node.mark == Mark.Temporary) {
-    useNodeSetterStore.getState().highlightNode(node.nodeId, "cycle", "red");
+    useFlowStore.getState().highlightNode(node.nodeId, "cycle", "red");
     toast({
       title: "Cycle!",
       description:

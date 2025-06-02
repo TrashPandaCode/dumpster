@@ -17,7 +17,7 @@ import {
 } from "../constants";
 import { getKaplayCtx } from "../core/kaplayCtx";
 
-type Background = "background1";
+type Background = "background1" | "backgroundCalc";
 type PlayerType = GameObj<
   | PosComp
   | ScaleComp
@@ -29,7 +29,12 @@ type PlayerType = GameObj<
 
 interface GameObjectInstances {
   raccoon?: PlayerType;
-  trashcan?: GameObj<PosComp | ScaleComp | SpriteComp | AnchorComp | ZComp>;
+  trashcanEmpty?: GameObj<
+    PosComp | ScaleComp | SpriteComp | AnchorComp | ZComp
+  >;
+  trashcanFilled?: GameObj<
+    PosComp | ScaleComp | SpriteComp | AnchorComp | ZComp
+  >;
   goalFlag?: GameObj<PosComp | ScaleComp | SpriteComp | AnchorComp | ZComp>;
 }
 
@@ -55,7 +60,9 @@ export function addGameobjects(gameobjects: GameObject[]) {
       k.pos(0, 0),
       k.scale(RACCOON_SCALE),
       k.anchor("bot"),
+      k.area(),
       k.z(2),
+      "raccoon",
       k.state("idle", ["idle", "walkLeft", "walkRight"]),
     ]);
     raccoon.onStateEnter("idle", () => {
@@ -71,7 +78,10 @@ export function addGameobjects(gameobjects: GameObject[]) {
     });
     instances.raccoon = raccoon;
   }
-  if (gameobjects.includes("trashcan")) {
+  if (
+    gameobjects.includes("trashcanEmpty") ||
+    gameobjects.includes("trashcanFilled")
+  ) {
     k.loadSprite("trashcan", "/game/sprites/trashcan_spritesheet.png", {
       sliceX: 2,
       sliceY: 1,
@@ -80,16 +90,34 @@ export function addGameobjects(gameobjects: GameObject[]) {
         filled: { from: 1, to: 1, loop: false },
       },
     });
-    const trashcan = game.add([
+  }
+  if (gameobjects.includes("trashcanEmpty")) {
+    const trashcanEmpty = game.add([
+      k.sprite("trashcan", {
+        anim: "empty",
+      }),
+      k.anchor("bot"),
+      k.pos(0, 0),
+      k.scale(RACCOON_SCALE),
+      k.area(),
+      k.z(1),
+      "trashcanEmpty",
+    ]);
+    instances.trashcanEmpty = trashcanEmpty;
+  }
+  if (gameobjects.includes("trashcanFilled")) {
+    const trashcanFilled = game.add([
       k.sprite("trashcan", {
         anim: "filled",
       }),
       k.anchor("bot"),
       k.pos(0, 0),
       k.scale(5),
+      k.area(),
       k.z(1),
+      "trashcanFilled",
     ]);
-    instances.trashcan = trashcan;
+    instances.trashcanFilled = trashcanFilled;
   }
   if (gameobjects.includes("goalFlag")) {
     k.loadSprite("flag", "/game/sprites/flag_spritesheet.png", {
@@ -105,8 +133,9 @@ export function addGameobjects(gameobjects: GameObject[]) {
         anim: "default",
       }),
       k.anchor("bot"),
-      k.pos(200, 0),
-      k.scale(5),
+      k.pos(0, 0),
+      k.area(),
+      k.scale(RACCOON_SCALE),
       k.z(1),
     ]);
     instances.goalFlag = flag;
@@ -114,47 +143,66 @@ export function addGameobjects(gameobjects: GameObject[]) {
   return instances;
 }
 
-export function addBackgrounds(backgrounds: Background[]) {
+export function addBackgrounds(
+  backgrounds: Background[],
+  lightOffset: number = 0
+) {
   const { k, game } = getKaplayCtx();
 
   if (backgrounds.includes("background1")) {
-    k.loadSprite("background1", "/game/backgrounds/background1.png");
-    k.loadSprite("background1light", "/game/backgrounds/background1_light.png");
-
-    game.add([
-      k.sprite("background1"),
-      k.anchor("bot"),
-      k.scale(k.height() * (1 / 180)),
-      k.pos(0, BACKGROUND_OFFSET),
-      k.z(0),
-    ]);
-
-    game.add([
-      k.sprite("background1light"),
-      k.anchor("bot"),
-      k.scale(k.height() * (1 / 180)),
-      k.pos(k.width() / 2 + 200, BACKGROUND_OFFSET),
-      k.z(100),
-      k.opacity(0.75),
-    ]);
+    k.loadSprite("background", "/game/backgrounds/background1.png");
+    k.loadSprite("backgroundLight", "/game/backgrounds/background1_light.png");
   }
+  if (backgrounds.includes("backgroundCalc")) {
+    k.loadSprite("background", "/game/backgrounds/background_calculator.png");
+    k.loadSprite("backgroundLight", "/game/backgrounds/background1_light.png");
+  }
+
+  game.add([
+    k.sprite("background"),
+    k.anchor("center"),
+    k.scale(RACCOON_SCALE),
+    k.pos(0, -BACKGROUND_OFFSET),
+    k.z(0),
+  ]);
+
+  game.add([
+    k.sprite("backgroundLight"),
+    k.anchor("center"),
+    k.scale(RACCOON_SCALE),
+    k.pos(lightOffset, -BACKGROUND_OFFSET),
+    k.z(100),
+    k.opacity(0.75),
+  ]);
 }
 
-export function animPlayer(player: PlayerType, k: KAPLAYCtx) {
+export function animPlayer(
+  player: PlayerType,
+  k: KAPLAYCtx,
+  movementMode: "Node" | "Input" | "Loop" = "Node",
+  loopConfig?: { minX: number; maxX: number; speed: number } // For Loop movement mode
+) {
   const lastX = player.pos.x;
 
   //Move
-  player.pos.x =
-    useDataStore.getState().gameObjects.get("raccoon")?.get("xpos")?.value ?? 0;
-  player.pos.y =
-    useDataStore.getState().gameObjects.get("raccoon")?.get("ypos")?.value ?? 0;
-
+  if (movementMode === "Node") {
+    player.pos.x =
+      useDataStore.getState().gameObjects.get("raccoon")?.get("xpos")?.value ??
+      0;
+    player.pos.y =
+      useDataStore.getState().gameObjects.get("raccoon")?.get("ypos")?.value ??
+      0;
+  } else if (movementMode === "Input") {
+    if (k.isKeyDown("left")) player.pos.x -= 5;
+    if (k.isKeyDown("right")) player.pos.x += 5;
+  } else if (movementMode === "Loop" && loopConfig) {
+    player.pos.x += loopConfig.speed;
+    if (player.pos.x > loopConfig.maxX) {
+      player.pos.x = loopConfig.minX;
+    }
+  }
   k.setCamPos(
-    k.lerp(
-      k.getCamPos(),
-      player.pos.add(0, -k.height() / 2 + BACKGROUND_OFFSET),
-      0.1
-    )
+    k.lerp(k.getCamPos(), k.vec2(player.pos.x, -BACKGROUND_OFFSET), 0.1)
   );
 
   //Handle anim change

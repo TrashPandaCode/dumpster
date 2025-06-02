@@ -10,6 +10,7 @@ import "@xyflow/react/dist/style.css";
 import { useRef, useState } from "react";
 import { Toaster } from "sonner";
 
+import CenterPanel from "./editor-components/CenterPanel";
 import LeftPanel from "./editor-components/LeftPanel";
 import NodeContextMenu from "./editor-components/NodeContextMenu";
 import PaneContextMenu from "./editor-components/PaneContextMenu";
@@ -22,6 +23,7 @@ import { useFlow } from "./hooks/useFlow";
 import { useMouseTrackingInPane } from "./hooks/useGlobalMouseTracker";
 import { useNodeAddMenuStore } from "./node-store/node-add-menu-store";
 import { nodeTypes } from "./nodes/node-types";
+import { edgeTypes } from "./edges/edge-types";
 
 const Editor = () => {
   const [rfInstance, setRfInstance] = useState<ReactFlowInstance>();
@@ -57,6 +59,7 @@ const Editor = () => {
         id="node-editor"
         onInit={setRfInstance}
         nodeTypes={nodeTypes}
+        edgeTypes={edgeTypes}
         nodes={nodes}
         edges={edges}
         onNodesChange={onNodesChange}
@@ -72,9 +75,13 @@ const Editor = () => {
         deleteKeyCode={["Delete", "Backspace"]}
         onNodeDragStop={onNodeDragStop}
         ref={containerRef}
+        defaultEdgeOptions={{
+          type: "Deletable"
+        }}
       >
         <Background bgColor="#14141d" color="#a7abc2" />
         <RightPanel rfInstance={rfInstance} />
+        <CenterPanel />
         <LeftPanel />
         <ShortcutManager />
         <Toaster />

@@ -10,7 +10,7 @@ export const MAIN_LOOP_CONNECTOR: string = "main-loop-connector";
 export const LOOP_CONNECTOR: string = "loop-connector";
 
 // standard group sizes
-export const GROUP_SIZE = {
+export const INITIAL_GROUP_SIZE = {
   width: 250,
   height: 200,
 };

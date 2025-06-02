@@ -10,9 +10,10 @@ import { v4 as uuidv4 } from "uuid";
 import type { GameObject } from "../game/constants";
 import type { ConnectionAccess } from "../game/core/levels";
 import type { GameObjectsData } from "../zustand/data";
+import { useLoopStore } from "./node-store/loop-store";
 import type { nodeInputs } from "./node-store/node-store";
 import {
-  GROUP_SIZE,
+  INITIAL_GROUP_SIZE,
   LOOP_CONNECTOR,
   MAIN_LOOP_CONNECTOR,
 } from "./nodes/constants";
@@ -322,17 +323,11 @@ export function connectionToEdgeId(edge: Connection): string {
 }
 
 export function createForLoop(
-  addNodes: (payload: Node | Node[]) => void,
-  x: number,
-  y: number,
-  addEdges: (payload: Edge | Edge[]) => void,
-  screenToFlowPosition?: (
-    clientPosition: XYPosition,
-    options?: {
-      snapToGrid: boolean;
-    }
-  ) => XYPosition,
-  parentLoopId?: string
+  startPos: XYPosition,
+  endPos: XYPosition,
+  parentLoopId?: string,
+  startParentId?: string,
+  endParentId?: string
 ) {
   const startId = uuidv4();
   const endId = uuidv4();
@@ -343,55 +338,65 @@ export function createForLoop(
     target: endId,
     targetHandle: MAIN_LOOP_CONNECTOR,
   });
-  addNodes([
-    {
-      id: startId,
-      type: "ForStart",
-      position: screenToFlowPosition
-        ? screenToFlowPosition({ x, y })
-        : { x, y },
-      data: { loopId, parentLoopId },
+  return {
+    id: loopId,
+    startId,
+    endId,
+    nodes: [
+      {
+        id: startId,
+        type: "ForStart",
+        parentId: startParentId,
+        position: startPos,
+        data: { loopId, parentLoopId, loopStart: true, loopEnd: false },
+        selectable: true,
+        selected: false,
+        draggable: true,
+        dragging: false,
+      },
+      {
+        id: endId,
+        type: "ForEnd",
+        parentId: endParentId ?? startParentId, // fallback to startParentId if endParentId is not provided
+        position: endPos,
+        data: { loopId, parentLoopId, loopStart: false, loopEnd: true },
+        selectable: true,
+        selected: false,
+        draggable: true,
+        dragging: false,
+      },
+    ],
+    mainConnectorEdge: {
+      id: edgeId,
+      type: "straight",
+      source: startId,
+      target: endId,
+      sourceHandle: MAIN_LOOP_CONNECTOR,
+      targetHandle: MAIN_LOOP_CONNECTOR,
+      animated: true,
+      selectable: false,
+      style: {
+        strokeWidth: 2,
+        stroke: uuidToColor(loopId),
+      },
     },
-    {
-      id: endId,
-      type: "ForEnd",
-      position: screenToFlowPosition
-        ? screenToFlowPosition({ x: x + 300, y })
-        : { x: x + 300, y },
-      data: { loopId, parentLoopId },
-    },
-  ]);
-  addEdges({
-    id: edgeId,
-    type: "straight",
-    source: startId,
-    target: endId,
-    sourceHandle: MAIN_LOOP_CONNECTOR,
-    targetHandle: MAIN_LOOP_CONNECTOR,
-    animated: true,
-    selectable: false,
-    style: {
-      strokeWidth: 2,
-      stroke: uuidToColor(loopId),
-    },
-  });
-  return [startId, endId];
+  } as {
+    id: string;
+    startId: string;
+    endId: string;
+    nodes: Node[];
+    mainConnectorEdge: Edge;
+  };
 }
 
 // Helper function to connect nodes to loop connectors
-export function connectNodesToLoop(
-  getNodes: () => Node[],
-  addEdges: (payload: Edge | Edge[]) => void,
-  nodeIds: string[],
-  loopId: string
-) {
-  const loopNodes = getNodes().filter((node) => node.data.loopId === loopId);
-
+export function connectNodesToLoop(parentNodes: Node[], nodeIds: string[]) {
+  const newEdges: Edge[] = [];
   nodeIds.forEach((nodeId) => {
-    loopNodes.forEach((loopNode) => {
-      const isSource = loopNode.data.loopStart;
-      const sourceId = isSource ? loopNode.id : nodeId;
-      const targetId = isSource ? nodeId : loopNode.id;
+    parentNodes.forEach((parentNode) => {
+      const isSource = parentNode.data.loopStart;
+      const sourceId = isSource ? parentNode.id : nodeId;
+      const targetId = isSource ? nodeId : parentNode.id;
       const sourceHandle = isSource ? MAIN_LOOP_CONNECTOR : LOOP_CONNECTOR;
       const targetHandle = isSource ? LOOP_CONNECTOR : MAIN_LOOP_CONNECTOR;
 
@@ -402,7 +407,7 @@ export function connectNodesToLoop(
         targetHandle,
       });
 
-      addEdges({
+      newEdges.push({
         id: edgeId,
         type: "straight",
         source: sourceId,
@@ -414,11 +419,12 @@ export function connectNodesToLoop(
         style: {
           opacity: 0.5,
           strokeWidth: 1,
-          stroke: uuidToColor(loopId),
+          stroke: uuidToColor(parentNode.data.loopId! as string),
         },
       });
     });
   });
+  return newEdges;
 }
 
 export function handleUUID() {
@@ -483,15 +489,13 @@ export function getHandleIntersection(
 // loops and groups will be handled automatically, just include them and their children
 export function duplicateNodes(
   nodes: Node[],
-  addNodes: (payload: Node | Node[]) => void,
-  addEdges: (payload: Edge | Edge[]) => void,
   getEdges: () => Edge[],
-  setNodes: (payload: Node[] | ((nodes: Node[]) => Node[])) => void,
-  addHandle: (loopId: string, label: string) => string,
-  getHandles: (loopId: string) => Map<string, string>
+  getNodes: () => Node[],
+  setEdges: (payload: Edge[] | ((edges: Edge[]) => Edge[])) => void,
+  setNodes: (payload: Node[] | ((nodes: Node[]) => Node[])) => void
 ) {
   // if this is called with no nodes, return
-  if (!nodes) return;
+  if (!nodes || nodes.length === 0) return;
 
   // this map will keep track of which new parent ids should be assigned to children
   const oldToNewIdMap = new Map<string, string>();
@@ -537,83 +541,41 @@ export function duplicateNodes(
 
   // duplicate the loops
   loops.forEach((loop) => {
-    const startId = uuidv4();
-    const endId = uuidv4();
-    const loopId = uuidv4();
-    const parentLoopId = oldToNewIdMap.get(
-      loop.start.data.parentLoopId as string
-    );
-
-    const parentIdStart: string | undefined = loop.start.parentId
-      ? (oldToNewIdMap.get(loop.start.parentId) ?? loop.start.parentId)
-      : undefined;
-
-    const parentIdEnd = loop.end.parentId
-      ? (oldToNewIdMap.get(loop.end.parentId) ?? loop.end.parentId)
-      : undefined;
-
-    const edgeId = connectionToEdgeId({
-      source: startId,
-      sourceHandle: MAIN_LOOP_CONNECTOR,
-      target: endId,
-      targetHandle: MAIN_LOOP_CONNECTOR,
-    });
-
-    newNodes.push(
-      ...[
-        {
-          id: startId,
-          type: "ForStart",
-          parentId: parentIdStart,
-          position: {
-            x:
-              loop.start.parentId && oldToNewIdMap.has(loop.start.parentId)
-                ? loop.start.position.x
-                : loop.start.position.x + 50,
-            y:
-              loop.start.parentId && oldToNewIdMap.has(loop.start.parentId)
-                ? loop.start.position.y
-                : loop.start.position.y + 50,
-          },
-          data: { loopId, parentLoopId, loopStart: true, loopEnd: false },
-        },
-        {
-          id: endId,
-          type: "ForEnd",
-          parentId: parentIdEnd,
-          position: {
-            x:
-              loop.end.parentId && oldToNewIdMap.has(loop.end.parentId)
-                ? loop.end.position.x
-                : loop.end.position.x + 50,
-            y:
-              loop.end.parentId && oldToNewIdMap.has(loop.end.parentId)
-                ? loop.end.position.y
-                : loop.end.position.y + 50,
-          },
-          data: { loopId, parentLoopId, loopStart: false, loopEnd: true },
-        },
-      ]
-    );
-
-    newEdges.push({
-      id: edgeId,
-      type: "straight",
-      source: startId,
-      target: endId,
-      sourceHandle: MAIN_LOOP_CONNECTOR,
-      targetHandle: MAIN_LOOP_CONNECTOR,
-      animated: true,
-      selectable: false,
-      style: {
-        strokeWidth: 2,
-        stroke: uuidToColor(loopId),
+    const loopBox = createForLoop(
+      // startPosition
+      {
+        x:
+          loop.start.parentId && oldToNewIdMap.has(loop.start.parentId)
+            ? loop.start.position.x
+            : loop.start.position.x + 50,
+        y:
+          loop.start.parentId && oldToNewIdMap.has(loop.start.parentId)
+            ? loop.start.position.y
+            : loop.start.position.y + 50,
       },
-    });
+      // endPosition
+      {
+        x:
+          loop.end.parentId && oldToNewIdMap.has(loop.end.parentId)
+            ? loop.end.position.x
+            : loop.end.position.x + 50,
+        y:
+          loop.end.parentId && oldToNewIdMap.has(loop.end.parentId)
+            ? loop.end.position.y
+            : loop.end.position.y + 50,
+      },
+      oldToNewIdMap.get(loop.start.data.parentLoopId as string) ??
+        (loop.start.data.parentLoopId as string),
+      oldToNewIdMap.get(loop.start.parentId as string) ?? loop.start.parentId,
+      oldToNewIdMap.get(loop.end.parentId as string) ?? loop.end.parentId
+    );
 
-    oldToNewIdMap.set(loop.start.id, startId);
-    oldToNewIdMap.set(loop.end.id, endId);
-    oldToNewIdMap.set(loop.start.data.loopId as string, loopId);
+    newNodes.push(...loopBox.nodes);
+    newEdges.push(loopBox.mainConnectorEdge);
+
+    oldToNewIdMap.set(loop.start.id, loopBox.startId);
+    oldToNewIdMap.set(loop.end.id, loopBox.endId);
+    oldToNewIdMap.set(loop.start.data.loopId as string, loopBox.id);
   });
 
   // duplicate all other nodes
@@ -645,73 +607,50 @@ export function duplicateNodes(
       },
       data: {
         ...node.data,
-        parentLoopId: node.data.parentLoopId
-          ? oldToNewIdMap.get(node.data.parentLoopId as string)
-          : undefined,
+        parentLoopId:
+          oldToNewIdMap.get(node.data.parentLoopId as string) ??
+          node.data.parentLoopId,
       },
     });
   });
 
-  // handles edges for new loops and their children
   // handles copying of handles from the old loop to the new loop
+  const addHandle = useLoopStore.getState().addHandle;
+  const getHandles = useLoopStore.getState().getHandles;
   loops.forEach((loop) => {
     const newLoopId = oldToNewIdMap.get(loop.start.data.loopId as string);
-
     if (!newLoopId) return;
-
     const loopHandles = getHandles(loop.start.data.loopId as string);
     loopHandles.forEach((oldHandleId, label) => {
       const newHandleId = addHandle(newLoopId, label);
       oldToNewIdMap.set(oldHandleId, newHandleId);
     });
-
-    const loopChildrenIds = newNodes
-      .filter((node) => node.data.parentLoopId === newLoopId)
-      .map((node) => {
-        return node.id;
-      });
-
-    if (loopChildrenIds.length === 0) return;
-
-    const loopNodes: Node[] = [
-      newNodes.find((node) => node.id === oldToNewIdMap.get(loop.start.id))!,
-      newNodes.find((node) => node.id === oldToNewIdMap.get(loop.end.id))!,
-    ];
-    loopChildrenIds.forEach((nodeId) => {
-      loopNodes.forEach((loopNode) => {
-        const isSource = loopNode.data.loopStart;
-        const sourceId = isSource ? loopNode.id : nodeId;
-        const targetId = isSource ? nodeId : loopNode.id;
-        const sourceHandle = isSource ? MAIN_LOOP_CONNECTOR : LOOP_CONNECTOR;
-        const targetHandle = isSource ? LOOP_CONNECTOR : MAIN_LOOP_CONNECTOR;
-
-        const edgeId = connectionToEdgeId({
-          source: sourceId,
-          sourceHandle,
-          target: targetId,
-          targetHandle,
-        });
-
-        newEdges.push({
-          id: edgeId,
-          type: "straight",
-          source: sourceId,
-          target: targetId,
-          sourceHandle,
-          targetHandle,
-          animated: true,
-          selectable: false,
-          style: {
-            opacity: 0.5,
-            strokeWidth: 1,
-            stroke: uuidToColor(newLoopId),
-          },
-        });
-      });
-    });
   });
 
-  // filter for relevant edges
+  // set the new nodes
+  setNodes((nodes) => {
+    const updatedNodes = nodes.concat(newNodes);
+    return updatedNodes.map((node) => ({
+      ...node,
+      selected: Array.from(oldToNewIdMap.values()).includes(node.id),
+    }));
+  });
+
+  // handles edges from new nodes to their parent loops regardless wether the loop is new or not
+  newNodes.forEach((node) => {
+    if (node.type === "Group") return;
+    if (node.data.parentLoopId === undefined) return;
+
+    const oldParentLoopNodes = getNodes()
+      .concat(newNodes)
+      .filter(
+        (n) => (n.data.loopId as string) === (node.data.parentLoopId as string)
+      );
+
+    newEdges.push(...connectNodesToLoop(oldParentLoopNodes, [node.id]));
+  });
+
+  // filter for remaining relevant edges
   const relevantEdges = getEdges().filter((edge) => {
     // if the edge is a loop connector, its already handled
     if (
@@ -720,7 +659,7 @@ export function duplicateNodes(
     ) {
       return false;
     }
-    // if the edge is not in the oldToNewIdMap, we can ignore it
+    // if the edges source and target are in the oldToNewIdMap, it is relevant
     return oldToNewIdMap.has(edge.source) && oldToNewIdMap.has(edge.target);
   });
 
@@ -757,14 +696,11 @@ export function duplicateNodes(
     });
   });
 
-  addNodes(newNodes);
-  addEdges(newEdges);
-
-  // set all new nodes as selected
-  setNodes((nodes) => {
-    return nodes.map((node) => ({
-      ...node,
-      selected: Array.from(oldToNewIdMap.values()).includes(node.id),
+  // set the new edges
+  setEdges((edges) => {
+    const updatedEdges = edges.concat(newEdges);
+    return updatedEdges.map((edge) => ({
+      ...edge,
     }));
   });
 }
@@ -775,10 +711,10 @@ export function computeGroupSizings(parentNode: Node, childNodes: Node[]) {
       bounds: {
         x: parentNode.position.x,
         y: parentNode.position.y,
-        width: GROUP_SIZE.width,
-        height: GROUP_SIZE.height,
-        minWidth: GROUP_SIZE.width,
-        minHeight: GROUP_SIZE.height,
+        width: INITIAL_GROUP_SIZE.width,
+        height: INITIAL_GROUP_SIZE.height,
+        minWidth: INITIAL_GROUP_SIZE.width,
+        minHeight: INITIAL_GROUP_SIZE.height,
       },
       offset: { x: 0, y: 0 },
     };
@@ -846,13 +782,13 @@ export function computeGroupSizings(parentNode: Node, childNodes: Node[]) {
       childBounds.x +
         childBounds.width -
         Math.min(childBounds.x, parentBounds.x),
-      GROUP_SIZE.width
+      INITIAL_GROUP_SIZE.width
     ),
     minHeight: Math.max(
       childBounds.y +
         childBounds.height -
         Math.min(childBounds.y, parentBounds.y),
-      GROUP_SIZE.height
+      INITIAL_GROUP_SIZE.height
     ),
   };
 

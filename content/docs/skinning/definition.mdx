@@ -1,0 +1,20 @@
+---
+title: Skinning
+---
+
+# Skinning
+
+To animate characters, their polygon mesh must be connected to their skeleton. The movement of the skeleton results in the movement of the mesh. Methods for linking a mesh to a skeleton are referred to as **skinning** or **skin binding**.
+
+Typically, humanoid characters are skinned in the **T-pose**. This means both the mesh and the skeleton are in what's called the **bind pose**. The bind pose consists of:
+
+* The set of vertex coordinates of the mesh in world coordinates
+* The topology of the skeleton, along with the coordinate transformation matrices of the joints
+
+The goal is to create, for every vertex $i \in V$ of the mesh, a curve:
+
+$$
+v_i: I \rightarrow \mathbb{R}^4
+$$
+
+on an interval $I \subset \mathbb{R}$, which describes the motion in world coordinates.

@@ -1,12 +1,17 @@
 import { ChevronRightIcon } from "@radix-ui/react-icons";
-import { useReactFlow } from "@xyflow/react";
+import {
+  useReactFlow,
+  type Edge,
+  type Node,
+  type XYPosition,
+} from "@xyflow/react";
 import classnames from "classnames";
 import { useEffect, useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
 import { LEVELS } from "~/lib/game/core/levels";
 import { useGameStore } from "~/lib/zustand/game";
-import { GROUP_SIZE } from "../nodes/constants";
+import { INITIAL_GROUP_SIZE } from "../nodes/constants";
 import { TYPES } from "../nodes/math-float/types";
 import { connectNodesToLoop, createForLoop } from "../utils";
 
@@ -26,16 +31,10 @@ const AddNodes = ({
   const level = useGameStore((state) => state.currentLevel);
   const searchNodeTypes = LEVELS[level].availableNodes;
 
-  const MathFloatComputeTypes = Object.values(TYPES).flat();
+  const MathComputeTypes = Object.values(TYPES).flat();
 
-  const {
-    addNodes,
-    addEdges,
-    screenToFlowPosition,
-    getNodes,
-    getEdges,
-    getNode,
-  } = useReactFlow();
+  const { addNodes, addEdges, screenToFlowPosition, getNodes, getNode } =
+    useReactFlow();
   const inputRef = useRef<HTMLInputElement>(null);
 
   const [nodeSearch, setNodeSearch] = useState("");
@@ -63,16 +62,13 @@ const AddNodes = ({
         return { nodeType: t };
       });
 
-    if (
-      nodeSearch === "" ||
-      !searchNodeTypes.some((type) => type === "MathFloat")
-    )
+    if (nodeSearch === "" || !searchNodeTypes.some((type) => type === "Math"))
       return setFilteredTypes(types);
 
-    const mathTypes = MathFloatComputeTypes.filter((type) =>
+    const mathTypes = MathComputeTypes.filter((type) =>
       type.toLowerCase().includes(nodeSearch.toLowerCase())
     ).map((t) => {
-      return { nodeType: "MathFloat", computeType: t };
+      return { nodeType: "Math", computeType: t };
     });
 
     const combined = [...types, ...mathTypes];
@@ -81,31 +77,65 @@ const AddNodes = ({
   }, [nodeSearch]);
 
   const handleAddNode = (type: string, computeType?: string) => {
-    // Create nodes based on type
-    const ids =
-      type === "ForLoop"
-        ? createForLoop(
-            addNodes,
-            x,
-            y,
-            addEdges,
-            screenToFlowPosition,
-            parentLoopId
-          )
-        : [createSingleNode(type, computeType)];
+    const sFPosition = screenToFlowPosition({
+      x,
+      y,
+    });
+
+    const startPos: XYPosition = {
+      x: parentNode ? sFPosition.x - parentNode.position.x : sFPosition.x,
+      y: parentNode ? sFPosition.y - parentNode.position.y : sFPosition.y,
+    };
+
+    const endPos: XYPosition = {
+      x: parentNode
+        ? sFPosition.x - parentNode.position.x + 300
+        : sFPosition.x + 300,
+      y: parentNode ? sFPosition.y - parentNode.position.y : sFPosition.y,
+    };
+
+    // Create nodes and edges based on type
+    const newEdges: Edge[] = [];
+    const newNodes: Node[] = [];
+    if (type === "ForLoop") {
+      const loopBox = createForLoop(startPos, endPos, parentLoopId, parentId);
+
+      newEdges.push(loopBox.mainConnectorEdge);
+      newNodes.push(...loopBox.nodes);
+    } else newNodes.push(createSingleNode(type, computeType));
+
+    addNodes(newNodes);
 
     // Connect nodes if inside a loop
     if (parentLoopId) {
-      connectNodesToLoop(getNodes, addEdges, ids, parentLoopId);
+      const parentLoop = getNodes().filter(
+        (n) => n.data.loopId === parentLoopId
+      );
+      newEdges.push(
+        ...connectNodesToLoop(
+          parentLoop,
+          newNodes.map((n) => n.id)
+        )
+      );
     }
+    addEdges(newEdges);
 
     onClose();
   };
 
-  // Helper function to create a single node and return its ID
+  // Helper function to create a single node and return it
   const createSingleNode = (type: string, computeType?: string) => {
     const id = uuidv4();
-    addNodes({
+    const sFPosition = screenToFlowPosition({
+      x,
+      y,
+    });
+    const position = {
+      x: parentNode ? sFPosition.x - parentNode.position.x : sFPosition.x,
+      y: parentNode ? sFPosition.y - parentNode.position.y : sFPosition.y,
+    };
+
+    return {
       id,
       type,
       position: screenToFlowPosition({ x, y }),
@@ -113,8 +143,11 @@ const AddNodes = ({
         initialComputeType: computeType,
         parentLoopId,
       },
-    });
-    return id;
+      height: type === "Group" ? INITIAL_GROUP_SIZE.height : undefined,
+      width: type === "Group" ? INITIAL_GROUP_SIZE.width : undefined,
+      selected: false,
+      dragging: false,
+    } as Node;
   };
 
   // handle keyboard navigation

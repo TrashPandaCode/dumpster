@@ -1,0 +1,20 @@
+---
+title: Editing Motion Data
+---
+
+# Editing Motion Data
+
+The state of a skeleton is referred to as a **pose**. This state vector includes the translation and rotation of the root joint and the rotations of all other joints.
+
+The set of all poses $\mathcal{X}$ is also called the **state space**:
+
+$$
+\mathcal{X} = \underbrace{\mathbb{R}^3 \times \mathbb{R}^3}_{\text{Joint 1}} \times \mathbb{R}^3 \times \dots \times \underbrace{\mathbb{R}^3}_{\text{Joint n}} = \mathbb{R}^{3(n+1)}
+$$
+
+The rotations can also be represented using **quaternions**, using $S^3$ instead of $\mathbb{R}^3$.
+
+The **motion function** (or simply: motion) maps time to a state in $\mathcal{X}$.
+
+Motion data is linearly interpolated (using **slerp** for quaternions).
+

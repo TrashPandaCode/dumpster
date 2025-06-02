@@ -1,4 +1,5 @@
 import { DialogClose } from "@radix-ui/react-dialog";
+import classNames from "classnames";
 import React, { useEffect, useRef, useState } from "react";
 
 import { useGameStore } from "~/lib/zustand/game";
@@ -6,11 +7,13 @@ import { LEVELS } from "../core/levels";
 import CustomDialog from "./CustomDialog";
 
 const LevelDialog = ({
-  defaultOpen = false,
+  open,
+  onOpenChange,
   skip = false,
   trigger,
 }: {
-  defaultOpen?: boolean;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
   skip?: boolean;
   trigger?: React.ReactNode;
 }) => {
@@ -48,6 +51,15 @@ const LevelDialog = ({
     };
   }, [dialog]);
 
+  useEffect(() => {
+    index.current = 0;
+    setDialog(dialogs[0]);
+    setShowingGoals(skip);
+    setTypedText("");
+  }, [currentLevel]);
+
+  const startButtonRef = useRef<HTMLButtonElement>(null);
+
   /* Function to handle the "Next" button click */
   const handleNext = () => {
     if (!showingGoals) {
@@ -57,6 +69,9 @@ const LevelDialog = ({
       } else {
         index.current = 0;
         setShowingGoals(true);
+        setTimeout(() => {
+          startButtonRef.current?.focus();
+        }, 0);
         setDialog("");
       }
     }
@@ -78,7 +93,8 @@ const LevelDialog = ({
     <CustomDialog
       title={currentLevel}
       trigger={trigger}
-      defaultOpen={defaultOpen}
+      open={open}
+      onOpenChange={onOpenChange}
       desc={`This dialog displays the level goals and instructions for the
             ${currentLevel} level. You can close it by clicking the close button or
             pressing the escape key.`}
@@ -86,10 +102,10 @@ const LevelDialog = ({
       <div className="flex flex-col gap-5">
         <div className="flex flex-1 flex-row">
           {/* Left side: Raccoon sprite */}
-          <div className="my-auto w-1/3 pr-4">
+          <div className="my-auto w-1/3">
             <div
               style={{
-                aspectRatio: "1 / 1",
+                aspectRatio: "7 / 6",
                 width: "100%",
                 backgroundImage: "url('/game/sprites/raccoon_spritesheet.png')",
                 backgroundPosition: "0 0",
@@ -122,13 +138,22 @@ const LevelDialog = ({
         <div className="flex flex-row justify-end gap-5">
           <button
             onClick={handlePrevious}
-            className="cursor-pointer rounded-lg bg-slate-700/80 px-3 py-2 hover:bg-slate-600 focus:outline-1 focus:outline-blue-300"
+            disabled={showingGoals ? false : index.current === 0}
+            className={classNames(
+              "rounded-lg bg-slate-700/80 px-3 py-2 focus:outline-1 focus:outline-blue-300",
+              !showingGoals && index.current === 0
+                ? "opacity-50"
+                : "cursor-pointer hover:bg-slate-600"
+            )}
           >
             Previous
           </button>
           {showingGoals ? (
             <DialogClose asChild>
-              <button className="cursor-pointer rounded-lg bg-slate-700/80 px-3 py-2 hover:bg-slate-600 focus:outline-1 focus:outline-blue-300">
+              <button
+                ref={startButtonRef}
+                className="cursor-pointer rounded-lg bg-slate-700/80 px-3 py-2 hover:bg-slate-600 focus:outline-1 focus:outline-blue-300"
+              >
                 Start
               </button>
             </DialogClose>

@@ -1,0 +1,24 @@
+---
+title: Global and Local Time Axes
+---
+
+## Global and Local Time Axes
+
+Each animation object can have its own **local time axis**. A *local clock* maps **global time** into **local time**.
+
+To distinguish between global and local time intervals, we use $s$ for local time instead of $t$.
+A global interval $[t_0, t_1]$ can be mapped to a local interval $[s_0, s_1]$, and vice versa.
+
+For **linear time transformations**, the **playback rate** $R$ determines the relationship between local and global time:
+
+* $R > 1$: compressed time (faster playback)
+* $0 < R < 1$: stretched time (slower playback)
+* $R < 0$: reverse playback
+
+For infinite cyclic repetition:
+
+$$
+s_{\text{cycle}} : \mathbb{R} \rightarrow [s_0, s_1), \quad s_{\text{cycle}}(t) = \frac{s_1 - s_0}{D} \cdot ((t - t_0) \bmod D) + s_0
+$$
+
+where $D$ is the period duration.

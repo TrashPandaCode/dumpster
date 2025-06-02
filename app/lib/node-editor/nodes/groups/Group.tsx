@@ -3,7 +3,7 @@ import { NodeResizeControl } from "@xyflow/react";
 import { memo } from "react";
 
 import NodeContent from "../../node-components/NodeContent";
-import { GROUP_SIZE } from "../constants";
+import { INITIAL_GROUP_SIZE } from "../constants";
 
 const controlStyle = {
   background: "transparent",
@@ -15,8 +15,8 @@ const Group = memo(({ data }: { data: any }) => {
     <>
       <NodeResizeControl
         style={controlStyle}
-        minWidth={data.minWidth ?? GROUP_SIZE.width}
-        minHeight={data.minHeight ?? GROUP_SIZE.height}
+        minWidth={data.minWidth ?? INITIAL_GROUP_SIZE.width}
+        minHeight={data.minHeight ?? INITIAL_GROUP_SIZE.height}
         className="relative"
       >
         <SizeIcon className="absolute right-2 bottom-2 rotate-90 cursor-nw-resize text-slate-400" />

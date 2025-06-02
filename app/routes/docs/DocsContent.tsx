@@ -10,8 +10,9 @@ import {
 } from "~/lib/core/components/Breadcrumb";
 import DocsNodeEditor from "~/lib/core/DocsNodeEditor";
 import type { Route } from "../docs/+types/DocsContent";
+import "katex/dist/katex.min.css";
 
-const docs = import.meta.glob("/content/docs/**/*.md");
+const docs = import.meta.glob("/content/docs/**/*.{md,mdx}");
 
 export async function clientLoader({ params }: Route.LoaderArgs) {
   let { category, topic } = params;
@@ -22,30 +23,38 @@ export async function clientLoader({ params }: Route.LoaderArgs) {
     category = undefined;
   }
 
-  const path = category
-    ? `/content/docs/${category}/${topic}.md`
-    : `/content/docs/${topic}.md`;
+  let path = category
+    ? `/content/docs/${category}/${topic}.mdx`
+    : `/content/docs/${topic}.mdx`;
 
-  const loader = docs[path];
+  let loader = docs[path];
+
+  if (!loader) {
+    path = category
+      ? `/content/docs/${category}/${topic}.md`
+      : `/content/docs/${topic}.md`;
+    loader = docs[path];
+  }
+
   if (!loader) {
     throw new Response("Not found", { status: 404 });
   }
 
   const mod = (await loader()) as {
-    attributes: Record<string, any>;
-    ReactComponent: React.ComponentType;
+    frontmatter: Record<string, any>;
+    default: React.ComponentType;
   };
 
   return {
-    metadata: mod.attributes,
-    ReactComponent: mod.ReactComponent,
+    metadata: mod.frontmatter,
+    MDXComponent: mod.default,
     category,
     topic,
   };
 }
 
 const Docs = ({ loaderData }: Route.ComponentProps) => {
-  const { metadata, ReactComponent, category, topic } = loaderData;
+  const { metadata, MDXComponent, category, topic } = loaderData;
 
   return (
     <main className="w-full">
@@ -59,7 +68,7 @@ const Docs = ({ loaderData }: Route.ComponentProps) => {
           {category && (
             <>
               <BreadcrumbSeparator />
-              <BreadcrumbItem className="capitalize">{category}</BreadcrumbItem>
+              <BreadcrumbItem className="capitalize">{category.replaceAll("-", " ")}</BreadcrumbItem>
             </>
           )}
           <BreadcrumbSeparator />
@@ -72,7 +81,7 @@ const Docs = ({ loaderData }: Route.ComponentProps) => {
       </Breadcrumb>
 
       <article className="prose prose-slate max-w-4xl">
-        <ReactComponent DocsNodeEditor={DocsNodeEditor} />
+        <MDXComponent components={{ DocsNodeEditor }} />
       </article>
     </main>
   );

@@ -1,0 +1,30 @@
+---
+title: Systems of Mass Points
+---
+
+## Systems of Mass Points
+
+For $N$ mass points with masses $m_i \in \mathbb{R}^+$ and positions $x_i \in \mathbb{R}^3$, Newton's equations are:
+
+$$
+\ddot{x}_i = \frac{1}{m_i} F_i, \quad i = 1, \dots, N
+$$
+
+where $F_i$ is the force on the $i$-th mass point, depending on all positions and velocities.
+
+- **Interaction forces**: equal in magnitude, opposite in direction, and collinear with their connecting line.
+- **Third Newtonian Axiom**: If body 1 exerts force $F_{21}$ on body 2, body 2 exerts $F_{12} = -F_{21}$ on body 1 (_action = reaction_).
+
+**Law of Gravitation**: Every mass point exerts an attractive force on every other.
+
+If all acting forces are interaction forces, the system is _closed_:
+
+$$
+F_i = \sum_{\substack{j=1\\j \ne i}}^n F_{ij}
+$$
+
+with $F_{ij} = -F_{ji}$. If the system is _not_ closed, an additional _external force_ $F_i^{\text{ext}}$ acts:
+
+$$
+F_i = F_i^{\text{ext}} + \sum_{\substack{j=1\\j \ne i}}^n F_{ij}
+$$

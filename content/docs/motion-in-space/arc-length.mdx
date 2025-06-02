@@ -1,0 +1,49 @@
+---
+title: Arc Length
+---
+
+## Arc Length
+
+To measure the length of a curve, we are interested in the length of the *trace*, not the graph.
+
+We approximate the curve using a **polygonal chain** over a **grid**. Summing the distances between grid points gives an approximation of the arc length.
+
+* **Grid**: An ordered set over an interval.
+
+  * *Dot-free*: all entries distinct.
+  * *Equidistant*: all intervals are equal.
+
+The finer the grid, the longer the estimated arc length. The *supremum* of all possible polygonal lengths gives the actual arc length.
+
+If the length $L_f < \infty$, the curve is called **rectifiable**.
+
+## Arc Length Function
+
+For a rectifiable curve $f: [a, b] \to \mathbb{R}^d$, the arc length function is:
+
+$$
+l_f: [a, b] \to [0, L_f], \quad l_f(t) = L_{f|_{[a, t]}}
+$$
+
+This describes the length of the curve up to time $t$.
+
+
+## Numerical Approximation of Arc Length
+
+Usually, arc length and its function can't be determined analytically — so we approximate them.
+
+By definition, for a polygonal approximation $\mathcal{G}$:
+
+$$
+L(\mathcal{G}) \leq L
+$$
+
+For algorithm details, see the formula collection.
+
+If the approximation $\tilde{l}: [a, b] \to [0, \tilde{L}]$ is strictly increasing:
+
+$$
+\tilde{l}_{i-1} < \tilde{l}_i \quad \forall i = 1, \dots, n
+$$
+
+then $\tilde{l}$ is invertible — always the case in practice.

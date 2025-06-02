@@ -33,22 +33,16 @@ const Docs = () => {
             <div className="prose prose-slate max-w-4xl">
               <h1>Overview</h1>
               <p>
-                Whatever we wanna explain. Lorem ipsum dolor sit amet,
-                consetetur sadipscing elitr, sed diam nonumy eirmod tempor
-                invidunt ut labore et dolore magna aliquyam erat, sed diam
-                voluptua. At vero eos et accusam et justo duo dolores et ea
-                rebum. Stet clita kasd gubergren, no sea takimata sanctus est
-                Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet,
-                consetetur sadipscing elitr, sed diam nonumy eirmod tempor
-                invidunt ut labore et dolore magna aliquyam erat, sed diam
-                voluptua. At vero eos et accusam et justo duo dolores et ea
-                rebum. Stet clita kasd gubergren, no sea takimata sanctus est
-                Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet,
-                consetetur sadipscing elitr, sed diam nonumy eirmod tempor
-                invidunt ut labore et dolore magna aliquyam erat, sed diam
-                voluptua. At vero eos et accusam et justo duo dolores et ea
-                rebum. Stet clita kasd gubergren, no sea takimata sanctus est
-                Lorem ipsum dolor sit amet.
+                Welcome to the documentation for our educational game about computer animation! This project is designed to help you explore and understand key concepts in animation, game logic, and interactive systems through hands-on experimentation.
+              </p>
+              <p>
+                In this game, you use a visual node editor to build logic, control game objects, and solve creative puzzles. Each level introduces new mechanics and concepts, from basic value manipulation to more advanced topics such as conditional logic, movement, and more.
+              </p>
+              <p>
+                This documentation provides detailed explanations of all available nodes as well as background information on animation systems.
+              </p>
+              <p>
+                Whether you are a student, educator, or enthusiast, this platform encourages experimentation and learning by doing. We invite you to join our community to ask questions, give feedback, or share your experiences with others.
               </p>
             </div>
           </main>

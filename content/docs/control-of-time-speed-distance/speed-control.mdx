@@ -1,0 +1,54 @@
+---
+title: Speed Control
+---
+
+
+Let $f: I \rightarrow \mathbb{R}^d$ be a curve and $J \subset \mathbb{R}$ an interval.
+
+* A **time axis transformation** of $f$ is a function $\varphi: J \rightarrow I$. The curve $g := f \circ \varphi: J \rightarrow \mathbb{R}^d,\quad g(t) = f(\varphi(t))$ is then called a **reparameterization** of the curve $f$ using $\varphi$.
+* A time axis transformation is called **orientation-preserving** if $\varphi$ is strictly increasing. If $\varphi$ is strictly decreasing, it is called **orientation-reversing**.
+* A time axis transformation $\varphi$ is called a **parameter transformation** of $f$ if $\varphi$ is continuous and bijective (i.e., invertible). If both $\varphi$ and $\varphi^{-1}$ are $C^k$-functions, then $\varphi$ is a **$C^k$ parameter transformation**.
+
+By using a **time axis transformation**, we can influence not only the timing but also the **speed** along the curve.
+
+
+## Speed Control
+
+The speed of a reparameterized curve $g$ depends on the speed of the original function $f$ and the derivative of $\varphi$:
+
+$$
+g'(t) = (f \circ \varphi)'(t) = \varphi'(t) \cdot f'(\varphi(t))
+$$
+
+We define the speed of a curve as:
+
+$$
+\text{speed}_f(t) = \|f'(t)\|
+$$
+
+If we want a reparameterization $\varphi$ of the curve such that:
+
+$$
+\text{speed}_g(t) = \text{speed}_{f \circ \varphi}(t) = \text{speed}_{\text{new}}(t)
+$$
+
+then it's easiest when the speed of the curve $f$ is constant 1, because then the derivative of the parameter function $\varphi$ directly determines the speed:
+
+$$
+\text{speed}_g(t) = |\varphi'(t)| \cdot \text{speed}_f(\varphi(t)) = |\varphi'(t)| = \text{speed}_{\text{new}}(t)
+$$
+
+Since $\varphi$ should be strictly increasing, it follows that:
+
+$$
+\varphi'(t) = \text{speed}_{\text{new}}(t)
+$$
+
+So the reparameterization results from the integral of the desired speed function.
+
+To transform from interval $[a, b]$ to $[c, d]$, we require:
+
+* $\text{speed}(t) \geq 0$
+* $\int_c^t \text{speed}(s)\,ds + a \in [a, b]$ for all $t$
+* $\int_c^d \text{speed}(s)\,ds + a = b$
+  (The speed must be such that we reach the end of the curve at the end of the interval.)

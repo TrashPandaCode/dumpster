@@ -49,18 +49,7 @@ const DefaultNodeContextMenu = ({
   nodeId: string;
   onClose: () => void;
 }) => {
-  const {
-    getNode,
-    getNodes,
-    getEdges,
-    setNodes,
-    addNodes,
-    setEdges,
-    addEdges,
-  } = useReactFlow();
-
-  const addHandle = useLoopStore((state) => state.addHandle);
-  const getHandles = useLoopStore((state) => state.getHandles);
+  const { getNode, getNodes, getEdges, setNodes, setEdges } = useReactFlow();
 
   // handle node duplication
   const duplicateNode = useCallback(() => {
@@ -76,36 +65,37 @@ const DefaultNodeContextMenu = ({
           node.data.loopId != undefined) // ensure we are dealing with a loop node
     );
 
-    duplicateNodes(
-      nodesToDuplicate,
-      addNodes,
-      addEdges,
-      getEdges,
-      setNodes,
-      addHandle,
-      getHandles
-    );
+    duplicateNodes(nodesToDuplicate, getEdges, getNodes, setEdges, setNodes);
 
     onClose();
-  }, [
-    addEdges,
-    addHandle,
-    addNodes,
-    getEdges,
-    getHandles,
-    getNode,
-    getNodes,
-    nodeId,
-    onClose,
-    setNodes,
-  ]);
+  }, [getEdges, getNode, getNodes, nodeId, onClose, setEdges, setNodes]);
 
   const deleteNode = useCallback(() => {
     const idsToDelete = [nodeId];
     if (getNode(nodeId)?.type === "Group") {
       // if the node is a group, delete all its children
       const children = getNodes().filter((n) => n.parentId === nodeId);
-      idsToDelete.push(...children.map((child) => child.id));
+      const parent = getNode(nodeId);
+
+      setNodes((nodes) => {
+        return nodes.map((node) => {
+          if (children.some((child) => child.id === node.id)) {
+            return {
+              ...node,
+              position: {
+                x: parent
+                  ? node.position.x + parent.position.x
+                  : node.position.x,
+                y: parent
+                  ? node.position.y + parent.position.y
+                  : node.position.y,
+              },
+              parentId: undefined, // remove parentId to ungroup the children
+            };
+          }
+          return node;
+        });
+      });
     }
 
     // remove all nodes with the ids in idsToDelete
