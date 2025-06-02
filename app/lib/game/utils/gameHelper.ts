@@ -12,7 +12,7 @@ import type {
 import { useDataStore } from "~/lib/zustand/data";
 import {
   BACKGROUND_OFFSET,
-  RACCOON_SCALE,
+  SPRITE_SCALE,
   type GameObject,
 } from "../constants";
 import { getKaplayCtx } from "../core/kaplayCtx";
@@ -58,7 +58,7 @@ export function addGameobjects(gameobjects: GameObject[]) {
         anim: "walkHolding",
       }),
       k.pos(0, 0),
-      k.scale(RACCOON_SCALE),
+      k.scale(SPRITE_SCALE),
       k.anchor("bot"),
       k.area(),
       k.z(2),
@@ -70,11 +70,11 @@ export function addGameobjects(gameobjects: GameObject[]) {
     });
     raccoon.onStateEnter("walkLeft", () => {
       raccoon.play("walk");
-      raccoon.scaleTo(k.vec2(-RACCOON_SCALE, RACCOON_SCALE));
+      raccoon.scaleTo(k.vec2(-SPRITE_SCALE, SPRITE_SCALE));
     });
     raccoon.onStateEnter("walkRight", () => {
       raccoon.play("walk");
-      raccoon.scaleTo(k.vec2(RACCOON_SCALE, RACCOON_SCALE));
+      raccoon.scaleTo(k.vec2(SPRITE_SCALE, SPRITE_SCALE));
     });
     instances.raccoon = raccoon;
   }
@@ -98,7 +98,7 @@ export function addGameobjects(gameobjects: GameObject[]) {
       }),
       k.anchor("bot"),
       k.pos(0, 0),
-      k.scale(RACCOON_SCALE),
+      k.scale(SPRITE_SCALE),
       k.area(),
       k.z(1),
       "trashcanEmpty",
@@ -112,7 +112,7 @@ export function addGameobjects(gameobjects: GameObject[]) {
       }),
       k.anchor("bot"),
       k.pos(0, 0),
-      k.scale(5),
+      k.scale(SPRITE_SCALE),
       k.area(),
       k.z(1),
       "trashcanFilled",
@@ -135,7 +135,7 @@ export function addGameobjects(gameobjects: GameObject[]) {
       k.anchor("bot"),
       k.pos(0, 0),
       k.area(),
-      k.scale(RACCOON_SCALE),
+      k.scale(SPRITE_SCALE),
       k.z(1),
     ]);
     instances.goalFlag = flag;
@@ -161,7 +161,7 @@ export function addBackgrounds(
   game.add([
     k.sprite("background"),
     k.anchor("center"),
-    k.scale(RACCOON_SCALE),
+    k.scale(SPRITE_SCALE),
     k.pos(0, -BACKGROUND_OFFSET),
     k.z(0),
   ]);
@@ -169,7 +169,7 @@ export function addBackgrounds(
   game.add([
     k.sprite("backgroundLight"),
     k.anchor("center"),
-    k.scale(RACCOON_SCALE),
+    k.scale(SPRITE_SCALE),
     k.pos(lightOffset, -BACKGROUND_OFFSET),
     k.z(100),
     k.opacity(0.75),

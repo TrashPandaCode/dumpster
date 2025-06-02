@@ -1,6 +1,6 @@
 import { useDataStore } from "~/lib/zustand/data";
 import { useGameStore } from "~/lib/zustand/game";
-import { BACKGROUND_OFFSET } from "../constants";
+import { BACKGROUND_OFFSET, CAM_SCALE, SPRITE_SCALE } from "../constants";
 import { getKaplayCtx } from "../core/kaplayCtx";
 import {
   addBackgrounds,
@@ -20,7 +20,7 @@ export const initializeIffies = () => {
 
   const { raccoon } = addGameobjects(["raccoon"]);
   k.setCamPos(0, -BACKGROUND_OFFSET);
-  k.setCamScale(k.height() / 947);
+  k.setCamScale(CAM_SCALE * k.height() / 947);
 
   k.loadSprite("trashcan", "/game/sprites/trashcan_spritesheet.png", {
     sliceX: 2,
@@ -36,7 +36,7 @@ export const initializeIffies = () => {
     }),
     k.anchor("bot"),
     k.pos(0, 0),
-    k.scale(5),
+    k.scale(SPRITE_SCALE),
     k.area(),
     k.z(1),
     "trashcan1",
@@ -47,26 +47,26 @@ export const initializeIffies = () => {
     }),
     k.anchor("bot"),
     k.pos(0, 0),
-    k.scale(5),
+    k.scale(SPRITE_SCALE),
     k.area(),
     k.z(1),
     "trashcan2",
   ]);
 
   trashcanEmpty!.z = 3;
-  trashcanEmpty!.pos.x = 200;
-  trashcanEmpty!.pos.y = -25;
+  trashcanEmpty!.pos.x = 3.63;
+  trashcanEmpty!.pos.y = -0.45;
 
   trashcanFilled!.z = 3;
-  trashcanFilled!.pos.x = -280;
-  trashcanFilled!.pos.y = -110;
+  trashcanFilled!.pos.x = -5;
+  trashcanFilled!.pos.y = -2;
 
   useDataStore.getState().gameObjects.set(
     "trashcan1",
     new Map([
       ["filled", { access: "get", value: 0 }],
-      ["xpos", { access: "get", value: 200 }],
-      ["ypos", { access: "get", value: -25 }],
+      ["xpos", { access: "get", value: 3.63 }],
+      ["ypos", { access: "get", value: -0.45 }],
     ])
   );
 
@@ -74,8 +74,8 @@ export const initializeIffies = () => {
     "trashcan2",
     new Map([
       ["filled", { access: "get", value: 1 }],
-      ["xpos", { access: "get", value: -280 }],
-      ["ypos", { access: "get", value: -110 }],
+      ["xpos", { access: "get", value: -5 }],
+      ["ypos", { access: "get", value: -2 }],
     ])
   );
 
@@ -86,7 +86,7 @@ export const initializeIffies = () => {
 
     const distFilled = raccoon!.pos.dist(trashcanFilled!.pos);
 
-    if (distFilled <= 10 && !useGameStore.getState().levelCompleted) {
+    if (distFilled <= 0.5 && !useGameStore.getState().levelCompleted) {
       useGameStore.getState().setLevelCompleteDialogOpen(true);
       useGameStore.getState().setLevelCompleted(true);
     }

@@ -1,5 +1,5 @@
 import { useDataStore } from "~/lib/zustand/data";
-import { BACKGROUND_OFFSET } from "../constants";
+import { BACKGROUND_OFFSET, CAM_SCALE } from "../constants";
 import { getKaplayCtx } from "../core/kaplayCtx";
 import {
   addBackgrounds,
@@ -19,7 +19,7 @@ export const initializePlayground = () => {
     "goalFlag",
   ]);
   k.setCamPos(0, -BACKGROUND_OFFSET);
-  k.setCamScale(k.height() / 947);
+  k.setCamScale(CAM_SCALE * k.height() / 947);
 
   game.onUpdate(() => {
     if (useGameStore.getState().isPaused) return;
