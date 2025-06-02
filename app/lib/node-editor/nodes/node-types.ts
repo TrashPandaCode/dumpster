@@ -8,7 +8,7 @@ import MousePosition from "./input/MousePosition";
 import Switch from "./logic/Switch";
 import ForEnd from "./loops/ForEnd";
 import ForStart from "./loops/ForStart";
-import MathFloat from "./math-float/MathFloat";
+import Math from "./math-float/Math";
 import Value from "./math-float/Value";
 
 export const nodeTypes = {
@@ -16,7 +16,7 @@ export const nodeTypes = {
   Display,
   Time,
   KeyPress,
-  MathFloat,
+  Math,
   ExportToGameobject,
   ImportFromGameobject,
   Switch,
@@ -27,4 +27,6 @@ export const nodeTypes = {
 };
 
 // ForLoop is a special case that combines ForStart and ForEnd
-export type NodeType = Exclude<keyof typeof nodeTypes, "ForEnd" | "ForStart"> | "ForLoop";
+export type NodeType =
+  | Exclude<keyof typeof nodeTypes, "ForEnd" | "ForStart">
+  | "ForLoop";

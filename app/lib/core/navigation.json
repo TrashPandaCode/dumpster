@@ -11,8 +11,8 @@
         "path": "/docs/nodes/display"
       },
       {
-        "title": "Math Float",
-        "path": "/docs/nodes/mathfloat"
+        "title": "Math",
+        "path": "/docs/nodes/math"
       },
       {
         "title": "Export To Gameobject",
