@@ -7,6 +7,8 @@ import {
   animPlayer,
 } from "../utils/gameHelper";
 
+import { useTelemetryStore } from "~/lib/zustand/telemetry";
+
 export const initializeSitting = () => {
   const { k, game } = getKaplayCtx();
 
@@ -33,6 +35,13 @@ export const initializeSitting = () => {
     if (dist <= 50 && !useGameStore.getState().levelCompleted) {
       useGameStore.getState().setLevelCompleteDialogOpen(true);
       useGameStore.getState().setLevelCompleted(true);
+
+      useTelemetryStore.getState().logFinish(new Date().toLocaleTimeString('en-GB', {
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false
+      }));
     }
   });
 };

@@ -4,6 +4,8 @@ import { BACKGROUND_OFFSET } from "../constants";
 import { getKaplayCtx } from "../core/kaplayCtx";
 import { addBackgrounds, addGameobjects } from "../utils/gameHelper";
 
+import { useTelemetryStore } from "~/lib/zustand/telemetry";
+
 export const initializeCalculator = () => {
   const { k, game } = getKaplayCtx();
 
@@ -25,6 +27,13 @@ export const initializeCalculator = () => {
     if (value == 16 && !useGameStore.getState().levelCompleted) {
       useGameStore.getState().setLevelCompleteDialogOpen(true);
       useGameStore.getState().setLevelCompleted(true);
+
+      useTelemetryStore.getState().logFinish(new Date().toLocaleTimeString('en-GB', {
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false
+      }));
     }
   });
 };

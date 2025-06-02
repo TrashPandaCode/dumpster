@@ -25,6 +25,7 @@ import { useTelemetryStore } from "~/lib/zustand/telemetry"
 const Game = ({ params }: Route.ComponentProps) => {
   const setTelemetryLevel = useTelemetryStore((state) => state.newLevel);
   const downloadTelemetry = useTelemetryStore((state) => state.downloadJSON);
+  const logStartTime = useTelemetryStore((state) => state.logStart);
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -46,6 +47,12 @@ const Game = ({ params }: Route.ComponentProps) => {
     setCurrentLevel(level as keyof typeof LEVELS); // we can cast confidently here since we know the params.id is a valid level id, because loading the level will fail if it is not
     loadLevel(level);
     setTelemetryLevel(level as keyof typeof LEVELS);
+    logStartTime(new Date().toLocaleTimeString('en-GB', {
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: false
+    }));
 
     // Wait for Ctrl+S
     const handleKeyDown = (event: KeyboardEvent) => {

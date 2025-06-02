@@ -36,7 +36,7 @@ export const useTelemetryStore = create<TelemetryStore>((set) => ({
         set((state) => {
             const logs = [...state.logs];
             const lastGroup = logs[logs.length - 1];
-            if (lastGroup) {
+            if (lastGroup && lastGroup.startTime == "0") {
                 lastGroup.startTime = time;
             }
             return { logs };
@@ -45,7 +45,7 @@ export const useTelemetryStore = create<TelemetryStore>((set) => ({
         set((state) => {
             const logs = [...state.logs];
             const lastGroup = logs[logs.length - 1];
-            if (lastGroup) {
+            if (lastGroup && lastGroup.finishTime == "0") {
                 lastGroup.finishTime = time;
             }
             return { logs };

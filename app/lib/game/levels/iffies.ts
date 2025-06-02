@@ -8,6 +8,8 @@ import {
   animPlayer,
 } from "../utils/gameHelper";
 
+import { useTelemetryStore } from "~/lib/zustand/telemetry";
+
 const TRASHCAN1 = "trashcan1";
 const TRASHCAN2 = "trashcan2";
 
@@ -89,6 +91,13 @@ export const initializeIffies = () => {
     if (distFilled <= 10 && !useGameStore.getState().levelCompleted) {
       useGameStore.getState().setLevelCompleteDialogOpen(true);
       useGameStore.getState().setLevelCompleted(true);
+
+      useTelemetryStore.getState().logFinish(new Date().toLocaleTimeString('en-GB', {
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false
+      }));
     }
   });
 };
