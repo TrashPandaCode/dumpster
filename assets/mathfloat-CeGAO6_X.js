@@ -5,7 +5,7 @@ import{o as t}from"./chunk-AYJ5UCUI-DfzbB4N7.js";const o={title:"Math Float"};fu
 `,t.jsx(e.h2,{children:"Properties"}),`
 `,t.jsxs(e.ul,{children:[`
 `,t.jsxs(e.li,{children:[t.jsx(e.strong,{children:"Result"}),": The output value determined by both the ",t.jsx(e.em,{children:"x"})," and ",t.jsx(e.em,{children:"y"})," inputs and the compute type."]}),`
-`,t.jsxs(e.li,{children:[t.jsx(e.strong,{children:"x"}),": The first input value for the computation, sometimes this value serves different purposes like time or base."]}),`
-`,t.jsxs(e.li,{children:[t.jsx(e.strong,{children:"y"}),": The second input value for the computation, sometimes this value serves different purposes like decimal places or exponent."]}),`
+`,t.jsxs(e.li,{children:[t.jsx(e.strong,{children:"x"}),": The first input value for the computation, depending on the compute type this value serves different purposes, such as time or base."]}),`
+`,t.jsxs(e.li,{children:[t.jsx(e.strong,{children:"y"}),": The second input value for the computation, depending on the compute type this value serves different purposes, such as decimal places or exponents."]}),`
 `]}),`
 `,t.jsx(n,{type:"MathFloat"})]})}function l(s={}){const{wrapper:e}=s.components||{};return e?t.jsx(e,{...s,children:t.jsx(d,{...s})}):d(s)}function r(s,e){throw new Error("Expected component `"+s+"` to be defined: you likely forgot to import, pass, or provide it.")}export{l as default,o as frontmatter};
