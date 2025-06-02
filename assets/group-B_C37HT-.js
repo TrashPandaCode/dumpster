@@ -4,7 +4,7 @@ import{o as n}from"./chunk-AYJ5UCUI-DfzbB4N7.js";const d={title:"Group"};functio
 `,n.jsxs(e.ul,{children:[`
 `,n.jsxs(e.li,{children:["Nodes dragged into the ",n.jsx(e.em,{children:"Group"})," node become its children and are positioned relative to the ",n.jsx(e.em,{children:"Group"})," node."]}),`
 `,n.jsxs(e.li,{children:["Nodes dragged out of the ",n.jsx(e.em,{children:"Group"})," node are automatically ungrouped."]}),`
-`,n.jsxs(e.li,{children:["Deleting a ",n.jsx(e.em,{children:"Group"})," node node will not delete its children, the children will be placed back into the node canvas."]}),`
+`,n.jsxs(e.li,{children:["Deleting a ",n.jsx(e.em,{children:"Group"})," node will not delete its children, the children will be placed back into the node canvas."]}),`
 `,n.jsxs(e.li,{children:["Duplicating a ",n.jsx(e.em,{children:"Group"})," node will duplicate all of its child nodes as well."]}),`
 `]}),`
 `,n.jsx(t,{type:"Group"})]})}function s(o={}){const{wrapper:e}=o.components||{};return e?n.jsx(e,{...o,children:n.jsx(i,{...o})}):i(o)}function l(o,e){throw new Error("Expected component `"+o+"` to be defined: you likely forgot to import, pass, or provide it.")}export{s as default,d as frontmatter};
