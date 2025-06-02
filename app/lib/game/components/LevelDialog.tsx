@@ -105,7 +105,7 @@ const LevelDialog = ({
           <div className="my-auto w-1/3 pr-4">
             <div
               style={{
-                aspectRatio: "1 / 1",
+                aspectRatio: "7 / 6",
                 width: "100%",
                 backgroundImage: "url('/game/sprites/raccoon_spritesheet.png')",
                 backgroundPosition: "0 0",
