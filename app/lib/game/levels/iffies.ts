@@ -1,11 +1,12 @@
 import { useDataStore } from "~/lib/zustand/data";
 import { useGameStore } from "~/lib/zustand/game";
-import { BACKGROUND_OFFSET } from "../constants";
+import { BACKGROUND_OFFSET, RACCOON_SCALE } from "../constants";
 import { getKaplayCtx } from "../core/kaplayCtx";
 import {
   addBackgrounds,
   addGameobjects,
   animPlayer,
+  handleReset,
 } from "../utils/gameHelper";
 
 const TRASHCAN1 = "trashcan1";
@@ -90,5 +91,9 @@ export const initializeIffies = () => {
       useGameStore.getState().setLevelCompleteDialogOpen(true);
       useGameStore.getState().setLevelCompleted(true);
     }
+
+    if (useDataStore.getState().initData) {
+      handleReset(raccoon!, 1);
+    };
   });
 };

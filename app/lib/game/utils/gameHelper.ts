@@ -214,3 +214,9 @@ export function animPlayer(
     player.enterState(newState);
   }
 }
+
+export function handleReset(raccoon: PlayerType, initDirection: number){
+  console.log(raccoon);
+  raccoon?.scaleTo(RACCOON_SCALE* initDirection, RACCOON_SCALE);
+  useDataStore.setState({ initData: false });
+}
