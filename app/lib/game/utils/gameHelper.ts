@@ -10,11 +10,7 @@ import type {
 } from "kaplay";
 
 import { useDataStore } from "~/lib/zustand/data";
-import {
-  BACKGROUND_OFFSET,
-  SPRITE_SCALE,
-  type GameObject,
-} from "../constants";
+import { BACKGROUND_OFFSET, SPRITE_SCALE, type GameObject } from "../constants";
 import { getKaplayCtx } from "../core/kaplayCtx";
 
 type Background = "background1" | "backgroundCalc";
@@ -180,7 +176,15 @@ export function animPlayer(
   player: PlayerType,
   k: KAPLAYCtx,
   movementMode: "Node" | "Input" | "Loop" = "Node",
-  loopConfig?: { minX: number; maxX: number; speed: number } // For Loop movement mode
+  loopConfig?: { minX: number; maxX: number; speed: number }, // For Loop movement mode
+  playerClampX: { minX: number; maxX: number } = {
+    minX: -22.7,
+    maxX: 22.7,
+  },
+  camClampX: { minX: number; maxX: number } = {
+    minX: -15,
+    maxX: 15,
+  }
 ) {
   const lastX = player.pos.x;
 
@@ -201,9 +205,16 @@ export function animPlayer(
       player.pos.x = loopConfig.minX;
     }
   }
-  k.setCamPos(
-    k.lerp(k.getCamPos(), k.vec2(player.pos.x, -BACKGROUND_OFFSET), 0.1)
+
+  //Clamp player position
+  player.pos.x = Math.max(
+    playerClampX.minX,
+    Math.min(playerClampX.maxX, player.pos.x)
   );
+
+  //Clamp camera position
+  const camX = Math.max(camClampX.minX, Math.min(camClampX.maxX, player.pos.x));
+  k.setCamPos(k.lerp(k.getCamPos(), k.vec2(camX, -BACKGROUND_OFFSET), 0.1));
 
   //Handle anim change
   const deltaX = player.pos.x - lastX;
