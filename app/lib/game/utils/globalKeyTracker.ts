@@ -25,7 +25,7 @@ const detectMac = (): boolean => {
 const isMac = detectMac();
 
 // Cross-platform modifier key - using Alt/Option on Mac to avoid conflicts
-const primaryModifier = isMac ? "Alt" : "Control";
+const primaryModifier = isMac ? "Shift" : "Control";
 
 // Set of default shortcuts that we want to prevent default behavior for
 const defaultShortcuts = new Set<string>([
@@ -94,9 +94,9 @@ function shortcutListener(
 
   // If shortcut uses Control/Alt, add both variants for compatibility
   if (shortcut.includes("Control+")) {
-    shortcuts.push(shortcut.replace("Control+", "Alt+"));
-  } else if (shortcut.includes("Alt+")) {
-    shortcuts.push(shortcut.replace("Alt+", "Control+"));
+    shortcuts.push(shortcut.replace("Control+", "Shift+"));
+  } else if (shortcut.includes("Shift+")) {
+    shortcuts.push(shortcut.replace("Shift+", "Control+"));
   }
 
   // Register all variants
