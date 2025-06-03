@@ -3,7 +3,6 @@ import { useEffect } from "react";
 
 import { flowMouseTracker } from "~/lib/game/utils/flowMouseTracker";
 import { globalKeyTracker } from "../../game/utils/globalKeyTracker";
-import { useLoopStore } from "../node-store/loop-store";
 import { useNodeAddMenuStore } from "../node-store/node-add-menu-store";
 import { duplicateNodes } from "../utils";
 
@@ -12,42 +11,39 @@ export function useDuplicateHotkey() {
   const { getNodes, getEdges, setEdges, setNodes } = useReactFlow();
 
   useEffect(() => {
-    // This function is called when the user presses the hotkey for duplicating nodes
-    const remove = globalKeyTracker.shortcutListener("Control+d", (e) => {
-      console.log("Duplicate nodes hotkey pressed");
+    // Use the cross-platform shortcut (Cmd+D on Mac, Ctrl+D on others)
+    const shortcut = globalKeyTracker.createPlatformShortcut("d");
 
+    const remove = globalKeyTracker.shortcutListener(shortcut, (e) => {
       const selectedNodeIds = getNodes().filter((n) => n.selected);
 
-      // If there are no selected nodes, do nothing
-      // If there are selected nodes, duplicate them
       if (selectedNodeIds.length > 0) {
         duplicateNodes(selectedNodeIds, getEdges, getNodes, setEdges, setNodes);
       }
     });
 
-    return () => {
-      remove();
-    };
-  }, [duplicateNodes, getNodes]);
+    return remove;
+  }, [getNodes, getEdges, setEdges, setNodes]);
 }
 
 // Hook to handle adding a new node with a hotkey
 export function useNewNodeHotkey() {
   useEffect(() => {
-    // This function is called when the user presses the hotkey for adding a new node
-    const remove = globalKeyTracker.shortcutListener("Control+ ", (e) => {
-      //Get the current mouse position in the flow editor
+    // Use the cross-platform shortcut (Cmd+Space on Mac, Ctrl+Space on others)
+    const shortcut = globalKeyTracker.createPlatformShortcut(" ");
+
+    const remove = globalKeyTracker.shortcutListener(shortcut, (e) => {
+      // Get the current mouse position in the flow editor
       const position = flowMouseTracker.getPosition();
-      // If the position is valid, open the add menu at that position
+
       if (position) {
         useNodeAddMenuStore
           .getState()
           .openAddMenu(position.clientX, position.clientY);
       }
     });
-    return () => {
-      remove();
-    };
+
+    return remove;
   }, []);
 }
 
@@ -57,15 +53,12 @@ export function useEscapeHotkey(
   condition: boolean = true
 ) {
   useEffect(() => {
-    // This function is called when the user presses the Escape key
     const remove = globalKeyTracker.shortcutListener("Escape", (e) => {
-      // If the condition is true and a callback is provided, call the callback
       if (condition && callback) {
         callback();
       }
     });
-    return () => {
-      remove();
-    };
+
+    return remove;
   }, [callback, condition]);
 }
