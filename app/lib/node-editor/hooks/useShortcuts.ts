@@ -9,9 +9,7 @@ import { duplicateNodes } from "../utils";
 
 // Hook to handle duplicating nodes with a hotkey
 export function useDuplicateHotkey() {
-  const addHandle = useLoopStore((state) => state.addHandle);
-  const getHandles = useLoopStore((state) => state.getHandles);
-  const { getNodes, getEdges, addNodes, addEdges, setNodes } = useReactFlow();
+  const { getNodes, getEdges, setEdges, setNodes } = useReactFlow();
 
   useEffect(() => {
     // This function is called when the user presses the hotkey for duplicating nodes
@@ -23,15 +21,7 @@ export function useDuplicateHotkey() {
       // If there are no selected nodes, do nothing
       // If there are selected nodes, duplicate them
       if (selectedNodeIds.length > 0) {
-        duplicateNodes(
-          selectedNodeIds,
-          addNodes,
-          addEdges,
-          getEdges,
-          setNodes,
-          addHandle,
-          getHandles
-        );
+        duplicateNodes(selectedNodeIds, getEdges, getNodes, setEdges, setNodes);
       }
     });
 

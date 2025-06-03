@@ -21,12 +21,14 @@ const AddNodes = ({
   onClose,
   parentLoopId,
   children,
+  parentId,
 }: {
   x: number;
   y: number;
   onClose: () => void;
   parentLoopId?: string;
   children?: React.ReactNode;
+  parentId?: string;
 }) => {
   const level = useGameStore((state) => state.currentLevel);
   const searchNodeTypes = LEVELS[level].availableNodes;
@@ -46,6 +48,8 @@ const AddNodes = ({
       return { nodeType: t };
     })
   );
+
+  const parentNode = getNode(parentId ?? "");
 
   // focus the input field when the component mounts
   useEffect(() => {
@@ -138,7 +142,8 @@ const AddNodes = ({
     return {
       id,
       type,
-      position: screenToFlowPosition({ x, y }),
+      position: position,
+      parentId,
       data: {
         initialComputeType: computeType,
         parentLoopId,
