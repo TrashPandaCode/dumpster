@@ -3,6 +3,7 @@ import type {
   GameObj,
   KAPLAYCtx,
   PosComp,
+  RotateComp,
   ScaleComp,
   SpriteComp,
   StateComp,
@@ -16,6 +17,7 @@ import { getKaplayCtx } from "../core/kaplayCtx";
 type Background = "background1" | "backgroundCalc";
 type PlayerType = GameObj<
   | PosComp
+  | RotateComp
   | ScaleComp
   | SpriteComp
   | AnchorComp
@@ -54,6 +56,7 @@ export function addGameobjects(gameobjects: GameObject[]) {
         anim: "walkHolding",
       }),
       k.pos(0, 0),
+      k.rotate(0),
       k.scale(SPRITE_SCALE),
       k.anchor("bot"),
       k.area(),
