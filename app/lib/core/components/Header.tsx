@@ -14,7 +14,7 @@ const Header = () => {
           Docs
         </NavLink>
         <NavLink
-          to="/game/calculator"
+          to="/levels"
           className="hover:text-jam-600 transition-all duration-300"
         >
           Game

@@ -17,14 +17,14 @@ import { globalKeyTracker } from "~/lib/game/utils/globalKeyTracker";
 import { useFlowStore } from "~/lib/node-editor/node-store/flow-store";
 import { useLoopStore } from "~/lib/node-editor/node-store/loop-store";
 import { useNodeStore } from "~/lib/node-editor/node-store/node-store";
-import { useDataStore } from "~/lib/zustand/data";
 import { useGameStore } from "~/lib/zustand/game";
 
 const Game = ({ params }: Route.ComponentProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   // load current level from params
-  const level = params.id || "playground";
+  const level = params.id || "calculator"; // default to "calculator" if no level is specified
+  //TODO: navigate to /levels/calculator too. easy option: use navigate("/levels/calculator") in the useEffect below, nice option: handle in router directly
 
   const setCurrentLevel = useGameStore((state) => state.setCurrentLevel);
   const [levelDialogOpen, setLevelDialogOpen] = useState(true);
