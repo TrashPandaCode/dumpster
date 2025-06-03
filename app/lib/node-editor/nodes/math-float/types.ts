@@ -18,6 +18,7 @@ export const TYPES = {
   Trigonometric: ["Sine", "Cosine", "Tangent"],
   Conversion: ["To Radians", "To Degrees"],
   Compare: ["Equals", "Greater Than", "Less Than"],
+  "Logical Operators": ["AND", "OR", "XOR", "NOT", "NAND", "NOR", "XNOR"],
 };
 
 // prettier-ignore
@@ -45,6 +46,14 @@ export const INPUTS: { [key: string]: NumberInputType[] } = {
     Equals: [{enable: true, type: "float", label: "x"}, {enable: true, type: "float", label: "y"}],
     "Greater Than": [{enable: true, type: "float", label: "x"}, {enable: true, type: "float", label: "y"}],
     "Less Than": [{enable: true, type: "float", label: "x"}, {enable: true, type: "float", label: "y"}],
+
+    AND:[{enable: true, type: "float", label: "bool"}, {enable: true, type: "float", label: "bool"}],
+    OR:[{enable: true, type: "float", label: "bool"}, {enable: true, type: "float", label: "bool"}],
+    XOR:[{enable: true, type: "float", label: "bool"}, {enable: true, type: "float", label: "bool"}],
+    NOT:[{enable: true, type: "float", label: "bool"}, {enable: false, type: "float", label: "bool"}],
+    NAND:[{enable: true, type: "float", label: "bool"}, {enable: true, type: "float", label: "bool"}],
+    NOR:[{enable: true, type: "float", label: "bool"}, {enable: true, type: "float", label: "bool"}],
+    XNOR:[{enable: true, type: "float", label: "bool"}, {enable: true, type: "float", label: "bool"}],
   };
 
 export const COMPUTE: { [key: string]: (x: number, y: number) => number } = {
@@ -72,4 +81,12 @@ export const COMPUTE: { [key: string]: (x: number, y: number) => number } = {
   Equals: (x, y) => +(x == y),
   "Greater Than": (x, y) => +(x > y),
   "Less Than": (x, y) => +(x < y),
+
+  AND: (x, y) => +(!!x && !!y),
+  OR: (x, y) => +(!!x || !!y),
+  XOR: (x, y) => +(!!x !== !!y),
+  NOT: (x, _) => +!x,
+  NAND: (x, y) => +!(!!x && !!y),
+  NOR: (x, y) => +!(!!x || !!y),
+  XNOR: (x, y) => +(!!x === !!y),
 };

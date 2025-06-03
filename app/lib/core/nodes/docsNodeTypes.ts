@@ -6,7 +6,7 @@ import KeyPress from "../../node-editor/nodes/input/KeyPress";
 import Switch from "../../node-editor/nodes/logic/Switch";
 import ForEnd from "../../node-editor/nodes/loops/ForEnd";
 import ForStart from "../../node-editor/nodes/loops/ForStart";
-import MathFloat from "../../node-editor/nodes/math-float/MathFloat";
+import Math from "../../node-editor/nodes/math-float/Math";
 import Value from "../../node-editor/nodes/math-float/Value";
 import DocsExportToGameobject from "./DocsExportToGameobject";
 import DocsImportFromGameobject from "./DocsImportFromGameobject";
@@ -16,12 +16,12 @@ export const docsNodeTypes = {
   Display,
   Time,
   KeyPress,
-  MathFloat,
+  Math,
   DocsExportToGameobject,
   DocsImportFromGameobject,
   Switch,
   Group,
   ForStart,
   ForEnd,
-  MousePosition
+  MousePosition,
 };

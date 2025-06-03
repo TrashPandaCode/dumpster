@@ -1,10 +1,12 @@
 import { useGameStore } from "~/lib/zustand/game";
 import { BACKGROUND_OFFSET, CAM_SCALE } from "../constants";
+import { useDataStore } from "~/lib/zustand/data";
 import { getKaplayCtx } from "../core/kaplayCtx";
 import {
   addBackgrounds,
   addGameobjects,
   animPlayer,
+  handleReset,
 } from "../utils/gameHelper";
 
 export const initializeSitting = () => {
@@ -34,5 +36,9 @@ export const initializeSitting = () => {
       useGameStore.getState().setLevelCompleteDialogOpen(true);
       useGameStore.getState().setLevelCompleted(true);
     }
+
+    if (useDataStore.getState().initData) {
+      handleReset(raccoon!, 1);
+    };
   });
 };

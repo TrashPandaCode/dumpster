@@ -6,6 +6,7 @@ import {
   addBackgrounds,
   addGameobjects,
   animPlayer,
+  handleReset,
 } from "../utils/gameHelper";
 
 const TRASHCAN1 = "trashcan1";
@@ -90,5 +91,9 @@ export const initializeIffies = () => {
       useGameStore.getState().setLevelCompleteDialogOpen(true);
       useGameStore.getState().setLevelCompleted(true);
     }
+
+    if (useDataStore.getState().initData) {
+      handleReset(raccoon!, 1);
+    };
   });
 };

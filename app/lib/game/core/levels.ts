@@ -3,9 +3,9 @@ import type { Edge, Node } from "@xyflow/react";
 import alleyOne from "~/assets/alley_one.jpg";
 import alleyTwo from "~/assets/alley_two.png";
 import calcCard from "~/assets/home-cards/calc_card.png";
-import sittingCard from "~/assets/home-cards/sitting_card.png";
 import iffiesCard from "~/assets/home-cards/iffies_card.png";
 import playgroundCard from "~/assets/home-cards/playground_card.png";
+import sittingCard from "~/assets/home-cards/sitting_card.png";
 import houseImage from "~/assets/house.png";
 import type { NodeType } from "~/lib/node-editor/nodes/node-types";
 import { type GameObject } from "../constants";
@@ -125,7 +125,7 @@ export const LEVELS = {
       "Value",
       "Time",
       "KeyPress",
-      "MathFloat",
+      "Math",
       "ExportToGameobject",
       "ImportFromGameobject",
       "Switch",
@@ -168,7 +168,7 @@ export const LEVELS = {
         connections: [{ label: "solution", access: "set" }],
       },
     ],
-    availableNodes: ["Display", "Value", "MathFloat", "ExportToGameobject"],
+    availableNodes: ["Display", "Value", "Math", "ExportToGameobject"],
     difficulty: 0,
   },
   sitting: {
@@ -250,7 +250,7 @@ export const LEVELS = {
     availableNodes: [
       "Display",
       "Value",
-      "MathFloat",
+      "Math",
       "ImportFromGameobject",
       "Switch",
       "ExportToGameobject",
@@ -282,7 +282,7 @@ export const LEVELS = {
     availableNodes: [
       "Display",
       "Value",
-      "MathFloat",
+      "Math",
       "ImportFromGameobject",
       "Switch",
       "ExportToGameobject",

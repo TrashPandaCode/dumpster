@@ -5,6 +5,7 @@ import {
   addBackgrounds,
   addGameobjects,
   animPlayer,
+  handleReset,
 } from "../utils/gameHelper";
 import { useGameStore } from "~/lib/zustand/game";
 
@@ -32,5 +33,9 @@ export const initializePlayground = () => {
     trashcanFilled!.pos.y =
       useDataStore.getState().gameObjects.get("trashcanFilled")?.get("ypos")?.value ??
       0;
+
+    if (useDataStore.getState().initData) {
+      handleReset(raccoon!, 1);
+    };
   });
 };

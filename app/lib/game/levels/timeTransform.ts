@@ -6,7 +6,10 @@ import {
   addBackgrounds,
   addGameobjects,
   animPlayer,
+  handleReset,
 } from "../utils/gameHelper";
+
+const initDirection = 1;
 
 export const initializeTimeTransform = () => {
   const { k, game } = getKaplayCtx();
@@ -35,5 +38,9 @@ export const initializeTimeTransform = () => {
       maxX: 5,
       speed: speedT * deltaTime,
     });
+
+    if (useDataStore.getState().initData) {
+      handleReset(raccoon!, 1);
+    };
   });
 };

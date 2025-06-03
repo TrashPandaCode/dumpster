@@ -18,6 +18,7 @@ export type GameObjectsData = Map<
 >;
 
 interface DataState {
+  initData: boolean;
   gameObjects: GameObjectsData;
   setData: (gameObject: GameObject, label: string, value: number) => void;
   addHandle: (gameObject: GameObject, label: string) => void;
@@ -26,6 +27,7 @@ interface DataState {
 }
 
 export const useDataStore = create<DataState>((set, get) => ({
+  initData: true,
   gameObjects: new Map(),
   setData: (gameObject, label, value) => {
     const gob = get().gameObjects.get(gameObject)!;
@@ -55,6 +57,7 @@ export const useDataStore = create<DataState>((set, get) => ({
     }),
   init: (modifiableGameObjects) =>
     set({
+      initData: true,
       gameObjects: new Map(
         modifiableGameObjects.map((item) => [
           item.id,

@@ -2,7 +2,7 @@ import { useDataStore } from "~/lib/zustand/data";
 import { useGameStore } from "~/lib/zustand/game";
 import { BACKGROUND_OFFSET, CAM_SCALE } from "../constants";
 import { getKaplayCtx } from "../core/kaplayCtx";
-import { addBackgrounds, addGameobjects } from "../utils/gameHelper";
+import { addBackgrounds, addGameobjects, handleReset } from "../utils/gameHelper";
 
 export const initializeCalculator = () => {
   const { k, game } = getKaplayCtx();
@@ -26,5 +26,9 @@ export const initializeCalculator = () => {
       useGameStore.getState().setLevelCompleteDialogOpen(true);
       useGameStore.getState().setLevelCompleted(true);
     }
+
+    if (useDataStore.getState().initData) {
+      handleReset(raccoon!, -1);
+    };
   });
 };
