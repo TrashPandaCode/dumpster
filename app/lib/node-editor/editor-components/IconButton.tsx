@@ -26,10 +26,7 @@ export const IconButton = React.forwardRef<
       </TooltipTrigger>
 
       <TooltipContent side={side}>
-        {
-          if (typeof tooltip === "string") return "a";
-          else return tooltip;
-        }
+        { typeof tooltip === "string" ? <p>{tooltip}</p> : tooltip }
       </TooltipContent>
     </Tooltip>
   );
