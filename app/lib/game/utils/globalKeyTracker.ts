@@ -128,7 +128,7 @@ function initGlobalKeyTracker() {
 
   keydownHandler = (e) => {
     const shortcut = getShortcutString(e);
-    console.log("Keydown:", e);
+    console.log("Keydown:", e, "isMac:", isMac, "Shortcut:", shortcut);
     // Check if the pressed key is a default shortcut and prevent default behavior
     if (defaultShortcuts.has(shortcut)) {
       e.preventDefault();
