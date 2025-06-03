@@ -6,7 +6,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "./Tooltip";
 export const IconButton = React.forwardRef<
   HTMLButtonElement,
   React.ComponentPropsWithoutRef<"button"> & {
-    tooltip?: string;
+    tooltip?: string | React.ReactNode;
     side?: "top" | "right" | "bottom" | "left";
   }
 >(({ tooltip, className, children, side, ...props }, ref) => {
@@ -26,7 +26,10 @@ export const IconButton = React.forwardRef<
       </TooltipTrigger>
 
       <TooltipContent side={side}>
-        <p>{tooltip}</p>
+        {
+          if (typeof tooltip === "string") return "a";
+          else return tooltip;
+        }
       </TooltipContent>
     </Tooltip>
   );
