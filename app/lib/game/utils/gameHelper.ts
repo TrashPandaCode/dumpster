@@ -227,6 +227,6 @@ export function animPlayer(
 }
 
 export function handleReset(raccoon: PlayerType, initDirection: number) {
-  raccoon?.scaleTo(RACCOON_SCALE * initDirection, RACCOON_SCALE);
+  raccoon?.scaleTo(SPRITE_SCALE * initDirection, SPRITE_SCALE);
   useDataStore.setState({ initData: false });
 }
