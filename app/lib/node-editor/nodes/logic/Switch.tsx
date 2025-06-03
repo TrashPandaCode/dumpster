@@ -14,6 +14,29 @@ import {
   OUT_HANDLE_1,
 } from "../constants";
 
+/**
+ * React component representing a conditional switch node.
+ *
+ * - Outputs one of two input values based on a boolean condition.
+ * - If the boolean input (IN_HANDLE_1) is `0`, it outputs the "False" value.
+ * - If the boolean input is any non-zero value, it outputs the "True" value.
+ *
+ * Props:
+ * @param {string} id - Unique identifier for this node.
+ * @param {any} data - Node-specific data including default values for the "False" and "True" branches.
+ *
+ * React Flow:
+ * - Uses `useReactFlow` to register the node's compute function on mount.
+ * - Uses `useNodeConnections` to determine if input handles are connected.
+ *
+ * Internal State:
+ * - `yInputData` (False value) and `zInputData` (True value) are stored in refs.
+ * - Local display state for y and z values is updated after each compute call.
+ *
+ * UI:
+ * - Displays one input for the condition and two inputs for result values.
+ * - Disables manual input if a connection is present on that handle.
+ */
 const Switch = memo(({ id, data }: { id: string; data: any }) => {
   const { updateNodeData } = useReactFlow();
   const [yDisplayData, setyDisplayData] = useState(0);

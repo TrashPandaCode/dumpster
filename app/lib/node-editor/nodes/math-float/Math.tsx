@@ -11,6 +11,28 @@ import { getInput } from "../../utils";
 import { IN_HANDLE_1, IN_HANDLE_2, OUT_HANDLE_1 } from "../constants";
 import { COMPUTE, INPUTS, TYPES } from "./types";
 
+/**
+ * React component representing a math or logic operation node with one or two inputs and one output.
+ *
+ * - Allows the user to select a compute type (e.g., Addition, Subtraction).
+ * - Dynamically configures the input fields based on the selected compute type.
+ * - Computes the result from the input values using a predefined function map.
+ * - Displays input fields that can be either manually editable or connected to upstream nodes.
+ *
+ * Props:
+ * @param {string} id - Unique identifier for this node.
+ * @param {any} data - Initial data for the node including optional input values and compute type.
+ *
+ * React Flow:
+ * - Uses `useReactFlow` to register a compute function and update node data.
+ * - Uses `useNodeConnections` to determine if input handles are connected.
+ *
+ * Internal State:
+ * - `computeType`: The selected math operation (stored in a ref).
+ * - `inputState`: UI configuration for enabled/disabled inputs.
+ * - `xInputData`, `yInputData`: Refs holding raw input values.
+ * - `xDisplayData`, `yDisplayData`: State used to display current inputs.
+ */
 const Math = memo(({ id, data }: { id: string; data: any }) => {
   const { updateNodeData } = useReactFlow();
 

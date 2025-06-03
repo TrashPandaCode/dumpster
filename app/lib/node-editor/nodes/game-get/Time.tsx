@@ -7,6 +7,20 @@ import NodeContent from "../../node-components/NodeContent";
 import type { nodeData, nodeInputs } from "../../node-store/node-store";
 import { OUT_HANDLE_1, OUT_HANDLE_2 } from "../constants";
 
+/**
+ * React component representing a node that outputs the current time and delta time of the game view.
+ *
+ * Props:
+ * @param {string} id - Unique identifier for this node instance.
+ *
+ * Behavior:
+ * - Registers a compute function on mount that writes the current time and delta time
+ *   to the node's output handles.
+ *
+ * Outputs:
+ * - OUT_HANDLE_1: Current time (float)
+ * - OUT_HANDLE_2: Delta time since last frame/update (float)
+ */
 const Time = memo(({ id }: { id: string }) => {
   const { updateNodeData } = useReactFlow();
   const getTime = useTimeStore((state) => state.getTime);

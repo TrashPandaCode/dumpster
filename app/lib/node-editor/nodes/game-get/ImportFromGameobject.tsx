@@ -1,6 +1,7 @@
 import { Position, useReactFlow } from "@xyflow/react";
 import { memo, useEffect, useMemo } from "react";
 
+import type { GameObject } from "~/lib/game/constants";
 import { useDataStore } from "~/lib/zustand/data";
 import { useGameobjectSelect } from "../../hooks/useGameobjectSelect";
 import BaseHandle from "../../node-components/BaseHandle";
@@ -10,8 +11,25 @@ import NodeContent from "../../node-components/NodeContent";
 import type { nodeData, nodeInputs } from "../../node-store/node-store";
 import { getHandleIntersection, getInput } from "../../utils";
 import { IN_HANDLE_1 } from "../constants";
-import type { GameObject } from "~/lib/game/constants";
 
+/**
+ * React component that allows node data to be read from one or more
+ * GameObjects in the game state.
+ *
+ * Features:
+ * - Multi-select dropdown for choosing one or more GameObjects.
+ * - Input handle for index selection if multiple GameObjects are selected.
+ * - Automatically displays an intersection of input handles for all selected GameObjects.
+ *
+ * Props:
+ * @param {string} id - Node instance ID from the ReactFlow context.
+ * @param {any} data - Node data object. It may include:
+ *   - `selectedGameObjects`: Array of GameObject IDs.
+ *
+ * Notes:
+ * - If the selected index is out of range, the output results are cleared.
+ * - Uses Zustand stores for game object data and React Flow for node updates.
+ */
 const ImportFromGameobject = memo(({ id, data }: { id: string; data: any }) => {
   const gameObjects = useDataStore((state) => state.gameObjects);
   const selectableGameObjects: GameObject[] = Array.from(gameObjects.keys());

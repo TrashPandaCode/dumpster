@@ -17,6 +17,34 @@ import type {
 import { getInput } from "../../utils";
 import { IN_HANDLE_1, MAIN_LOOP_CONNECTOR, OUT_HANDLE_1 } from "../constants";
 
+/**
+ * React component representing the starting node of a "for" loop structure.
+ *
+ * - Allows the user to specify or input the number of loop iterations.
+ * - Outputs the current loop index on each iteration.
+ * - Manages loop variables which are passed between `ForStart` and `ForEnd`.
+ * - Supports dynamic addition and removal of loop variables via handles.
+ *
+ * Props:
+ * @param {string} id - Unique identifier for this node.
+ * @param {any} data - Node data, including the `loopId` used for coordinating with loop state.
+ * @param {boolean} selected - Whether the node is currently selected (used for UI styling).
+ *
+ * React Flow:
+ * - Uses `useReactFlow` to register a compute function on mount.
+ * - Uses `useNodeConnections` to determine if the iteration input is connected.
+ *
+ * Internal State:
+ * - `iterations`: Ref holding the user-defined or connected iteration count.
+ * - `iterDisplay`: State for displaying the current number of iterations.
+ * - `curLabel`: Ref used for adding new loop variable handles.
+ *
+ * UI:
+ * - Displays an input field for iteration count, optional connection input.
+ * - Shows input/output handles for each loop variable.
+ * - Includes a button to add new loop variables and icons to remove them.
+ */
+
 const ForStart = memo(
   ({ id, data, selected }: { id: string; data: any; selected: boolean }) => {
     const iterations = useRef(1);
