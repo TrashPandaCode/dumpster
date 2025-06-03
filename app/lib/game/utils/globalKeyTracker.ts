@@ -24,8 +24,8 @@ const detectMac = (): boolean => {
 
 const isMac = detectMac();
 
-// Cross-platform modifier key
-const primaryModifier = isMac ? "Meta" : "Control";
+// Cross-platform modifier key - using Alt/Option on Mac to avoid conflicts
+const primaryModifier = isMac ? "Alt" : "Control";
 
 // Set of default shortcuts that we want to prevent default behavior for
 const defaultShortcuts = new Set<string>([
@@ -53,23 +53,23 @@ function normalizeKey(key: string): string {
 
 /**
  * Generates a string representation of the keyboard shortcut
- * Uses the primary modifier (Cmd on Mac, Ctrl on others) for consistency
+ * Uses Alt on Mac, Ctrl on others to avoid system conflicts
  */
 function getShortcutString(e: KeyboardEvent): string {
   const parts: string[] = [];
 
-  // Use primary modifier for cross-platform compatibility
-  if ((isMac && e.metaKey) || (!isMac && e.ctrlKey)) {
+  // Use Alt on Mac (Option key), Ctrl on others
+  if ((isMac && e.altKey) || (!isMac && e.ctrlKey)) {
     parts.push(primaryModifier);
   }
 
   // Add other modifiers
-  if (e.altKey) parts.push("Alt");
+  if (e.metaKey) parts.push("Meta");
   if (e.shiftKey) parts.push("Shift");
 
-  // Special handling for secondary modifiers on Mac
+  // Handle secondary modifiers
   if (isMac && e.ctrlKey) parts.push("Control");
-  if (!isMac && e.metaKey) parts.push("Meta");
+  if (!isMac && e.altKey) parts.push("Alt");
 
   // Handle special keys
   const specialKeys = ["Escape", "Enter", "Tab", "Backspace", "Delete"];
@@ -84,7 +84,7 @@ function getShortcutString(e: KeyboardEvent): string {
 
 /**
  * Cross-platform shortcut registration
- * Automatically handles both Ctrl and Cmd variants
+ * Automatically handles both Alt and Ctrl variants
  */
 function shortcutListener(
   shortcut: string,
@@ -92,11 +92,11 @@ function shortcutListener(
 ) {
   const shortcuts = [shortcut];
 
-  // If shortcut uses Control/Meta, add both variants for compatibility
+  // If shortcut uses Control/Alt, add both variants for compatibility
   if (shortcut.includes("Control+")) {
-    shortcuts.push(shortcut.replace("Control+", "Meta+"));
-  } else if (shortcut.includes("Meta+")) {
-    shortcuts.push(shortcut.replace("Meta+", "Control+"));
+    shortcuts.push(shortcut.replace("Control+", "Alt+"));
+  } else if (shortcut.includes("Alt+")) {
+    shortcuts.push(shortcut.replace("Alt+", "Control+"));
   }
 
   // Register all variants
