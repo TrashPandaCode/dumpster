@@ -19,7 +19,7 @@ export const initializeSitting = () => {
     "trashcanFilled",
   ]);
   k.setCamPos(0, -BACKGROUND_OFFSET);
-    k.setCamScale(CAM_SCALE * k.height() / 947);
+  k.setCamScale((CAM_SCALE * k.height()) / 947);
 
   trashcanFilled!.z = 3;
   trashcanFilled!.pos.x = -5;

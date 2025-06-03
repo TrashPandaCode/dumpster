@@ -11,7 +11,7 @@ export const initializeCalculator = () => {
 
   const { raccoon } = addGameobjects(["raccoon"]);
   k.setCamPos(-5, -BACKGROUND_OFFSET);
-  k.setCamScale(CAM_SCALE * k.height() / 947);
+  k.setCamScale((CAM_SCALE * k.height()) / 947);
   raccoon!.scaleBy(-1, 1);
 
   game.onUpdate(() => {

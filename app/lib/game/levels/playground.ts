@@ -1,4 +1,5 @@
 import { useDataStore } from "~/lib/zustand/data";
+import { useGameStore } from "~/lib/zustand/game";
 import { BACKGROUND_OFFSET, CAM_SCALE } from "../constants";
 import { getKaplayCtx } from "../core/kaplayCtx";
 import {
@@ -7,7 +8,6 @@ import {
   animPlayer,
   handleReset,
 } from "../utils/gameHelper";
-import { useGameStore } from "~/lib/zustand/game";
 
 export const initializePlayground = () => {
   const { k, game } = getKaplayCtx();
@@ -20,7 +20,7 @@ export const initializePlayground = () => {
     "goalFlag",
   ]);
   k.setCamPos(0, -BACKGROUND_OFFSET);
-  k.setCamScale(CAM_SCALE * k.height() / 947);
+  k.setCamScale((CAM_SCALE * k.height()) / 947);
 
   game.onUpdate(() => {
     if (useGameStore.getState().isPaused) return;
@@ -28,14 +28,14 @@ export const initializePlayground = () => {
     animPlayer(raccoon!, k);
 
     trashcanFilled!.pos.x =
-      useDataStore.getState().gameObjects.get("trashcanFilled")?.get("xpos")?.value ??
-      0;
+      useDataStore.getState().gameObjects.get("trashcanFilled")?.get("xpos")
+        ?.value ?? 0;
     trashcanFilled!.pos.y =
-      useDataStore.getState().gameObjects.get("trashcanFilled")?.get("ypos")?.value ??
-      0;
+      useDataStore.getState().gameObjects.get("trashcanFilled")?.get("ypos")
+        ?.value ?? 0;
 
     if (useDataStore.getState().initData) {
       handleReset(raccoon!, 1);
-    };
+    }
   });
 };
