@@ -5,7 +5,7 @@ import BaseHandle from "../../node-components/BaseHandle";
 import LabelHandle from "../../node-components/LabelHandle";
 import NodeContent from "../../node-components/NodeContent";
 import NumberInput from "../../node-components/NumberInput";
-import { type nodeData, type nodeInputs } from "../../node-store/node-store";
+import { type nodeInputs, type nodeResults } from "../../node-store/node-store";
 import { getInput } from "../../utils";
 import {
   IN_HANDLE_1,
@@ -56,7 +56,7 @@ const Switch = memo(({ id, data }: { id: string; data: any }) => {
 
   useEffect(() => {
     updateNodeData(id, {
-      compute: (inputs: nodeInputs, results: nodeData) => {
+      compute: (inputs: nodeInputs, results: nodeResults) => {
         const x = getInput(inputs, IN_HANDLE_1, 0);
         const y = getInput(inputs, IN_HANDLE_2, yInputData.current);
         const z = getInput(inputs, IN_HANDLE_3, zInputData.current);

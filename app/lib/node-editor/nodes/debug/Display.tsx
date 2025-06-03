@@ -3,7 +3,7 @@ import { memo, useEffect, useState } from "react";
 
 import LabelHandle from "../../node-components/LabelHandle";
 import NodeContent from "../../node-components/NodeContent";
-import type { nodeData, nodeInputs } from "../../node-store/node-store";
+import type { nodeInputs, nodeResults } from "../../node-store/node-store";
 import { getInput } from "../../utils";
 import { IN_HANDLE_1 } from "../constants";
 
@@ -20,7 +20,7 @@ const Display = memo(({ id }: { id: string }) => {
 
   useEffect(() => {
     updateNodeData(id, {
-      compute: (inputs: nodeInputs, _: nodeData) => {
+      compute: (inputs: nodeInputs, _: nodeResults) => {
         setDisplayNumber(getInput(inputs, IN_HANDLE_1, 0));
       },
     });

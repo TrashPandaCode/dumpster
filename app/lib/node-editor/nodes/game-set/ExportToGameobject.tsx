@@ -12,7 +12,7 @@ import BaseHandle from "../../node-components/BaseHandle";
 import LabelHandle from "../../node-components/LabelHandle";
 import MultiSelectDropDown from "../../node-components/MultiSelectDropDown";
 import NodeContent from "../../node-components/NodeContent";
-import type { nodeData, nodeInputs } from "../../node-store/node-store";
+import type { nodeInputs, nodeResults } from "../../node-store/node-store";
 import { getHandleIntersection, getInput } from "../../utils";
 import { IN_HANDLE_1 } from "../constants";
 
@@ -85,7 +85,7 @@ const ExportToGameobject = memo(
 
     useEffect(() => {
       updateNodeData(id, {
-        compute: (inputs: nodeInputs, _: nodeData) => {
+        compute: (inputs: nodeInputs, _: nodeResults) => {
           const index =
             selectedGameObjects.length === 1
               ? 0

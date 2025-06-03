@@ -4,7 +4,7 @@ import { memo, useEffect } from "react";
 import { useMouseStore } from "~/lib/zustand/mouse";
 import LabelHandle from "../../node-components/LabelHandle";
 import NodeContent from "../../node-components/NodeContent";
-import type { nodeData, nodeInputs } from "../../node-store/node-store";
+import type { nodeInputs, nodeResults } from "../../node-store/node-store";
 import { OUT_HANDLE_1, OUT_HANDLE_2 } from "../constants";
 
 /**
@@ -34,7 +34,7 @@ const MousePosition = memo(({ id }: { id: string }) => {
 
   useEffect(() => {
     updateNodeData(id, {
-      compute: (_: nodeInputs, results: nodeData) => {
+      compute: (_: nodeInputs, results: nodeResults) => {
         const mousePos = getMousePos();
         results.set(OUT_HANDLE_1, mousePos.x);
         results.set(OUT_HANDLE_2, mousePos.y);

@@ -6,7 +6,7 @@ import { useKeyStore } from "~/lib/zustand/key";
 import LabelHandle from "../../node-components/LabelHandle";
 import NodeContent from "../../node-components/NodeContent";
 import SelectDropDown from "../../node-components/SelectDropDown";
-import type { nodeData, nodeInputs } from "../../node-store/node-store";
+import type { nodeInputs, nodeResults } from "../../node-store/node-store";
 import { OUT_HANDLE_1 } from "../constants";
 
 /**
@@ -60,7 +60,7 @@ const KeyPress = memo(({ id, data }: { id: string; data: any }) => {
 
   useEffect(() => {
     updateNodeData(id, {
-      compute: (_: nodeInputs, results: nodeData) => {
+      compute: (_: nodeInputs, results: nodeResults) => {
         let active = false;
         switch (keyPressType) {
           case "down":

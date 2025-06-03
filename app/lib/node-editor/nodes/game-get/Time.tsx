@@ -4,7 +4,7 @@ import { memo, useEffect } from "react";
 import { useTimeStore } from "~/lib/zustand/time";
 import LabelHandle from "../../node-components/LabelHandle";
 import NodeContent from "../../node-components/NodeContent";
-import type { nodeData, nodeInputs } from "../../node-store/node-store";
+import type { nodeInputs, nodeResults } from "../../node-store/node-store";
 import { OUT_HANDLE_1, OUT_HANDLE_2 } from "../constants";
 
 /**
@@ -28,7 +28,7 @@ const Time = memo(({ id }: { id: string }) => {
 
   useEffect(() => {
     updateNodeData(id, {
-      compute: (_: nodeInputs, results: nodeData) => {
+      compute: (_: nodeInputs, results: nodeResults) => {
         results.set(OUT_HANDLE_1, getTime());
         results.set(OUT_HANDLE_2, getDeltaTime());
       },

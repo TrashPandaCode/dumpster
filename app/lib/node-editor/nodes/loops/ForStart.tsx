@@ -11,8 +11,8 @@ import NumberInput from "../../node-components/NumberInput";
 import { useLoopStore } from "../../node-store/loop-store";
 import type {
   LoopStatus,
-  nodeData,
   nodeInputs,
+  nodeResults,
 } from "../../node-store/node-store";
 import { getInput } from "../../utils";
 import { IN_HANDLE_1, MAIN_LOOP_CONNECTOR, OUT_HANDLE_1 } from "../constants";
@@ -66,7 +66,7 @@ const ForStart = memo(
       updateNodeData(id, {
         compute: (
           inputs: nodeInputs,
-          results: nodeData,
+          results: nodeResults,
           loopStatus: LoopStatus
         ) => {
           const iters = Math.max(

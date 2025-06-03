@@ -4,7 +4,7 @@ import { memo, useEffect, useRef } from "react";
 import LabelHandle from "../../node-components/LabelHandle";
 import NodeContent from "../../node-components/NodeContent";
 import NumberInput from "../../node-components/NumberInput";
-import type { nodeData, nodeInputs } from "../../node-store/node-store";
+import type { nodeInputs, nodeResults } from "../../node-store/node-store";
 import { OUT_HANDLE_1 } from "../constants";
 
 /**
@@ -20,7 +20,7 @@ const Value = memo(({ id, data }: { id: string; data: any }) => {
 
   useEffect(() => {
     updateNodeData(id, {
-      compute: (_: nodeInputs, results: nodeData) => {
+      compute: (_: nodeInputs, results: nodeResults) => {
         results.set(OUT_HANDLE_1, value.current);
       },
       value,

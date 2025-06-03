@@ -7,8 +7,8 @@ import NodeContent from "../../node-components/NodeContent";
 import { useLoopStore } from "../../node-store/loop-store";
 import type {
   LoopStatus,
-  nodeData,
   nodeInputs,
+  nodeResults,
 } from "../../node-store/node-store";
 import { getInput } from "../../utils";
 import { IN_HANDLE_1, MAIN_LOOP_CONNECTOR } from "../constants";
@@ -45,7 +45,7 @@ const ForEnd = memo(({ id, data }: { id: string; data: any }) => {
     updateNodeData(id, {
       compute: (
         inputs: nodeInputs,
-        results: nodeData,
+        results: nodeResults,
         loopStatus: LoopStatus
       ) => {
         loops.get(data.loopId)?.forEach((handleId) => {
