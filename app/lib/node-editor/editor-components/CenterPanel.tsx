@@ -16,7 +16,7 @@ const CenterPanel = () => {
       className="flex flex-row items-center justify-center gap-2"
     >
       {neighborLevels?.prev && (
-        <NavLink to={`/game/${neighborLevels?.prev}`}>
+        <NavLink to={`/levels/${neighborLevels?.prev}`}>
           <IconButton
             tooltip="Previous Level"
             side="left"
@@ -32,7 +32,7 @@ const CenterPanel = () => {
         </IconButton>
       </NavLink>
       {neighborLevels?.next && (
-        <NavLink to={`/game/${neighborLevels?.next}`}>
+        <NavLink to={`/levels/${neighborLevels?.next}`}>
           <IconButton tooltip="Next Level" side="right">
             <ArrowRightIcon className="text-white" />
           </IconButton>

@@ -7,7 +7,7 @@ import type { Level } from "~/lib/game/core/levels";
 
 const LevelCard: React.FC<{ level: Level }> = ({ level }) => (
   <NavLink
-    to={`/game/${level.slug}`}
+    to={`/levels/${level.slug}`}
     className="group relative flex aspect-square cursor-pointer overflow-hidden rounded-xl"
   >
     <div className="absolute z-1 m-2 flex items-center justify-center gap-[1px] rounded-full bg-white px-1 py-0.5">

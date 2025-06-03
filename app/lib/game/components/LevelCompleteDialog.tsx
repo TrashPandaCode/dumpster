@@ -69,7 +69,7 @@ const LevelCompleteDialog = () => {
           {nextLevel && (
             <DialogClose asChild>
               <NavLink
-                to={`/game/${nextLevel}`}
+                to={`/levels/${nextLevel}`}
                 className="cursor-pointer rounded-lg bg-slate-700/80 px-4 py-2 text-white hover:bg-slate-600 focus:outline-1 focus:outline-blue-300"
               >
                 Next Level

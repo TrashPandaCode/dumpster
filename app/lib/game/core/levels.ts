@@ -80,61 +80,6 @@ export type ModifiableGameObject = {
  * The LEVELS object contains all the levels of the game.
  */
 export const LEVELS = {
-  playground: {
-    slug: "playground",
-    name: "Playground",
-    description:
-      "This is a sandbox level where you can freely test game mechanics.",
-    dialog: [
-      "This is a playground level where you can freely implement game mechanics.",
-      "You are allowed to use all available nodes.",
-    ],
-    goals: [
-      "No goals, this level is designed for experimentation and testing.",
-    ],
-    success: "How did you complete a sandbox level?",
-    category: "Sandbox",
-    image: playgroundCard,
-    nodes: [],
-    edges: [],
-    initialState: initializePlayground,
-    hints: [
-      "This is a playground level",
-      "You don't need hints here",
-      "stop clicking there is nothing coming",
-      "42",
-    ],
-    modifiableGameObjects: [
-      {
-        id: "raccoon",
-        connections: [
-          { label: "xpos", access: "all" },
-          { label: "ypos", access: "all" },
-        ],
-      },
-      {
-        id: "trashcanFilled",
-        connections: [
-          { label: "xpos", access: "set" },
-          { label: "ypos", access: "set" },
-        ],
-      },
-    ],
-    availableNodes: [
-      "Display",
-      "Value",
-      "Time",
-      "KeyPress",
-      "Math",
-      "ExportToGameobject",
-      "ImportFromGameobject",
-      "Switch",
-      "Group",
-      "ForLoop",
-      "MousePosition",
-    ],
-    difficulty: 0,
-  },
   calculator: {
     slug: "calculator",
     name: "Calculator",
@@ -318,5 +263,60 @@ export const LEVELS = {
     ],
     availableNodes: ["Display", "ExportToGameobject"],
     difficulty: 2,
+  },
+  playground: {
+    slug: "playground",
+    name: "Playground",
+    description:
+      "This is a sandbox level where you can freely test game mechanics.",
+    dialog: [
+      "This is a playground level where you can freely implement game mechanics.",
+      "You are allowed to use all available nodes.",
+    ],
+    goals: [
+      "No goals, this level is designed for experimentation and testing.",
+    ],
+    success: "How did you complete a sandbox level?",
+    category: "Sandbox",
+    image: playgroundCard,
+    nodes: [],
+    edges: [],
+    initialState: initializePlayground,
+    hints: [
+      "This is a playground level",
+      "You don't need hints here",
+      "stop clicking there is nothing coming",
+      "42",
+    ],
+    modifiableGameObjects: [
+      {
+        id: "raccoon",
+        connections: [
+          { label: "xpos", access: "all" },
+          { label: "ypos", access: "all" },
+        ],
+      },
+      {
+        id: "trashcanFilled",
+        connections: [
+          { label: "xpos", access: "set" },
+          { label: "ypos", access: "set" },
+        ],
+      },
+    ],
+    availableNodes: [
+      "Display",
+      "Value",
+      "Time",
+      "KeyPress",
+      "Math",
+      "ExportToGameobject",
+      "ImportFromGameobject",
+      "Switch",
+      "Group",
+      "ForLoop",
+      "MousePosition",
+    ],
+    difficulty: 0,
   },
 } satisfies Record<string, Level>;
