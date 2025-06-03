@@ -10,6 +10,7 @@ import "@xyflow/react/dist/style.css";
 import { useState } from "react";
 import { Toaster } from "sonner";
 
+import { edgeTypes } from "./edges/edge-types";
 import CenterPanel from "./editor-components/CenterPanel";
 import LeftPanel from "./editor-components/LeftPanel";
 import NodeContextMenu from "./editor-components/NodeContextMenu";
@@ -20,7 +21,6 @@ import { TooltipProvider } from "./editor-components/Tooltip";
 import { useContextMenu } from "./hooks/useContextMenu";
 import { useFlow } from "./hooks/useFlow";
 import { nodeTypes } from "./nodes/node-types";
-import { edgeTypes } from "./edges/edge-types";
 
 const Editor = () => {
   const [rfInstance, setRfInstance] = useState<ReactFlowInstance>();
@@ -63,12 +63,12 @@ const Editor = () => {
         onConnect={onConnect}
         onPaneClick={onPaneClick}
         disableKeyboardA11y={true}
-        fitView
+        fitView={false}
         proOptions={{ hideAttribution: true }}
         deleteKeyCode={["Delete", "Backspace"]}
         onNodeDragStop={onNodeDragStop}
         defaultEdgeOptions={{
-          type: "Deletable"
+          type: "Deletable",
         }}
       >
         <Background bgColor="#14141d" color="#a7abc2" />
