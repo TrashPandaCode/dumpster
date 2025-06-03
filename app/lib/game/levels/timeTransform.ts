@@ -36,10 +36,10 @@ export const initializeTimeTransform = () => {
       isClimbing = true;
     }
     if (k.isKeyDown("up") && raccoon.pos.y >= -15) {
-      raccoon.move(0, -5);
+      raccoon.pos.y -= 7 * k.dt();
     }
     if (k.isKeyDown("down") && raccoon.pos.y <= 0) {
-      raccoon.move(0, 5);
+      raccoon.pos.y += 7 * k.dt();
     }
   });
 
@@ -47,7 +47,7 @@ export const initializeTimeTransform = () => {
     if (useGameStore.getState().isPaused) return;
 
     if (!isClimbing) {
-      animPlayer(raccoon!, k, "Input");
+      animPlayer(raccoon!, k, "input");
     }
 
     if (useDataStore.getState().initData) {
