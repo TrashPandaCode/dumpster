@@ -21,15 +21,7 @@ export const initializeTimeTransform = () => {
   game.onUpdate(() => {
     if (useGameStore.getState().isPaused) return;
 
-    const speedT =
-      useDataStore.getState().gameObjects.get("raccoon")?.get("speed")?.value ??
-      0;
-
-    animPlayer(raccoon!, k, "Loop", {
-      minX: -5,
-      maxX: 5,
-      speed: speedT * k.dt(),
-    });
+    animPlayer(raccoon!, k, "Input");
 
     if (useDataStore.getState().initData) {
       handleReset(raccoon!, 1);

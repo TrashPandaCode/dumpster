@@ -200,8 +200,8 @@ export function animPlayer(
       useDataStore.getState().gameObjects.get("raccoon")?.get("ypos")?.value ??
       0;
   } else if (movementMode === "Input") {
-    if (k.isKeyDown("left")) player.pos.x -= 5;
-    if (k.isKeyDown("right")) player.pos.x += 5;
+    if (k.isKeyDown("left")) player.pos.x -= 0.1;
+    if (k.isKeyDown("right")) player.pos.x += 0.1;
   } else if (movementMode === "Loop" && loopConfig) {
     player.pos.x += loopConfig.speed;
     if (player.pos.x > loopConfig.maxX) {
