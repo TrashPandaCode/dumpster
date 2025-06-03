@@ -1,6 +1,6 @@
+import { useDataStore } from "~/lib/zustand/data";
 import { useGameStore } from "~/lib/zustand/game";
 import { BACKGROUND_OFFSET, CAM_SCALE } from "../constants";
-import { useDataStore } from "~/lib/zustand/data";
 import { getKaplayCtx } from "../core/kaplayCtx";
 import {
   addBackgrounds,
@@ -39,6 +39,6 @@ export const initializeSitting = () => {
 
     if (useDataStore.getState().initData) {
       handleReset(raccoon!, 1);
-    };
+    }
   });
 };

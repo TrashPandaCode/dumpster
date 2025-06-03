@@ -9,8 +9,6 @@ import {
   handleReset,
 } from "../utils/gameHelper";
 
-const initDirection = 1;
-
 export const initializeTimeTransform = () => {
   const { k, game } = getKaplayCtx();
 
@@ -20,14 +18,8 @@ export const initializeTimeTransform = () => {
   k.setCamPos(0, -BACKGROUND_OFFSET);
   k.setCamScale((CAM_SCALE * k.height()) / 947);
 
-  let lastTime = 0;
-
   game.onUpdate(() => {
     if (useGameStore.getState().isPaused) return;
-
-    const currentTime = k.time();
-    const deltaTime = currentTime - lastTime;
-    lastTime = currentTime;
 
     const speedT =
       useDataStore.getState().gameObjects.get("raccoon")?.get("speed")?.value ??
@@ -36,11 +28,11 @@ export const initializeTimeTransform = () => {
     animPlayer(raccoon!, k, "Loop", {
       minX: -5,
       maxX: 5,
-      speed: speedT * deltaTime,
+      speed: speedT * k.dt(),
     });
 
     if (useDataStore.getState().initData) {
       handleReset(raccoon!, 1);
-    };
+    }
   });
 };
