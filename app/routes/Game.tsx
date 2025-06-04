@@ -12,7 +12,7 @@ import "./game.css";
 import LevelCompleteDialog from "~/lib/game/components/LevelCompleteDialog";
 import LevelDialog from "~/lib/game/components/LevelDialog";
 import { cleanupKaplay } from "~/lib/game/core/kaplayCtx";
-import type { LEVELS } from "~/lib/game/core/levels";
+import { LEVELS } from "~/lib/game/core/levels";
 import { globalKeyTracker } from "~/lib/game/utils/globalKeyTracker";
 import { useFlowStore } from "~/lib/node-editor/node-store/flow-store";
 import { useNodeStore } from "~/lib/node-editor/node-store/node-store";
@@ -21,7 +21,7 @@ const Game = ({ params }: Route.ComponentProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   // load current level from params
-  const level = params.id || "calculator"; // default to "calculator" if no level is specified
+  const level = (params.id || "calculator") as keyof typeof LEVELS; // default to "calculator" if no level is specified
   //TODO: navigate to /levels/calculator too. easy option: use navigate("/levels/calculator") in the useEffect below, nice option: handle in router directly
 
   const [levelDialogOpen, setLevelDialogOpen] = useState(true);
@@ -35,7 +35,10 @@ const Game = ({ params }: Route.ComponentProps) => {
     initGame(canvasRef.current);
 
     // load the game level
-    loadLevel(level as keyof typeof LEVELS);
+    if (!(level in LEVELS)) {
+      throw new Error(`Level ${level} not found`);
+    }
+    loadLevel(level);
 
     // register auto save interval
     const intervalId = setInterval(() => {

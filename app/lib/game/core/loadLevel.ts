@@ -10,10 +10,6 @@ import { LEVELS } from "./levels";
  * @param level Name of the level to load.
  */
 export const loadLevel = (level: keyof typeof LEVELS) => {
-  if (!(level in LEVELS)) {
-    throw new Error(`Level ${level} not found`);
-  }
-
   const curLevel = LEVELS[level];
 
   // initialize all stores with level data
