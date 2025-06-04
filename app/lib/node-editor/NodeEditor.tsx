@@ -17,11 +17,10 @@ import NodeContextMenu from "./editor-components/NodeContextMenu";
 import PaneContextMenu from "./editor-components/PaneContextMenu";
 import RightPanel from "./editor-components/RightPanel";
 import SelectionContextMenu from "./editor-components/SelectionContextMenu";
-import { ShortcutManager } from "./editor-components/ShortcutManager";
 import { TooltipProvider } from "./editor-components/Tooltip";
 import { useContextMenu } from "./hooks/useContextMenu";
 import { useFlow } from "./hooks/useFlow";
-import { useMouseTrackingInPane } from "./hooks/useGlobalMouseTracker";
+import { useMouseTrackingInPane } from "./node-store/node-add-menu-store";
 import { nodeTypes } from "./nodes/node-types";
 
 const Editor = () => {
@@ -84,7 +83,6 @@ const Editor = () => {
         <RightPanel rfInstance={rfInstance} />
         <CenterPanel />
         <LeftPanel />
-        <ShortcutManager />
         <Toaster />
       </ReactFlow>
 

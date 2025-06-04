@@ -3,7 +3,11 @@ import { useCallback, useState } from "react";
 
 import { useNodeAddMenuStore } from "../node-store/node-add-menu-store";
 import { getContextMenuPosition } from "../utils";
-import { useEscapeHotkey } from "./useShortcuts";
+import {
+  useDuplicateHotkey,
+  useEscapeHotkey,
+  useNewNodeHotkey,
+} from "./useShortcuts";
 
 export function useContextMenu() {
   const [paneContextMenu, setPaneContextMenu] = useState<{
@@ -93,6 +97,8 @@ export function useContextMenu() {
     useNodeAddMenuStore.getState().visible;
 
   useEscapeHotkey(closeAllMenus, anyOpen);
+  useDuplicateHotkey();
+  useNewNodeHotkey();
 
   const shouldShowPaneContextMenu = paneContextMenu || visible;
   const paneContextMenuX = paneContextMenu?.x ?? addMenuX;
