@@ -25,7 +25,7 @@ export function useContextMenu() {
   } | null>(null);
 
   const {
-    visible: visible,
+    visible,
     closeAddMenu,
     x: addMenuX,
     y: addMenuY,
@@ -95,10 +95,9 @@ export function useContextMenu() {
   useEscapeHotkey(closeAllMenus, anyOpen);
 
   const shouldShowPaneContextMenu = paneContextMenu || visible;
-  const mergedX = paneContextMenu?.x ?? addMenuX;
-  const mergedY = paneContextMenu?.y ?? addMenuY;
+  const paneContextMenuX = paneContextMenu?.x ?? addMenuX;
+  const paneContextMenuY = paneContextMenu?.y ?? addMenuY;
 
-  // Gemeinsamer Schließhandler
   const handleCloseCombinedMenu = () => {
     setPaneContextMenu(null);
     closeAddMenu();
@@ -109,8 +108,8 @@ export function useContextMenu() {
     nodeContextMenu,
     selectionContextMenu,
     shouldShowPaneContextMenu,
-    mergedX,
-    mergedY,
+    paneContextMenuX,
+    paneContextMenuY,
     setPaneContextMenu,
     setNodeContextMenu,
     setSelectionContextMenu,

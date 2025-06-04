@@ -40,8 +40,8 @@ const Editor = () => {
     nodeContextMenu,
     selectionContextMenu,
     shouldShowPaneContextMenu,
-    mergedX,
-    mergedY,
+    paneContextMenuX,
+    paneContextMenuY,
     handlePaneContextMenu,
     handleNodeContextMenu,
     handleSelectionContextMenu,
@@ -90,8 +90,8 @@ const Editor = () => {
 
       {shouldShowPaneContextMenu && (
         <PaneContextMenu
-          x={mergedX}
-          y={mergedY}
+          x={paneContextMenuX}
+          y={paneContextMenuY}
           onClose={handleCloseCombinedMenu}
         />
       )}
