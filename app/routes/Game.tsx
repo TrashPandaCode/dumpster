@@ -24,6 +24,9 @@ const Game = ({ params }: Route.ComponentProps) => {
 
   // load current level from params
   const level = (params.id || "calculator") as keyof typeof LEVELS; // default to "calculator" if no level is specified
+  if (!(level in LEVELS)) {
+    throw new Error(`Level ${level} not found`);
+  }
   //TODO: navigate to /levels/calculator too. easy option: use navigate("/levels/calculator") in the useEffect below, nice option: handle in router directly
 
   const [levelDialogOpen, setLevelDialogOpen] = useState(true);
@@ -33,13 +36,8 @@ const Game = ({ params }: Route.ComponentProps) => {
       return;
     }
 
-    globalKeyTracker.init(); // TODO: maybe move this into init game??
+    globalKeyTracker.init();
     initGame(canvasRef.current);
-
-    // load the game level
-    if (!(level in LEVELS)) {
-      throw new Error(`Level ${level} not found`);
-    }
     loadLevel(level);
 
     // register auto save interval

@@ -457,9 +457,10 @@ export function getHandleIntersection(
   if (selectedGameObjects.length === 0) return [];
 
   const getFilteredHandles = (gameObjectLabel: GameObject): Set<string> => {
-    const gameObject = gameObjects.get(gameObjectLabel)!;
+    const gameObject = gameObjects.get(gameObjectLabel);
 
     const handles = new Set<string>();
+    if (!gameObject) return handles;
     for (const [handle, data] of gameObject) {
       if (data.access === handleAccess || data.access === "all") {
         handles.add(handle);
