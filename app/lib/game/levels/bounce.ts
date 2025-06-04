@@ -31,7 +31,7 @@ export const initializeBounce = () => {
       filled: { from: 1, to: 1, loop: false },
     },
   });
-  const trashcanEmpty = game.add([
+  const trashcan1 = game.add([
     k.sprite("trashcan", {
       anim: "empty",
     }),
@@ -42,7 +42,7 @@ export const initializeBounce = () => {
     k.z(1),
     "trashcan1",
   ]);
-  const trashcanFilled = game.add([
+  const trashcan2 = game.add([
     k.sprite("trashcan", {
       anim: "filled",
     }),
@@ -72,13 +72,13 @@ export const initializeBounce = () => {
     ])
   );
 
-  trashcanEmpty!.z = 3;
-  trashcanEmpty!.pos.x = 3.63;
-  trashcanEmpty!.pos.y = -0.45;
+  trashcan1!.z = 3;
+  trashcan1!.pos.x = 3.63;
+  trashcan1!.pos.y = -0.45;
 
-  trashcanFilled!.z = 3;
-  trashcanFilled!.pos.x = -5;
-  trashcanFilled!.pos.y = -2;
+  trashcan2!.z = 3;
+  trashcan2!.pos.x = -5;
+  trashcan2!.pos.y = -2;
 
   let swapTimer = 0;
   let nextSwap = Math.random() * 4 + 1; // Random time between 1 and 5 seconds
@@ -99,42 +99,48 @@ export const initializeBounce = () => {
     "timerText",
   ]);
 
+  let trashcan1IsFilled = false;
+
   game.onUpdate(() => {
     if (useGameStore.getState().isPaused) return;
 
     swapTimer += k.dt();
     if (swapTimer >= nextSwap) {
-      // Swap the positions of the trashcans
-      const tempX = trashcanEmpty!.pos.x;
-      const tempY = trashcanEmpty!.pos.y;
-      trashcanEmpty!.pos.x = trashcanFilled!.pos.x;
-      trashcanEmpty!.pos.y = trashcanFilled!.pos.y;
-      trashcanFilled!.pos.x = tempX;
-      trashcanFilled!.pos.y = tempY;
+      // Swap the trashcan sprites and filled states
+      if (trashcan1IsFilled) {
+        trashcan1!.play("empty");
+        trashcan2!.play("filled");
+      } else {
+        trashcan1!.play("filled");
+        trashcan2!.play("empty");
+      }
+      trashcan1IsFilled = !trashcan1IsFilled;
 
       useDataStore.getState().gameObjects.set(
         "trashcan1",
         new Map([
-          ["filled", { access: "get", value: 0 }],
-          ["xpos", { access: "get", value: trashcanEmpty!.pos.x }],
-          ["ypos", { access: "get", value: trashcanEmpty!.pos.y }],
+          ["filled", { access: "get", value: trashcan1IsFilled ? 1 : 0 }],
+          ["xpos", { access: "get", value: trashcan1!.pos.x }],
+          ["ypos", { access: "get", value: trashcan1!.pos.y }],
         ])
       );
 
       useDataStore.getState().gameObjects.set(
         "trashcan2",
         new Map([
-          ["filled", { access: "get", value: 1 }],
-          ["xpos", { access: "get", value: trashcanFilled!.pos.x }],
-          ["ypos", { access: "get", value: trashcanFilled!.pos.y }],
+          ["filled", { access: "get", value: trashcan1IsFilled ? 0 : 1 }],
+          ["xpos", { access: "get", value: trashcan2!.pos.x }],
+          ["ypos", { access: "get", value: trashcan2!.pos.y }],
         ])
       );
+
       swapTimer = 0;
       nextSwap = Math.random() * 4 + 1; // Reset the timer with a new random value
     }
 
     animPlayer(raccoon!, k);
 
+    const trashcanFilled = trashcan1IsFilled ? trashcan1 : trashcan2;
     const distFilled = raccoon!.pos.dist(trashcanFilled!.pos);
 
     if (distFilled <= 0.5 && !useGameStore.getState().levelCompleted) {
