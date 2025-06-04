@@ -10,6 +10,7 @@ import "@xyflow/react/dist/style.css";
 import { useRef, useState } from "react";
 import { Toaster } from "sonner";
 
+import { edgeTypes } from "./edges/edge-types";
 import CenterPanel from "./editor-components/CenterPanel";
 import LeftPanel from "./editor-components/LeftPanel";
 import NodeContextMenu from "./editor-components/NodeContextMenu";
@@ -21,9 +22,7 @@ import { TooltipProvider } from "./editor-components/Tooltip";
 import { useContextMenu } from "./hooks/useContextMenu";
 import { useFlow } from "./hooks/useFlow";
 import { useMouseTrackingInPane } from "./hooks/useGlobalMouseTracker";
-import { useNodeAddMenuStore } from "./node-store/node-add-menu-store";
 import { nodeTypes } from "./nodes/node-types";
-import { edgeTypes } from "./edges/edge-types";
 
 const Editor = () => {
   const [rfInstance, setRfInstance] = useState<ReactFlowInstance>();
@@ -38,21 +37,23 @@ const Editor = () => {
   } = useFlow();
 
   const {
-    paneContextMenu,
     nodeContextMenu,
     selectionContextMenu,
+    shouldShowPaneContextMenu,
+    mergedX,
+    mergedY,
     handlePaneContextMenu,
     handleNodeContextMenu,
     handleSelectionContextMenu,
     onPaneClick,
     setNodeContextMenu,
-    setPaneContextMenu,
     setSelectionContextMenu,
+    handleCloseCombinedMenu,
   } = useContextMenu();
 
-  const { x, y, visible, closeAddMenu } = useNodeAddMenuStore();
   const containerRef = useRef<HTMLDivElement>(null);
   useMouseTrackingInPane(containerRef);
+
   return (
     <>
       <ReactFlow
@@ -76,7 +77,7 @@ const Editor = () => {
         onNodeDragStop={onNodeDragStop}
         ref={containerRef}
         defaultEdgeOptions={{
-          type: "Deletable"
+          type: "Deletable",
         }}
       >
         <Background bgColor="#14141d" color="#a7abc2" />
@@ -87,11 +88,11 @@ const Editor = () => {
         <Toaster />
       </ReactFlow>
 
-      {paneContextMenu && (
+      {shouldShowPaneContextMenu && (
         <PaneContextMenu
-          x={paneContextMenu.x}
-          y={paneContextMenu.y}
-          onClose={() => setPaneContextMenu(null)}
+          x={mergedX}
+          y={mergedY}
+          onClose={handleCloseCombinedMenu}
         />
       )}
       {nodeContextMenu && (
@@ -113,7 +114,6 @@ const Editor = () => {
           onClose={() => setSelectionContextMenu(null)}
         />
       )}
-      {visible && <PaneContextMenu x={x} y={y} onClose={closeAddMenu} />}
     </>
   );
 };

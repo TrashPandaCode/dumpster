@@ -24,6 +24,13 @@ export function useContextMenu() {
     y: number;
   } | null>(null);
 
+  const {
+    visible: visible,
+    closeAddMenu,
+    x: addMenuX,
+    y: addMenuY,
+  } = useNodeAddMenuStore();
+
   const handlePaneContextMenu = useCallback(
     (event: MouseEvent | React.MouseEvent) => {
       event.preventDefault();
@@ -87,16 +94,30 @@ export function useContextMenu() {
 
   useEscapeHotkey(closeAllMenus, anyOpen);
 
+  const shouldShowPaneContextMenu = paneContextMenu || visible;
+  const mergedX = paneContextMenu?.x ?? addMenuX;
+  const mergedY = paneContextMenu?.y ?? addMenuY;
+
+  // Gemeinsamer Schließhandler
+  const handleCloseCombinedMenu = () => {
+    setPaneContextMenu(null);
+    closeAddMenu();
+  };
+
   return {
     paneContextMenu,
     nodeContextMenu,
     selectionContextMenu,
+    shouldShowPaneContextMenu,
+    mergedX,
+    mergedY,
     setPaneContextMenu,
     setNodeContextMenu,
     setSelectionContextMenu,
     handlePaneContextMenu,
     handleNodeContextMenu,
     handleSelectionContextMenu,
+    handleCloseCombinedMenu,
     onPaneClick,
   };
 }
