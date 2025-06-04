@@ -1,4 +1,5 @@
-import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
+import * as Sheet from "@radix-ui/react-dialog";
+import { HamburgerMenuIcon, MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import classnames from "classnames";
 import type React from "react";
 import { useState } from "react";
@@ -28,9 +29,12 @@ interface NavigationSection {
 interface NavLinkItemProps {
   item: NavigationItem;
   className?: string;
+  onClick?: () => void;
 }
 
-const Navigation: React.FC = () => {
+const NavigationContent: React.FC<{ onItemClick?: () => void }> = ({
+  onItemClick,
+}) => {
   const location = useLocation();
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -43,6 +47,7 @@ const Navigation: React.FC = () => {
   const NavLinkItem: React.FC<NavLinkItemProps> = ({
     item,
     className = "",
+    onClick,
   }) => {
     const isActive = isActivePath(item.path);
     const combinedClasses = classnames(
@@ -54,7 +59,12 @@ const Navigation: React.FC = () => {
     );
 
     return (
-      <NavLink key={item.path} to={item.path} className={combinedClasses}>
+      <NavLink
+        key={item.path}
+        to={item.path}
+        className={combinedClasses}
+        onClick={onClick}
+      >
         {item.title}
         {isActive && <ActiveIndicator />}
       </NavLink>
@@ -80,7 +90,7 @@ const Navigation: React.FC = () => {
     }
 
     if (!searchTerm && section.title === "Hierarchies") {
-      elements.push(<Divider title="Concepts" />);
+      elements.push(<Divider key="concepts-divider" title="Concepts" />);
     }
 
     // Section with collapsible items
@@ -92,7 +102,7 @@ const Navigation: React.FC = () => {
           open={searchTerm === "" ? undefined : !!searchTerm}
         >
           {filteredItems.map((item) => (
-            <NavLinkItem key={item.path} item={item} />
+            <NavLinkItem key={item.path} item={item} onClick={onItemClick} />
           ))}
         </Collapsible>
       );
@@ -113,6 +123,7 @@ const Navigation: React.FC = () => {
           key={section.path}
           item={sectionAsItem}
           className="px-2 py-1"
+          onClick={onItemClick}
         />
       );
       return elements;
@@ -122,7 +133,7 @@ const Navigation: React.FC = () => {
   };
 
   return (
-    <nav className="flex min-h-96 min-w-xs flex-col gap-2">
+    <div className="flex min-h-96 min-w-3xs lg:min-w-xs flex-col gap-2">
       <div className="relative text-black">
         <input
           className="h-10 w-full rounded-lg border-2 border-slate-300 bg-white px-5 pr-16 text-sm focus:outline-none"
@@ -140,7 +151,65 @@ const Navigation: React.FC = () => {
       {!searchTerm && <Divider title="Game" />}
 
       {(navigation as NavigationSection[]).map(renderNavigationSection)}
-    </nav>
+    </div>
+  );
+};
+
+const Navigation: React.FC = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <>
+      {/* Desktop Navigation */}
+      <nav className="hidden lg:flex">
+        <NavigationContent />
+      </nav>
+
+      {/* Mobile Navigation */}
+      <Sheet.Root open={isOpen} onOpenChange={setIsOpen}>
+        <Sheet.Trigger asChild>
+          <button
+            className="rounded-md p-2 transition-colors hover:bg-gray-100 lg:hidden"
+            aria-label="Open navigation menu"
+          >
+            <HamburgerMenuIcon className="h-6 w-6" />
+          </button>
+        </Sheet.Trigger>
+        <Sheet.Portal>
+          <Sheet.Overlay className="data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-50 bg-black/50" />
+          <Sheet.Content className="data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:slide-out-to-left data-[state=open]:slide-in-from-left fixed inset-y-0 left-0 z-50 h-full w-3/4 max-w-sm border-r bg-white p-6 shadow-lg transition ease-in-out">
+            <div className="mb-4 flex items-center justify-between">
+              <Sheet.Title className="text-lg font-semibold">
+                Navigation
+              </Sheet.Title>
+              <Sheet.Close asChild>
+                <button
+                  className="rounded-sm opacity-70 ring-offset-white transition-opacity hover:opacity-100 focus:ring-2 focus:ring-slate-950 focus:ring-offset-2 focus:outline-none"
+                  aria-label="Close"
+                >
+                  <svg
+                    className="h-4 w-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </button>
+              </Sheet.Close>
+            </div>
+            <div className="overflow-y-auto">
+              <NavigationContent onItemClick={() => setIsOpen(false)} />
+            </div>
+          </Sheet.Content>
+        </Sheet.Portal>
+      </Sheet.Root>
+    </>
   );
 };
 
