@@ -39,6 +39,7 @@ const NavigationContent: React.FC<{ onItemClick?: () => void }> = ({
 }) => {
   const location = useLocation();
   const [searchTerm, setSearchTerm] = useState("");
+  const [docsLoaded, setDocsLoaded] = useState(false);
   const [searchIndex, setSearchIndex] = useState<{
     index: Index;
     items: SearchableItem[];
@@ -93,6 +94,7 @@ const NavigationContent: React.FC<{ onItemClick?: () => void }> = ({
         }
       }
       setSearchIndex({ index, items: searchableItems });
+      setDocsLoaded(true);
     };
 
     initializeSearch();
@@ -201,6 +203,14 @@ const NavigationContent: React.FC<{ onItemClick?: () => void }> = ({
   const SearchResults: React.FC = () => {
     if (!searchTerm.trim()) return null;
 
+    if (!docsLoaded) {
+      return (
+        <div className="px-2 py-4 text-sm text-slate-500">
+          Loading search results...
+        </div>
+      );
+    }
+
     if (searchResults.length === 0) {
       return (
         <div className="px-2 py-4 text-sm text-slate-500">
@@ -306,7 +316,7 @@ const NavigationContent: React.FC<{ onItemClick?: () => void }> = ({
   };
 
   return (
-    <div className="flex min-h-96 w-min-3xs flex-col space-y-1 lg:w-xs">
+    <div className="w-min-3xs flex min-h-96 flex-col space-y-1 lg:w-xs">
       <div className="relative mb-3 text-black">
         <input
           className="h-10 w-full rounded-lg border-2 border-slate-300 bg-white px-5 pr-16 text-sm transition-colors focus:border-slate-700 focus:outline-none"
