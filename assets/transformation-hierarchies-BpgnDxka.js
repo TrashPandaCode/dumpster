@@ -1,0 +1,17 @@
+const e=`---
+title: Transformation Hierarchies
+---
+
+## Transformation Hierarchies
+
+For modeling and animation purposes, objects are often divided into multiple sub-objects. To avoid having to move each element individually during translation, the sub-objects are positioned **relative to each other**.
+
+### Coordinate Transformation
+
+The objects in a transformation hierarchy are connected via the coordinate transformation matrices mentioned in [Coordinate Systems](/docs/hierarchies/coordinate-systems).
+
+![Transformation Hierarchy](/docs/transform_hier.png)
+
+When rendering, all transformation matrices must be traversed for each object to determine its world coordinates.
+
+> **Transformation hierarchy tree:** A labeled tree graph. Each edge represents the coordinate transformation matrix from child to parent node. The arrows of the edges always point *upward*.`;export{e as default};

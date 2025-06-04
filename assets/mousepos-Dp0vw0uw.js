@@ -1,0 +1,15 @@
+const o=`---
+title: Mouse Position
+---
+
+# Mouse Position
+
+The _Mouse Position_ node provides the current position of the mouse cursor in the game canvas (in game coordinates). When hovering over the node editor, the position won't update.
+
+## Properties
+
+- **x**: The horizontal position of the mouse cursor in pixels.
+- **y**: The vertical position of the mouse cursor in pixels.
+
+<DocsNodeEditor type="MousePosition" />
+`;export{o as default};

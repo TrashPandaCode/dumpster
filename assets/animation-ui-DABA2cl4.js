@@ -1,0 +1,10 @@
+const e=`---
+title: Animation and User Interface
+---
+
+## Animation and User Interface
+
+The **weight vector** can be animated over time using curves. In practice, **sliders** are used in user interfaces to control the weights—particularly for facial expressions, where many targets may be used.
+
+This allows for **semantic parameterization**, where certain weights have specific, meaningful interpretations (e.g., "smile", "frown", "eyebrow raise").
+`;export{e as default};

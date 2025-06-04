@@ -1,0 +1,26 @@
+const t=`---
+title: Coordinate Systems
+---
+
+## Coordinate Systems
+
+Every object (including cameras and lights) has a **local object coordinate system**, whose origin is usually at the center of the object.
+
+Various transformations (rotation, scaling, translation) convert this local coordinate system into a **common world coordinate system**. It is also possible to first transform from one object coordinate system to another (for _parenting_).
+
+Such a **coordinate transformation matrix** converts coordinates from one coordinate system to another and represents a linear combination.
+
+$$
+W^{\\text{world} \\leftarrow \\text{obj}} = T \\cdot R \\cdot S
+$$
+
+$$
+W^{\\text{obj} \\leftarrow \\text{world}} = \\left(W^{\\text{world} \\leftarrow \\text{obj}}\\right)^{-1}
+$$
+
+The vector $p$ is transformed from object to world coordinates like this:
+
+$$
+p^{\\text{world}} = W^{\\text{world} \\leftarrow \\text{obj}} \\cdot p^{\\text{obj}}
+$$
+`;export{t as default};

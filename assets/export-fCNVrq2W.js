@@ -1,0 +1,30 @@
+const e=`---
+title: Export To Gameobject
+---
+
+# Export To Gameobject
+
+The _Export To Gameobject_ node provides write access to gameobject specific properties of one or more gameobjects in the scene. Additionally it allows the user to add and remove properties to gameobjects.
+
+There are read and write specific properties, meaning that not all properties of one gameobject are shared between the _Import From_ and _Export To Gameobject_ nodes.
+
+## Functionality
+
+- A dropdown menu lists all selectable gameobjects.
+- You can select a single gameobject or multiple gameobjects.
+- When selecting a single gameobject, all of its available inputs (properties) will be displayed.
+- When selecting multiple gameobjects, only the common (shared) inputs across all selected gameobjects are shown.
+- When multiple gameobjects are selected, an index input appears. Use this input to specify which gameobject's values to access by index.
+
+Properties can be added by using the _Handle_ input field. Only the manually added properties can be deleted. All added properties have read and write access and are therefore shared between the _Import From_ and _Export To Gameobject_ nodes. Each property must have a unique name.
+
+## Properties
+
+- **Index** (visible only when multiple gameobjects are selected): An integer input used to select which gameobject to read from in the list.
+
+  - an index not corresponding to a gameobject will be ignored
+
+- **Outputs**: The available properties of the selected gameobject(s), such as position, rotation, etc. They can be written to by the user.
+
+<DocsNodeEditor type="DocsExportToGameobject" />
+`;export{e as default};

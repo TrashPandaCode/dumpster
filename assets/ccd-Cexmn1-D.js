@@ -1,0 +1,45 @@
+const t=`---
+title: Cyclic Coordinate Descent (CCD)
+---
+
+## Cyclic Coordinate Descent (CCD)
+
+We could use Jacobian matrices and Newton's method, but the heuristic Cyclic Coordinate Descent algorithm is very popular in computer animation because it is easy to implement and provides plausible solutions.
+
+Let a target $p_t$ be given. We are looking for a state $Z$ such that $p_e = p_t$:
+
+Starting at the end effector, we work backward toward the root joint with the following steps per iteration:
+
+* Rotate the active joint so that the distance between $p_t$ and $p_e$ becomes minimal
+* Update the state vector
+* Proceed to the next joint
+* If the maximum number of iterations or a tolerance threshold is reached, terminate
+
+### Determining the Rotation
+
+*This corresponds to the first step of the CCD algorithm.*
+
+We first need the coordinates of the target and the end effector in the local coordinates of the active joint $i = 1, \\dots, n$:
+
+$$
+p_e^{[i]} = W^{[i] \\leftarrow [n]} p_e^{[n]}
+$$
+
+$$
+p_t^{[i]} = W^{[i] \\leftarrow \\text{world}} p_t^{\\text{world}}
+$$
+
+Let $e$ and $t$ be the normalized versions of $p_e^{[i]}$ and $p_t^{[i]}$. Our goal is to rotate $e$ in the direction of $t$.
+
+The rotation axis is given by:
+$u = \\frac{e \\times t}{\\| e \\times t \\|}$
+And the rotation angle is:
+$\\alpha = \\arccos(\\langle e, t \\rangle)$
+
+This can also be converted into a quaternion:
+$q = \\left( \\frac{\\sqrt{2(1 + c)}}{2}, \\frac{1}{\\sqrt{2(1 + c)}} e \\times t \\right)$
+
+This CCD algorithm assumes that ball joints are used, which allow any orientation. In practical applications, this might not always be realistic, so it's often necessary to constrain the state vector.
+
+The time complexity is $\\mathcal{O}(n)$, where $n$ is the number of degrees of freedom.
+`;export{t as default};

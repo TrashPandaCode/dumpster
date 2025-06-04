@@ -1,0 +1,42 @@
+const e=`---
+title: Euler Angles (Three Rotation Matrices)
+---
+
+## Euler Angles (Three Rotation Matrices)
+
+Any rotation matrix in $\\mathrm{SO}(3)$ can be expressed as a sequence of **three basic rotations**. So only **three parameters** ($\\alpha, \\beta, \\gamma$) — the **Euler angles** — are needed.
+
+* $X(\\alpha) = R_{e_1}(\\alpha)$
+* $Y(\\beta) = R_{e_2}(\\beta)$
+* $Z(\\gamma) = R_{e_3}(\\gamma)$
+
+### Extrinsic Rotation:
+
+*Rotation around the axes of the **reference coordinate system***
+
+$$
+R = Z(\\gamma) Y(\\beta) X(\\alpha)
+$$
+
+This rotates the vector $v$ about the X, Y, and Z axes of the reference system in that order: $v' = Rv$
+
+### Intrinsic Rotation:
+
+*Rotation around the axes of the **object’s local coordinate system***
+
+$$
+R = X(\\alpha) Y(\\beta) Z(\\gamma)
+$$
+
+Note: the local axes change after each rotation.
+
+> When speaking of rotation in “X-Y-Z order,” this refers to the **order of rotations**, not the **order of matrix multiplications**.
+
+### Gimbal Lock Problem
+
+In this condition, **two rotation axes align**, reducing the system’s degrees of freedom. There are infinitely many sets of Euler angles that produce the same rotation matrix. This causes problems in animation.
+
+### Interpolation
+
+To interpolate between Euler angles for desired rotations, simply interpolate each of the three angles independently. Bézier curves can be used here, though the results may sometimes be unintuitive.
+`;export{e as default};

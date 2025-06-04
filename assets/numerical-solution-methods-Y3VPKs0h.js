@@ -1,0 +1,61 @@
+const t=`---
+title: Numerical Solution Methods
+---
+
+## Numerical Solution Methods
+
+Methods to compute the trajectories of mass points from Newton's equations.
+
+In a frame-based system, at time $t_0$, the position, velocity, mass, and acting forces of a body are known. We seek the position at time $T$ (with $T > t_0$).
+
+We solve the DAE:
+
+$$
+\\ddot{x} = \\frac{1}{m} F(t, x, \\dot{x}) \\quad \\text{with} \\quad x(t_0) \\quad \\text{and} \\quad \\dot{x}(t_0) = v_0
+$$
+
+We seek $x(T)$ and $\\dot{x}(T)$ to continue the simulation in the next frame.
+
+### Euler Method
+
+_The Euler method can be applied to initial value problems of ordinary first-order differential equations._
+
+Given the DAE:
+
+$$
+\\dot{x} = f(t, x) \\quad \\text{with} \\quad x(t_0) = x_0
+$$
+
+We choose a grid $\\mathcal{G} = \\{t_0, t_1, \\dots, t_K\\}$ such that $t_K = T$. Define a _grid function_ $\\tilde{x} : \\mathcal{G} \\rightarrow \\mathbb{R}^d$ to approximate the solution:
+
+$$
+\\tilde{x}(t_i) \\approx x(t_i), \\quad i = 0, \\dots, K
+$$
+
+This is called the _approximate solution_. The iteration steps are:
+
+$$
+\\tilde{x}(t_0) = x_0 \\\\
+\\tilde{x}(t_{i+1}) = \\tilde{x}(t_i) + h_i f(t_i, \\tilde{x}(t_i)), \\quad i = 0, \\dots, K-1
+$$
+
+where $h_i = t_{i+1} - t_i$ is the _step size_ of the $i$-th step.
+
+The Euler method is not very accurate. Refining the grid doesn’t necessarily improve accuracy, only increases computation. Usually, the grid is chosen such that no more than five iterations are needed.
+
+### Euler Method for Mass Points
+
+With mass point systems, we have second-order differential equations. To apply Euler’s method, we define a new variable $v := \\dot{x}$ and use a coupled system:
+
+$$
+\\vec{\\dot{x}, \\dot{v}} = \\vec{v, \\frac{1}{m} F(t, x, v)} \\quad \\text{with} \\quad \\vec{x(t_0), v(t_0)} = \\vec{x_0, v_0}
+$$
+
+This results in a six-dimensional differential equation.
+
+### Euler Method for Systems of Mass Points
+
+With $N$ mass points, we get a $3N$-dimensional second-order differential equation. With the above substitution, this becomes a $6N$-dimensional first-order differential equation.
+
+_Good luck solving that._
+`;export{t as default};

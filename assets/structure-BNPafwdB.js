@@ -1,0 +1,15 @@
+const e=`---
+title: Structure of a Particle System
+---
+
+## Structure of a Particle System
+
+Particle systems consist of — particles... These have a position, velocity, etc.
+
+They can "die" or be "born," and in the time between, they "live" — participating in the simulation. Each simulation frame involves the following steps:
++ Generate new particles
++ Assign initial state to new particles
++ Remove dying particles
++ Update the remaining particles
+
+`;export{e as default};

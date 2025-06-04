@@ -1,0 +1,44 @@
+const e=`---
+title: Emitters
+---
+
+## Emitters
+
+Emitters create and initialize new particles.
+
+### Emission Rate
+
+- **Continuous Emission**: We specify an emission rate $E \\in \\mathbb{R}^+$ independent of frame duration, representing particles per second. If $E$ is not a multiple of the frame rate, rounding errors may cause too many or too few particles per frame. This is solved with an accumulator counting in floating-point. When it exceeds a whole number, that number of particles is emitted and the remainder retained.
+
+- **Emission over a Time Interval**: A time interval can either have a specified emission rate or a fixed number of particles to emit.
+
+- **Other Methods**: $E$ can be changed dynamically, periodically, or randomly.
+
+### Lifetime Initialization
+
+Lifetimes are usually initialized using one of two random distributions, as systems with identical lifetimes for all particles are boring.
+
+- **Uniform Distribution**: If a \`unif()\` method for the interval $[0,1]$ exists, a uniform distribution over any interval $[d_1, d_2]$ can be achieved with $(d_2 - d_1) \\cdot \\text{unif}() + d_1$.
+- **Normal Distribution**: Sometimes \`gauss()\` methods are available for normal distributions.
+
+### Position Initialization
+
+- **Point Source**: All particles share the same starting position.
+
+- **Curve**: Random position on a curve $f: [a,b] \\to \\mathbb{R}^3$ with uniform distribution over $[a,b]$. The particle density depends on the curve's speed: slower sections → more particles.
+
+- **Surface**: If the object is a polygon mesh, each vertex can serve as a point source. This leads to a distribution dependent on vertex density. If the object has a parametric representation, a similar method can be used.
+
+- **Volume**: Generate random points → if inside object → generate particle.
+
+### Velocity Initialization
+
+To initialize velocity, a direction vector of length $||r|| = 1$ and a speed $s$ are needed. Multiply the two:
+
+$$
+v = s \\cdot r
+$$
+
+The direction can be random (e.g., on the unit sphere) or cone-shaped.
+
+`;export{e as default};

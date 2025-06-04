@@ -1,0 +1,25 @@
+const e=`---
+title: Delta Blendshapes
+---
+
+## Delta Blendshapes
+
+If we select one of the targets (typically the first, "neutral" one) as the **base**, we can compute **delta blendshape vectors** as the difference between each target and the base.
+
+We then write the resulting shape as a weighted sum of these deltas, and add back the base vector:
+
+$$
+f = b_0 + \\sum_{k=1}^{n} u_k \\, \\Delta b_k
+$$
+
+$$
+f = b_0 + \\Delta B u
+$$
+
+Where:
+
+* $b_0$: base blendshape vector
+* $\\Delta b_k$: delta between target $k$ and base
+* $u \\in \\mathbb{R}^n$: new weight vector
+* $\\Delta B$: matrix of delta blendshape vectors
+`;export{e as default};

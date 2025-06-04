@@ -1,0 +1,22 @@
+const n=`---
+title: Blending and Transitions
+---
+
+## Blending and Transitions
+
+If we want to combine two motions $m_1$ and $m_2$, we can use either a **transition** or a **blend**:
+
+* **Transition**: The second motion $m_2$ starts after a time delay following $m_1$. In the interval $[b, c]$, we interpolate between the two motions. If the rotations are given as quaternions, we can use *slerp* for interpolation; otherwise, we use linear interpolation of Euler angles. The time interval must be adjusted by a linear time scaling.
+
+* **Blending**: The two motions $m_1$ and $m_2$ **overlap** in the interval $[c, b]$. A new motion is created over the interval $[a, d]$. Within $[c, b]$, the two motions can be mixed together linearly (again using slerp or Euler angles).
+
+**Figure:** Transition
+![Transition](/docs/ubergang.png)
+
+**Figure:** Blending
+![Blending](/docs/uberblendung.png)
+
+
+When interpolating translations, care must be taken to avoid artifacts such as the character's feet floating above or sinking below the ground. One approach is to align the translation of the second motion with that of the first before interpolation — though this doesn't always work (e.g., when interpolating between "standing" and "crouching").
+
+`;export{n as default};
