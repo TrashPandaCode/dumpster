@@ -28,13 +28,13 @@ const isMac = detectMac();
 const primaryModifier = isMac ? "Shift" : "Control";
 
 // Set of default shortcuts that we want to prevent default behavior for
-const defaultShortcuts = new Set<string>([
+const keyboardShortcuts = new Set<string>([
   `${primaryModifier}+d`,
   `${primaryModifier}+ `,
   "Escape",
 ]);
 
-const shortcutListeners = new Map<string, Set<(e: KeyboardEvent) => void>>();
+const registeredShortcuts = new Map<string, Set<(e: KeyboardEvent) => void>>();
 let initialized = false;
 let keydownHandler: (e: KeyboardEvent) => void;
 let keyupHandler: (e: KeyboardEvent) => void;
@@ -86,7 +86,7 @@ function getShortcutString(e: KeyboardEvent): string {
  * Cross-platform shortcut registration
  * Automatically handles both Alt and Ctrl variants
  */
-function shortcutListener(
+function registerShortcut(
   shortcut: string,
   callback: (e: KeyboardEvent) => void
 ) {
@@ -101,16 +101,16 @@ function shortcutListener(
 
   // Register all variants
   shortcuts.forEach((sc) => {
-    if (!shortcutListeners.has(sc)) {
-      shortcutListeners.set(sc, new Set());
+    if (!registeredShortcuts.has(sc)) {
+      registeredShortcuts.set(sc, new Set());
     }
-    shortcutListeners.get(sc)!.add(callback);
+    registeredShortcuts.get(sc)!.add(callback);
   });
 
   // Return cleanup function for all variants
   return () => {
     shortcuts.forEach((sc) => {
-      shortcutListeners.get(sc)?.delete(callback);
+      registeredShortcuts.get(sc)?.delete(callback);
     });
   };
 }
@@ -129,8 +129,10 @@ function initGlobalKeyTracker() {
   keydownHandler = (e) => {
     const shortcut = getShortcutString(e);
     // Check if the pressed key is a default shortcut and prevent default behavior
-    if (defaultShortcuts.has(shortcut)) {
+    if (keyboardShortcuts.has(shortcut)) {
       e.preventDefault();
+      registeredShortcuts.get(shortcut)?.forEach((sc) => sc(e));
+      return;
     }
 
     const key = e.key;
@@ -140,7 +142,7 @@ function initGlobalKeyTracker() {
     keysDown.add(key);
 
     // Trigger all registered shortcuts
-    shortcutListeners.get(shortcut)?.forEach((sc) => sc(e));
+    registeredShortcuts.get(shortcut)?.forEach((sc) => sc(e));
   };
 
   keyupHandler = (e) => {
@@ -187,7 +189,7 @@ export const globalKeyTracker = {
   isKeyPressed,
   isKeyReleased,
   clearPressedAndReleased,
-  shortcutListener,
+  registerShortcut,
   createPlatformShortcut,
   isMac,
   primaryModifier,

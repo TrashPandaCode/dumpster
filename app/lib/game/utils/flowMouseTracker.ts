@@ -5,12 +5,9 @@ type Position =
 let position: Position = undefined;
 let initialized = false;
 
-const listeners = new Set<(pos: Position) => void>();
-
 function init(container: HTMLElement) {
   if (initialized) return;
   initialized = true;
-
   const updatePosition = (e: MouseEvent) => {
     const bounds = container.getBoundingClientRect();
     const x = e.clientX - bounds.left;
@@ -21,13 +18,9 @@ function init(container: HTMLElement) {
     } else {
       position = undefined;
     }
-
-    listeners.forEach((cb) => cb(position));
   };
-
   const leave = () => {
     position = undefined;
-    listeners.forEach((cb) => cb(position));
   };
 
   container.addEventListener("mousemove", updatePosition);
@@ -36,7 +29,6 @@ function init(container: HTMLElement) {
   return () => {
     container.removeEventListener("mousemove", updatePosition);
     container.removeEventListener("mouseleave", leave);
-    listeners.clear();
     initialized = false;
     position = undefined;
   };
@@ -46,13 +38,7 @@ function getPosition(): Position {
   return position;
 }
 
-function onChange(callback: (pos: Position) => void) {
-  listeners.add(callback);
-  return () => listeners.delete(callback);
-}
-
 export const flowMouseTracker = {
   init,
   getPosition,
-  onChange,
 };

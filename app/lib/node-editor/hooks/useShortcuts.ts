@@ -14,7 +14,7 @@ export function useDuplicateHotkey() {
     // Use the cross-platform shortcut (Cmd+D on Mac, Ctrl+D on others)
     const shortcut = globalKeyTracker.createPlatformShortcut("d");
 
-    const remove = globalKeyTracker.shortcutListener(shortcut, (e) => {
+    const remove = globalKeyTracker.registerShortcut(shortcut, (e) => {
       const selectedNodeIds = getNodes().filter((n) => n.selected);
 
       if (selectedNodeIds.length > 0) {
@@ -32,7 +32,7 @@ export function useNewNodeHotkey() {
     // Use the cross-platform shortcut (Cmd+Space on Mac, Ctrl+Space on others)
     const shortcut = globalKeyTracker.createPlatformShortcut(" ");
 
-    const remove = globalKeyTracker.shortcutListener(shortcut, (e) => {
+    const remove = globalKeyTracker.registerShortcut(shortcut, (e) => {
       // Get the current mouse position in the flow editor
       const position = flowMouseTracker.getPosition();
 
@@ -53,7 +53,7 @@ export function useEscapeHotkey(
   condition: boolean = true
 ) {
   useEffect(() => {
-    const remove = globalKeyTracker.shortcutListener("Escape", (e) => {
+    const remove = globalKeyTracker.registerShortcut("Escape", (e) => {
       if (condition && callback) {
         callback();
       }
