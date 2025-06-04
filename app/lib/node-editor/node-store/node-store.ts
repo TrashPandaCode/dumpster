@@ -192,8 +192,10 @@ interface NodeStoreState {
   /**
    * Resets the store to its initial empty state.
    * Clears all nodes, sorted order, and error flags.
+   *
+   * Checks if level data is in local storage, if so load it.
    */
-  reset: () => void;
+  init: () => void;
 }
 
 export const useNodeStore = create<NodeStoreState>((set, get) => ({
@@ -284,7 +286,7 @@ export const useNodeStore = create<NodeStoreState>((set, get) => ({
       console.log(node.type, node);
     });
   },
-  reset: () =>
+  init: () =>
     set({
       nodeMap: new Map<string, AppNode>(),
       sortedNodes: [],

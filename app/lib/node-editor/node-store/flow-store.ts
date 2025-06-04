@@ -14,7 +14,7 @@ interface FlowState {
   resetHighlight: (type: HighlightType) => void;
   highlightNode: (id: string, type: HighlightType, color: string) => void;
   highlightDuplicateNodes: () => void;
-  reset: () => void;
+  init: () => void;
 }
 
 export const useFlowStore = create<FlowState>((set, get) => ({
@@ -97,5 +97,5 @@ export const useFlowStore = create<FlowState>((set, get) => ({
       }
     }
   },
-  reset: () => set({ nodes: [], highlightNodes: new Map(), edges: [] }),
+  init: () => set({ nodes: [], highlightNodes: new Map(), edges: [] }),
 }));

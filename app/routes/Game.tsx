@@ -14,10 +14,6 @@ import LevelDialog from "~/lib/game/components/LevelDialog";
 import { cleanupKaplay } from "~/lib/game/core/kaplayCtx";
 import type { LEVELS } from "~/lib/game/core/levels";
 import { globalKeyTracker } from "~/lib/game/utils/globalKeyTracker";
-import { useFlowStore } from "~/lib/node-editor/node-store/flow-store";
-import { useLoopStore } from "~/lib/node-editor/node-store/loop-store";
-import { useNodeStore } from "~/lib/node-editor/node-store/node-store";
-import { useGameStore } from "~/lib/zustand/game";
 
 const Game = ({ params }: Route.ComponentProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -26,7 +22,6 @@ const Game = ({ params }: Route.ComponentProps) => {
   const level = params.id || "calculator"; // default to "calculator" if no level is specified
   //TODO: navigate to /levels/calculator too. easy option: use navigate("/levels/calculator") in the useEffect below, nice option: handle in router directly
 
-  const setCurrentLevel = useGameStore((state) => state.setCurrentLevel);
   const [levelDialogOpen, setLevelDialogOpen] = useState(true);
 
   useEffect(() => {
@@ -34,20 +29,14 @@ const Game = ({ params }: Route.ComponentProps) => {
       return;
     }
 
-    globalKeyTracker.init();
+    globalKeyTracker.init(); // TODO: maybe move this into init game??
     initGame(canvasRef.current);
 
-    // load and set the game level
-    setCurrentLevel(level as keyof typeof LEVELS); // we can cast confidently here since we know the params.id is a valid level id, because loading the level will fail if it is not
-    loadLevel(level);
+    // load the game level
+    loadLevel(level as keyof typeof LEVELS);
 
     return () => {
       cleanupKaplay();
-
-      useGameStore.getState().reset();
-      useFlowStore.getState().reset();
-      useNodeStore.getState().reset();
-      useLoopStore.getState().reset();
 
       setLevelDialogOpen(true);
 
