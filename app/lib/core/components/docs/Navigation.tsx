@@ -306,7 +306,7 @@ const NavigationContent: React.FC<{ onItemClick?: () => void }> = ({
   };
 
   return (
-    <div className="flex min-h-96 w-3xs flex-col space-y-1 lg:w-xs">
+    <div className="flex min-h-96 w-min-3xs flex-col space-y-1 lg:w-xs">
       <div className="relative mb-3 text-black">
         <input
           className="h-10 w-full rounded-lg border-2 border-slate-300 bg-white px-5 pr-16 text-sm transition-colors focus:border-slate-700 focus:outline-none"
