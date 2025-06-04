@@ -12,9 +12,9 @@ import {
 const TRASHCAN1 = "trashcan1";
 const TRASHCAN2 = "trashcan2";
 
-export const IFFIES_GAME_OBJECTS = [TRASHCAN1, TRASHCAN2] as const;
+export const BOUNCE_GAME_OBJECTS = [TRASHCAN1, TRASHCAN2] as const;
 
-export const initializeIffies = () => {
+export const initializeBounce = () => {
   const { k, game } = getKaplayCtx();
 
   addBackgrounds(["background1"]);

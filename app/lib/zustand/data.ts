@@ -1,10 +1,10 @@
 import { create } from "zustand";
 
-import type { GameObject } from "../game/constants";
 import type {
   ConnectionAccess,
   ModifiableGameObject,
 } from "../game/core/levels";
+import type { GameObject } from "../game/gameObjects";
 
 export type GameObjectsData = Map<
   GameObject, // gameobject label

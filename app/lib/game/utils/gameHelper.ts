@@ -11,8 +11,9 @@ import type {
 } from "kaplay";
 
 import { useDataStore } from "~/lib/zustand/data";
-import { BACKGROUND_OFFSET, SPRITE_SCALE, type GameObject } from "../constants";
+import { BACKGROUND_OFFSET, SPRITE_SCALE } from "../constants";
 import { getKaplayCtx } from "../core/kaplayCtx";
+import { type GameObject } from "../gameObjects";
 
 type Background = "background1" | "backgroundCalc";
 type PlayerType = GameObj<

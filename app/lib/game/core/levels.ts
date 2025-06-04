@@ -2,15 +2,15 @@ import type { Edge, Node } from "@xyflow/react";
 
 import alleyOne from "~/assets/alley_one.jpg";
 import alleyTwo from "~/assets/alley_two.png";
+import bounceCard from "~/assets/home-cards/bounce_card.png";
 import calcCard from "~/assets/home-cards/calc_card.png";
-import iffiesCard from "~/assets/home-cards/iffies_card.png";
 import playgroundCard from "~/assets/home-cards/playground_card.png";
 import sittingCard from "~/assets/home-cards/sitting_card.png";
 import houseImage from "~/assets/house.png";
 import type { NodeType } from "~/lib/node-editor/nodes/node-types";
-import { type GameObject } from "../constants";
+import { type GameObject } from "../gameObjects";
+import { initializeBounce } from "../levels/bounce";
 import { initializeCalculator } from "../levels/calculator";
-import { initializeIffies } from "../levels/iffies";
 import { initializeMove } from "../levels/move";
 import { initializePlayground } from "../levels/playground";
 import { initializeSitting } from "../levels/sitting";
@@ -147,9 +147,9 @@ export const LEVELS = {
     availableNodes: ["Display", "Value", "ExportToGameobject"],
     difficulty: 0,
   },
-  iffies: {
-    slug: "iffies",
-    name: "Iffies",
+  bounce: {
+    slug: "bounce",
+    name: "Bounce",
     description:
       "This is the third level of the game, introducing if statements.",
     dialog: [
@@ -162,10 +162,10 @@ export const LEVELS = {
     success:
       "Luckily the raccoon doesn't have to search for food in an empty trashcan!",
     category: "Introduction",
-    image: iffiesCard,
+    image: bounceCard,
     nodes: [],
     edges: [],
-    initialState: initializeIffies,
+    initialState: initializeBounce,
     hints: [],
     modifiableGameObjects: [
       {

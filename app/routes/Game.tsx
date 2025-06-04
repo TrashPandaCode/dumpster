@@ -58,6 +58,13 @@ const Game = ({ params }: Route.ComponentProps) => {
 
   return (
     <>
+      <div className="md:hidden absolute top-0 left-0 z-10 h-full w-full bg-slate-900 p-8 text-center">
+        <div className="flex h-full w-full items-center justify-center">
+          <h1 className="text-2xl font-bold text-white">
+            Please use a desktop browser to play the game.
+          </h1>
+        </div>
+      </div>
       <LevelDialog open={levelDialogOpen} onOpenChange={setLevelDialogOpen} />
       <LevelCompleteDialog />
       <PanelGroup direction="horizontal">

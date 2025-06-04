@@ -7,8 +7,8 @@ import type {
 } from "@xyflow/react";
 import { v4 as uuidv4 } from "uuid";
 
-import type { GameObject } from "../game/constants";
 import type { ConnectionAccess } from "../game/core/levels";
+import type { GameObject } from "../game/gameObjects";
 import type { GameObjectsData } from "../zustand/data";
 import { useLoopStore } from "./node-store/loop-store";
 import type { nodeInputs } from "./node-store/node-store";
