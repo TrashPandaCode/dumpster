@@ -7,6 +7,13 @@ import { useEffect, useMemo, useState } from "react";
 import { NavLink, useLocation } from "react-router";
 
 import navigation from "~/lib/core/navigation.json";
+import {
+  cleanMarkdownContent,
+  extractDescription,
+  type NavigationItem,
+  type NavigationSection,
+  type SearchableItem,
+} from "../../search-utils";
 import Collapsible from "./Collapsible";
 
 const Divider: React.FC<{ title: string }> = ({ title }) => (
@@ -15,27 +22,11 @@ const Divider: React.FC<{ title: string }> = ({ title }) => (
   </div>
 );
 
-interface NavigationItem {
-  path: string;
-  title: string;
-}
-
-interface NavigationSection {
-  title: string;
-  path?: string;
-  items?: NavigationItem[];
-}
-
-interface NavLinkItemProps {
-  item: NavigationItem;
+interface NavItemProps {
+  item: NavigationItem | SearchableItem;
   className?: string;
   onClick?: () => void;
-}
-
-interface SearchableItem extends NavigationItem {
-  sectionTitle: string;
-  type: "section" | "item";
-  content?: string;
+  showDescription?: boolean;
 }
 
 const docs = import.meta.glob("/content/docs/**/*.{md,mdx}", {
@@ -73,6 +64,7 @@ const NavigationContent: React.FC<{ onItemClick?: () => void }> = ({
             sectionTitle: section.title,
             type: "section",
             content,
+            description: extractDescription(content),
           };
           searchableItems.push(item);
 
@@ -90,6 +82,7 @@ const NavigationContent: React.FC<{ onItemClick?: () => void }> = ({
               sectionTitle: section.title,
               type: "item",
               content,
+              description: extractDescription(content),
             };
             searchableItems.push(searchableItem);
 
@@ -142,32 +135,12 @@ const NavigationContent: React.FC<{ onItemClick?: () => void }> = ({
           return "";
         }
 
-        // Remove frontmatter and markdown syntax for cleaner search
         return cleanMarkdownContent(content);
       }
     } catch (error) {
       console.warn(`Failed to load content for ${path}:`, error);
     }
     return "";
-  };
-
-  const cleanMarkdownContent = (content: string): string => {
-    return (
-      content
-        // Remove frontmatter
-        .replace(/^---[\s\S]*?---/, "")
-        // Remove markdown syntax
-        .replace(/#{1,6}\s/g, "") // Headers
-        .replace(/\*\*(.*?)\*\*/g, "$1") // Bold
-        .replace(/\*(.*?)\*/g, "$1") // Italic
-        .replace(/`(.*?)`/g, "$1") // Inline code
-        .replace(/```[\s\S]*?```/g, "") // Code blocks
-        .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1") // Links
-        .replace(/!\[([^\]]*)\]\([^)]+\)/g, "$1") // Images
-        // Normalize whitespace
-        .replace(/\s+/g, " ")
-        .trim()
-    );
   };
 
   const searchResults = useMemo(() => {
@@ -186,14 +159,17 @@ const NavigationContent: React.FC<{ onItemClick?: () => void }> = ({
     <div className="bg-jam-600 h-[6px] w-[6px] rounded-full" />
   );
 
-  const NavLinkItem: React.FC<NavLinkItemProps> = ({
+  const NavItem: React.FC<NavItemProps> = ({
     item,
     className = "",
     onClick,
+    showDescription = false,
   }) => {
     const isActive = isActivePath(item.path);
+    const searchableItem = item as SearchableItem;
+
     const combinedClasses = classnames(
-      "flex flex-col gap-1 px-2 py-2 hover:bg-slate-50 rounded",
+      "flex flex-col gap-1 px-2 py-2 hover:bg-slate-50 rounded transition-colors",
       {
         "bg-blue-50 font-bold": isActive,
         [className]: className,
@@ -213,30 +189,11 @@ const NavigationContent: React.FC<{ onItemClick?: () => void }> = ({
           </span>
           {isActive && <ActiveIndicator />}
         </div>
-      </NavLink>
-    );
-  };
-
-  const SearchResultItem: React.FC<{
-    item: SearchableItem;
-    onClick?: () => void;
-  }> = ({ item, onClick }) => {
-    const isActive = isActivePath(item.path);
-    const combinedClasses = classnames(
-      "flex flex-col gap-1 p-2 hover:bg-slate-50 rounded",
-      {
-        "bg-blue-50": isActive,
-      }
-    );
-
-    return (
-      <NavLink to={item.path} className={combinedClasses} onClick={onClick}>
-        <div className="flex items-center gap-2">
-          <span className={classnames("text-sm", { "font-bold": isActive })}>
-            {item.title}
-          </span>
-          {isActive && <ActiveIndicator />}
-        </div>
+        {showDescription && searchableItem.description && (
+          <div className="mt-1 line-clamp-2 text-xs text-slate-600">
+            {searchableItem.description}
+          </div>
+        )}
       </NavLink>
     );
   };
@@ -273,10 +230,11 @@ const NavigationContent: React.FC<{ onItemClick?: () => void }> = ({
             </div>
             <div className="mt-1 space-y-1">
               {items.map((item) => (
-                <SearchResultItem
+                <NavItem
                   key={item.path}
                   item={item}
                   onClick={onItemClick}
+                  showDescription={true}
                 />
               ))}
             </div>
@@ -317,7 +275,7 @@ const NavigationContent: React.FC<{ onItemClick?: () => void }> = ({
           open={searchTerm === "" ? undefined : !!searchTerm}
         >
           {filteredItems.map((item) => (
-            <NavLinkItem key={item.path} item={item} onClick={onItemClick} />
+            <NavItem key={item.path} item={item} onClick={onItemClick} />
           ))}
         </Collapsible>
       );
@@ -334,7 +292,7 @@ const NavigationContent: React.FC<{ onItemClick?: () => void }> = ({
         title: section.title,
       };
       elements.push(
-        <NavLinkItem
+        <NavItem
           key={section.path}
           item={sectionAsItem}
           className="px-2 py-1"
@@ -348,10 +306,10 @@ const NavigationContent: React.FC<{ onItemClick?: () => void }> = ({
   };
 
   return (
-    <div className="flex min-h-96 min-w-3xs flex-col space-y-1 lg:min-w-xs">
-      <div className="relative text-black mb-3">
+    <div className="flex min-h-96 w-3xs flex-col space-y-1 lg:w-xs">
+      <div className="relative mb-3 text-black">
         <input
-          className="h-10 w-full rounded-lg border-2 border-slate-300 bg-white px-5 pr-16 text-sm focus:outline-none"
+          className="h-10 w-full rounded-lg border-2 border-slate-300 bg-white px-5 pr-16 text-sm transition-colors focus:border-slate-700 focus:outline-none"
           type="text"
           name="search"
           placeholder="Search documentation..."
