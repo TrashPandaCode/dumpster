@@ -87,6 +87,18 @@ export const initializeIffies = () => {
   let graceTimer = 0;
   const GRACE_PERIOD = 0.2;
 
+  const timerText = game.add([
+    k.text("5", {
+      size: 2,
+      font: "satoshi",
+    }),
+    k.pos(0, -8),
+    k.anchor("center"),
+    k.z(10),
+    k.opacity(0),
+    "timerText",
+  ]);
+
   game.onUpdate(() => {
     if (useGameStore.getState().isPaused) return;
 
@@ -128,20 +140,27 @@ export const initializeIffies = () => {
     if (distFilled <= 0.5 && !useGameStore.getState().levelCompleted) {
       timeInFilled += k.dt();
       graceTimer = 0;
+
+      timerText.opacity = 1;
+      const countdown = Math.max(0, Math.ceil(5 - timeInFilled));
+      timerText.text = countdown.toString();
       if (timeInFilled >= 5) {
         useGameStore.getState().setLevelCompleteDialogOpen(true);
         useGameStore.getState().setLevelCompleted(true);
+        timerText.opacity = 0;
       }
     } else if (timeInFilled > 0 && !useGameStore.getState().levelCompleted) {
       graceTimer += k.dt();
       if (graceTimer >= GRACE_PERIOD) {
         timeInFilled = 0;
         graceTimer = 0;
+
+        timerText.opacity = 0;
       }
     }
 
     if (useDataStore.getState().initData) {
       handleReset(raccoon!, 1);
-    };
+    }
   });
 };
