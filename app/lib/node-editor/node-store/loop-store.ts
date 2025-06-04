@@ -15,6 +15,7 @@ interface LoopStoreState {
   removeHandle: (loopId: string, label: string) => void;
   getHandles: (loopId: string) => Map<string, string>;
   init: (level: keyof typeof LEVELS) => void;
+  reset: () => void;
 }
 
 export const useLoopStore = create<LoopStoreState>((set, get) => ({
@@ -52,4 +53,5 @@ export const useLoopStore = create<LoopStoreState>((set, get) => ({
     return handles;
   },
   init: () => set({ loops: new Map() }),
+  reset: () => set({ loops: new Map() }),
 }));

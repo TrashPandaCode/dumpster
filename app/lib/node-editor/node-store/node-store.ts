@@ -254,6 +254,7 @@ interface NodeStoreState {
    */
   init: (level: keyof typeof LEVELS) => void;
   save: () => void;
+  reset: () => void;
 }
 
 export const useNodeStore = create<NodeStoreState>((set, get) => ({
@@ -376,6 +377,12 @@ export const useNodeStore = create<NodeStoreState>((set, get) => ({
       JSON.stringify(nodeStoreData)
     );
   },
+  reset: () =>
+    set({
+      nodeMap: new Map<string, AppNode>(),
+      sortedNodes: [],
+      mapErrors: { cycle: false },
+    }),
 }));
 
 /**

@@ -17,6 +17,7 @@ interface FlowState {
   highlightDuplicateNodes: () => void;
   init: (level: keyof typeof LEVELS) => void;
   save: () => void;
+  reset: () => void;
 }
 
 export const useFlowStore = create<FlowState>((set, get) => ({
@@ -131,4 +132,5 @@ export const useFlowStore = create<FlowState>((set, get) => ({
       JSON.stringify(flowStoreData)
     );
   },
+  reset: () => set({ nodes: [], highlightNodes: new Map(), edges: [] }),
 }));
