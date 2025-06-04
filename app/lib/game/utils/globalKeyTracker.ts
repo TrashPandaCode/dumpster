@@ -100,18 +100,13 @@ function registerShortcut(
   }
 
   // Register all variants
-  shortcuts.forEach((sc) => {
-    if (!registeredShortcuts.has(sc)) {
-      registeredShortcuts.set(sc, new Set());
-    }
-    registeredShortcuts.get(sc)!.add(callback);
-  });
+  if (!registeredShortcuts.has(shortcut)) {
+    registeredShortcuts.set(shortcut, new Set());
+  }
+  registeredShortcuts.get(shortcut)!.add(callback);
 
-  // Return cleanup function for all variants
   return () => {
-    shortcuts.forEach((sc) => {
-      registeredShortcuts.get(sc)?.delete(callback);
-    });
+    registeredShortcuts.get(shortcut)?.delete(callback);
   };
 }
 
@@ -192,5 +187,4 @@ export const globalKeyTracker = {
   registerShortcut,
   platformShortcut,
   isMac,
-  primaryModifier,
 };
