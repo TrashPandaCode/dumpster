@@ -84,19 +84,34 @@ const Home = () => {
           </h1>
           <div className="flex flex-col items-start justify-center gap-10 md:flex-row md:gap-32">
             <div className="flex flex-col gap-4 text-center">
-              <div className="bg-jam-600 h-32 w-32 rounded-full" />
+              <div className="bg-jam-600 h-32 w-32 rounded-full">
+                <img 
+                  className="rounded-b-full"
+                  src="../app/assets/home/ca_raccoon.png" 
+                  alt="" />
+              </div>
               Computer
               <br />
               Animation
             </div>
             <div className="flex flex-col gap-4 text-center">
-              <div className="bg-jam-600 h-32 w-32 rounded-full" />
-              Eating Trash
-            </div>
-            <div className="flex flex-col gap-4 text-center">
-              <div className="bg-jam-600 h-32 w-32 rounded-full" />
+              <div className="bg-jam-600 h-32 w-32 rounded-full" >
+                <img 
+                  className="rounded-b-full"
+                  src="../app/assets/home/raid_trash.png" 
+                  alt="" />
+              </div>
               Raiding The <br />
               Trash
+            </div>
+            <div className="flex flex-col gap-4 text-center">
+              <div className="bg-jam-600 h-32 w-32 rounded-full">
+                <img 
+                  className="rounded-b-full"
+                  src="../app/assets/home/eating_trash.png" 
+                  alt="" />
+              </div>
+              Eating Trash
             </div>
           </div>
         </div>
@@ -107,13 +122,15 @@ const Home = () => {
             Join the community
           </h1>
           <p className="text-center text-sm text-white">
-            Join our Discord community to connect with other students, share
+            Join our student Discord to connect with other Mediatechnology students, share
             your experiences, and get help with the game. Whether you're a
             beginner or a seasoned player, there's a place for you in our
             community!
           </p>
           <a
-            href="https://discord.gg/yourdiscordlink"
+            target="_blank"
+            rel="noopener noreferrer"
+            href="https://discord.gg/dn29RWwbS4"
             className="bg-jam-600 hover:bg-jam-700 rounded-full px-6 py-3 text-lg font-bold text-white transition-all duration-300"
           >
             Join Discord
