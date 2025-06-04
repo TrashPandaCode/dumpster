@@ -393,7 +393,7 @@ const Navigation: React.FC = () => {
                 </button>
               </Sheet.Close>
             </div>
-            <div className="flex-1 overflow-y-scroll p-6 pt-4">
+            <div className="flex-1 overflow-y-auto p-6 pt-4">
               <NavigationContent onItemClick={() => setIsOpen(false)} />
             </div>
           </Sheet.Content>
