@@ -9,12 +9,11 @@ interface GameState {
   pause: () => void;
   play: () => void;
   currentLevel: LevelId;
-  setCurrentLevel: (level: LevelId) => void;
   levelCompleteDialogOpen: boolean;
   setLevelCompleteDialogOpen: (open: boolean) => void;
   levelCompleted: boolean;
   setLevelCompleted: (completed: boolean) => void;
-  reset: () => void;
+  init: (level: keyof typeof LEVELS) => void;
 }
 
 export const useGameStore = create<GameState>((set) => ({
@@ -28,11 +27,13 @@ export const useGameStore = create<GameState>((set) => ({
     set({ levelCompleteDialogOpen: open }),
   levelCompleted: false,
   setLevelCompleted: (completed: boolean) => set({ levelCompleted: completed }),
-  reset: () =>
+  init: (level) => {
+    localStorage.setItem("level", level);
     set({
       isPaused: false,
-      currentLevel: "playground",
+      currentLevel: level,
       levelCompleteDialogOpen: false,
       levelCompleted: false,
-    }),
+    });
+  },
 }));

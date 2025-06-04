@@ -10,6 +10,23 @@ const controlStyle = {
   border: "none",
 };
 
+/**
+ * React component for a resizable "Group" node used to visually
+ * group multiple nodes together in the node editor.
+ *
+ * Features:
+ * - Resizable container using `NodeResizeControl` from `@xyflow/react`.
+ * - Displays an editable "Group" label.
+ * - Shows an icon (`SizeIcon`) in the bottom-right corner for resizing.
+ *
+ * Props:
+ * @param {any} data - Configuration data for the group node:
+ *   - `minWidth` / `minHeight`: Minimum resize constraints.
+ *   - `isParent`: Indicates whether the group contains child nodes.
+ *
+ * Notes:
+ * - This node acts as a visual and structural container only; no compute logic is applied.
+ */
 const Group = memo(({ data }: { data: any }) => {
   return (
     <>

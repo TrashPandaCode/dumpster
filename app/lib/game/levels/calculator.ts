@@ -1,8 +1,8 @@
 import { useDataStore } from "~/lib/zustand/data";
 import { useGameStore } from "~/lib/zustand/game";
-import { BACKGROUND_OFFSET } from "../constants";
+import { BACKGROUND_OFFSET, CAM_SCALE } from "../constants";
 import { getKaplayCtx } from "../core/kaplayCtx";
-import { addBackgrounds, addGameobjects } from "../utils/gameHelper";
+import { addBackgrounds, addGameobjects, handleReset } from "../utils/gameHelper";
 
 import { useTelemetryStore } from "~/lib/zustand/telemetry";
 
@@ -12,8 +12,8 @@ export const initializeCalculator = () => {
   addBackgrounds(["backgroundCalc"], -200);
 
   const { raccoon } = addGameobjects(["raccoon"]);
-  k.setCamPos(-300, -BACKGROUND_OFFSET);
-  k.setCamScale(k.height() / 947);
+  k.setCamPos(-5, -BACKGROUND_OFFSET);
+  k.setCamScale((CAM_SCALE * k.height()) / 947);
   raccoon!.scaleBy(-1, 1);
 
   game.onUpdate(() => {
@@ -35,5 +35,9 @@ export const initializeCalculator = () => {
         hour12: false
       }));
     }
+
+    if (useDataStore.getState().initData) {
+      handleReset(raccoon!, -1);
+    };
   });
 };

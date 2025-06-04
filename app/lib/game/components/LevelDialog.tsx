@@ -102,10 +102,10 @@ const LevelDialog = ({
       <div className="flex flex-col gap-5">
         <div className="flex flex-1 flex-row">
           {/* Left side: Raccoon sprite */}
-          <div className="my-auto w-1/3 pr-4">
+          <div className="my-auto w-1/3">
             <div
               style={{
-                aspectRatio: "1 / 1",
+                aspectRatio: "7 / 6",
                 width: "100%",
                 backgroundImage: "url('/game/sprites/raccoon_spritesheet.png')",
                 backgroundPosition: "0 0",

@@ -3,9 +3,9 @@ import type { Edge, Node } from "@xyflow/react";
 import alleyOne from "~/assets/alley_one.jpg";
 import alleyTwo from "~/assets/alley_two.png";
 import calcCard from "~/assets/home-cards/calc_card.png";
-import sittingCard from "~/assets/home-cards/sitting_card.png";
 import iffiesCard from "~/assets/home-cards/iffies_card.png";
 import playgroundCard from "~/assets/home-cards/playground_card.png";
+import sittingCard from "~/assets/home-cards/sitting_card.png";
 import houseImage from "~/assets/house.png";
 import type { NodeType } from "~/lib/node-editor/nodes/node-types";
 import { type GameObject } from "../constants";
@@ -80,61 +80,6 @@ export type ModifiableGameObject = {
  * The LEVELS object contains all the levels of the game.
  */
 export const LEVELS = {
-  playground: {
-    slug: "playground",
-    name: "Playground",
-    description:
-      "This is a sandbox level where you can freely test game mechanics.",
-    dialog: [
-      "This is a playground level where you can freely implement game mechanics.",
-      "You are allowed to use all available nodes.",
-    ],
-    goals: [
-      "No goals, this level is designed for experimentation and testing.",
-    ],
-    success: "How did you complete a sandbox level?",
-    category: "Sandbox",
-    image: playgroundCard,
-    nodes: [],
-    edges: [],
-    initialState: initializePlayground,
-    hints: [
-      "This is a playground level",
-      "You don't need hints here",
-      "stop clicking there is nothing coming",
-      "42",
-    ],
-    modifiableGameObjects: [
-      {
-        id: "raccoon",
-        connections: [
-          { label: "xpos", access: "all" },
-          { label: "ypos", access: "all" },
-        ],
-      },
-      {
-        id: "trashcanFilled",
-        connections: [
-          { label: "xpos", access: "set" },
-          { label: "ypos", access: "set" },
-        ],
-      },
-    ],
-    availableNodes: [
-      "Display",
-      "Value",
-      "Time",
-      "KeyPress",
-      "MathFloat",
-      "ExportToGameobject",
-      "ImportFromGameobject",
-      "Switch",
-      "Group",
-      "ForLoop",
-      "MousePosition",
-    ],
-    difficulty: 0,
-  },
   calculator: {
     slug: "calculator",
     name: "Calculator",
@@ -168,7 +113,7 @@ export const LEVELS = {
         connections: [{ label: "solution", access: "set" }],
       },
     ],
-    availableNodes: ["Display", "Value", "MathFloat", "ExportToGameobject"],
+    availableNodes: ["Display", "Value", "Math", "ExportToGameobject"],
     difficulty: 0,
   },
   sitting: {
@@ -250,7 +195,7 @@ export const LEVELS = {
     availableNodes: [
       "Display",
       "Value",
-      "MathFloat",
+      "Math",
       "ImportFromGameobject",
       "Switch",
       "ExportToGameobject",
@@ -282,7 +227,7 @@ export const LEVELS = {
     availableNodes: [
       "Display",
       "Value",
-      "MathFloat",
+      "Math",
       "ImportFromGameobject",
       "Switch",
       "ExportToGameobject",
@@ -318,5 +263,60 @@ export const LEVELS = {
     ],
     availableNodes: ["Display", "ExportToGameobject"],
     difficulty: 2,
+  },
+  playground: {
+    slug: "playground",
+    name: "Playground",
+    description:
+      "This is a sandbox level where you can freely test game mechanics.",
+    dialog: [
+      "This is a playground level where you can freely implement game mechanics.",
+      "You are allowed to use all available nodes.",
+    ],
+    goals: [
+      "No goals, this level is designed for experimentation and testing.",
+    ],
+    success: "How did you complete a sandbox level?",
+    category: "Sandbox",
+    image: playgroundCard,
+    nodes: [],
+    edges: [],
+    initialState: initializePlayground,
+    hints: [
+      "This is a playground level",
+      "You don't need hints here",
+      "stop clicking there is nothing coming",
+      "42",
+    ],
+    modifiableGameObjects: [
+      {
+        id: "raccoon",
+        connections: [
+          { label: "xpos", access: "all" },
+          { label: "ypos", access: "all" },
+        ],
+      },
+      {
+        id: "trashcanFilled",
+        connections: [
+          { label: "xpos", access: "set" },
+          { label: "ypos", access: "set" },
+        ],
+      },
+    ],
+    availableNodes: [
+      "Display",
+      "Value",
+      "Time",
+      "KeyPress",
+      "Math",
+      "ExportToGameobject",
+      "ImportFromGameobject",
+      "Switch",
+      "Group",
+      "ForLoop",
+      "MousePosition",
+    ],
+    difficulty: 0,
   },
 } satisfies Record<string, Level>;

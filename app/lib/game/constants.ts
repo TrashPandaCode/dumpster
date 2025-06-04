@@ -16,5 +16,6 @@ export const GAME_OBJECTS = [
 ] as const;
 export type GameObject = (typeof GAME_OBJECTS)[number];
 
-export const RACCOON_SCALE = 5.5;
-export const BACKGROUND_OFFSET = 260;
+export const SPRITE_SCALE = 0.1;
+export const BACKGROUND_OFFSET = 4.727;
+export const CAM_SCALE = 55;

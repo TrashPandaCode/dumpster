@@ -12,10 +12,41 @@ import BaseHandle from "../../node-components/BaseHandle";
 import LabelHandle from "../../node-components/LabelHandle";
 import MultiSelectDropDown from "../../node-components/MultiSelectDropDown";
 import NodeContent from "../../node-components/NodeContent";
-import type { nodeData, nodeInputs } from "../../node-store/node-store";
+import type { nodeInputs, nodeResults } from "../../node-store/node-store";
 import { getHandleIntersection, getInput } from "../../utils";
 import { IN_HANDLE_1 } from "../constants";
 
+/**
+ * React component that allows node data to be written to one or more
+ * GameObjects in the game state.
+ *
+ * Features:
+ * - Multi-select dropdown for choosing one or more GameObjects.
+ * - Input handle for index selection if multiple GameObjects are selected.
+ * - Automatically displays an intersection of input handles for all selected GameObjects.
+ * - Allows dynamic addition/removal of input handles per GameObject field.
+ *
+ * Props:
+ * @param {string} id - Node instance ID from the ReactFlow context.
+ * @param {any} data - Node data object. It may include:
+ *   - `selectedGameObjects`: Array of GameObject IDs.
+ *   - `curLabel`: `useRef` to the label input for new handles.
+ * @param {boolean} selected - Whether the node is currently selected (for styling).
+ *
+ * Hooks/Stores Used:
+ * - `useGameStore`: Accesses the current game level and available GameObjects.
+ * - `useDataStore`: Reads and writes values to specific GameObject fields.
+ * - `useGameobjectSelect`: Manages multi-select dropdown logic.
+ * - `useReactFlow`: Updates the node's `compute` function dynamically.
+ *
+ * Behavior:
+ * - If an upstream node is connected to the index input handle, its value is rounded using `Math.round`.
+ *
+ * UI Notes:
+ * - A red `CrossCircledIcon` appears next to fields which were added by the user, allowing users to remove these fields.
+ * - `AddHandle` allows dynamically adding new labeled input handles for writing.
+ *
+ */
 const ExportToGameobject = memo(
   ({ id, data, selected }: { id: string; data: any; selected: boolean }) => {
     const level = useGameStore((state) => state.currentLevel);
@@ -54,7 +85,7 @@ const ExportToGameobject = memo(
 
     useEffect(() => {
       updateNodeData(id, {
-        compute: (inputs: nodeInputs, _: nodeData) => {
+        compute: (inputs: nodeInputs, _: nodeResults) => {
           const index =
             selectedGameObjects.length === 1
               ? 0

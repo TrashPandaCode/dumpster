@@ -37,7 +37,7 @@ const AddNodes = ({
   const level = useGameStore((state) => state.currentLevel);
   const searchNodeTypes = LEVELS[level].availableNodes;
 
-  const MathFloatComputeTypes = Object.values(TYPES).flat();
+  const MathComputeTypes = Object.values(TYPES).flat();
 
   const { addNodes, addEdges, screenToFlowPosition, getNodes, getNode } =
     useReactFlow();
@@ -70,16 +70,13 @@ const AddNodes = ({
         return { nodeType: t };
       });
 
-    if (
-      nodeSearch === "" ||
-      !searchNodeTypes.some((type) => type === "MathFloat")
-    )
+    if (nodeSearch === "" || !searchNodeTypes.some((type) => type === "Math"))
       return setFilteredTypes(types);
 
-    const mathTypes = MathFloatComputeTypes.filter((type) =>
+    const mathTypes = MathComputeTypes.filter((type) =>
       type.toLowerCase().includes(nodeSearch.toLowerCase())
     ).map((t) => {
-      return { nodeType: "MathFloat", computeType: t };
+      return { nodeType: "Math", computeType: t };
     });
 
     const combined = [...types, ...mathTypes];

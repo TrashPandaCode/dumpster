@@ -9,7 +9,7 @@
     },
     {
       "id": "e2faa488-c1ee-4c8e-9244-ca1ce7da3581",
-      "type": "MathFloat",
+      "type": "Math",
       "position": { "x": 0, "y": 200 },
       "data": {
         "initialComputeType": "Addition",
