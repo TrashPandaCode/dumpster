@@ -3,14 +3,16 @@ import { create } from "zustand";
 import type { LEVELS } from "~/lib/game/core/levels";
 import { handleUUID } from "../utils";
 
+type LoopType = Map<
+  string, //loop id: same for start and end node
+  Map<
+    string, //label
+    string // handleId
+  > //map of input handles, these must be displayed as start input and output handles, and end input and output handles
+>;
+
 interface LoopStoreState {
-  loops: Map<
-    string, //loop id: same for start and end node
-    Map<
-      string, //label
-      string // handleId
-    > //map of input handles, these must be displayed as start input and output handles, and end input and output handles
-  >;
+  loops: LoopType;
   addHandle: (loopId: string, label: string) => string; // returns the new handleId
   removeHandle: (loopId: string, label: string) => void;
   getHandles: (loopId: string) => Map<string, string>;
@@ -56,28 +58,27 @@ export const useLoopStore = create<LoopStoreState>((set, get) => ({
   init: () => {
     const levelId = localStorage.getItem("level")!; // we can be sure a level has been loaded
     const stored = localStorage.getItem(`loop-store-${levelId}`);
-    if (!stored) return set({ loops: new Map() });
+    if (!stored) return get().reset();
 
-    const loopStoreData = JSON.parse(stored);
-    set({
-      loops: new Map(
-        Object.entries(loopStoreData.loops).map(([loopId, handleObj]) => {
-          const handles = Object.entries(handleObj as Record<string, string>);
-          return [loopId, new Map(handles)] as [string, Map<string, string>];
-        })
-      ),
-    });
+    const loopStoreData = JSON.parse(stored) as {
+      loops: [string, [string, string][]][];
+    };
+    const loops: LoopType = new Map();
+
+    for (const [loopId, handles] of loopStoreData.loops) {
+      loops.set(loopId, new Map(handles));
+    }
+
+    set({ loops });
   },
   save: () => {
     const levelId = localStorage.getItem("level")!; // we can be sure a level has been loaded
 
     const loopStoreData = {
-      loops: Object.fromEntries(
-        [...get().loops.entries()].map(([loopId, handleMap]) => [
-          loopId,
-          Object.fromEntries(handleMap),
-        ])
-      ),
+      loops: [...get().loops.entries()].map(([loopId, handleMap]) => [
+        loopId,
+        [...handleMap.entries()],
+      ]),
     };
 
     localStorage.setItem(

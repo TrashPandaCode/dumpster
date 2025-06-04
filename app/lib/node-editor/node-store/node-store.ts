@@ -348,12 +348,7 @@ export const useNodeStore = create<NodeStoreState>((set, get) => ({
   init: () => {
     const levelId = localStorage.getItem("level")!; // we can be sure a level has been loaded
     const stored = localStorage.getItem(`node-store-${levelId}`);
-    if (!stored)
-      return set({
-        nodeMap: new Map<string, AppNode>(),
-        sortedNodes: [],
-        mapErrors: { cycle: false },
-      });
+    if (!stored) return get().reset();
 
     const nodeStoreData = JSON.parse(stored);
     const { sortedNodes, nodeMap } = deserializeAppNodeArray(

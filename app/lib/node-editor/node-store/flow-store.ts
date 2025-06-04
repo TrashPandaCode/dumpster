@@ -103,8 +103,7 @@ export const useFlowStore = create<FlowState>((set, get) => ({
   init: () => {
     const levelId = localStorage.getItem("level")!; // we can be sure a level has been loaded
     const stored = localStorage.getItem(`flow-store-${levelId}`);
-    if (!stored)
-      return set({ nodes: [], highlightNodes: new Map(), edges: [] });
+    if (!stored) return get().reset();
 
     const flowStoreData = JSON.parse(stored);
     set({

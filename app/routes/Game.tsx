@@ -17,6 +17,7 @@ import { globalKeyTracker } from "~/lib/game/utils/globalKeyTracker";
 import { useFlowStore } from "~/lib/node-editor/node-store/flow-store";
 import { useLoopStore } from "~/lib/node-editor/node-store/loop-store";
 import { useNodeStore } from "~/lib/node-editor/node-store/node-store";
+import { useDataStore } from "~/lib/zustand/data";
 
 const Game = ({ params }: Route.ComponentProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -46,6 +47,7 @@ const Game = ({ params }: Route.ComponentProps) => {
       useFlowStore.getState().save();
       useNodeStore.getState().save();
       useLoopStore.getState().save();
+      useDataStore.getState().save();
     }, 1000);
 
     return () => {
@@ -58,7 +60,7 @@ const Game = ({ params }: Route.ComponentProps) => {
 
   return (
     <>
-      <div className="md:hidden absolute top-0 left-0 z-10 h-full w-full bg-slate-900 p-8 text-center">
+      <div className="absolute top-0 left-0 z-10 h-full w-full bg-slate-900 p-8 text-center md:hidden">
         <div className="flex h-full w-full items-center justify-center">
           <h1 className="text-2xl font-bold text-white">
             Please use a desktop browser to play the game.

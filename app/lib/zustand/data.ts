@@ -1,9 +1,6 @@
 import { create } from "zustand";
 
-import type {
-  ConnectionAccess,
-  ModifiableGameObject,
-} from "../game/core/levels";
+import { LEVELS, type ConnectionAccess } from "../game/core/levels";
 import type { GameObject } from "../game/gameObjects";
 
 export type GameObjectsData = Map<
@@ -23,7 +20,9 @@ interface DataState {
   setData: (gameObject: GameObject, label: string, value: number) => void;
   addHandle: (gameObject: GameObject, label: string) => void;
   removeHandle: (gameObject: GameObject, label: string) => void;
-  init: (modifiableGameObjects: ModifiableGameObject[]) => void;
+  init: (level: keyof typeof LEVELS) => void;
+  save: () => void;
+  reset: (level: keyof typeof LEVELS) => void;
 }
 
 export const useDataStore = create<DataState>((set, get) => ({
@@ -55,11 +54,54 @@ export const useDataStore = create<DataState>((set, get) => ({
 
       return { ...state, gameObjects: newGameObjectsMap };
     }),
-  init: (modifiableGameObjects) =>
+  init: (level) => {
+    const levelId = localStorage.getItem("level")!; // we can be sure a level has been loaded
+    const stored = localStorage.getItem(`data-store-${levelId}`);
+    if (!stored) return get().reset(level);
+
+    const dataStoreData = JSON.parse(stored) as {
+      initData: boolean;
+      gameObjects: [
+        GameObject,
+        [string, { access: ConnectionAccess; value: number }][],
+      ][];
+    };
+
+    const gameObjects = new Map<
+      GameObject,
+      Map<string, { access: ConnectionAccess; value: number }>
+    >();
+
+    for (const [gobId, handles] of dataStoreData.gameObjects) {
+      gameObjects.set(gobId, new Map(handles));
+    }
+
+    set({
+      initData: dataStoreData.initData,
+      gameObjects,
+    });
+  },
+  save: () => {
+    const levelId = localStorage.getItem("level")!; // we can be sure a level has been loaded
+    const state = get();
+
+    const dataStoreData = {
+      initData: state.initData,
+      gameObjects: [...state.gameObjects.entries()].map(
+        ([gobLabel, handleMap]) => [gobLabel, [...handleMap.entries()]]
+      ),
+    };
+
+    localStorage.setItem(
+      `data-store-${levelId}`,
+      JSON.stringify(dataStoreData)
+    );
+  },
+  reset: (level) =>
     set({
       initData: true,
       gameObjects: new Map(
-        modifiableGameObjects.map((item) => [
+        LEVELS[level].modifiableGameObjects.map((item) => [
           item.id,
           new Map(
             item.connections.map((conn) => [
