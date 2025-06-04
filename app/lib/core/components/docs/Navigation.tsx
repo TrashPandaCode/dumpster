@@ -326,7 +326,7 @@ const NavigationContent: React.FC<{ onItemClick?: () => void }> = ({
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
-        <div className="absolute top-0 right-0 mt-3 mr-5 cursor-pointer">
+        <div className="absolute top-0 right-0 mt-3 mr-5">
           <MagnifyingGlassIcon className="h-4 w-4 fill-current text-slate-600" />
         </div>
       </div>
