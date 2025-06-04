@@ -14,6 +14,8 @@ import LevelDialog from "~/lib/game/components/LevelDialog";
 import { cleanupKaplay } from "~/lib/game/core/kaplayCtx";
 import type { LEVELS } from "~/lib/game/core/levels";
 import { globalKeyTracker } from "~/lib/game/utils/globalKeyTracker";
+import { useFlowStore } from "~/lib/node-editor/node-store/flow-store";
+import { useNodeStore } from "~/lib/node-editor/node-store/node-store";
 
 const Game = ({ params }: Route.ComponentProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -35,11 +37,16 @@ const Game = ({ params }: Route.ComponentProps) => {
     // load the game level
     loadLevel(level as keyof typeof LEVELS);
 
+    // register auto save interval
+    const intervalId = setInterval(() => {
+      useFlowStore.getState().save();
+      useNodeStore.getState().save();
+    }, 1000);
+
     return () => {
       cleanupKaplay();
-
+      clearInterval(intervalId);
       setLevelDialogOpen(true);
-
       globalKeyTracker.cleanup();
     };
   }, [level]);

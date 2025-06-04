@@ -1,5 +1,6 @@
 import { create } from "zustand";
 
+import type { LEVELS } from "~/lib/game/core/levels";
 import { handleUUID } from "../utils";
 
 interface LoopStoreState {
@@ -13,7 +14,7 @@ interface LoopStoreState {
   addHandle: (loopId: string, label: string) => string; // returns the new handleId
   removeHandle: (loopId: string, label: string) => void;
   getHandles: (loopId: string) => Map<string, string>;
-  init: () => void;
+  init: (level: keyof typeof LEVELS) => void;
 }
 
 export const useLoopStore = create<LoopStoreState>((set, get) => ({

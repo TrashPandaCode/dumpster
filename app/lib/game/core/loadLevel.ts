@@ -18,9 +18,9 @@ export const loadLevel = (level: keyof typeof LEVELS) => {
 
   // initialize all stores with level data
   useGameStore.getState().init(level);
-  useFlowStore.getState().init();
-  useNodeStore.getState().init();
-  useLoopStore.getState().init();
+  useFlowStore.getState().init(level);
+  useNodeStore.getState().init(level);
+  useLoopStore.getState().init(level);
   useDataStore.getState().init(curLevel.modifiableGameObjects);
 
   curLevel.initialState();

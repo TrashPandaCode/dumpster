@@ -1,6 +1,7 @@
 import { type Connection, type Edge, type Node } from "@xyflow/react";
 import { create } from "zustand";
 
+import type { LEVELS } from "~/lib/game/core/levels";
 import { toast } from "../editor-components/Toast";
 import { connectionToEdgeId } from "../utils";
 import { useFlowStore } from "./flow-store";
@@ -141,6 +142,62 @@ export class AppNode {
   getResult(key: string): number | undefined {
     return this.results.get(key);
   }
+
+  /**
+   * Custom serialization method that converts Maps to objects and handles circular references
+   */
+  toJSON(): any {
+    return {
+      nodeId: this.nodeId,
+      inputs: Object.fromEntries(
+        Array.from(this.inputs.entries()).map(([key, value]) => [
+          key,
+          {
+            sourceNodeId: value.sourceNode.nodeId, // Store only ID to avoid circular refs
+            sourceHandleId: value.sourceHandleId,
+            edgeId: value.edgeId,
+          },
+        ])
+      ),
+      outputs: Object.fromEntries(
+        Array.from(this.outputs.entries()).map(([key, value]) => [
+          key,
+          {
+            targetNodeId: value.targetNode.nodeId, // Store only the ID to avoid circular references
+            targetHandleId: value.targetHandleId,
+            sourceHandleId: value.sourceHandleId,
+          },
+        ])
+      ),
+      results: Object.fromEntries(this.results), //TODO: do we need to save this?
+      mark: this.mark, //TODO: do we need to save this?
+      loopStart: this.loopStart,
+      loopEnd: this.loopEnd,
+      loopId: this.loopId,
+      type: this.type,
+    };
+  }
+
+  /**
+   * Static method to recreate AppNode from serialized data
+   */
+  static fromJSON(data: any): AppNode {
+    const node = new AppNode(data.nodeId, {}, data.type);
+
+    // Restore basic properties
+    node.loopStart = data.loopStart;
+    node.loopEnd = data.loopEnd;
+    node.loopId = data.loopId;
+    node.mark = data.mark;
+
+    // Restore Maps
+    node.inputs = new Map(Object.entries(data.inputs || {}));
+    node.results = new Map(Object.entries(data.results || {}));
+
+    // compute function will be restored by the react components which are restored by the flow store
+
+    return node;
+  }
 }
 
 /**
@@ -195,7 +252,8 @@ interface NodeStoreState {
    *
    * Checks if level data is in local storage, if so load it.
    */
-  init: () => void;
+  init: (level: keyof typeof LEVELS) => void;
+  save: () => void;
 }
 
 export const useNodeStore = create<NodeStoreState>((set, get) => ({
@@ -286,12 +344,38 @@ export const useNodeStore = create<NodeStoreState>((set, get) => ({
       console.log(node.type, node);
     });
   },
-  init: () =>
+  init: () => {
+    const levelId = localStorage.getItem("level")!; // we can be sure a level has been loaded
+    const stored = localStorage.getItem(`node-store-${levelId}`);
+    if (!stored)
+      return set({
+        nodeMap: new Map<string, AppNode>(),
+        sortedNodes: [],
+        mapErrors: { cycle: false },
+      });
+
+    const nodeStoreData = JSON.parse(stored);
+    const { sortedNodes, nodeMap } = deserializeAppNodeArray(
+      nodeStoreData.sortedNodes
+    );
     set({
-      nodeMap: new Map<string, AppNode>(),
-      sortedNodes: [],
-      mapErrors: { cycle: false },
-    }),
+      sortedNodes,
+      nodeMap,
+      mapErrors: nodeStoreData.mapErrors,
+    });
+  },
+  save: () => {
+    const state = get();
+    const levelId = localStorage.getItem("level")!; // we can be sure a level has been loaded
+    const nodeStoreData = {
+      sortedNodes: JSON.stringify(state.sortedNodes),
+      mapErrors: state.mapErrors,
+    };
+    localStorage.setItem(
+      `node-store-${levelId}`,
+      JSON.stringify(nodeStoreData)
+    );
+  },
 }));
 
 /**
@@ -429,4 +513,58 @@ function visit(node: AppNode, sortedMap: AppNode[], mapErrors: MapErrors) {
 
   node.mark = Mark.Permanent;
   sortedMap.unshift(node);
+}
+
+/**
+ * Deserializes JSON string back to nodeMap and sorted Nodes
+ * @param jsonString - The serialized JSON string
+ */
+export function deserializeAppNodeArray(jsonString: string): {
+  sortedNodes: AppNode[];
+  nodeMap: Map<string, AppNode>;
+} {
+  const data = JSON.parse(jsonString);
+  const nodeMap = new Map<string, AppNode>();
+
+  // create all nodes
+  const sortedNodes = data.map((nodeData: any) => {
+    const node = AppNode.fromJSON(nodeData);
+    nodeMap.set(node.nodeId, node);
+    return node;
+  });
+
+  // reconstruct inputs and outputs with proper AppNode references
+  data.forEach((nodeData: any, index: number) => {
+    const node = sortedNodes[index];
+
+    // Reconstruct inputs Map
+    if (nodeData.inputs) {
+      node.inputs = new Map(
+        Object.entries(nodeData.inputs).map(([key, value]: [string, any]) => [
+          key,
+          {
+            sourceNode: nodeMap.get(value.sourceNodeId)!,
+            sourceHandleId: value.sourceHandleId,
+            edgeId: value.edgeId,
+          },
+        ])
+      ) as nodeInputs;
+    }
+
+    // Reconstruct outputs Map
+    if (nodeData.outputs) {
+      node.outputs = new Map(
+        Object.entries(nodeData.outputs).map(([key, value]: [string, any]) => [
+          key,
+          {
+            targetNode: nodeMap.get(value.targetNodeId)!,
+            targetHandleId: value.targetHandleId,
+            sourceHandleId: value.sourceHandleId,
+          },
+        ])
+      );
+    }
+  });
+
+  return { sortedNodes, nodeMap };
 }

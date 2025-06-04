@@ -4,7 +4,6 @@ import playIcon from "~/assets/play.svg";
 
 const PlayButton = () => {
   const prevLevel = localStorage.getItem("level");
-  console.log(prevLevel);
 
   return (
     <NavLink
