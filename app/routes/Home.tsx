@@ -46,7 +46,7 @@ const Home = () => {
             <PlayButton className="hidden md:flex" />
             <NavLink
               to="/docs"
-              className="bg-jam-600 font-pixel hover:bg-jam-700 mt-6 flex w-fit items-center justify-baseline gap-4 rounded-full px-8 py-2 text-2xl font-bold text-white shadow-lg transition-transform duration-200 hover:scale-103"
+              className="md:hidden bg-jam-600 font-pixel hover:bg-jam-700 mt-6 flex w-fit items-center justify-baseline gap-4 rounded-full px-8 py-2 text-2xl font-bold text-white shadow-lg transition-transform duration-200 hover:scale-103"
             >
               Read the Docs
             </NavLink>
