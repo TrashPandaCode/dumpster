@@ -15,6 +15,7 @@ import { cleanupKaplay } from "~/lib/game/core/kaplayCtx";
 import { LEVELS } from "~/lib/game/core/levels";
 import { globalKeyTracker } from "~/lib/game/utils/globalKeyTracker";
 import { useFlowStore } from "~/lib/node-editor/node-store/flow-store";
+import { useLoopStore } from "~/lib/node-editor/node-store/loop-store";
 import { useNodeStore } from "~/lib/node-editor/node-store/node-store";
 
 const Game = ({ params }: Route.ComponentProps) => {
@@ -44,6 +45,7 @@ const Game = ({ params }: Route.ComponentProps) => {
     const intervalId = setInterval(() => {
       useFlowStore.getState().save();
       useNodeStore.getState().save();
+      useLoopStore.getState().save();
     }, 1000);
 
     return () => {

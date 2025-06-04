@@ -15,6 +15,7 @@ interface LoopStoreState {
   removeHandle: (loopId: string, label: string) => void;
   getHandles: (loopId: string) => Map<string, string>;
   init: (level: keyof typeof LEVELS) => void;
+  save: () => void;
   reset: () => void;
 }
 
@@ -52,6 +53,37 @@ export const useLoopStore = create<LoopStoreState>((set, get) => ({
     });
     return handles;
   },
-  init: () => set({ loops: new Map() }),
+  init: () => {
+    const levelId = localStorage.getItem("level")!; // we can be sure a level has been loaded
+    const stored = localStorage.getItem(`loop-store-${levelId}`);
+    if (!stored) return set({ loops: new Map() });
+
+    const loopStoreData = JSON.parse(stored);
+    set({
+      loops: new Map(
+        Object.entries(loopStoreData.loops).map(([loopId, handleObj]) => {
+          const handles = Object.entries(handleObj as Record<string, string>);
+          return [loopId, new Map(handles)] as [string, Map<string, string>];
+        })
+      ),
+    });
+  },
+  save: () => {
+    const levelId = localStorage.getItem("level")!; // we can be sure a level has been loaded
+
+    const loopStoreData = {
+      loops: Object.fromEntries(
+        [...get().loops.entries()].map(([loopId, handleMap]) => [
+          loopId,
+          Object.fromEntries(handleMap),
+        ])
+      ),
+    };
+
+    localStorage.setItem(
+      `loop-store-${levelId}`,
+      JSON.stringify(loopStoreData)
+    );
+  },
   reset: () => set({ loops: new Map() }),
 }));
