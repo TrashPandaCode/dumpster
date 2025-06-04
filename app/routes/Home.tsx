@@ -25,7 +25,7 @@ const Home = () => {
       <div className="flex h-screen flex-col overflow-hidden">
         <Header />
         <img
-          className="absolute bottom-8 left-1/2 z-1 w-6 cursor-pointer transition-transform hover:translate-y-1"
+          className="hidden md:block absolute bottom-8 left-1/2 z-1 w-6 cursor-pointer transition-transform hover:translate-y-1"
           src={arrowDownIcon}
           onClick={scrollToTarget}
           alt="Scroll down"
@@ -33,17 +33,17 @@ const Home = () => {
 
         <main className="relative flex h-full flex-col items-center justify-evenly overflow-hidden">
           <div className="flex flex-col items-center">
-            <h1 className="font-pixel text-9xl font-bold text-white">
+            <h1 className="font-pixel scale-50 md:scale-100 px-4 text-9xl font-bold text-white text-center">
               Dumpster Diving
             </h1>
-            <hr className="my-6 h-1 w-100 rounded-sm border-0 bg-white" />
-            <p className="w-200 text-center text-white">
+            <hr className="my-6 h-1 w-full max-w-sm md:max-w-3xl rounded-sm border-0 bg-white" />
+            <p className="max-w-xs md:max-w-3xl text-center text-white">
               Help our raccoon collect trash by solving puzzles and learning animation principles. Control every action with an intuitive node-based system and bring our small friend's world to life!
             </p>
             <PlayButton />
           </div>
 
-          <Carousel className="max-w-8/10">
+          <Carousel className="max-w-2/3 md:max-w-8/10">
             <CarouselContent className="-ml-1">
               {Object.values(LEVELS).map((level, index) => (
                 <CarouselItem key={index} className="basis-60 rounded-xl pl-1">
@@ -69,11 +69,11 @@ const Home = () => {
         ref={scrollTargetRef}
         className="flex items-center justify-center bg-white"
       >
-        <div className="flex h-full w-full flex-col p-12">
+        <div className="flex h-full items-center w-full flex-col p-12">
           <h1 className="font-pixel pb-12 text-4xl font-bold">
             Learn these skills to become a dumpster diver
           </h1>
-          <div className="flex items-start justify-center gap-32">
+          <div className="flex flex-col md:flex-row items-start justify-center gap-10 md:gap-32">
             <div className="flex flex-col gap-4 text-center">
               <div className="bg-jam-600 h-32 w-32 rounded-full" />
               Computer
@@ -93,7 +93,7 @@ const Home = () => {
         </div>
       </section>
       <section className="flex h-96 items-center justify-center bg-slate-800">
-        <div className="flex h-full w-full max-w-2xl flex-col items-center justify-center gap-4">
+        <div className="flex h-full w-full max-w-2xl flex-col items-center justify-center gap-4 p-4">
           <h1 className="font-pixel text-4xl font-bold text-white">
             Join the community
           </h1>
