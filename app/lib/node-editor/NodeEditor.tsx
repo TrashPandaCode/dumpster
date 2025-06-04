@@ -7,7 +7,7 @@ import {
 
 import "@xyflow/react/dist/style.css";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Toaster } from "sonner";
 
 import CenterPanel from "./editor-components/CenterPanel";
@@ -22,8 +22,20 @@ import { useFlow } from "./hooks/useFlow";
 import { nodeTypes } from "./nodes/node-types";
 import { edgeTypes } from "./edges/edge-types";
 
+import { useGameStore } from "../zustand/game";
+import { useTelemetryStore } from "../zustand/telemetry";
+
 const Editor = () => {
   const [rfInstance, setRfInstance] = useState<ReactFlowInstance>();
+
+  const logSolution = useTelemetryStore((state) => state.logSolution);
+  const levelCompleted = useGameStore((state) => state.levelCompleted);
+
+  useEffect(() => {
+    if(levelCompleted){
+      logSolution(rfInstance?.toObject());
+    };
+  }, [levelCompleted, rfInstance]);
 
   const {
     nodes,

@@ -10,6 +10,7 @@ type LevelLog = {
     finishTime: string;
     skippedTutorial: boolean;
     nodes: string[];
+    solution: any;
 };
 
 type TelemetryStore = {
@@ -17,6 +18,7 @@ type TelemetryStore = {
     logStart: (time: string) => void;
     logFinish: (time: string) => void;
     logNode: (node: string) => void;
+    logSolution: (solution: any) => void;
     skippedTutorial: (bool: boolean) => void;
     newLevel: (level: LevelId) => void;
     downloadJSON: () => void;
@@ -30,6 +32,7 @@ export const useTelemetryStore = create<TelemetryStore>((set) => ({
             finishTime: "0",
             skippedTutorial: false,
             nodes: [],
+            solution: "",
         },
     ],
     logStart: (time: string) =>
@@ -60,6 +63,16 @@ export const useTelemetryStore = create<TelemetryStore>((set) => ({
             console.log(logs);
             return { logs };
         }),
+    logSolution: (solution: string) =>
+        set((state) => {
+            const logs = [...state.logs];
+            const lastGroup = logs[logs.length - 1];
+            if (lastGroup) {
+                lastGroup.solution = solution;
+            }
+            console.log(logs);
+            return { logs };
+        }),
     skippedTutorial: (bool: boolean) =>
         set((state) => {
             const logs = [...state.logs];
@@ -73,7 +86,7 @@ export const useTelemetryStore = create<TelemetryStore>((set) => ({
     newLevel: (level: LevelId) => 
         set((state => {
             return{
-                logs: [...state.logs, { level, startTime:"0", finishTime:"0", skippedTutorial:false, nodes: [] }]
+                logs: [...state.logs, { level, startTime:"0", finishTime:"0", skippedTutorial:false, nodes: [], solution: "" }]
             };
         })),
     downloadJSON: () =>
