@@ -28,6 +28,7 @@
     "classnames": "^2.5.1",
     "downshift": "^9.0.9",
     "embla-carousel-react": "^8.6.0",
+    "flexsearch": "^0.8.204",
     "isbot": "^5",
     "kaplay": "github:ecrax/kaplay#master",
     "react": "^19.0.0",
