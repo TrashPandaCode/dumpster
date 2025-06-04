@@ -2,7 +2,7 @@ import { CrossCircledIcon } from "@radix-ui/react-icons";
 import { Position, useReactFlow } from "@xyflow/react";
 import { memo, useEffect, useMemo, useRef } from "react";
 
-import type { GameObject } from "~/lib/game/constants";
+import type { GameObject } from "~/lib/game/gameObjects";
 import { LEVELS } from "~/lib/game/core/levels";
 import { useDataStore } from "~/lib/zustand/data";
 import { useGameStore } from "~/lib/zustand/game";

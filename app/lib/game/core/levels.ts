@@ -8,7 +8,7 @@ import playgroundCard from "~/assets/home-cards/playground_card.png";
 import sittingCard from "~/assets/home-cards/sitting_card.png";
 import houseImage from "~/assets/house.png";
 import type { NodeType } from "~/lib/node-editor/nodes/node-types";
-import { type GameObject } from "../constants";
+import { type GameObject } from "../gameObjects";
 import { initializeCalculator } from "../levels/calculator";
 import { initializeIffies } from "../levels/iffies";
 import { initializeMove } from "../levels/move";

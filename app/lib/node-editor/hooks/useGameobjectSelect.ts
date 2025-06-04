@@ -5,7 +5,8 @@ import {
   type UseSelectStateChangeOptions,
 } from "downshift";
 import { useState } from "react";
-import type { GameObject } from "~/lib/game/constants";
+
+import type { GameObject } from "~/lib/game/gameObjects";
 
 export function useGameobjectSelect(
   items: GameObject[],

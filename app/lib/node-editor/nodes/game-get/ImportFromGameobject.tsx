@@ -1,7 +1,7 @@
 import { Position, useReactFlow } from "@xyflow/react";
 import { memo, useEffect, useMemo } from "react";
 
-import type { GameObject } from "~/lib/game/constants";
+import type { GameObject } from "~/lib/game/gameObjects";
 import { useDataStore } from "~/lib/zustand/data";
 import { useGameobjectSelect } from "../../hooks/useGameobjectSelect";
 import BaseHandle from "../../node-components/BaseHandle";
