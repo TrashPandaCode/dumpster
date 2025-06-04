@@ -1,0 +1,3 @@
+import{o as e}from"./chunk-AYJ5UCUI-jyqNdttv.js";const c={title:"Scene API"};function o(n){const t={h2:"h2",p:"p",...n.components};return e.jsxs(e.Fragment,{children:[e.jsx(t.h2,{children:"Scene API"}),`
+`,e.jsx(t.p,{children:"We need some kind of Scene API that allows us to interact more easily with a low(er)-level API (like OpenGL). This includes, for example, creating objects (from meshes, etc.), lights, cameras, and similar components."}),`
+`,e.jsx(t.p,{children:"It makes sense to design the Scene API in an object-oriented manner."})]})}function r(n={}){const{wrapper:t}=n.components||{};return t?e.jsx(t,{...n,children:e.jsx(o,{...n})}):o(n)}export{r as default,c as frontmatter};
