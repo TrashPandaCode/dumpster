@@ -316,8 +316,8 @@ const NavigationContent: React.FC<{ onItemClick?: () => void }> = ({
   };
 
   return (
-    <div className="w-min-3xs flex min-h-96 flex-col space-y-1 lg:w-xs">
-      <div className="relative mb-3 text-black">
+    <div className="flex min-h-0 w-full flex-col space-y-1">
+      <div className="relative mb-3 flex-shrink-0 text-black">
         <input
           className="h-10 w-full rounded-lg border-2 border-slate-300 bg-white px-5 pr-16 text-sm transition-colors focus:border-slate-700 focus:outline-none"
           type="text"
@@ -331,14 +331,16 @@ const NavigationContent: React.FC<{ onItemClick?: () => void }> = ({
         </div>
       </div>
 
-      {searchTerm ? (
-        <SearchResults />
-      ) : (
-        <>
-          {!searchTerm && <Divider title="Game" />}
-          {(navigation as NavigationSection[]).map(renderNavigationSection)}
-        </>
-      )}
+      <div className="min-h-0 flex-1">
+        {searchTerm ? (
+          <SearchResults />
+        ) : (
+          <>
+            {!searchTerm && <Divider title="Game" />}
+            {(navigation as NavigationSection[]).map(renderNavigationSection)}
+          </>
+        )}
+      </div>
     </div>
   );
 };
@@ -349,7 +351,7 @@ const Navigation: React.FC = () => {
   return (
     <>
       {/* Desktop Navigation */}
-      <nav className="hidden lg:flex">
+      <nav className="hidden lg:flex lg:w-xs">
         <NavigationContent />
       </nav>
 
@@ -365,8 +367,8 @@ const Navigation: React.FC = () => {
         </Sheet.Trigger>
         <Sheet.Portal>
           <Sheet.Overlay className="data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-50 bg-black/50" />
-          <Sheet.Content className="data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:slide-out-to-left data-[state=open]:slide-in-from-left fixed inset-y-0 left-0 z-50 h-full w-3/4 max-w-sm border-r bg-white p-6 shadow-lg transition ease-in-out">
-            <div className="mb-4 flex items-center justify-between">
+          <Sheet.Content className="data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:slide-out-to-left data-[state=open]:slide-in-from-left fixed inset-y-0 left-0 z-50 flex h-full w-3/4 max-w-sm flex-col border-r bg-white shadow-lg transition ease-in-out">
+            <div className="flex flex-shrink-0 items-center justify-between border-b border-slate-200 p-6 pb-4">
               <Sheet.Title className="text-lg font-semibold">
                 Navigation
               </Sheet.Title>
@@ -391,7 +393,7 @@ const Navigation: React.FC = () => {
                 </button>
               </Sheet.Close>
             </div>
-            <div className="overflow-y-auto">
+            <div className="flex-1 overflow-y-scroll p-6 pt-4">
               <NavigationContent onItemClick={() => setIsOpen(false)} />
             </div>
           </Sheet.Content>
