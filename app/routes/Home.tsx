@@ -43,7 +43,7 @@ const Home = () => {
               animation principles. Control every action with an intuitive
               node-based system and bring our small friend's world to life!
             </p>
-            <PlayButton className="hidden md:block" />
+            <PlayButton className="hidden md:flex" />
             <NavLink
               to="/docs"
               className="bg-jam-600 font-pixel hover:bg-jam-700 mt-6 flex w-fit items-center justify-baseline gap-4 rounded-full px-8 py-2 text-2xl font-bold text-white shadow-lg transition-transform duration-200 hover:scale-103"
