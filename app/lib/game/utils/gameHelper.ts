@@ -222,6 +222,14 @@ export function animPlayer(
     Math.min(playerClampX.maxX, player.pos.x)
   );
 
+  useDataStore.getState().gameObjects.set(
+    "raccoon",
+    new Map([
+      ["xpos", { access: "get", value: player.pos.x }],
+      ["ypos", { access: "get", value: player.pos.y }],
+    ])
+  );
+
   //Clamp camera position
   const camX = Math.max(camClampX.minX, Math.min(camClampX.maxX, player.pos.x));
   k.setCamPos(k.lerp(k.getCamPos(), k.vec2(camX, -BACKGROUND_OFFSET), 0.1));
