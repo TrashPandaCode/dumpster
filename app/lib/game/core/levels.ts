@@ -205,11 +205,43 @@ export const LEVELS = {
     ],
     difficulty: 1,
   },
+  move: {
+    slug: "move",
+    name: "Move",
+    description:
+      "This is the first level of the main game, introducing movement mechanics.",
+    // feel free to change the dialog
+    dialog: [
+      "Alright, today's the day — I’m finally gonna learn how to walk! I mean, even tiny humans can do it, so how hard can it be?",
+      "Left paw, right paw... wait, which one is my right again?",
+      "Imagine: me, strutting around, hunting for snacks all by myself! No more waiting for food to come to me—I'm gonna chase those leftovers down!",
+    ],
+    goals: ["Move the raccoon to the flag."],
+    success:
+      "Right foot, left foot, right foot, left foot...I could do this all day!",
+    category: "Main Game",
+    image: houseImage,
+    nodes: [],
+    edges: [],
+    initialState: initializeMove,
+    hints: [],
+    modifiableGameObjects: [
+      {
+        id: "raccoon",
+        connections: [
+          { label: "xpos", access: "set" },
+          { label: "ypos", access: "set" },
+        ],
+      },
+    ],
+    availableNodes: ["Display", "ExportToGameobject"],
+    difficulty: 2,
+  },
   parenting: {
     slug: "parenting",
     name: "Parenting",
     description:
-      "This is the first level of the main game, introducing parenting mechanics.",
+      "This is the second level of the main game, introducing parenting mechanics.",
     // feel free to change the dialog
     dialog: [
       "Whoa... this trash can is a real goldmine!",
@@ -288,35 +320,6 @@ export const LEVELS = {
       "Time",
     ],
     difficulty: 1,
-  },
-  move: {
-    slug: "move",
-    name: "Move",
-    description:
-      "This is the first level of the main game, introducing movement mechanics.",
-    dialog: [
-      "This is the first level of the main game. It introduces movement mechanics.",
-      "You will learn how to move a game object using key inputs.",
-    ],
-    goals: ["Move the raccoon to the flag."],
-    success: "Look, he just learned how to use his feet!",
-    category: "Main Game",
-    image: houseImage,
-    nodes: [],
-    edges: [],
-    initialState: initializeMove,
-    hints: [],
-    modifiableGameObjects: [
-      {
-        id: "raccoon",
-        connections: [
-          { label: "xpos", access: "set" },
-          { label: "ypos", access: "set" },
-        ],
-      },
-    ],
-    availableNodes: ["Display", "ExportToGameobject"],
-    difficulty: 2,
   },
   playground: {
     slug: "playground",
