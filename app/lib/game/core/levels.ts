@@ -153,11 +153,14 @@ export const LEVELS = {
     description:
       "This is the third level of the game, introducing if statements.",
     dialog: [
-      'This is the third level of the game. Complete the "sitting" level first, if you haven\'t done so yet.',
-      "You will learn how to use if statements to control game object behavior.",
+      "Okay, this one's a little trickier… There are two cans, but only one has the good stuff.",
+      "They swap every few seconds, so I've gotta time it just right and stay in the full one for at least 5 seconds.",
+      "Maybe I can use one of those switch nodes to keep track of which can is full...",
+      "No pressure - just my whole nap depends on it.",
     ],
     goals: [
-      "Use an if statement to make the raccoon move into the filled trashcan.",
+      "Sit in the full trash can for at least 5 consecutive seconds.",
+      "Try using a switch node to detect which trash can is full."
     ],
     success:
       "Luckily the raccoon doesn't have to search for food in an empty trashcan!",
