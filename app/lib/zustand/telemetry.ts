@@ -1,5 +1,4 @@
 import { create } from "zustand";
-import { useGameStore } from "../zustand/game"
 import type { LEVELS } from "../game/core/levels";
 
 type LevelId = keyof typeof LEVELS;
@@ -10,7 +9,7 @@ type LevelLog = {
     finishTime: string;
     skippedTutorial: boolean;
     nodes: string[];
-    solution: any;
+    solution: string;
 };
 
 type TelemetryStore = {
@@ -18,7 +17,7 @@ type TelemetryStore = {
     logStart: (time: string) => void;
     logFinish: (time: string) => void;
     logNode: (node: string) => void;
-    logSolution: (solution: any) => void;
+    logSolution: (solution: string) => void;
     skippedTutorial: (bool: boolean) => void;
     newLevel: (level: LevelId) => void;
     downloadJSON: () => void;
@@ -80,7 +79,7 @@ export const useTelemetryStore = create<TelemetryStore>((set) => ({
             if (lastGroup) {
                 lastGroup.skippedTutorial = bool;
             }
-            console.log("skyped");
+            console.log("skipped");
             return { logs };
         }),
     newLevel: (level: LevelId) => 
