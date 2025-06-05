@@ -1,7 +1,7 @@
 import { useReactFlow } from "@xyflow/react";
 import { useCallback } from "react";
 
-import { useLoopStore } from "../node-store/loop-store";
+import { globalKeyTracker } from "~/lib/game/utils/globalKeyTracker";
 import { duplicateNodes } from "../utils";
 import AddNodes from "./AddNodes";
 
@@ -28,9 +28,9 @@ const NodeContextMenu: React.FC<NodeContextMenuProps> = ({
     <div style={{ position: "absolute", top: y, left: x, zIndex: 1000 }}>
       {nodeType === "ForStart" || nodeType === "ForEnd" ? (
         <AddNodes
-          onClose={onClose}
           x={x}
           y={y}
+          onClose={onClose}
           parentLoopId={nodeLoopId}
           parentId={nodeParentId}
         >
@@ -128,7 +128,7 @@ const DefaultNodeContextMenu = ({
       >
         <span>Duplicate</span>
         <span className="ml-2 rounded bg-slate-600 px-1.5 py-0.5 font-mono text-xs text-gray-300">
-          Ctrl+D
+          {globalKeyTracker.isMac ? "Shift+D" : "Ctrl+D"}
         </span>
       </button>
       <button

@@ -1,7 +1,13 @@
 import type { Node } from "@xyflow/react";
 import { useCallback, useState } from "react";
 
+import { useNodeAddMenuStore } from "../../zustand/node-add-menu-store";
 import { getContextMenuPosition } from "../utils";
+import {
+  useDuplicateHotkey,
+  useEscapeHotkey,
+  useNewNodeHotkey,
+} from "./useShortcuts";
 
 export function useContextMenu() {
   const [paneContextMenu, setPaneContextMenu] = useState<{
@@ -21,6 +27,13 @@ export function useContextMenu() {
     x: number;
     y: number;
   } | null>(null);
+
+  const {
+    visible,
+    closeAddMenu,
+    menuX: addMenuX,
+    menuY: addMenuY,
+  } = useNodeAddMenuStore();
 
   const handlePaneContextMenu = useCallback(
     (event: MouseEvent | React.MouseEvent) => {
@@ -66,22 +79,50 @@ export function useContextMenu() {
     [setSelectionContextMenu]
   );
 
-  const onPaneClick = useCallback(() => {
+  const closeAllMenus = useCallback(() => {
     setPaneContextMenu(null);
     setNodeContextMenu(null);
     setSelectionContextMenu(null);
-  }, [setPaneContextMenu, setNodeContextMenu, setSelectionContextMenu]);
+    if (useNodeAddMenuStore.getState().visible) {
+      useNodeAddMenuStore.getState().closeAddMenu();
+    }
+  }, []);
+
+  const onPaneClick = closeAllMenus;
+
+  const anyOpen =
+    paneContextMenu !== null ||
+    nodeContextMenu !== null ||
+    selectionContextMenu !== null ||
+    useNodeAddMenuStore.getState().visible;
+
+  useEscapeHotkey(closeAllMenus, anyOpen);
+  useDuplicateHotkey();
+  useNewNodeHotkey();
+
+  const shouldShowPaneContextMenu = paneContextMenu || visible;
+  const paneContextMenuX = paneContextMenu?.x ?? addMenuX;
+  const paneContextMenuY = paneContextMenu?.y ?? addMenuY;
+
+  const handleCloseCombinedMenu = () => {
+    setPaneContextMenu(null);
+    closeAddMenu();
+  };
 
   return {
     paneContextMenu,
     nodeContextMenu,
     selectionContextMenu,
+    shouldShowPaneContextMenu,
+    paneContextMenuX,
+    paneContextMenuY,
     setPaneContextMenu,
     setNodeContextMenu,
     setSelectionContextMenu,
     handlePaneContextMenu,
     handleNodeContextMenu,
     handleSelectionContextMenu,
+    handleCloseCombinedMenu,
     onPaneClick,
   };
 }
