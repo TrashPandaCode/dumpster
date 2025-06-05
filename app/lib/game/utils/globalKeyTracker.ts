@@ -121,12 +121,24 @@ function initGlobalKeyTracker() {
 
   window.addEventListener("keydown", keydownHandler);
   window.addEventListener("keyup", keyupHandler);
+
+  // Clear pressed and released keys on focus loss
+  window.addEventListener("blur", () => {
+    keysPressed.clear();
+    keysReleased.clear();
+    keysDown.clear();
+  });
 }
 
 function cleanupGlobalKeyTracker() {
   if (!initialized) return;
   window.removeEventListener("keydown", keydownHandler);
   window.removeEventListener("keyup", keyupHandler);
+  window.removeEventListener("blur", () => {
+    keysPressed.clear();
+    keysReleased.clear();
+    keysDown.clear();
+  });
   initialized = false;
   keysDown.clear();
   keysPressed.clear();
