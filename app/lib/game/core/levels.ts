@@ -151,8 +151,7 @@ export const LEVELS = {
   bounce: {
     slug: "bounce",
     name: "Bounce",
-    description:
-      "This is the third level of the game, introducing if statements.",
+    description: "This is the third level of the game, introducing switches.",
     dialog: [
       "Okay, this one's a little trickier… There are two cans, but only one has the good stuff.",
       "They swap every few seconds, so I've gotta time it just right and stay in the full one for at least 5 seconds.",
@@ -160,11 +159,11 @@ export const LEVELS = {
       "No pressure - just my whole nap depends on it.",
     ],
     goals: [
+      "Try using a switch node to detect which trash can is full.",
       "Sit in the full trash can for at least 5 consecutive seconds.",
-      "Try using a switch node to detect which trash can is full."
     ],
     success:
-      "Luckily the raccoon doesn't have to search for food in an empty trashcan!",
+      "Mhhm...that was delicious, but also exhausting...can't tell me eating isn't hard work!",
     category: "Introduction",
     image: bounceCard,
     nodes: [],
@@ -211,8 +210,18 @@ export const LEVELS = {
     name: "Parenting",
     description:
       "This is the first level of the main game, introducing parenting mechanics.",
-    dialog: ["In this level, you will learn how parenting works in the game."],
-    goals: ["Do something!"],
+    // feel free to change the dialog
+    dialog: [
+      "Whoa... this trash can is a real goldmine!",
+      "There’s so much food in here, there’s no way I can eat it all right now.",
+      "Maybe I should just take the whole can with me... but how?",
+      "Would you help me carry it back to my secret little hideout?",
+      "Just be careful not to drop it, okay?",
+    ],
+    goals: [
+      "Parent the trashcan to the raccoon.",
+      "Bring the trashcan to the flag.",
+    ],
     success: "Wow!",
     category: "Main Game",
     image: alleyTwo,
