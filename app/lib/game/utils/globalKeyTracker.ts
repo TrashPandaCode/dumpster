@@ -34,7 +34,7 @@ const keyboardShortcuts = new Set<string>([
   "Escape",
 ]);
 
-const registeredShortcuts = new Map<string, Set<(e: KeyboardEvent) => void>>();
+const registeredShortcuts = new Map<string, (e: KeyboardEvent) => void>();
 let initialized = false;
 let keydownHandler: (e: KeyboardEvent) => void;
 let keyupHandler: (e: KeyboardEvent) => void;
@@ -90,23 +90,10 @@ function registerShortcut(
   shortcut: string,
   callback: (e: KeyboardEvent) => void
 ) {
-  const shortcuts = [shortcut];
-
-  // If shortcut uses Control/Alt, add both variants for compatibility
-  if (shortcut.includes("Control+")) {
-    shortcuts.push(shortcut.replace("Control+", "Shift+"));
-  } else if (shortcut.includes("Shift+")) {
-    shortcuts.push(shortcut.replace("Shift+", "Control+"));
-  }
-
-  // Register all variants
-  if (!registeredShortcuts.has(shortcut)) {
-    registeredShortcuts.set(shortcut, new Set());
-  }
-  registeredShortcuts.get(shortcut)!.add(callback);
+  registeredShortcuts.set(shortcut, callback);
 
   return () => {
-    registeredShortcuts.get(shortcut)?.delete(callback);
+    registeredShortcuts.delete(shortcut);
   };
 }
 
@@ -126,7 +113,7 @@ function initGlobalKeyTracker() {
     // Check if the pressed key is a default shortcut and prevent default behavior
     if (keyboardShortcuts.has(shortcut)) {
       e.preventDefault();
-      registeredShortcuts.get(shortcut)?.forEach((sc) => sc(e));
+      registeredShortcuts.get(shortcut)?.(e);
       return;
     }
 
@@ -135,9 +122,6 @@ function initGlobalKeyTracker() {
       keysPressed.add(key);
     }
     keysDown.add(key);
-
-    // Trigger all registered shortcuts
-    registeredShortcuts.get(shortcut)?.forEach((sc) => sc(e));
   };
 
   keyupHandler = (e) => {
