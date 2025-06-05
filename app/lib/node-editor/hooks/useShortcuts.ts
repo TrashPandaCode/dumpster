@@ -2,10 +2,7 @@ import { useReactFlow } from "@xyflow/react";
 import { useEffect } from "react";
 
 import { globalKeyTracker } from "../../game/utils/globalKeyTracker";
-import {
-  useMouseStore,
-  useNodeAddMenuStore,
-} from "../node-store/node-add-menu-store";
+import { useNodeAddMenuStore } from "../../zustand/node-add-menu-store";
 import { duplicateNodes } from "../utils";
 
 // Hook to handle duplicating nodes with a hotkey
@@ -31,12 +28,7 @@ export function useNewNodeHotkey() {
     const shortcut = globalKeyTracker.platformShortcut(" ");
     const remove = globalKeyTracker.registerShortcut(shortcut, (e) => {
       // Get the current mouse position in the flow editor
-      const mousePos = useMouseStore.getState().position;
-      if (mousePos) {
-        useNodeAddMenuStore
-          .getState()
-          .openAddMenu(mousePos.clientX, mousePos.clientY);
-      }
+      useNodeAddMenuStore.getState().openAddMenu();
     });
     return remove;
   }, []);

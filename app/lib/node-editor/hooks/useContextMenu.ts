@@ -1,7 +1,7 @@
 import type { Node } from "@xyflow/react";
 import { useCallback, useState } from "react";
 
-import { useNodeAddMenuStore } from "../node-store/node-add-menu-store";
+import { useNodeAddMenuStore } from "../../zustand/node-add-menu-store";
 import { getContextMenuPosition } from "../utils";
 import {
   useDuplicateHotkey,
@@ -31,8 +31,8 @@ export function useContextMenu() {
   const {
     visible,
     closeAddMenu,
-    x: addMenuX,
-    y: addMenuY,
+    menuX: addMenuX,
+    menuY: addMenuY,
   } = useNodeAddMenuStore();
 
   const handlePaneContextMenu = useCallback(

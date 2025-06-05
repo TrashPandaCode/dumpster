@@ -10,6 +10,7 @@ import "@xyflow/react/dist/style.css";
 import { useRef, useState } from "react";
 import { Toaster } from "sonner";
 
+import { useMouseTrackingInPane } from "../zustand/node-add-menu-store";
 import { edgeTypes } from "./edges/edge-types";
 import CenterPanel from "./editor-components/CenterPanel";
 import LeftPanel from "./editor-components/LeftPanel";
@@ -20,7 +21,6 @@ import SelectionContextMenu from "./editor-components/SelectionContextMenu";
 import { TooltipProvider } from "./editor-components/Tooltip";
 import { useContextMenu } from "./hooks/useContextMenu";
 import { useFlow } from "./hooks/useFlow";
-import { useMouseTrackingInPane } from "./node-store/node-add-menu-store";
 import { nodeTypes } from "./nodes/node-types";
 
 const Editor = () => {
