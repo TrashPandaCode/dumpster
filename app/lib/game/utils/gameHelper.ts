@@ -62,6 +62,7 @@ export function addGameobjects(gameobjects: GameObject[]) {
       k.anchor("bot"),
       k.area(),
       k.z(2),
+      k.opacity(1),
       "raccoon",
       k.state("idle", ["idle", "walkLeft", "walkRight"]),
     ]);
@@ -101,6 +102,7 @@ export function addGameobjects(gameobjects: GameObject[]) {
       k.scale(SPRITE_SCALE),
       k.area(),
       k.z(1),
+      k.opacity(1),
       "trashcanEmpty",
     ]);
     instances.trashcanEmpty = trashcanEmpty;
@@ -115,6 +117,7 @@ export function addGameobjects(gameobjects: GameObject[]) {
       k.scale(SPRITE_SCALE),
       k.area(),
       k.z(1),
+      k.opacity(1),
       "trashcanFilled",
     ]);
     instances.trashcanFilled = trashcanFilled;
@@ -137,6 +140,8 @@ export function addGameobjects(gameobjects: GameObject[]) {
       k.area(),
       k.scale(SPRITE_SCALE),
       k.z(1),
+      k.opacity(1),
+      "goalFlag",
     ]);
     instances.goalFlag = flag;
   }

@@ -12,6 +12,7 @@ import { type GameObject } from "../gameObjects";
 import { initializeBounce } from "../levels/bounce";
 import { initializeCalculator } from "../levels/calculator";
 import { initializeMove } from "../levels/move";
+import { initializeParenting } from "../levels/parenting";
 import { initializePlayground } from "../levels/playground";
 import { initializeSitting } from "../levels/sitting";
 import { initializeTimeTransform } from "../levels/timeTransform";
@@ -202,6 +203,47 @@ export const LEVELS = {
     ],
     difficulty: 1,
   },
+  parenting: {
+    slug: "parenting",
+    name: "Parenting",
+    description:
+      "This is the first level of the main game, introducing parenting mechanics.",
+    dialog: ["In this level, you will learn how parenting works in the game."],
+    goals: ["Do something!"],
+    success: "Wow!",
+    category: "Main Game",
+    image: alleyTwo,
+    nodes: [],
+    edges: [],
+    initialState: initializeParenting,
+    hints: [],
+    modifiableGameObjects: [
+      {
+        id: "raccoon",
+        connections: [
+          { label: "xpos", access: "get" },
+          { label: "ypos", access: "get" },
+        ],
+      },
+      {
+        id: "trashcanFilled",
+        connections: [
+          { label: "xpos", access: "all" },
+          { label: "ypos", access: "all" },
+        ],
+      },
+    ],
+    availableNodes: [
+      "Display",
+      "Value",
+      "Math",
+      "ImportFromGameobject",
+      "ExportToGameobject",
+      "Switch",
+      "KeyPress",
+    ],
+    difficulty: 1,
+  },
   timeTransform: {
     slug: "timeTransform",
     name: "Time Transform",
@@ -297,10 +339,24 @@ export const LEVELS = {
         ],
       },
       {
+        id: "trashcanEmpty",
+        connections: [
+          { label: "xpos", access: "all" },
+          { label: "ypos", access: "all" },
+        ],
+      },
+      {
         id: "trashcanFilled",
         connections: [
-          { label: "xpos", access: "set" },
-          { label: "ypos", access: "set" },
+          { label: "xpos", access: "all" },
+          { label: "ypos", access: "all" },
+        ],
+      },
+      {
+        id: "goalFlag",
+        connections: [
+          { label: "xpos", access: "all" },
+          { label: "ypos", access: "all" },
         ],
       },
     ],
