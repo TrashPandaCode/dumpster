@@ -7,12 +7,31 @@ import NodeContent from "../../node-components/NodeContent";
 import { useLoopStore } from "../../node-store/loop-store";
 import type {
   LoopStatus,
-  nodeData,
   nodeInputs,
+  nodeResults,
 } from "../../node-store/node-store";
 import { getInput } from "../../utils";
 import { IN_HANDLE_1, MAIN_LOOP_CONNECTOR } from "../constants";
 
+/**
+ * React component representing the end node of a "for" loop structure.
+ *
+ * - Finalizes loop execution by copying input values to outputs.
+ * - Optionally breaks the loop early if the "Break" input is truthy.
+ * - Increments the loop iteration counter.
+ *
+ * Props:
+ * @param {string} id - Unique identifier for this node.
+ * @param {any} data - Data object containing metadata, particularly `loopId` used to identify the loop.
+ *
+ * React Flow:
+ * - Uses `useReactFlow` to register a compute function via `updateNodeData`.
+ * - Uses `useLoopStore` to access and manipulate loop-related shared state.
+ *
+ * UI:
+ * - Displays labeled input/output handles for all variables passed through the loop.
+ * - Includes a special "Break" input and a loop connector.
+ */
 const ForEnd = memo(({ id, data }: { id: string; data: any }) => {
   const loops = useLoopStore((state) => state.loops);
 
@@ -26,7 +45,7 @@ const ForEnd = memo(({ id, data }: { id: string; data: any }) => {
     updateNodeData(id, {
       compute: (
         inputs: nodeInputs,
-        results: nodeData,
+        results: nodeResults,
         loopStatus: LoopStatus
       ) => {
         loops.get(data.loopId)?.forEach((handleId) => {

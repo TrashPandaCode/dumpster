@@ -34,9 +34,10 @@ const Collapsible = ({
 
   return (
     <Root open={internalOpen} onOpenChange={setInternalOpen}>
+
       <CollapsibleTrigger
         className={classnames(
-          "group flex w-full items-baseline justify-between rounded px-2 py-1 text-left",
+          "group flex w-full items-baseline justify-between rounded p-2 text-left text-sm",
           internalOpen ? "bg-slate-100" : ""
         )}
       >
@@ -50,7 +51,7 @@ const Collapsible = ({
           {internalOpen ? <ChevronDownIcon /> : <ChevronRightIcon />}
         </span>
       </CollapsibleTrigger>
-      <CollapsibleContent className="flex flex-col gap-2 pl-8 nth-[2]:pt-2">
+      <CollapsibleContent className="flex flex-col space-y-1 pl-8 nth-[2]:pt-1">
         {children}
       </CollapsibleContent>
     </Root>

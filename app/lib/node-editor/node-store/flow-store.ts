@@ -1,6 +1,7 @@
 import { type Edge, type Node } from "@xyflow/react";
 import { create } from "zustand";
 
+import type { LEVELS } from "~/lib/game/core/levels";
 import { toast } from "../editor-components/Toast";
 
 type HighlightType = "cycle" | "duplicate";
@@ -14,6 +15,8 @@ interface FlowState {
   resetHighlight: (type: HighlightType) => void;
   highlightNode: (id: string, type: HighlightType, color: string) => void;
   highlightDuplicateNodes: () => void;
+  init: (level: keyof typeof LEVELS) => void;
+  save: () => void;
   reset: () => void;
 }
 
@@ -96,6 +99,37 @@ export const useFlowStore = create<FlowState>((set, get) => ({
         }
       }
     }
+  },
+  init: () => {
+    const levelId = localStorage.getItem("level")!; // we can be sure a level has been loaded
+    const stored = localStorage.getItem(`flow-store-${levelId}`);
+    if (!stored) return get().reset();
+
+    const flowStoreData = JSON.parse(stored);
+    set({
+      nodes: flowStoreData.nodes || [],
+      edges: flowStoreData.edges || [],
+      highlightNodes: flowStoreData.highlightNodes
+        ? new Map(flowStoreData.highlightNodes)
+        : new Map(),
+    });
+  },
+  save: () => {
+    const state = get();
+    const levelId = localStorage.getItem("level")!; // we can be sure a level has been loaded
+    const flowStoreData = {
+      nodes: state.nodes.map((node) => ({
+        ...node,
+        selected: false,
+        dragging: false,
+      })),
+      edges: state.edges,
+      highlightNodes: Array.from(state.highlightNodes),
+    };
+    localStorage.setItem(
+      `flow-store-${levelId}`,
+      JSON.stringify(flowStoreData)
+    );
   },
   reset: () => set({ nodes: [], highlightNodes: new Map(), edges: [] }),
 }));

@@ -1,11 +1,12 @@
 import { useDataStore } from "~/lib/zustand/data";
 import { useGameStore } from "~/lib/zustand/game";
-import { BACKGROUND_OFFSET } from "../constants";
+import { BACKGROUND_OFFSET, CAM_SCALE } from "../constants";
 import { getKaplayCtx } from "../core/kaplayCtx";
 import {
   addBackgrounds,
   addGameobjects,
   animPlayer,
+  handleReset,
 } from "../utils/gameHelper";
 
 export const initializeTimeTransform = () => {
@@ -15,25 +16,42 @@ export const initializeTimeTransform = () => {
 
   const { raccoon } = addGameobjects(["raccoon"]);
   k.setCamPos(0, -BACKGROUND_OFFSET);
-  k.setCamScale(k.height() / 947);
+  k.setCamScale((CAM_SCALE * k.height()) / 947);
 
-  let lastTime = 0;
+  const ladder = game.add([
+    k.rect(0.1, 15),
+    k.opacity(0),
+    k.anchor("bot"),
+    k.pos(-11, -1),
+    k.rotate(0),
+    k.area(),
+    "ladder",
+  ]);
+
+  let isClimbing = false;
+
+  k.onCollideUpdate("raccoon", "ladder", (raccoon) => {
+    isClimbing = false;
+    if (raccoon.pos.y < 0) {
+      isClimbing = true;
+    }
+    if (k.isKeyDown("up") && raccoon.pos.y >= -15) {
+      raccoon.pos.y -= 7 * k.dt();
+    }
+    if (k.isKeyDown("down") && raccoon.pos.y <= 0) {
+      raccoon.pos.y += 7 * k.dt();
+    }
+  });
 
   game.onUpdate(() => {
     if (useGameStore.getState().isPaused) return;
 
-    const currentTime = k.time();
-    const deltaTime = currentTime - lastTime;
-    lastTime = currentTime;
+    if (!isClimbing) {
+      animPlayer(raccoon!, k, "input");
+    }
 
-    const speedT =
-      useDataStore.getState().gameObjects.get("raccoon")?.get("speed")?.value ??
-      0;
-
-    animPlayer(raccoon!, k, "Loop", {
-      minX: -500,
-      maxX: 500,
-      speed: speedT * deltaTime,
-    });
+    if (useDataStore.getState().initData) {
+      handleReset(raccoon!, 1);
+    }
   });
 };

@@ -3,6 +3,7 @@ import type {
   GameObj,
   KAPLAYCtx,
   PosComp,
+  RotateComp,
   ScaleComp,
   SpriteComp,
   StateComp,
@@ -10,16 +11,14 @@ import type {
 } from "kaplay";
 
 import { useDataStore } from "~/lib/zustand/data";
-import {
-  BACKGROUND_OFFSET,
-  RACCOON_SCALE,
-  type GameObject,
-} from "../constants";
+import { BACKGROUND_OFFSET, SPRITE_SCALE } from "../constants";
 import { getKaplayCtx } from "../core/kaplayCtx";
+import { type GameObject } from "../gameObjects";
 
 type Background = "background1" | "backgroundCalc";
 type PlayerType = GameObj<
   | PosComp
+  | RotateComp
   | ScaleComp
   | SpriteComp
   | AnchorComp
@@ -58,7 +57,8 @@ export function addGameobjects(gameobjects: GameObject[]) {
         anim: "walkHolding",
       }),
       k.pos(0, 0),
-      k.scale(RACCOON_SCALE),
+      k.rotate(0),
+      k.scale(SPRITE_SCALE),
       k.anchor("bot"),
       k.area(),
       k.z(2),
@@ -70,11 +70,11 @@ export function addGameobjects(gameobjects: GameObject[]) {
     });
     raccoon.onStateEnter("walkLeft", () => {
       raccoon.play("walk");
-      raccoon.scaleTo(k.vec2(-RACCOON_SCALE, RACCOON_SCALE));
+      raccoon.scaleTo(k.vec2(-SPRITE_SCALE, SPRITE_SCALE));
     });
     raccoon.onStateEnter("walkRight", () => {
       raccoon.play("walk");
-      raccoon.scaleTo(k.vec2(RACCOON_SCALE, RACCOON_SCALE));
+      raccoon.scaleTo(k.vec2(SPRITE_SCALE, SPRITE_SCALE));
     });
     instances.raccoon = raccoon;
   }
@@ -98,7 +98,7 @@ export function addGameobjects(gameobjects: GameObject[]) {
       }),
       k.anchor("bot"),
       k.pos(0, 0),
-      k.scale(RACCOON_SCALE),
+      k.scale(SPRITE_SCALE),
       k.area(),
       k.z(1),
       "trashcanEmpty",
@@ -112,7 +112,7 @@ export function addGameobjects(gameobjects: GameObject[]) {
       }),
       k.anchor("bot"),
       k.pos(0, 0),
-      k.scale(5),
+      k.scale(SPRITE_SCALE),
       k.area(),
       k.z(1),
       "trashcanFilled",
@@ -135,7 +135,7 @@ export function addGameobjects(gameobjects: GameObject[]) {
       k.anchor("bot"),
       k.pos(0, 0),
       k.area(),
-      k.scale(RACCOON_SCALE),
+      k.scale(SPRITE_SCALE),
       k.z(1),
     ]);
     instances.goalFlag = flag;
@@ -161,7 +161,7 @@ export function addBackgrounds(
   game.add([
     k.sprite("background"),
     k.anchor("center"),
-    k.scale(RACCOON_SCALE),
+    k.scale(SPRITE_SCALE),
     k.pos(0, -BACKGROUND_OFFSET),
     k.z(0),
   ]);
@@ -169,7 +169,7 @@ export function addBackgrounds(
   game.add([
     k.sprite("backgroundLight"),
     k.anchor("center"),
-    k.scale(RACCOON_SCALE),
+    k.scale(SPRITE_SCALE),
     k.pos(lightOffset, -BACKGROUND_OFFSET),
     k.z(100),
     k.opacity(0.75),
@@ -179,31 +179,47 @@ export function addBackgrounds(
 export function animPlayer(
   player: PlayerType,
   k: KAPLAYCtx,
-  movementMode: "Node" | "Input" | "Loop" = "Node",
-  loopConfig?: { minX: number; maxX: number; speed: number } // For Loop movement mode
+  movementMode: "node" | "input" | "loop" = "node",
+  loopConfig?: { minX: number; maxX: number; speed: number }, // For Loop movement mode
+  playerClampX: { minX: number; maxX: number } = {
+    minX: -22.7,
+    maxX: 22.7,
+  },
+  camClampX: { minX: number; maxX: number } = {
+    minX: -15,
+    maxX: 15,
+  }
 ) {
   const lastX = player.pos.x;
 
   //Move
-  if (movementMode === "Node") {
+  if (movementMode === "node") {
     player.pos.x =
       useDataStore.getState().gameObjects.get("raccoon")?.get("xpos")?.value ??
       0;
     player.pos.y =
       useDataStore.getState().gameObjects.get("raccoon")?.get("ypos")?.value ??
       0;
-  } else if (movementMode === "Input") {
-    if (k.isKeyDown("left")) player.pos.x -= 5;
-    if (k.isKeyDown("right")) player.pos.x += 5;
-  } else if (movementMode === "Loop" && loopConfig) {
+  } else if (movementMode === "input") {
+    if (k.isKeyDown("left")) player.pos.x -= 7 * k.dt();
+    if (k.isKeyDown("right")) player.pos.x += 7 * k.dt();
+  } else if (movementMode === "loop" && loopConfig) {
+    // walks infinitely if speed is < 0
     player.pos.x += loopConfig.speed;
     if (player.pos.x > loopConfig.maxX) {
       player.pos.x = loopConfig.minX;
     }
   }
-  k.setCamPos(
-    k.lerp(k.getCamPos(), k.vec2(player.pos.x, -BACKGROUND_OFFSET), 0.1)
+
+  //Clamp player position
+  player.pos.x = Math.max(
+    playerClampX.minX,
+    Math.min(playerClampX.maxX, player.pos.x)
   );
+
+  //Clamp camera position
+  const camX = Math.max(camClampX.minX, Math.min(camClampX.maxX, player.pos.x));
+  k.setCamPos(k.lerp(k.getCamPos(), k.vec2(camX, -BACKGROUND_OFFSET), 0.1));
 
   //Handle anim change
   const deltaX = player.pos.x - lastX;
@@ -213,4 +229,9 @@ export function animPlayer(
   if (player.state !== newState) {
     player.enterState(newState);
   }
+}
+
+export function handleReset(raccoon: PlayerType, initDirection: number) {
+  raccoon?.scaleTo(SPRITE_SCALE * initDirection, SPRITE_SCALE);
+  useDataStore.setState({ initData: false });
 }

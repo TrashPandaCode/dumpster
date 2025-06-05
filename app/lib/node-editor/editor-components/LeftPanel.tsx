@@ -50,9 +50,7 @@ const LeftPanel = () => {
           useFlowStore.getState().reset();
           useNodeStore.getState().reset();
           useLoopStore.getState().reset();
-          useDataStore
-            .getState()
-            .init(LEVELS[currentLevel].modifiableGameObjects);
+          useDataStore.getState().reset(currentLevel);
         }}
       >
         <ResetIcon className="text-white" />

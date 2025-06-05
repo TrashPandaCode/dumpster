@@ -7,8 +7,8 @@ import type {
 } from "@xyflow/react";
 import { v4 as uuidv4 } from "uuid";
 
-import type { GameObject } from "../game/constants";
 import type { ConnectionAccess } from "../game/core/levels";
+import type { GameObject } from "../game/gameObjects";
 import type { GameObjectsData } from "../zustand/data";
 import { useLoopStore } from "./node-store/loop-store";
 import type { nodeInputs } from "./node-store/node-store";
@@ -457,9 +457,10 @@ export function getHandleIntersection(
   if (selectedGameObjects.length === 0) return [];
 
   const getFilteredHandles = (gameObjectLabel: GameObject): Set<string> => {
-    const gameObject = gameObjects.get(gameObjectLabel)!;
+    const gameObject = gameObjects.get(gameObjectLabel);
 
     const handles = new Set<string>();
+    if (!gameObject) return handles;
     for (const [handle, data] of gameObject) {
       if (data.access === handleAccess || data.access === "all") {
         handles.add(handle);

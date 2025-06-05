@@ -70,7 +70,7 @@ const Editor = () => {
         onConnect={onConnect}
         onPaneClick={onPaneClick}
         disableKeyboardA11y={true}
-        fitView
+        fitView={false}
         proOptions={{ hideAttribution: true }}
         deleteKeyCode={["Delete", "Backspace"]}
         onNodeDragStop={onNodeDragStop}

@@ -12,21 +12,23 @@ import "./game.css";
 import LevelCompleteDialog from "~/lib/game/components/LevelCompleteDialog";
 import LevelDialog from "~/lib/game/components/LevelDialog";
 import { cleanupKaplay } from "~/lib/game/core/kaplayCtx";
-import type { LEVELS } from "~/lib/game/core/levels";
+import { LEVELS } from "~/lib/game/core/levels";
 import { globalKeyTracker } from "~/lib/game/utils/globalKeyTracker";
 import { useFlowStore } from "~/lib/node-editor/node-store/flow-store";
 import { useLoopStore } from "~/lib/node-editor/node-store/loop-store";
 import { useNodeStore } from "~/lib/node-editor/node-store/node-store";
 import { useDataStore } from "~/lib/zustand/data";
-import { useGameStore } from "~/lib/zustand/game";
 
 const Game = ({ params }: Route.ComponentProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   // load current level from params
-  const level = params.id || "playground";
+  const level = (params.id || "calculator") as keyof typeof LEVELS; // default to "calculator" if no level is specified
+  if (!(level in LEVELS)) {
+    throw new Error(`Level ${level} not found`);
+  }
+  //TODO: navigate to /levels/calculator too. easy option: use navigate("/levels/calculator") in the useEffect below, nice option: handle in router directly
 
-  const setCurrentLevel = useGameStore((state) => state.setCurrentLevel);
   const [levelDialogOpen, setLevelDialogOpen] = useState(true);
 
   useEffect(() => {
@@ -36,27 +38,33 @@ const Game = ({ params }: Route.ComponentProps) => {
 
     globalKeyTracker.init();
     initGame(canvasRef.current);
-
-    // load and set the game level
-    setCurrentLevel(level as keyof typeof LEVELS); // we can cast confidently here since we know the params.id is a valid level id, because loading the level will fail if it is not
     loadLevel(level);
+
+    // register auto save interval
+    const intervalId = setInterval(() => {
+      useFlowStore.getState().save();
+      useNodeStore.getState().save();
+      useLoopStore.getState().save();
+      useDataStore.getState().save();
+    }, 1000);
 
     return () => {
       cleanupKaplay();
-
-      useGameStore.getState().reset();
-      useFlowStore.getState().reset();
-      useNodeStore.getState().reset();
-      useLoopStore.getState().reset();
-
+      clearInterval(intervalId);
       setLevelDialogOpen(true);
-
       globalKeyTracker.cleanup();
     };
   }, [level]);
 
   return (
     <>
+      <div className="absolute top-0 left-0 z-10 h-full w-full bg-slate-900 p-8 text-center md:hidden">
+        <div className="flex h-full w-full items-center justify-center">
+          <h1 className="text-2xl font-bold text-white">
+            Please use a desktop browser to play the game.
+          </h1>
+        </div>
+      </div>
       <LevelDialog open={levelDialogOpen} onOpenChange={setLevelDialogOpen} />
       <LevelCompleteDialog />
       <PanelGroup direction="horizontal">

@@ -12,6 +12,7 @@ import {
 import { useCallback } from "react";
 import { useShallow } from "zustand/shallow";
 
+import { toast } from "../editor-components/Toast";
 import { useFlowStore } from "../node-store/flow-store";
 import { useNodeStore } from "../node-store/node-store";
 import { applyNodeChanges, computeGroupSizings } from "../utils";
@@ -171,6 +172,12 @@ export function useFlow() {
           source?.data.parentLoopId === target?.data.parentLoopId
         )
           return true;
+
+        toast({
+          title: "Invalid Loop Connection!",
+          description:
+            "Connections within loops are restricted to other nodes of the same loop. External nodes may only link to the loop's entry point or accept data from its exit point.",
+        });
 
         return false;
       };

@@ -1,10 +1,12 @@
+import { useDataStore } from "~/lib/zustand/data";
 import { useGameStore } from "~/lib/zustand/game";
-import { BACKGROUND_OFFSET } from "../constants";
+import { BACKGROUND_OFFSET, CAM_SCALE } from "../constants";
 import { getKaplayCtx } from "../core/kaplayCtx";
 import {
   addBackgrounds,
   addGameobjects,
   animPlayer,
+  handleReset,
 } from "../utils/gameHelper";
 
 export const initializeSitting = () => {
@@ -17,11 +19,11 @@ export const initializeSitting = () => {
     "trashcanFilled",
   ]);
   k.setCamPos(0, -BACKGROUND_OFFSET);
-  k.setCamScale(k.height() / 947);
+  k.setCamScale((CAM_SCALE * k.height()) / 947);
 
   trashcanFilled!.z = 3;
-  trashcanFilled!.pos.x = -280;
-  trashcanFilled!.pos.y = -110;
+  trashcanFilled!.pos.x = -5;
+  trashcanFilled!.pos.y = -2;
 
   game.onUpdate(() => {
     if (useGameStore.getState().isPaused) return;
@@ -30,9 +32,13 @@ export const initializeSitting = () => {
 
     const dist = raccoon!.pos.dist(trashcanFilled!.pos);
 
-    if (dist <= 50 && !useGameStore.getState().levelCompleted) {
+    if (dist <= 0.5 && !useGameStore.getState().levelCompleted) {
       useGameStore.getState().setLevelCompleteDialogOpen(true);
       useGameStore.getState().setLevelCompleted(true);
+    }
+
+    if (useDataStore.getState().initData) {
+      handleReset(raccoon!, 1);
     }
   });
 };

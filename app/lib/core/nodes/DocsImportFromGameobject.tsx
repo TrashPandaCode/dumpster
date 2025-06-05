@@ -1,7 +1,7 @@
 import { Position } from "@xyflow/react";
 import { memo, useMemo, useRef } from "react";
 
-import { type GameObject } from "~/lib/game/constants";
+import { type GameObject } from "~/lib/game/gameObjects";
 import { useGameobjectSelect } from "~/lib/node-editor/hooks/useGameobjectSelect";
 import BaseHandle from "~/lib/node-editor/node-components/BaseHandle";
 import LabelHandle from "~/lib/node-editor/node-components/LabelHandle";
