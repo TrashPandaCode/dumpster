@@ -7,9 +7,10 @@ import {
 
 import "@xyflow/react/dist/style.css";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Toaster } from "sonner";
 
+import { useMouseTrackingInPane } from "../zustand/node-add-menu-store";
 import { edgeTypes } from "./edges/edge-types";
 import CenterPanel from "./editor-components/CenterPanel";
 import LeftPanel from "./editor-components/LeftPanel";
@@ -35,17 +36,23 @@ const Editor = () => {
   } = useFlow();
 
   const {
-    paneContextMenu,
     nodeContextMenu,
     selectionContextMenu,
+    shouldShowPaneContextMenu,
+    paneContextMenuX,
+    paneContextMenuY,
     handlePaneContextMenu,
     handleNodeContextMenu,
     handleSelectionContextMenu,
     onPaneClick,
     setNodeContextMenu,
-    setPaneContextMenu,
     setSelectionContextMenu,
+    handleCloseCombinedMenu,
   } = useContextMenu();
+
+  const containerRef = useRef<HTMLDivElement>(null);
+  useMouseTrackingInPane(containerRef);
+
   return (
     <>
       <ReactFlow
@@ -67,6 +74,7 @@ const Editor = () => {
         proOptions={{ hideAttribution: true }}
         deleteKeyCode={["Delete", "Backspace"]}
         onNodeDragStop={onNodeDragStop}
+        ref={containerRef}
         defaultEdgeOptions={{
           type: "Deletable",
         }}
@@ -77,11 +85,12 @@ const Editor = () => {
         <LeftPanel />
         <Toaster />
       </ReactFlow>
-      {paneContextMenu && (
+
+      {shouldShowPaneContextMenu && (
         <PaneContextMenu
-          x={paneContextMenu.x}
-          y={paneContextMenu.y}
-          onClose={() => setPaneContextMenu(null)}
+          x={paneContextMenuX}
+          y={paneContextMenuY}
+          onClose={handleCloseCombinedMenu}
         />
       )}
       {nodeContextMenu && (
