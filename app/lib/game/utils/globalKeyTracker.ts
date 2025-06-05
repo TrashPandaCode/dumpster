@@ -24,7 +24,7 @@ const detectMac = (): boolean => {
 
 const isMac = detectMac();
 
-// Cross-platform modifier key - using Alt/Option on Mac to avoid conflicts
+// Cross-platform modifier key - using Shift on Mac to avoid conflicts
 const primaryModifier = isMac ? "Shift" : "Control";
 
 // Set of default shortcuts that we want to prevent default behavior for
@@ -53,12 +53,12 @@ function normalizeKey(key: string): string {
 
 /**
  * Generates a string representation of the keyboard shortcut
- * Uses Alt on Mac, Ctrl on others to avoid system conflicts
+ * Uses Shift on Mac, Ctrl on others to avoid system conflicts
  */
 function getShortcutString(e: KeyboardEvent): string {
   const parts: string[] = [];
 
-  // Use Alt on Mac (Option key), Ctrl on others
+  // Use Shift on Mac (Option key), Ctrl on others
   if ((isMac && e.shiftKey) || (!isMac && e.ctrlKey)) {
     parts.push(primaryModifier);
   }
