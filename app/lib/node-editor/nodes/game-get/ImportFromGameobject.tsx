@@ -75,7 +75,7 @@ const ImportFromGameobject = memo(({ id, data }: { id: string; data: any }) => {
       },
       selectedGameObjects,
     });
-  }, [selectedGameObjects]);
+  }, [handleIntersection]);
 
   return (
     <div className="min-w-48">
