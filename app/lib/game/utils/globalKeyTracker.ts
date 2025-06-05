@@ -59,7 +59,7 @@ function getShortcutString(e: KeyboardEvent): string {
   const parts: string[] = [];
 
   // Use Alt on Mac (Option key), Ctrl on others
-  if ((isMac && e.altKey) || (!isMac && e.ctrlKey)) {
+  if ((isMac && e.shiftKey) || (!isMac && e.ctrlKey)) {
     parts.push(primaryModifier);
   }
 
