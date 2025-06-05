@@ -63,14 +63,6 @@ function getShortcutString(e: KeyboardEvent): string {
     parts.push(primaryModifier);
   }
 
-  // Add other modifiers
-  if (e.metaKey) parts.push("Meta");
-  if (e.shiftKey) parts.push("Shift");
-
-  // Handle secondary modifiers
-  if (isMac && e.ctrlKey) parts.push("Control");
-  if (!isMac && e.altKey) parts.push("Alt");
-
   // Handle special keys
   const specialKeys = ["Escape", "Enter", "Tab", "Backspace", "Delete"];
   if (specialKeys.includes(e.key)) {
@@ -82,10 +74,7 @@ function getShortcutString(e: KeyboardEvent): string {
   return parts.join("+");
 }
 
-/**
- * Cross-platform shortcut registration
- * Automatically handles both Alt and Ctrl variants
- */
+// Register a keyboard shortcut with a callback
 function registerShortcut(
   shortcut: string,
   callback: (e: KeyboardEvent) => void
