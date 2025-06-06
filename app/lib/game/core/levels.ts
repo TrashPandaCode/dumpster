@@ -197,8 +197,6 @@ export const LEVELS = {
     ],
     availableNodes: [
       "Display",
-      "Value",
-      "Math",
       "ImportFromGameobject",
       "Switch",
       "ExportToGameobject",
