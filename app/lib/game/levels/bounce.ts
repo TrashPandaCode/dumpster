@@ -54,24 +54,24 @@ export const initializeBounce = () => {
     "trashcan2",
   ]);
 
-  useDataStore.getState().gameObjects.set(
-    "trashcan1",
-    new Map([
-      ["filled", { access: "get", value: 0 }],
-      ["xpos", { access: "get", value: 3.63 }],
-      ["ypos", { access: "get", value: -0.45 }],
-    ])
-  );
+  // Initialize trashcan states in the data store
+  const trashcan1State = useDataStore.getState().gameObjects.get("trashcan1");
 
-  useDataStore.getState().gameObjects.set(
-    "trashcan2",
-    new Map([
-      ["filled", { access: "get", value: 1 }],
-      ["xpos", { access: "get", value: -5 }],
-      ["ypos", { access: "get", value: -2 }],
-    ])
-  );
+  if (trashcan1State) {
+    trashcan1State.set("filled", { access: "get", value: 0 });
+    trashcan1State.set("xpos", { access: "get", value: 3.63 });
+    trashcan1State.set("ypos", { access: "get", value: -0.45 });
+  }
 
+  const trashcan2State = useDataStore.getState().gameObjects.get("trashcan2");
+
+  if (trashcan2State) {
+    trashcan2State.set("filled", { access: "get", value: 1 });
+    trashcan2State.set("xpos", { access: "get", value: -5 });
+    trashcan2State.set("ypos", { access: "get", value: -2 });
+  }
+
+  // Set initial positions and z-index for trashcans
   trashcan1!.z = 3;
   trashcan1!.pos.x = 3.63;
   trashcan1!.pos.y = -0.45;
@@ -116,23 +116,16 @@ export const initializeBounce = () => {
       }
       trashcan1IsFilled = !trashcan1IsFilled;
 
-      useDataStore.getState().gameObjects.set(
-        "trashcan1",
-        new Map([
-          ["filled", { access: "get", value: trashcan1IsFilled ? 1 : 0 }],
-          ["xpos", { access: "get", value: trashcan1!.pos.x }],
-          ["ypos", { access: "get", value: trashcan1!.pos.y }],
-        ])
-      );
+      // Update the data store with the new filled states
+      trashcan1State?.set("filled", {
+        access: "get",
+        value: trashcan1IsFilled ? 1 : 0,
+      });
 
-      useDataStore.getState().gameObjects.set(
-        "trashcan2",
-        new Map([
-          ["filled", { access: "get", value: trashcan1IsFilled ? 0 : 1 }],
-          ["xpos", { access: "get", value: trashcan2!.pos.x }],
-          ["ypos", { access: "get", value: trashcan2!.pos.y }],
-        ])
-      );
+      trashcan2State?.set("filled", {
+        access: "get",
+        value: trashcan1IsFilled ? 0 : 1,
+      });
 
       swapTimer = 0;
       nextSwap = Math.random() * 4 + 1; // Reset the timer with a new random value

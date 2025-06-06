@@ -14,8 +14,9 @@ export const initializePlayground = () => {
 
   addBackgrounds(["background1"]);
 
-  const { raccoon, trashcanFilled, goalFlag } = addGameobjects([
+  const { raccoon, trashcanEmpty, trashcanFilled, goalFlag } = addGameobjects([
     "raccoon",
+    "trashcanEmpty",
     "trashcanFilled",
     "goalFlag",
   ]);
@@ -27,12 +28,26 @@ export const initializePlayground = () => {
 
     animPlayer(raccoon!, k);
 
+    trashcanEmpty!.pos.x =
+      useDataStore.getState().gameObjects.get("trashcanEmpty")?.get("xpos")
+        ?.value ?? 0;
+    trashcanEmpty!.pos.y =
+      useDataStore.getState().gameObjects.get("trashcanEmpty")?.get("ypos")
+        ?.value ?? 0;
+
     trashcanFilled!.pos.x =
       useDataStore.getState().gameObjects.get("trashcanFilled")?.get("xpos")
         ?.value ?? 0;
     trashcanFilled!.pos.y =
       useDataStore.getState().gameObjects.get("trashcanFilled")?.get("ypos")
         ?.value ?? 0;
+
+    goalFlag!.pos.x =
+      useDataStore.getState().gameObjects.get("goalFlag")?.get("xpos")?.value ??
+      0;
+    goalFlag!.pos.y =
+      useDataStore.getState().gameObjects.get("goalFlag")?.get("ypos")?.value ??
+      0;
 
     if (useDataStore.getState().initData) {
       handleReset(raccoon!, 1);

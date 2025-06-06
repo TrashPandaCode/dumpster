@@ -222,13 +222,12 @@ export function animPlayer(
     Math.min(playerClampX.maxX, player.pos.x)
   );
 
-  useDataStore.getState().gameObjects.set(
-    "raccoon",
-    new Map([
-      ["xpos", { access: "get", value: player.pos.x }],
-      ["ypos", { access: "get", value: player.pos.y }],
-    ])
-  );
+  const playerState = useDataStore.getState().gameObjects.get("raccoon");
+
+  if (playerState) {
+    playerState.set("xpos", { access: "get", value: player.pos.x });
+    playerState.set("ypos", { access: "get", value: player.pos.y });
+  }
 
   //Clamp camera position
   const camX = Math.max(camClampX.minX, Math.min(camClampX.maxX, player.pos.x));
