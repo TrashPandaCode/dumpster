@@ -24,7 +24,7 @@ export type ConnectionAccess = "set" | "get" | "all";
  */
 export type Level = {
   /**
-   * Unique identifying part of the web address.
+   * Unique identifying part of the web address. Must be identical to the key of the level.
    */
   slug: string;
   /**

@@ -67,6 +67,7 @@ const LeftPanel = () => {
                     useNodeStore.getState().reset();
                     useLoopStore.getState().reset();
                     useDataStore.getState().reset(currentLevel);
+                    useGameStore.getState().setLevelCompleted(false);
                     useGameStore.getState().init(currentLevel);
                   }}
                 >
