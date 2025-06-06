@@ -2,12 +2,18 @@ import {
   InfoCircledIcon,
   PauseIcon,
   PlayIcon,
-  ResetIcon,
+  TrashIcon,
 } from "@radix-ui/react-icons";
+import {
+  Popover,
+  PopoverClose,
+  PopoverContent,
+  PopoverPortal,
+  PopoverTrigger,
+} from "@radix-ui/react-popover";
 import { Panel } from "@xyflow/react";
 
 import LevelDialog from "~/lib/game/components/LevelDialog";
-import { LEVELS } from "~/lib/game/core/levels";
 import { useDataStore } from "~/lib/zustand/data";
 import { useGameStore } from "~/lib/zustand/game";
 import { useFlowStore } from "../node-store/flow-store";
@@ -43,18 +49,33 @@ const LeftPanel = () => {
           <PauseIcon className="text-white" />
         )}
       </IconButton>
-      <IconButton
-        tooltip="Reset Level"
-        side="right"
-        onClick={() => {
-          useFlowStore.getState().reset();
-          useNodeStore.getState().reset();
-          useLoopStore.getState().reset();
-          useDataStore.getState().reset(currentLevel);
-        }}
-      >
-        <ResetIcon className="text-white" />
-      </IconButton>
+
+      <Popover>
+        <PopoverTrigger asChild>
+          <IconButton tooltip="Reset Level" side="right">
+            <TrashIcon className="text-white" />
+          </IconButton>
+        </PopoverTrigger>
+        <PopoverPortal>
+          <PopoverContent side="right" sideOffset={10} className="mr-3">
+            <div className="flex w-42 flex-col rounded bg-slate-800 p-2 font-mono text-white shadow-lg outline-1 outline-slate-700 outline-solid">
+              <PopoverClose asChild>
+                <button
+                  className="hover:bg-jam-600 cursor-pointer rounded bg-slate-700 px-2 py-1 text-left text-sm text-white"
+                  onClick={() => {
+                    useFlowStore.getState().reset();
+                    useNodeStore.getState().reset();
+                    useLoopStore.getState().reset();
+                    useDataStore.getState().reset(currentLevel);
+                  }}
+                >
+                  Reset Level?
+                </button>
+              </PopoverClose>
+            </div>
+          </PopoverContent>
+        </PopoverPortal>
+      </Popover>
       <LevelDialog
         skip={true}
         trigger={
