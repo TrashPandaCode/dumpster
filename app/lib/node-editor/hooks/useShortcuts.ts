@@ -28,6 +28,10 @@ export function useNewNodeHotkey() {
     const shortcut = globalKeyTracker.platformShortcut(" ");
     const remove = globalKeyTracker.registerShortcut(shortcut, (e) => {
       // Get the current mouse position in the flow editor
+      if (useNodeAddMenuStore.getState().visible) {
+        useNodeAddMenuStore.getState().closeAddMenu();
+        return;
+      }
       useNodeAddMenuStore.getState().openAddMenu();
     });
     return remove;
