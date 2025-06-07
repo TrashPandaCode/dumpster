@@ -72,7 +72,7 @@ const ExportToGameobject = memo(
     );
 
     const handleIntersection = useMemo(
-      () => getHandleIntersection("set", gameObjects, selectedGameObjects),
+      () => getHandleIntersection("export", gameObjects, selectedGameObjects),
       [gameObjects, selectedGameObjects]
     );
 
