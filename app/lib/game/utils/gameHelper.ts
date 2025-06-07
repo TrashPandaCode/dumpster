@@ -195,16 +195,17 @@ export function animPlayer(
     maxX: 15,
   }
 ) {
+  const playerState = useDataStore.getState().gameObjects.get("raccoon");
   const lastX = player.pos.x;
 
   //Move
-  if (movementMode === "node") {
-    player.pos.x =
-      useDataStore.getState().gameObjects.get("raccoon")?.get("xpos")?.value ??
-      0;
-    player.pos.y =
-      useDataStore.getState().gameObjects.get("raccoon")?.get("ypos")?.value ??
-      0;
+  if (
+    movementMode === "node" &&
+    playerState!.get("xpos") !== undefined &&
+    playerState!.get("ypos") !== undefined
+  ) {
+    player.pos.x = playerState!.get("xpos")!.value;
+    player.pos.y = playerState!.get("ypos")!.value;
   } else if (movementMode === "input") {
     if (k.isKeyDown("left")) player.pos.x -= 7 * k.dt();
     if (k.isKeyDown("right")) player.pos.x += 7 * k.dt();
@@ -222,11 +223,12 @@ export function animPlayer(
     Math.min(playerClampX.maxX, player.pos.x)
   );
 
-  const playerState = useDataStore.getState().gameObjects.get("raccoon");
-
-  if (playerState) {
-    playerState.set("xpos", { access: "import", value: player.pos.x });
-    playerState.set("ypos", { access: "import", value: player.pos.y });
+  if (
+    playerState!.get("xpos") !== undefined &&
+    playerState!.get("ypos") !== undefined
+  ) {
+    playerState!.get("xpos")!.value = player.pos.x;
+    playerState!.get("ypos")!.value = player.pos.y;
   }
 
   //Clamp camera position
