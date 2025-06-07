@@ -89,7 +89,7 @@ function registerShortcut(
 /**
  * Helper function to create cross-platform shortcuts
  */
-function platformShortcut(key: string): string {
+function appendPlatformModifier(key: string): string {
   return `${primaryModifier}+${key}`;
 }
 
@@ -170,6 +170,6 @@ export const globalKeyTracker = {
   isKeyReleased,
   clearPressedAndReleased,
   registerShortcut,
-  platformShortcut,
+  appendPlatformModifier,
   isMac,
 };

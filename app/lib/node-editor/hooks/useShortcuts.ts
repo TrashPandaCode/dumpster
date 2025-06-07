@@ -10,12 +10,11 @@ export function useDuplicateHotkey() {
   const { getNodes, getEdges, setEdges, setNodes } = useReactFlow();
   useEffect(() => {
     // Use the cross-platform shortcut (Shift+D on Mac, Ctrl+D on others)
-    const shortcut = globalKeyTracker.platformShortcut("d");
+    const shortcut = globalKeyTracker.appendPlatformModifier("d");
     const remove = globalKeyTracker.registerShortcut(shortcut, (e) => {
       const selectedNodeIds = getNodes().filter((n) => n.selected);
-      if (selectedNodeIds.length > 0) {
+      if (selectedNodeIds.length > 0)
         duplicateNodes(selectedNodeIds, getEdges, getNodes, setEdges, setNodes);
-      }
     });
     return remove;
   }, [getNodes, getEdges, setEdges, setNodes]);
@@ -25,14 +24,12 @@ export function useDuplicateHotkey() {
 export function useNewNodeHotkey() {
   useEffect(() => {
     // Use the cross-platform shortcut (Shift+Space on Mac, Ctrl+Space on others)
-    const shortcut = globalKeyTracker.platformShortcut(" ");
+    const shortcut = globalKeyTracker.appendPlatformModifier(" ");
     const remove = globalKeyTracker.registerShortcut(shortcut, (e) => {
       // Get the current mouse position in the flow editor
-      if (useNodeAddMenuStore.getState().visible) {
+      if (useNodeAddMenuStore.getState().visible)
         useNodeAddMenuStore.getState().closeAddMenu();
-        return;
-      }
-      useNodeAddMenuStore.getState().openAddMenu();
+      else useNodeAddMenuStore.getState().openAddMenu();
     });
     return remove;
   }, []);
@@ -45,9 +42,7 @@ export function useEscapeHotkey(
 ) {
   useEffect(() => {
     const remove = globalKeyTracker.registerShortcut("Escape", (e) => {
-      if (condition && callback) {
-        callback();
-      }
+      if (condition && callback) callback();
     });
     return remove;
   }, [callback, condition]);

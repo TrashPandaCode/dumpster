@@ -83,9 +83,7 @@ export function useContextMenu() {
     setPaneContextMenu(null);
     setNodeContextMenu(null);
     setSelectionContextMenu(null);
-    if (useNodeAddMenuStore.getState().visible) {
-      useNodeAddMenuStore.getState().closeAddMenu();
-    }
+    useNodeAddMenuStore.getState().closeAddMenu();
   }, []);
 
   const onPaneClick = closeAllMenus;
