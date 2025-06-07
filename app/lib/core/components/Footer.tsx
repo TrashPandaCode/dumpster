@@ -2,7 +2,7 @@ import { NavLink } from "react-router";
 
 const Footer = () => {
   return (
-    <footer className="grid grid-cols-1 md:grid-cols-3 gap-12 p-12">
+    <footer className="grid grid-cols-1 gap-12 p-12 md:grid-cols-3">
       <div className="flex flex-col">
         <h1 className="pb-4 text-lg font-bold">About</h1>
         <a
@@ -26,6 +26,13 @@ const Footer = () => {
         >
           Literature
         </a>
+        <NavLink
+          to="/attributions"
+          target="_blank"
+          className="self-start text-sm hover:underline"
+        >
+          Attributions
+        </NavLink>
       </div>
       <div className="flex flex-col">
         <h1 className="pb-4 text-lg font-bold">Legal & Policies</h1>
