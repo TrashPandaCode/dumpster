@@ -56,20 +56,15 @@ export const initializeBounce = () => {
 
   // Initialize trashcan states in the data store
   const trashcan1State = useDataStore.getState().gameObjects.get("trashcan1");
-
-  if (trashcan1State) {
-    trashcan1State.set("filled", { access: "import", value: 0 });
-    trashcan1State.set("xpos", { access: "import", value: 3.63 });
-    trashcan1State.set("ypos", { access: "import", value: -0.45 });
-  }
-
   const trashcan2State = useDataStore.getState().gameObjects.get("trashcan2");
 
-  if (trashcan2State) {
-    trashcan2State.set("filled", { access: "import", value: 1 });
-    trashcan2State.set("xpos", { access: "import", value: -5 });
-    trashcan2State.set("ypos", { access: "import", value: -2 });
-  }
+  trashcan1State!.get("filled")!.value = 0;
+  trashcan1State!.get("xpos")!.value = 3.63;
+  trashcan1State!.get("ypos")!.value = -0.45;
+
+  trashcan2State!.get("filled")!.value = 1;
+  trashcan2State!.get("xpos")!.value = -5;
+  trashcan2State!.get("ypos")!.value = -2;
 
   // Set initial positions and z-index for trashcans
   trashcan1!.z = 3;
@@ -116,16 +111,8 @@ export const initializeBounce = () => {
       }
       trashcan1IsFilled = !trashcan1IsFilled;
 
-      // Update the data store with the new filled states
-      trashcan1State?.set("filled", {
-        access: "import",
-        value: trashcan1IsFilled ? 1 : 0,
-      });
-
-      trashcan2State?.set("filled", {
-        access: "import",
-        value: trashcan1IsFilled ? 0 : 1,
-      });
+      trashcan1State!.get("filled")!.value = trashcan1IsFilled ? 1 : 0;
+      trashcan2State!.get("filled")!.value = trashcan1IsFilled ? 0 : 1;
 
       swapTimer = 0;
       nextSwap = Math.random() * 4 + 1; // Reset the timer with a new random value
