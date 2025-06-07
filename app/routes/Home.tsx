@@ -14,6 +14,9 @@ import LevelCard from "~/lib/core/components/LevelCard";
 import PlayButton from "~/lib/core/components/PlayButton";
 import { LEVELS } from "~/lib/game/core/levels";
 import arrowDownIcon from "../assets/arrow_down.svg";
+import ca_raccoon from "../assets/home/ca_raccoon.png";
+import eating_trash from "../assets/home/eating_trash.png";
+import raid_trash from "../assets/home/raid_trash.png";
 
 const Home = () => {
   const scrollTargetRef = useRef<HTMLDivElement>(null);
@@ -46,7 +49,7 @@ const Home = () => {
             <PlayButton className="hidden md:flex" />
             <NavLink
               to="/docs"
-              className="md:hidden bg-jam-600 font-pixel hover:bg-jam-700 mt-6 flex w-fit items-center justify-baseline gap-4 rounded-full px-8 py-2 text-2xl font-bold text-white shadow-lg transition-transform duration-200 hover:scale-103"
+              className="bg-jam-600 font-pixel hover:bg-jam-700 mt-6 flex w-fit items-center justify-baseline gap-4 rounded-full px-8 py-2 text-2xl font-bold text-white shadow-lg transition-transform duration-200 hover:scale-103 md:hidden"
             >
               Read the Docs
             </NavLink>
@@ -85,31 +88,22 @@ const Home = () => {
           <div className="flex flex-col items-start justify-center gap-10 md:flex-row md:gap-32">
             <div className="flex flex-col gap-4 text-center">
               <div className="bg-jam-600 h-32 w-32 rounded-full">
-                <img 
-                  className="rounded-b-full"
-                  src="../app/assets/home/ca_raccoon.png" 
-                  alt="" />
+                <img className="rounded-b-full" src={ca_raccoon} alt="" />
               </div>
               Computer
               <br />
               Animation
             </div>
             <div className="flex flex-col gap-4 text-center">
-              <div className="bg-jam-600 h-32 w-32 rounded-full" >
-                <img 
-                  className="rounded-b-full"
-                  src="../app/assets/home/raid_trash.png" 
-                  alt="" />
+              <div className="bg-jam-600 h-32 w-32 rounded-full">
+                <img className="rounded-b-full" src={raid_trash} alt="" />
               </div>
               Raiding The <br />
               Trash
             </div>
             <div className="flex flex-col gap-4 text-center">
               <div className="bg-jam-600 h-32 w-32 rounded-full">
-                <img 
-                  className="rounded-b-full"
-                  src="../app/assets/home/eating_trash.png" 
-                  alt="" />
+                <img className="rounded-b-full" src={eating_trash} alt="" />
               </div>
               Eating Trash
             </div>
@@ -122,10 +116,10 @@ const Home = () => {
             Join the community
           </h1>
           <p className="text-center text-sm text-white">
-            Join our student Discord to connect with other Mediatechnology students, share
-            your experiences, and get help with the game. Whether you're a
-            beginner or a seasoned player, there's a place for you in our
-            community!
+            Join our student Discord to connect with other Mediatechnology
+            students, share your experiences, and get help with the game.
+            Whether you're a beginner or a seasoned player, there's a place for
+            you in our community!
           </p>
           <a
             target="_blank"
