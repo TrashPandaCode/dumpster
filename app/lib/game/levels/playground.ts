@@ -36,14 +36,19 @@ export const initializePlayground = () => {
       .gameObjects.get("trashcanFilled");
     const goalFlagState = useDataStore.getState().gameObjects.get("goalFlag");
 
-    trashcanEmpty!.pos.x = trashcanEmptyState!.get("xpos")!.value;
-    trashcanEmpty!.pos.y = trashcanEmptyState!.get("ypos")!.value;
+    if (trashcanEmpty && trashcanEmptyState) {
+      trashcanEmpty!.pos.x = trashcanEmptyState!.get("xpos")!.value;
+      trashcanEmpty!.pos.y = trashcanEmptyState!.get("ypos")!.value;
+    }
+    if (trashcanFilled && trashcanFilledState) {
+      trashcanFilled!.pos.x = trashcanFilledState!.get("xpos")!.value;
+      trashcanFilled!.pos.y = trashcanFilledState!.get("ypos")!.value;
+    }
 
-    trashcanFilled!.pos.x = trashcanFilledState!.get("xpos")!.value;
-    trashcanFilled!.pos.y = trashcanFilledState!.get("ypos")!.value;
-
-    goalFlag!.pos.x = goalFlagState!.get("xpos")!.value;
-    goalFlag!.pos.y = goalFlagState!.get("ypos")!.value;
+    if (goalFlag && goalFlagState) {
+      goalFlag!.pos.x = goalFlagState!.get("xpos")!.value;
+      goalFlag!.pos.y = goalFlagState!.get("ypos")!.value;
+    }
 
     if (useDataStore.getState().initData) {
       handleReset(raccoon!, 1);
