@@ -15,7 +15,7 @@ import { BACKGROUND_OFFSET, SPRITE_SCALE } from "../constants";
 import { getKaplayCtx } from "../core/kaplayCtx";
 import { type GameObject } from "../gameObjects";
 
-type Background = "background1" | "backgroundCalc";
+type Background = "background1" | "background2" | "backgroundCalc";
 type PlayerType = GameObj<
   | PosComp
   | RotateComp
@@ -153,14 +153,20 @@ export function addBackgrounds(
   lightOffset: number = 0
 ) {
   const { k, game } = getKaplayCtx();
+  let light = false;
 
   if (backgrounds.includes("background1")) {
     k.loadSprite("background", "/game/backgrounds/background1.png");
     k.loadSprite("backgroundLight", "/game/backgrounds/background1_light.png");
+    light = true;
+  }
+  if (backgrounds.includes("background2")) {
+    k.loadSprite("background", "/game/backgrounds/background2.png");
   }
   if (backgrounds.includes("backgroundCalc")) {
     k.loadSprite("background", "/game/backgrounds/background_calculator.png");
     k.loadSprite("backgroundLight", "/game/backgrounds/background1_light.png");
+    light = true;
   }
 
   game.add([
@@ -170,15 +176,16 @@ export function addBackgrounds(
     k.pos(0, -BACKGROUND_OFFSET),
     k.z(0),
   ]);
-
-  game.add([
-    k.sprite("backgroundLight"),
-    k.anchor("center"),
-    k.scale(SPRITE_SCALE),
-    k.pos(lightOffset, -BACKGROUND_OFFSET),
-    k.z(100),
-    k.opacity(0.75),
-  ]);
+  if(light){
+    game.add([
+      k.sprite("backgroundLight"),
+      k.anchor("center"),
+      k.scale(SPRITE_SCALE),
+      k.pos(lightOffset, -BACKGROUND_OFFSET),
+      k.z(100),
+      k.opacity(0.75),
+    ]);
+  }
 }
 
 export function animPlayer(

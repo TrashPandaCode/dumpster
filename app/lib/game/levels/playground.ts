@@ -12,7 +12,7 @@ import {
 export const initializePlayground = () => {
   const { k, game } = getKaplayCtx();
 
-  addBackgrounds(["background1"]);
+  addBackgrounds(["background2"]);
 
   const { raccoon, trashcanEmpty, trashcanFilled, goalFlag } = addGameobjects([
     "raccoon",
