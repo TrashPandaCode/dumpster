@@ -199,7 +199,11 @@ export function animPlayer(
   const lastX = player.pos.x;
 
   //Move
-  if (movementMode === "node") {
+  if (
+    movementMode === "node" &&
+    playerState!.get("xpos") !== undefined &&
+    playerState!.get("ypos") !== undefined
+  ) {
     player.pos.x = playerState!.get("xpos")!.value;
     player.pos.y = playerState!.get("ypos")!.value;
   } else if (movementMode === "input") {
@@ -219,8 +223,13 @@ export function animPlayer(
     Math.min(playerClampX.maxX, player.pos.x)
   );
 
-  playerState!.get("xpos")!.value = player.pos.x;
-  playerState!.get("ypos")!.value = player.pos.y;
+  if (
+    playerState!.get("xpos") !== undefined &&
+    playerState!.get("ypos") !== undefined
+  ) {
+    playerState!.get("xpos")!.value = player.pos.x;
+    playerState!.get("ypos")!.value = player.pos.y;
+  }
 
   //Clamp camera position
   const camX = Math.max(camClampX.minX, Math.min(camClampX.maxX, player.pos.x));
