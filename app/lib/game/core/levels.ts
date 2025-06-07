@@ -17,7 +17,7 @@ import { initializePlayground } from "../levels/playground";
 import { initializeSitting } from "../levels/sitting";
 import { initializeTimeTransform } from "../levels/timeTransform";
 
-export type ConnectionAccess = "set" | "get" | "all";
+export type ConnectionAccess = "export" | "import" | "all";
 
 /**
  * The Level type represents a game level.
@@ -111,7 +111,7 @@ export const LEVELS = {
     modifiableGameObjects: [
       {
         id: "raccoon",
-        connections: [{ label: "solution", access: "set" }],
+        connections: [{ label: "solution", access: "export" }],
       },
     ],
     availableNodes: ["Display", "Value", "Math", "ExportToGameobject"],
@@ -140,8 +140,8 @@ export const LEVELS = {
       {
         id: "raccoon",
         connections: [
-          { label: "xpos", access: "set" },
-          { label: "ypos", access: "set" },
+          { label: "xpos", access: "export" },
+          { label: "ypos", access: "export" },
         ],
       },
     ],
@@ -174,24 +174,24 @@ export const LEVELS = {
       {
         id: "raccoon",
         connections: [
-          { label: "xpos", access: "set" },
-          { label: "ypos", access: "set" },
+          { label: "xpos", access: "export" },
+          { label: "ypos", access: "export" },
         ],
       },
       {
         id: "trashcan1",
         connections: [
-          { label: "filled", access: "get" },
-          { label: "xpos", access: "get" },
-          { label: "ypos", access: "get" },
+          { label: "filled", access: "import" },
+          { label: "xpos", access: "import" },
+          { label: "ypos", access: "import" },
         ],
       },
       {
         id: "trashcan2",
         connections: [
-          { label: "filled", access: "get" },
-          { label: "xpos", access: "get" },
-          { label: "ypos", access: "get" },
+          { label: "filled", access: "import" },
+          { label: "xpos", access: "import" },
+          { label: "ypos", access: "import" },
         ],
       },
     ],
@@ -227,8 +227,8 @@ export const LEVELS = {
       {
         id: "raccoon",
         connections: [
-          { label: "xpos", access: "set" },
-          { label: "ypos", access: "set" },
+          { label: "xpos", access: "export" },
+          { label: "ypos", access: "export" },
         ],
       },
     ],
@@ -263,8 +263,8 @@ export const LEVELS = {
       {
         id: "raccoon",
         connections: [
-          { label: "xpos", access: "get" },
-          { label: "ypos", access: "get" },
+          { label: "xpos", access: "import" },
+          { label: "ypos", access: "import" },
         ],
       },
       {
@@ -305,7 +305,7 @@ export const LEVELS = {
     modifiableGameObjects: [
       {
         id: "raccoon",
-        connections: [{ label: "speed", access: "set" }],
+        connections: [{ label: "speed", access: "export" }],
       },
     ],
     availableNodes: [

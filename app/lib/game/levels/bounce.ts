@@ -58,17 +58,17 @@ export const initializeBounce = () => {
   const trashcan1State = useDataStore.getState().gameObjects.get("trashcan1");
 
   if (trashcan1State) {
-    trashcan1State.set("filled", { access: "get", value: 0 });
-    trashcan1State.set("xpos", { access: "get", value: 3.63 });
-    trashcan1State.set("ypos", { access: "get", value: -0.45 });
+    trashcan1State.set("filled", { access: "import", value: 0 });
+    trashcan1State.set("xpos", { access: "import", value: 3.63 });
+    trashcan1State.set("ypos", { access: "import", value: -0.45 });
   }
 
   const trashcan2State = useDataStore.getState().gameObjects.get("trashcan2");
 
   if (trashcan2State) {
-    trashcan2State.set("filled", { access: "get", value: 1 });
-    trashcan2State.set("xpos", { access: "get", value: -5 });
-    trashcan2State.set("ypos", { access: "get", value: -2 });
+    trashcan2State.set("filled", { access: "import", value: 1 });
+    trashcan2State.set("xpos", { access: "import", value: -5 });
+    trashcan2State.set("ypos", { access: "import", value: -2 });
   }
 
   // Set initial positions and z-index for trashcans
@@ -118,12 +118,12 @@ export const initializeBounce = () => {
 
       // Update the data store with the new filled states
       trashcan1State?.set("filled", {
-        access: "get",
+        access: "import",
         value: trashcan1IsFilled ? 1 : 0,
       });
 
       trashcan2State?.set("filled", {
-        access: "get",
+        access: "import",
         value: trashcan1IsFilled ? 0 : 1,
       });
 

@@ -225,8 +225,8 @@ export function animPlayer(
   const playerState = useDataStore.getState().gameObjects.get("raccoon");
 
   if (playerState) {
-    playerState.set("xpos", { access: "get", value: player.pos.x });
-    playerState.set("ypos", { access: "get", value: player.pos.y });
+    playerState.set("xpos", { access: "import", value: player.pos.x });
+    playerState.set("ypos", { access: "import", value: player.pos.y });
   }
 
   //Clamp camera position

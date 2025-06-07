@@ -51,7 +51,7 @@ const ImportFromGameobject = memo(({ id, data }: { id: string; data: any }) => {
   );
 
   const handleIntersection = useMemo(
-    () => getHandleIntersection("get", gameObjects, selectedGameObjects),
+    () => getHandleIntersection("import", gameObjects, selectedGameObjects),
     [gameObjects, selectedGameObjects]
   );
 

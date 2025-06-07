@@ -20,20 +20,20 @@ const DocsImportFromGameobject = memo(
           new Map([
             ["xpos", { access: "all", value: 145.7 }],
             ["ypos", { access: "all", value: 89.3 }],
-            ["rotation", { access: "set", value: 1.57 }],
-            ["xvelocity", { access: "get", value: -2.4 }],
-            ["yvelocity", { access: "get", value: 0.8 }],
+            ["rotation", { access: "export", value: 1.57 }],
+            ["xvelocity", { access: "import", value: -2.4 }],
+            ["yvelocity", { access: "import", value: 0.8 }],
             ["health", { access: "all", value: 85.0 }],
           ]),
         ],
         [
           "trashcanFilled",
           new Map([
-            ["xpos", { access: "set", value: 145.7 }],
-            ["ypos", { access: "set", value: 89.3 }],
-            ["rotation", { access: "set", value: 1.57 }],
-            ["xvelocity", { access: "get", value: -2.4 }],
-            ["yvelocity", { access: "get", value: 0.8 }],
+            ["xpos", { access: "export", value: 145.7 }],
+            ["ypos", { access: "export", value: 89.3 }],
+            ["rotation", { access: "export", value: 1.57 }],
+            ["xvelocity", { access: "import", value: -2.4 }],
+            ["yvelocity", { access: "import", value: 0.8 }],
             ["health", { access: "all", value: 85.0 }],
           ]),
         ],
@@ -61,7 +61,11 @@ const DocsImportFromGameobject = memo(
 
     const handleIntersection = useMemo(
       () =>
-        getHandleIntersection("get", gameObjects.current, selectedGameObjects),
+        getHandleIntersection(
+          "import",
+          gameObjects.current,
+          selectedGameObjects
+        ),
       [gameObjects, selectedGameObjects]
     );
 
