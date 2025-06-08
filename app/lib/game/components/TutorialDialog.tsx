@@ -151,7 +151,7 @@ export default function TutorialDialog({
       <DialogPortal>
         {highlight ? (
           <>
-            <div className="pointer-events-none fixed inset-0 z-[9999]">
+            <div className="pointer-events-auto fixed inset-0 z-[9998]">
               <svg className="h-full w-full">
                 <defs>
                   <mask id="hole-mask">
@@ -170,7 +170,7 @@ export default function TutorialDialog({
                 <rect
                   width="100%"
                   height="100%"
-                  fill="rgba(0, 0, 0, 0.6)"
+                  fill="rgba(0, 0, 0, 0.4)"
                   mask="url(#hole-mask)"
                 />
               </svg>
