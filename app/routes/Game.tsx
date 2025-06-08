@@ -11,6 +11,7 @@ import "./game.css";
 
 import LevelCompleteDialog from "~/lib/game/components/LevelCompleteDialog";
 import LevelDialog from "~/lib/game/components/LevelDialog";
+import TutorialDialog from "~/lib/game/components/TutorialDialog";
 import { cleanupKaplay } from "~/lib/game/core/kaplayCtx";
 import { LEVELS } from "~/lib/game/core/levels";
 import { globalKeyTracker } from "~/lib/game/utils/globalKeyTracker";
@@ -29,7 +30,11 @@ const Game = ({ params }: Route.ComponentProps) => {
   }
   //TODO: navigate to /levels/calculator too. easy option: use navigate("/levels/calculator") in the useEffect below, nice option: handle in router directly
 
-  const [levelDialogOpen, setLevelDialogOpen] = useState(true);
+  const [tutorialOpen, setTutorialOpen] = useState(
+    localStorage.getItem("hideTutorial") !== "true"
+  );
+
+  const [levelDialogOpen, setLevelDialogOpen] = useState(!tutorialOpen);
 
   useEffect(() => {
     if (!canvasRef.current) {
@@ -65,7 +70,10 @@ const Game = ({ params }: Route.ComponentProps) => {
           </h1>
         </div>
       </div>
-      <LevelDialog open={levelDialogOpen} onOpenChange={setLevelDialogOpen} />
+      <TutorialDialog open={tutorialOpen} onOpenChange={setTutorialOpen} />
+      {!tutorialOpen && (
+        <LevelDialog open={levelDialogOpen} onOpenChange={setLevelDialogOpen} />
+      )}
       <LevelCompleteDialog />
       <PanelGroup direction="horizontal">
         {/* autoSaveId="main-layout" */}
