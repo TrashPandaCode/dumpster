@@ -6,14 +6,14 @@ import type React from "react";
 import { useEffect, useMemo, useState } from "react";
 import { NavLink, useLocation } from "react-router";
 
-import navigation from "~/lib/core/navigation.json";
+import navigation from "~/lib/core/docs/navigation.json";
 import {
   cleanMarkdownContent,
   extractDescription,
   type NavigationItem,
   type NavigationSection,
   type SearchableItem,
-} from "../../search-utils";
+} from "../search-utils";
 import Collapsible from "./Collapsible";
 
 const Divider: React.FC<{ title: string }> = ({ title }) => (

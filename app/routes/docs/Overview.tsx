@@ -1,15 +1,15 @@
 import { useOutlet } from "react-router";
 
+import Footer from "~/lib/core/components/Footer";
+import Header from "~/lib/core/components/Header";
 import {
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "~/lib/core/components/Breadcrumb";
-import Navigation from "~/lib/core/components/docs/Navigation";
-import Footer from "~/lib/core/components/Footer";
-import Header from "~/lib/core/components/Header";
+} from "~/lib/core/docs/components/Breadcrumb";
+import Navigation from "~/lib/core/docs/components/Navigation";
 
 const Docs = () => {
   const outlet = useOutlet();
