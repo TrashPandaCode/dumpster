@@ -159,17 +159,19 @@ export default function TutorialDialog({
             <DialogDescription>{desc}</DialogDescription>
           </VisuallyHidden>
           <div className="mb-4">{steps[step].text}</div>
-          <div className="mb-4 flex items-center gap-2">
-            <input
-              type="checkbox"
-              checked={dontShowAgain}
-              onChange={(e) => setDontShowAgain(e.target.checked)}
-              id="dontShowAgain"
-            />
-            <label htmlFor="dontShowAgain" className="select-none">
-              Don't show again
-            </label>
-          </div>
+          {isLastStep && (
+            <div className="mb-4 flex items-center gap-2">
+              <input
+                type="checkbox"
+                checked={dontShowAgain}
+                onChange={(e) => setDontShowAgain(e.target.checked)}
+                id="dontShowAgain"
+              />
+              <label htmlFor="dontShowAgain" className="select-none">
+                Don't show again
+              </label>
+            </div>
+          )}
           <div className="flex justify-end gap-5">
             <button
               onClick={() => setStep(step - 1)}
