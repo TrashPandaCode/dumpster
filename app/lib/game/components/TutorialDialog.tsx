@@ -219,35 +219,40 @@ export default function TutorialDialog({
               </label>
             </div>
           )}
-          <div className="flex justify-end gap-5">
-            <button
-              onClick={() => setStep(step - 1)}
-              disabled={step === 0}
-              className={
-                "rounded-lg bg-slate-700/80 px-3 py-2 focus:outline-1 focus:outline-blue-300" +
-                (step === 0
-                  ? " opacity-50"
-                  : " cursor-pointer hover:bg-slate-600")
-              }
-            >
-              Back
-            </button>
-            {isLastStep ? (
+          <div className="flex items-center justify-between">
+            <div>
+              {step + 1} / {steps.length}
+            </div>
+            <div className="flex justify-end gap-5">
               <button
-                onClick={handleFinish}
-                className="cursor-pointer rounded-lg bg-slate-700/80 px-3 py-2 hover:bg-slate-600 focus:outline-1 focus:outline-blue-300"
+                onClick={() => setStep(step - 1)}
+                disabled={step === 0}
+                className={
+                  "rounded-lg bg-slate-700/80 px-3 py-2 focus:outline-1 focus:outline-blue-300" +
+                  (step === 0
+                    ? " opacity-50"
+                    : " cursor-pointer hover:bg-slate-600")
+                }
               >
-                Start
+                Back
               </button>
-            ) : (
-              <button
-                onClick={() => setStep(step + 1)}
-                className="cursor-pointer rounded-lg bg-slate-700/80 px-3 py-2 hover:bg-slate-600 focus:outline-1 focus:outline-blue-300"
-                autoFocus={step === 0}
-              >
-                Next
-              </button>
-            )}
+              {isLastStep ? (
+                <button
+                  onClick={handleFinish}
+                  className="cursor-pointer rounded-lg bg-slate-700/80 px-3 py-2 hover:bg-slate-600 focus:outline-1 focus:outline-blue-300"
+                >
+                  Start
+                </button>
+              ) : (
+                <button
+                  onClick={() => setStep(step + 1)}
+                  className="cursor-pointer rounded-lg bg-slate-700/80 px-3 py-2 hover:bg-slate-600 focus:outline-1 focus:outline-blue-300"
+                  autoFocus={step === 0}
+                >
+                  Next
+                </button>
+              )}
+            </div>
           </div>
         </DialogContent>
       </DialogPortal>
