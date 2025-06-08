@@ -1,6 +1,6 @@
 import { NavLink, useLocation } from "react-router";
 
-import Navigation from "./docs/Navigation";
+import Navigation from "../docs/components/Navigation";
 
 const Header = () => {
   const location = useLocation();

@@ -1,17 +1,17 @@
 import { useRef } from "react";
 import { NavLink } from "react-router";
 
+import Footer from "~/lib/core/components/Footer";
+import Header from "~/lib/core/components/Header";
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from "~/lib/core/components/Carousel";
-import Footer from "~/lib/core/components/Footer";
-import Header from "~/lib/core/components/Header";
-import LevelCard from "~/lib/core/components/LevelCard";
-import PlayButton from "~/lib/core/components/PlayButton";
+} from "~/lib/core/home/components/Carousel";
+import LevelCard from "~/lib/core/home/components/LevelCard";
+import PlayButton from "~/lib/core/home/components/PlayButton";
 import { LEVELS } from "~/lib/game/core/levels";
 import arrowDownIcon from "../assets/arrow_down.svg";
 import ca_raccoon from "../assets/home/ca_raccoon.png";
