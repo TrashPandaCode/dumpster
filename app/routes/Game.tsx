@@ -9,6 +9,7 @@ import type { Route } from "./+types/Game";
 
 import "./game.css";
 
+import GoalsDialog from "~/lib/game/components/GoalsDialog";
 import LevelCompleteDialog from "~/lib/game/components/LevelCompleteDialog";
 import LevelDialog from "~/lib/game/components/LevelDialog";
 import TutorialDialog from "~/lib/game/components/TutorialDialog";
@@ -35,6 +36,8 @@ const Game = ({ params }: Route.ComponentProps) => {
   );
 
   const [levelDialogOpen, setLevelDialogOpen] = useState(!tutorialOpen);
+
+  const [goalsDialogOpen, setGoalsDialogOpen] = useState(!levelDialogOpen);
 
   useEffect(() => {
     if (!canvasRef.current) {
@@ -74,6 +77,7 @@ const Game = ({ params }: Route.ComponentProps) => {
       {!tutorialOpen && (
         <LevelDialog open={levelDialogOpen} onOpenChange={setLevelDialogOpen} />
       )}
+      {!levelDialogOpen && <GoalsDialog open={goalsDialogOpen} />}
       <LevelCompleteDialog />
       <PanelGroup direction="horizontal">
         {/* autoSaveId="main-layout" */}
