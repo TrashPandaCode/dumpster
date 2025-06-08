@@ -1,5 +1,5 @@
 import {
-  InfoCircledIcon,
+  ChatBubbleIcon,
   PauseIcon,
   PlayIcon,
   TrashIcon,
@@ -79,10 +79,9 @@ const LeftPanel = () => {
         </PopoverPortal>
       </Popover>
       <LevelDialog
-        skip={true}
         trigger={
           <IconButton tooltip="Level Info" side="right">
-            <InfoCircledIcon className="text-white" />
+            <ChatBubbleIcon className="text-white" />
           </IconButton>
         }
       />

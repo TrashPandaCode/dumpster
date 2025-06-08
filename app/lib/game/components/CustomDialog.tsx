@@ -32,8 +32,8 @@ const CustomDialog = ({
     <Dialog defaultOpen={defaultOpen} open={open} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
       <DialogPortal>
-        <DialogOverlay className="fixed inset-0 bg-slate-800/25" />
-        <DialogContent className="fixed top-1/2 left-1/2 flex w-1/2 -translate-x-1/2 -translate-y-1/2 flex-col gap-6 rounded-lg border-2 border-blue-300 bg-slate-800/95 p-8 font-mono text-white">
+        <DialogOverlay className="fixed inset-0 bg-black/25" />
+        <DialogContent className="fixed top-1/2 left-1/2 flex w-1/2 -translate-x-1/2 -translate-y-1/2 flex-col gap-6 rounded-lg border-2 border-blue-300 bg-slate-800/85 p-8 font-mono text-white">
           <VisuallyHidden asChild>
             <DialogDescription>{desc}</DialogDescription>
           </VisuallyHidden>
