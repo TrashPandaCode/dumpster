@@ -79,7 +79,6 @@ const LeftPanel = () => {
         </PopoverPortal>
       </Popover>
       <LevelDialog
-        skip={true}
         trigger={
           <IconButton tooltip="Level Info" side="right">
             <ChatBubbleIcon className="text-white" />
