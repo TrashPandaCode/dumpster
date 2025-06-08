@@ -18,6 +18,8 @@ export default function GoalsDialog({ open }: { open: boolean }) {
   ];
 
   const [pos, setPos] = useState({ x: 16, y: 16 });
+
+  const dialogRef = useRef<HTMLDivElement>(null);
   const dragRef = useRef<{
     isDragging: boolean;
     offset: { x: number; y: number };
@@ -48,8 +50,8 @@ export default function GoalsDialog({ open }: { open: boolean }) {
       y = Math.round(y / grid) * grid;
     }
 
-    const dialogWidth = 288; // 72 * 4 (w-72)
-    const dialogHeight = 128;
+    const dialogWidth = dialogRef.current?.offsetWidth ?? 288;
+    const dialogHeight = dialogRef.current?.offsetHeight ?? 128;
 
     x = Math.max(0, Math.min(window.innerWidth - dialogWidth, x));
     y = Math.max(0, Math.min(window.innerHeight - dialogHeight, y));
@@ -78,6 +80,7 @@ export default function GoalsDialog({ open }: { open: boolean }) {
     <Dialog open={open} modal={false}>
       <DialogPortal>
         <DialogContent
+        ref={dialogRef}
           style={{
             left: pos.x,
             top: pos.y,
