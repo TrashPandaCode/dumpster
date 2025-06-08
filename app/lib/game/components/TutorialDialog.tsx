@@ -130,7 +130,7 @@ export default function TutorialDialog({
       text: "Use these buttons to navigate in between the different levels of the game. You can also use the home button to return to the main menu.",
       highlight: {
         top: 10,
-        left: window.innerWidth * 0.723,
+        left: window.innerWidth * 0.75 - 45,
         width: 123,
         height: 42,
       },
