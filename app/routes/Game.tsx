@@ -37,8 +37,6 @@ const Game = ({ params }: Route.ComponentProps) => {
 
   const [levelDialogOpen, setLevelDialogOpen] = useState(!tutorialOpen);
 
-  const [goalsDialogOpen, setGoalsDialogOpen] = useState(!levelDialogOpen);
-
   useEffect(() => {
     if (!canvasRef.current) {
       return;
@@ -77,7 +75,7 @@ const Game = ({ params }: Route.ComponentProps) => {
       {!tutorialOpen && (
         <LevelDialog open={levelDialogOpen} onOpenChange={setLevelDialogOpen} />
       )}
-      {!levelDialogOpen && <GoalsDialog open={goalsDialogOpen} />}
+      {!levelDialogOpen && <GoalsDialog />}
       <LevelCompleteDialog />
       <PanelGroup direction="horizontal">
         {/* autoSaveId="main-layout" */}

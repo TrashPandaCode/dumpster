@@ -7,65 +7,50 @@ import {
 } from "@radix-ui/react-dialog";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { useRef, useState } from "react";
-
 import { useGameStore } from "~/lib/zustand/game";
 import { LEVELS } from "../core/levels";
 
-export default function GoalsDialog({ open }: { open: boolean }) {
+export default function GoalsDialog() {
   const currentLevel = useGameStore((state) => state.currentLevel);
   const goals = LEVELS[currentLevel]?.goals || [
     "No goals defined for this level yet.",
   ];
 
-  // Position state and drag handling
   const [pos, setPos] = useState({ x: 16, y: 16 });
-  const dragOffset = useRef({ x: 0, y: 0 });
-  const dragging = useRef(false);
+  const dragRef = useRef<{ isDragging: boolean; offset: { x: number; y: number } }>({
+    isDragging: false,
+    offset: { x: 0, y: 0 }
+  });
 
-  function onMouseDown(e: React.MouseEvent) {
-    dragging.current = true;
-    dragOffset.current = {
+  const handleMouseDown = (e: React.MouseEvent) => {
+    dragRef.current.isDragging = true;
+    dragRef.current.offset = {
       x: e.clientX - pos.x,
       y: e.clientY - pos.y,
     };
-    window.addEventListener("mousemove", onMouseMove);
-    window.addEventListener("mouseup", onMouseUp);
-  }
+  };
 
-  function onMouseMove(e: MouseEvent) {
-    if (!dragging.current) return;
-    const width = 288;
-    const height = 96;
-    const minX = 0;
-    const minY = 0;
-    const maxX = window.innerWidth - width;
-    const maxY = window.innerHeight - height;
-    const grid = 16;
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!dragRef.current.isDragging) return;
+    
+    let x = e.clientX - dragRef.current.offset.x;
+    let y = e.clientY - dragRef.current.offset.y;
 
-    let x = e.clientX - dragOffset.current.x;
-    let y = e.clientY - dragOffset.current.y;
-
-    // Snap to grid if shift key is held
     if (e.shiftKey) {
+      const grid = 16;
       x = Math.round(x / grid) * grid;
       y = Math.round(y / grid) * grid;
     }
-
-    x = Math.max(minX, Math.min(x, maxX));
-    y = Math.max(minY, Math.min(y, maxY));
-
+    
     setPos({ x, y });
-  }
+  };
 
-  function onMouseUp() {
-    dragging.current = false;
-
-    window.removeEventListener("mousemove", onMouseMove);
-    window.removeEventListener("mouseup", onMouseUp);
-  }
+  const handleMouseUp = () => {
+    dragRef.current.isDragging = false;
+  };
 
   return (
-    <Dialog open={open} modal={false}>
+    <Dialog open={true} modal={false}>
       <DialogPortal>
         <DialogContent
           style={{
@@ -75,6 +60,9 @@ export default function GoalsDialog({ open }: { open: boolean }) {
             margin: 0,
           }}
           className="z-[20000] w-72 rounded-lg border-2 border-blue-300 bg-slate-800/95 p-4 font-mono text-white shadow-lg select-none"
+          onMouseMove={handleMouseMove}
+          onMouseUp={handleMouseUp}
+          onMouseLeave={handleMouseUp}
         >
           <VisuallyHidden asChild>
             <DialogDescription>
@@ -83,7 +71,7 @@ export default function GoalsDialog({ open }: { open: boolean }) {
           </VisuallyHidden>
           <DialogTitle
             className="mb-2 cursor-move text-lg font-bold"
-            onMouseDown={onMouseDown}
+            onMouseDown={handleMouseDown}
           >
             Goals
           </DialogTitle>
