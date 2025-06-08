@@ -72,10 +72,11 @@ const Game = ({ params }: Route.ComponentProps) => {
         </div>
       </div>
       <TutorialDialog open={tutorialOpen} onOpenChange={setTutorialOpen} />
-      {!tutorialOpen && (
-        <LevelDialog open={levelDialogOpen} onOpenChange={setLevelDialogOpen} />
-      )}
-      {!levelDialogOpen && <GoalsDialog />}
+      <LevelDialog
+        open={!tutorialOpen && levelDialogOpen}
+        onOpenChange={setLevelDialogOpen}
+      />
+      <GoalsDialog open={!levelDialogOpen} />
       <LevelCompleteDialog />
       <PanelGroup direction="horizontal">
         {/* autoSaveId="main-layout" */}
