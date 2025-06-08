@@ -14,7 +14,7 @@ import LevelCompleteDialog from "~/lib/game/components/LevelCompleteDialog";
 import LevelDialog from "~/lib/game/components/LevelDialog";
 import TutorialDialog from "~/lib/game/components/TutorialDialog";
 import { cleanupKaplay } from "~/lib/game/core/kaplayCtx";
-import { LEVELS } from "~/lib/game/core/levels";
+import { LEVELS, type LevelId } from "~/lib/game/core/levels";
 import { globalKeyTracker } from "~/lib/game/utils/globalKeyTracker";
 import { useFlowStore } from "~/lib/node-editor/node-store/flow-store";
 import { useLoopStore } from "~/lib/node-editor/node-store/loop-store";
@@ -25,7 +25,7 @@ const Game = ({ params }: Route.ComponentProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   // load current level from params
-  const level = (params.id || "calculator") as keyof typeof LEVELS; // default to "calculator" if no level is specified
+  const level = (params.id || "calculator") as LevelId; // default to "calculator" if no level is specified
   if (!(level in LEVELS)) {
     throw new Error(`Level ${level} not found`);
   }

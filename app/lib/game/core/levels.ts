@@ -1,4 +1,5 @@
-import type { Edge, Node } from "@xyflow/react";
+import type { Node } from "@xyflow/react";
+import { v4 as uuidv4 } from "uuid";
 
 import alleyOne from "~/assets/alley_one.jpg";
 import alleyTwo from "~/assets/alley_two.png";
@@ -55,8 +56,11 @@ export type Level = {
    * Image representing the level, used for visual identification.
    */
   image: string;
-  nodes: Node[];
-  edges: Edge[];
+  /**
+   * Initial nodes to be spawned on level init.
+   * TODO: move inital node declarations to separate file
+   */
+  initialNodes: Node[];
   /**
    * Function to initialize the state of the level.
    * This function is called when the level is loaded (after initGame).
@@ -98,8 +102,17 @@ export const LEVELS = {
     success: "Yesss! You nailed it! That number was exactly what we needed.",
     category: "Introduction",
     image: calcCard,
-    nodes: [],
-    edges: [],
+    initialNodes: [
+      {
+        id: uuidv4(),
+        type: "ExportToGameobject",
+        position: { x: 0, y: 0 },
+        data: { selectedGameObjects: ["raccoon"] as GameObject[] },
+        selected: false,
+        dragging: false,
+        measured: { width: 222, height: 166 },
+      },
+    ],
     initialState: initializeCalculator,
     hints: [
       "Start by placing Value nodes to represent the numbers in the equation.",
@@ -132,8 +145,7 @@ export const LEVELS = {
       "Aaaahhh... perfect! Crunchy banana peels, the scent of mystery leftovers... this is luxury.",
     category: "Introduction",
     image: sittingCard,
-    nodes: [],
-    edges: [],
+    initialNodes: [],
     initialState: initializeSitting,
     hints: [],
     modifiableGameObjects: [
@@ -166,8 +178,7 @@ export const LEVELS = {
       "Mhhm...that was delicious, but also exhausting...can't tell me eating isn't hard work!",
     category: "Introduction",
     image: bounceCard,
-    nodes: [],
-    edges: [],
+    initialNodes: [],
     initialState: initializeBounce,
     hints: [],
     modifiableGameObjects: [
@@ -219,8 +230,7 @@ export const LEVELS = {
       "Right foot, left foot, right foot, left foot...I could do this all day!",
     category: "Main Game",
     image: houseImage,
-    nodes: [],
-    edges: [],
+    initialNodes: [],
     initialState: initializeMove,
     hints: [],
     modifiableGameObjects: [
@@ -255,8 +265,7 @@ export const LEVELS = {
     success: "Wow!",
     category: "Main Game",
     image: alleyTwo,
-    nodes: [],
-    edges: [],
+    initialNodes: [],
     initialState: initializeParenting,
     hints: [],
     modifiableGameObjects: [
@@ -298,8 +307,7 @@ export const LEVELS = {
     success: "Wow!",
     category: "Main Game",
     image: alleyOne,
-    nodes: [],
-    edges: [],
+    initialNodes: [],
     initialState: initializeTimeTransform,
     hints: [],
     modifiableGameObjects: [
@@ -334,8 +342,7 @@ export const LEVELS = {
     success: "How did you complete a sandbox level?",
     category: "Sandbox",
     image: playgroundCard,
-    nodes: [],
-    edges: [],
+    initialNodes: [],
     initialState: initializePlayground,
     hints: [
       "This is a playground level",
@@ -389,3 +396,5 @@ export const LEVELS = {
     difficulty: 0,
   },
 } satisfies Record<string, Level>;
+
+export type LevelId = keyof typeof LEVELS;

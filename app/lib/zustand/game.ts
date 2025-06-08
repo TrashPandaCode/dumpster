@@ -1,8 +1,6 @@
 import { create } from "zustand";
 
-import type { LEVELS } from "../game/core/levels";
-
-type LevelId = keyof typeof LEVELS;
+import type { LevelId } from "../game/core/levels";
 
 interface GameState {
   isPaused: boolean;
@@ -13,7 +11,7 @@ interface GameState {
   setLevelCompleteDialogOpen: (open: boolean) => void;
   levelCompleted: boolean;
   setLevelCompleted: (completed: boolean) => void;
-  init: (level: keyof typeof LEVELS) => void;
+  init: (level: LevelId) => void;
 }
 
 export const useGameStore = create<GameState>((set) => ({

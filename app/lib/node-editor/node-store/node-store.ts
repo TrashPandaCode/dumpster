@@ -252,7 +252,7 @@ interface NodeStoreState {
    *
    * Checks if level data is in local storage, if so load it.
    */
-  init: (level: keyof typeof LEVELS) => void;
+  init: () => void;
   save: () => void;
   reset: () => void;
 }

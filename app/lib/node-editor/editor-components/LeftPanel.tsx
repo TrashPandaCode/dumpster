@@ -63,7 +63,7 @@ const LeftPanel = () => {
                 <button
                   className="hover:bg-jam-600 cursor-pointer rounded bg-slate-700 px-2 py-1 text-left text-sm text-white"
                   onClick={() => {
-                    useFlowStore.getState().reset();
+                    useFlowStore.getState().reset(currentLevel);
                     useNodeStore.getState().reset();
                     useLoopStore.getState().reset();
                     useDataStore.getState().reset(currentLevel);
