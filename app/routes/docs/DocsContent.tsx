@@ -42,7 +42,7 @@ export async function clientLoader({ params }: Route.LoaderArgs) {
 
   const mod = (await loader()) as {
     frontmatter: Record<string, any>;
-    default: React.ComponentType;
+    default: React.ComponentType<{ components?: Record<string, React.ComponentType<any>> }>;
   };
 
   return {
