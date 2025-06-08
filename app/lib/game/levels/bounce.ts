@@ -59,8 +59,8 @@ export const initializeBounce = () => {
   const trashcan2State = useDataStore.getState().gameObjects.get("trashcan2");
 
   trashcan1State!.get("filled")!.value = 0;
-  trashcan1State!.get("xpos")!.value = 3.63;
-  trashcan1State!.get("ypos")!.value = -0.45;
+  trashcan1State!.get("xpos")!.value = -7;
+  trashcan1State!.get("ypos")!.value = -1.75;
 
   trashcan2State!.get("filled")!.value = 1;
   trashcan2State!.get("xpos")!.value = -5;
@@ -68,8 +68,8 @@ export const initializeBounce = () => {
 
   // Set initial positions and z-index for trashcans
   trashcan1!.z = 3;
-  trashcan1!.pos.x = 3.63;
-  trashcan1!.pos.y = -0.45;
+  trashcan1!.pos.x = -7;
+  trashcan1!.pos.y = -1.75;
 
   trashcan2!.z = 3;
   trashcan2!.pos.x = -5;
