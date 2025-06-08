@@ -6,7 +6,7 @@ import {
   DialogTitle,
 } from "@radix-ui/react-dialog";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { useGameStore } from "~/lib/zustand/game";
 import { LEVELS } from "../core/levels";
@@ -32,9 +32,11 @@ export default function GoalsDialog({ open }: { open: boolean }) {
       x: e.clientX - pos.x,
       y: e.clientY - pos.y,
     };
+
+    e.preventDefault();
   };
 
-  const handleMouseMove = (e: React.MouseEvent) => {
+  const handleMouseMove = (e: MouseEvent) => {
     if (!dragRef.current.isDragging) return;
 
     let x = e.clientX - dragRef.current.offset.x;
@@ -59,6 +61,19 @@ export default function GoalsDialog({ open }: { open: boolean }) {
     dragRef.current.isDragging = false;
   };
 
+  useEffect(() => {
+    const handleGlobalMouseMove = (e: MouseEvent) => handleMouseMove(e);
+    const handleGlobalMouseUp = () => handleMouseUp();
+
+    document.addEventListener("mouseup", handleGlobalMouseUp);
+    document.addEventListener("mousemove", handleGlobalMouseMove);
+
+    return () => {
+      document.removeEventListener("mouseup", handleGlobalMouseUp);
+      document.removeEventListener("mousemove", handleGlobalMouseMove);
+    };
+  }, []);
+
   return (
     <Dialog open={open} modal={false}>
       <DialogPortal>
@@ -70,9 +85,6 @@ export default function GoalsDialog({ open }: { open: boolean }) {
             margin: 0,
           }}
           className="z-[20000] w-72 cursor-move rounded-lg border-2 border-blue-300 bg-slate-800/95 p-4 font-mono text-white shadow-lg select-none"
-          onMouseMove={handleMouseMove}
-          onMouseUp={handleMouseUp}
-          onMouseLeave={handleMouseUp}
           onMouseDown={handleMouseDown}
         >
           <VisuallyHidden asChild>
