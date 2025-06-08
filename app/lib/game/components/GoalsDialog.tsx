@@ -40,7 +40,7 @@ export default function GoalsDialog({ open }: { open: boolean }) {
     const minY = 0;
     const maxX = window.innerWidth - width;
     const maxY = window.innerHeight - height;
-    const grid = 32;
+    const grid = 16;
 
     let x = e.clientX - dragOffset.current.x;
     let y = e.clientY - dragOffset.current.y;
