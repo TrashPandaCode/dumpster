@@ -166,7 +166,9 @@ export default function TutorialDialog({
               onChange={(e) => setDontShowAgain(e.target.checked)}
               id="dontShowAgain"
             />
-            <label htmlFor="dontShowAgain">Don't show again</label>
+            <label htmlFor="dontShowAgain" className="select-none">
+              Don't show again
+            </label>
           </div>
           <div className="flex justify-end gap-5">
             <button
