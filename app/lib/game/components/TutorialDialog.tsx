@@ -1,5 +1,6 @@
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogOverlay,
@@ -26,16 +27,11 @@ type Step = {
 export default function TutorialDialog({
   open,
   onOpenChange,
-  desc = "This tutorial dialog guides you through the main features of the game.",
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  desc?: string;
 }) {
   const [step, setStep] = useState(0);
-  const [dontShowAgain, setDontShowAgain] = useState(
-    localStorage.getItem("hideTutorial") === "true"
-  );
 
   const steps: Step[] = [
     // Step 0: Tutorial Start
@@ -138,12 +134,6 @@ export default function TutorialDialog({
   ];
 
   const isLastStep = step === steps.length - 1;
-
-  function handleFinish() {
-    if (dontShowAgain) localStorage.setItem("hideTutorial", "true");
-    onOpenChange(false);
-  }
-
   const highlight = steps[step].highlight;
 
   return (
@@ -203,15 +193,19 @@ export default function TutorialDialog({
             {steps[step].title}
           </DialogTitle>
           <VisuallyHidden asChild>
-            <DialogDescription>{desc}</DialogDescription>
+            <DialogDescription>{steps[step].text}</DialogDescription>
           </VisuallyHidden>
           <div className="mb-4">{steps[step].text}</div>
           {isLastStep && (
             <div className="mb-4 flex items-center gap-2">
               <input
                 type="checkbox"
-                checked={dontShowAgain}
-                onChange={(e) => setDontShowAgain(e.target.checked)}
+                onChange={(e) =>
+                  localStorage.setItem(
+                    "hideTutorial",
+                    e.target.checked.toString()
+                  )
+                }
                 id="dontShowAgain"
               />
               <label htmlFor="dontShowAgain" className="select-none">
@@ -237,12 +231,11 @@ export default function TutorialDialog({
                 Back
               </button>
               {isLastStep ? (
-                <button
-                  onClick={handleFinish}
+                <DialogClose
                   className="cursor-pointer rounded-lg bg-slate-700/80 px-3 py-2 hover:bg-slate-600 focus:outline-1 focus:outline-blue-300"
                 >
                   Start
-                </button>
+                </DialogClose>
               ) : (
                 <button
                   onClick={() => setStep(step + 1)}

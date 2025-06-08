@@ -32,7 +32,7 @@ const Game = ({ params }: Route.ComponentProps) => {
   //TODO: navigate to /levels/calculator too. easy option: use navigate("/levels/calculator") in the useEffect below, nice option: handle in router directly
 
   const [tutorialOpen, setTutorialOpen] = useState(
-    localStorage.getItem("hideTutorial") !== "true"
+    !JSON.parse(localStorage.getItem("hideTutorial") ?? "false")
   );
 
   const [levelDialogOpen, setLevelDialogOpen] = useState(!tutorialOpen);
