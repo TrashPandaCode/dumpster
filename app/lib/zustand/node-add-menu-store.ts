@@ -13,11 +13,12 @@ type NodeAddMenuStore = {
   mousePosition: Position;
   setMousePosition: (position: Position) => void;
   initMouseTracking: (container: HTMLElement) => (() => void) | undefined;
-
   // Add menu
   menuX: number;
   menuY: number;
   visible: boolean;
+  lastMenuPosition: { x: number; y: number } | null; // Neue Property für letzte Menüposition
+  canvasContainer: HTMLElement | null; // Referenz zum Canvas Container
   openAddMenu: (x?: number, y?: number) => void;
   closeAddMenu: () => void;
 };
@@ -28,10 +29,10 @@ export const useNodeAddMenuStore = create<NodeAddMenuStore>((set, get) => ({
   // Mouse tracking state
   mousePosition: null,
   setMousePosition: (position) => set({ mousePosition: position }),
-
   initMouseTracking: (container: HTMLElement) => {
     if (initialized) return;
     initialized = true;
+    set({ canvasContainer: container });
 
     const updatePosition = (e: MouseEvent) => {
       const bounds = container.getBoundingClientRect();
@@ -62,6 +63,7 @@ export const useNodeAddMenuStore = create<NodeAddMenuStore>((set, get) => ({
       container.removeEventListener("mouseleave", handleMouseLeave);
       initialized = false;
       get().setMousePosition(null);
+      set({ canvasContainer: null });
     };
   },
 
@@ -69,30 +71,46 @@ export const useNodeAddMenuStore = create<NodeAddMenuStore>((set, get) => ({
   menuX: 0,
   menuY: 0,
   visible: false,
+  lastMenuPosition: null,
+  canvasContainer: null,
 
   openAddMenu: (x?: number, y?: number) => {
     const state = get();
 
-    // If no coordinates provided, use current mouse position
-    if (x === undefined || y === undefined) {
-      const mousePos = state.mousePosition;
-      if (!mousePos) {
-        console.warn(
-          "Cannot open add menu: no coordinates provided and no mouse position available"
-        );
-        return;
-      }
-      x = mousePos.clientX;
-      y = mousePos.clientY;
+    let finalX: number;
+    let finalY: number;
+
+    if (x !== undefined && y !== undefined) {
+      finalX = x;
+      finalY = y;
+    } else if (state.mousePosition) {
+      finalX = state.mousePosition.clientX;
+      finalY = state.mousePosition.clientY;
+    } else if (state.lastMenuPosition) {
+      finalX = state.lastMenuPosition.x;
+      finalY = state.lastMenuPosition.y;
+    } else if (state.canvasContainer) {
+      const bounds = state.canvasContainer.getBoundingClientRect();
+      finalX = bounds.left + bounds.width / 2;
+      finalY = bounds.top + bounds.height / 2;
+    } else {
+      console.warn(
+        "Cannot open add menu: no coordinates available and canvas container not found"
+      );
+      return;
     }
 
-    set({ menuX: x, menuY: y, visible: true });
+    set({
+      menuX: finalX,
+      menuY: finalY,
+      visible: true,
+      lastMenuPosition: { x: finalX, y: finalY },
+    });
   },
 
   closeAddMenu: () => set({ visible: false }),
 }));
 
-// Hook for mouse tracking
 export function useMouseTrackingInPane(
   ref: React.RefObject<HTMLElement | null>
 ) {
