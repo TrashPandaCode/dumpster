@@ -133,6 +133,7 @@ export default function TutorialDialog({
     },
   ];
 
+  const isFirstStep = step === 0;
   const isLastStep = step === steps.length - 1;
   const highlight = steps[step].highlight;
 
@@ -196,7 +197,7 @@ export default function TutorialDialog({
             <DialogDescription>{steps[step].text}</DialogDescription>
           </VisuallyHidden>
           <div className="mb-4">{steps[step].text}</div>
-          {isLastStep && (
+          {(isFirstStep || isLastStep) && (
             <div className="mb-4 flex items-center gap-2">
               <input
                 type="checkbox"
@@ -218,6 +219,11 @@ export default function TutorialDialog({
               {step + 1} / {steps.length}
             </div>
             <div className="flex justify-end gap-5">
+              {isFirstStep && (
+                <DialogClose className="cursor-pointer rounded-lg bg-slate-700 px-3 py-2 hover:bg-slate-600 focus:outline-1 focus:outline-blue-300">
+                  Skip
+                </DialogClose>
+              )}
               <button
                 onClick={() => setStep(step - 1)}
                 disabled={step === 0}
@@ -231,9 +237,7 @@ export default function TutorialDialog({
                 Back
               </button>
               {isLastStep ? (
-                <DialogClose
-                  className="cursor-pointer rounded-lg bg-slate-700 px-3 py-2 hover:bg-slate-600 focus:outline-1 focus:outline-blue-300"
-                >
+                <DialogClose className="cursor-pointer rounded-lg bg-slate-700 px-3 py-2 hover:bg-slate-600 focus:outline-1 focus:outline-blue-300">
                   Start
                 </DialogClose>
               ) : (
