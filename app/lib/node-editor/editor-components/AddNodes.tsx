@@ -13,7 +13,7 @@ import { LEVELS } from "~/lib/game/core/levels";
 import { useGameStore } from "~/lib/zustand/game";
 import { INITIAL_GROUP_SIZE } from "../nodes/constants";
 import { TYPES } from "../nodes/math-float/types";
-import { connectNodesToLoop, createForLoop } from "../utils";
+import { connectNodesToLoop, createForLoop } from "../utils/loops";
 
 const AddNodes = ({
   x,

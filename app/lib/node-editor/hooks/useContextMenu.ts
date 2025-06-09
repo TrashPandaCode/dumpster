@@ -2,7 +2,6 @@ import type { Node } from "@xyflow/react";
 import { useCallback, useState } from "react";
 
 import { useNodeAddMenuStore } from "../../zustand/node-add-menu-store";
-import { getContextMenuPosition } from "../utils";
 import {
   useDuplicateHotkey,
   useEscapeHotkey,
@@ -123,4 +122,21 @@ export function useContextMenu() {
     handleCloseCombinedMenu,
     onPaneClick,
   };
+}
+
+function getContextMenuPosition(event: MouseEvent | React.MouseEvent): {
+  x: number;
+  y: number;
+} {
+  //Specific numbers for ContextMenu size might need to be changed later depending on if the ContextMenu receives any changes
+  //TODO: if this is really needed, calculate the size of the ContextMenu dynamically
+  const x =
+    (event as React.MouseEvent).clientX > window.innerWidth - 274
+      ? window.innerWidth - 274
+      : (event as React.MouseEvent).clientX;
+  const y =
+    (event as React.MouseEvent).clientY > window.innerHeight - 284
+      ? window.innerHeight - 284
+      : (event as React.MouseEvent).clientY;
+  return { x: x - 15, y: y - 15 };
 }

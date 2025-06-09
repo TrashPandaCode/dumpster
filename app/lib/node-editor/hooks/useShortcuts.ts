@@ -3,7 +3,7 @@ import { useEffect } from "react";
 
 import { globalKeyTracker } from "../../game/utils/globalKeyTracker";
 import { useNodeAddMenuStore } from "../../zustand/node-add-menu-store";
-import { duplicateNodes } from "../utils";
+import { duplicateNodes } from "../utils/duplicate";
 
 // Hook to handle duplicating nodes with a hotkey
 export function useDuplicateHotkey() {

@@ -2,7 +2,7 @@ import { useReactFlow } from "@xyflow/react";
 import { useCallback } from "react";
 
 import { globalKeyTracker } from "~/lib/game/utils/globalKeyTracker";
-import { duplicateNodes } from "../utils";
+import { duplicateNodes } from "../utils/duplicate";
 import AddNodes from "./AddNodes";
 
 type NodeContextMenuProps = {
