@@ -155,7 +155,7 @@ export const useFlowStore = create<FlowState>()(
         if (pastState.edges.length !== currentState.edges.length) {
           return (
             Object.values(diff(pastState.edges, currentState.edges)) as Edge[]
-          ).some((edg) => edg.animated);
+          ).some((edg) => edg?.animated);
         }
         if (pastState.nodes.length !== currentState.nodes.length) return false;
 
