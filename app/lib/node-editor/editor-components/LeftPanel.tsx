@@ -2,6 +2,7 @@ import {
   ChatBubbleIcon,
   PauseIcon,
   PlayIcon,
+  ResetIcon,
   TrashIcon,
 } from "@radix-ui/react-icons";
 import {
@@ -26,6 +27,8 @@ const LeftPanel = () => {
   const isPaused = useGameStore((state) => state.isPaused);
   const play = useGameStore((state) => state.play);
   const pause = useGameStore((state) => state.pause);
+
+  const { undo, redo, clear } = useFlowStore.temporal.getState();
 
   return (
     <Panel
@@ -78,6 +81,7 @@ const LeftPanel = () => {
           </PopoverContent>
         </PopoverPortal>
       </Popover>
+
       <LevelDialog
         trigger={
           <IconButton tooltip="Level Info" side="right">
@@ -85,6 +89,25 @@ const LeftPanel = () => {
           </IconButton>
         }
       />
+
+      <IconButton
+        tooltip="Print Edges"
+        side="left"
+        onClick={() => {
+          undo();
+        }}
+      >
+        <ResetIcon className="text-white" />
+      </IconButton>
+      <IconButton
+        tooltip="Print Edges"
+        side="left"
+        onClick={() => {
+          redo();
+        }}
+      >
+        <ResetIcon className="-scale-x-100 text-white" />
+      </IconButton>
     </Panel>
   );
 };
