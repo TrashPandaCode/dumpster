@@ -6,7 +6,6 @@ import { create } from "zustand";
 import { LEVELS, type LevelId } from "~/lib/game/core/levels";
 import type { GameObject } from "~/lib/game/gameObjects";
 import { toast } from "../editor-components/Toast";
-import { useNodeStore } from "./node-store";
 
 type HighlightType = "cycle" | "duplicate";
 
