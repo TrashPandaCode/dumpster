@@ -113,6 +113,8 @@ export const useNodeAddMenuStore = create<NodeAddMenuStore>((set, get) => ({
       return;
     }
 
+    menuX = menuX > window.innerWidth - 274 ? window.innerWidth - 274 : menuX;
+    menuY = menuY > window.innerHeight - 284 ? window.innerHeight - 284 : menuY;
     set({
       menuX,
       menuY,
