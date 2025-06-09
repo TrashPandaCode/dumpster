@@ -242,7 +242,15 @@ export const LEVELS = {
         ],
       },
     ],
-    availableNodes: ["Display", "ExportToGameobject"],
+    availableNodes: [
+      "Display",
+      "ExportToGameobject",
+      "ImportFromGameobject",
+      "Value",
+      "Switch",
+      "Math",
+      "KeyPress",
+    ],
     difficulty: 2,
   },
   parenting: {
