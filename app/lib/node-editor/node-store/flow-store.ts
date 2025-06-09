@@ -1,4 +1,5 @@
 import { type Edge, type Node } from "@xyflow/react";
+import { diff } from "deep-object-diff";
 import { temporal } from "zundo";
 import { create } from "zustand";
 
@@ -152,18 +153,21 @@ export const useFlowStore = create<FlowState>()(
         return { nodes, edges };
       },
       equality: (pastState, currentState) => {
-        // If only node positions changed, consider states equal (don't track)
-        if (pastState.edges.length !== currentState.edges.length) return false;
+        if (pastState.edges.length !== currentState.edges.length) {
+          return (
+            Object.values(diff(pastState.edges, currentState.edges)) as Edge[]
+          ).some((edg) => edg.animated);
+        }
         if (pastState.nodes.length !== currentState.nodes.length) return false;
 
-        // Check if only positions changed
         for (let i = 0; i < pastState.nodes.length; i++) {
           const pastNode = pastState.nodes[i];
           const currentNode = currentState.nodes[i];
 
-          // Compare everything except position
+          // Compare everything except positions, selected, dragging, data, measured, style
           const pastWithoutPosition = {
             ...pastNode,
+            style: undefined,
             position: undefined,
             selected: false,
             dragging: false,
@@ -172,6 +176,7 @@ export const useFlowStore = create<FlowState>()(
           };
           const currentWithoutPosition = {
             ...currentNode,
+            style: undefined,
             position: undefined,
             selected: false,
             dragging: false,
@@ -179,6 +184,7 @@ export const useFlowStore = create<FlowState>()(
             measured: undefined,
           };
 
+          //TODO: replace stringify for performance
           if (
             JSON.stringify(pastWithoutPosition) !==
             JSON.stringify(currentWithoutPosition)
@@ -186,8 +192,6 @@ export const useFlowStore = create<FlowState>()(
             return false;
           }
         }
-
-        // Only positions changed, so consider states equal
         return true;
       },
     }
@@ -206,6 +210,8 @@ export function redo() {
 
 function updateNodeStore() {
   const state = useFlowStore.getState();
+  state.resetHighlight("cycle");
+
   // update the node store (by replacing all nodes and edges)
   const nodeStoreState = useNodeStore.getState();
   nodeStoreState.reset();
