@@ -13,11 +13,12 @@ type NodeAddMenuStore = {
   mousePosition: Position;
   setMousePosition: (position: Position) => void;
   initMouseTracking: (container: HTMLElement) => (() => void) | undefined;
-
   // Add menu
   menuX: number;
   menuY: number;
   visible: boolean;
+  lastMenuPosition: { x: number; y: number } | null; // Neue Property für letzte Menüposition
+  canvasContainer: HTMLElement | null; // Referenz zum Canvas Container
   openAddMenu: (x?: number, y?: number) => void;
   closeAddMenu: () => void;
 };
@@ -28,16 +29,20 @@ export const useNodeAddMenuStore = create<NodeAddMenuStore>((set, get) => ({
   // Mouse tracking state
   mousePosition: null,
   setMousePosition: (position) => set({ mousePosition: position }),
-
   initMouseTracking: (container: HTMLElement) => {
+    // Prevent re-initialization
     if (initialized) return;
     initialized = true;
+    // Set the canvas container reference
+    set({ canvasContainer: container });
 
+    // Function to update mouse position
     const updatePosition = (e: MouseEvent) => {
       const bounds = container.getBoundingClientRect();
       const x = e.clientX - bounds.left;
       const y = e.clientY - bounds.top;
 
+      // Check if the mouse is within the bounds of the container
       if (x >= 0 && y >= 0 && x <= bounds.width && y <= bounds.height) {
         get().setMousePosition({
           x,
@@ -46,14 +51,17 @@ export const useNodeAddMenuStore = create<NodeAddMenuStore>((set, get) => ({
           clientY: e.clientY,
         });
       } else {
+        // If the mouse is outside the bounds, set position to null
         get().setMousePosition(null);
       }
     };
 
+    // If the mouse leaves the container, set position to null
     const handleMouseLeave = () => {
       get().setMousePosition(null);
     };
 
+    // Add event listeners to the container
     container.addEventListener("mousemove", updatePosition);
     container.addEventListener("mouseleave", handleMouseLeave);
 
@@ -62,6 +70,7 @@ export const useNodeAddMenuStore = create<NodeAddMenuStore>((set, get) => ({
       container.removeEventListener("mouseleave", handleMouseLeave);
       initialized = false;
       get().setMousePosition(null);
+      set({ canvasContainer: null });
     };
   },
 
@@ -69,30 +78,53 @@ export const useNodeAddMenuStore = create<NodeAddMenuStore>((set, get) => ({
   menuX: 0,
   menuY: 0,
   visible: false,
+  lastMenuPosition: null,
+  canvasContainer: null,
 
+  // Function to open the add menu
   openAddMenu: (x?: number, y?: number) => {
     const state = get();
 
-    // If no coordinates provided, use current mouse position
-    if (x === undefined || y === undefined) {
-      const mousePos = state.mousePosition;
-      if (!mousePos) {
-        console.warn(
-          "Cannot open add menu: no coordinates provided and no mouse position available"
-        );
-        return;
-      }
-      x = mousePos.clientX;
-      y = mousePos.clientY;
+    // Coordinates, the menu will open at
+    let menuX: number;
+    let menuY: number;
+
+    if (x !== undefined && y !== undefined) {
+      // If x and y are provided, use them
+      menuX = x;
+      menuY = y;
+    } else if (state.mousePosition) {
+      // If mouse position is available, use it
+      menuX = state.mousePosition.clientX;
+      menuY = state.mousePosition.clientY;
+    } else if (state.lastMenuPosition) {
+      // If mouse position is not available, use the last menu position
+      menuX = state.lastMenuPosition.x;
+      menuY = state.lastMenuPosition.y;
+    } else if (state.canvasContainer) {
+      // If no coordinates are available, use the center of the canvas container
+      const bounds = state.canvasContainer.getBoundingClientRect();
+      menuX = bounds.left + bounds.width / 2;
+      menuY = bounds.top + bounds.height / 2;
+    } else {
+      console.warn(
+        "Cannot open add menu: no coordinates available and canvas container not found"
+      );
+      return;
     }
 
-    set({ menuX: x, menuY: y, visible: true });
+    set({
+      menuX,
+      menuY,
+      visible: true,
+      lastMenuPosition: { x: menuX, y: menuY },
+    });
   },
 
   closeAddMenu: () => set({ visible: false }),
 }));
 
-// Hook for mouse tracking
+// Hook to initialize mouse tracking in a specific pane
 export function useMouseTrackingInPane(
   ref: React.RefObject<HTMLElement | null>
 ) {
