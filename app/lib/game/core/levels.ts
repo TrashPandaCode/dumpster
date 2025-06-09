@@ -260,9 +260,9 @@ export const LEVELS = {
     ],
     goals: [
       "Parent the trashcan to the raccoon.",
-      "Bring the trashcan to the flag.",
+      `Bring trashcans to the flag (3 total).`,
     ],
-    success: "Wow!",
+    success: "That should be enough food for a while... or at least two days.",
     category: "Main Game",
     image: alleyTwo,
     initialNodes: [],
@@ -277,7 +277,7 @@ export const LEVELS = {
         ],
       },
       {
-        id: "trashcanFilled",
+        id: "trashcanP",
         connections: [
           { label: "xpos", access: "all" },
           { label: "ypos", access: "all" },

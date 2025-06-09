@@ -215,8 +215,8 @@ export function animPlayer(
     player.pos.x = playerState!.get("xpos")!.value;
     player.pos.y = playerState!.get("ypos")!.value;
   } else if (movementMode === "input") {
-    if (k.isKeyDown("a") || k.isKeyDown("left")) player.pos.x -= 7 * k.dt();
-    if (k.isKeyDown("d") || k.isKeyDown("right")) player.pos.x += 7 * k.dt();
+    if (k.isKeyDown("a") || k.isKeyDown("left")) player.pos.x -= 5 * k.dt();
+    if (k.isKeyDown("d") || k.isKeyDown("right")) player.pos.x += 5 * k.dt();
   } else if (movementMode === "loop" && loopConfig) {
     // walks infinitely if speed is < 0
 
