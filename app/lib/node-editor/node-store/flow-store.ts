@@ -5,6 +5,7 @@ import { create } from "zustand";
 import { LEVELS, type LevelId } from "~/lib/game/core/levels";
 import type { GameObject } from "~/lib/game/gameObjects";
 import { toast } from "../editor-components/Toast";
+import { useNodeStore } from "./node-store";
 
 type HighlightType = "cycle" | "duplicate";
 
@@ -37,10 +38,10 @@ export const useFlowStore = create<FlowState>()(
           edges: updater(state.edges),
         })),
       resetHighlight: (type) => {
+        const highlightNodes = get().highlightNodes.get(type);
+        if (!highlightNodes) return;
+        
         set((state) => {
-          const highlightNodes = get().highlightNodes.get(type);
-          if (!highlightNodes) return state;
-
           get().highlightNodes.delete(type);
 
           return {
@@ -145,6 +146,62 @@ export const useFlowStore = create<FlowState>()(
           edges: [],
         }),
     }),
-    {}
+    {
+      partialize: (state) => {
+        const { nodes, edges } = state;
+        return { nodes, edges };
+      },
+      equality: (pastState, currentState) => {
+        // If only node positions changed, consider states equal (don't track)
+        if (pastState.edges !== currentState.edges) return false;
+        if (pastState.nodes.length !== currentState.nodes.length) return false;
+
+        // Check if only positions changed
+        for (let i = 0; i < pastState.nodes.length; i++) {
+          const pastNode = pastState.nodes[i];
+          const currentNode = currentState.nodes[i];
+
+          // Compare everything except position
+          const pastWithoutPosition = {
+            ...pastNode,
+            position: undefined,
+            selected: false,
+            dragging: false,
+            data: undefined,
+            measured: undefined,
+          };
+          const currentWithoutPosition = {
+            ...currentNode,
+            position: undefined,
+            selected: false,
+            dragging: false,
+            data: undefined,
+            measured: undefined,
+          };
+
+          if (
+            JSON.stringify(pastWithoutPosition) !==
+            JSON.stringify(currentWithoutPosition)
+          ) {
+            return false;
+          }
+        }
+
+        // update the node store (by replacing all nodes and edges)
+        const nodeStoreState = useNodeStore.getState();
+        nodeStoreState.reset();
+
+        currentState.nodes.forEach((node) => {
+          nodeStoreState.replaceNode(node);
+        });
+
+        currentState.edges.forEach((edge) => {
+          nodeStoreState.addEdge(edge);
+        });
+
+        // Only positions changed, so consider states equal
+        return true;
+      },
+    }
   )
 );
