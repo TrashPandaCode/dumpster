@@ -31,6 +31,8 @@ const primaryModifier = isMac ? "Shift" : "Control";
 const keyboardShortcuts = new Set<string>([
   `${primaryModifier}+d`,
   `${primaryModifier}+ `,
+  `${primaryModifier}+z`,
+  `${primaryModifier}+y`,
   "Escape",
 ]);
 

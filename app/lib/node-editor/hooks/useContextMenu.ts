@@ -6,6 +6,8 @@ import {
   useDuplicateHotkey,
   useEscapeHotkey,
   useNewNodeHotkey,
+  useRedoHotkey,
+  useUndoHotkey,
 } from "./useShortcuts";
 
 export function useContextMenu() {
@@ -96,6 +98,8 @@ export function useContextMenu() {
   useEscapeHotkey(closeAllMenus, anyOpen);
   useDuplicateHotkey();
   useNewNodeHotkey();
+  useUndoHotkey();
+  useRedoHotkey();
 
   const shouldShowPaneContextMenu = paneContextMenu || visible;
   const paneContextMenuX = paneContextMenu?.x ?? addMenuX;

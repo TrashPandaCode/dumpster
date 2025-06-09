@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { globalKeyTracker } from "../../game/utils/globalKeyTracker";
 import { useNodeAddMenuStore } from "../../zustand/node-add-menu-store";
 import { duplicateNodes } from "../utils/duplicate";
+import { redo, undo } from "../utils/undo";
 
 // Hook to handle duplicating nodes with a hotkey
 export function useDuplicateHotkey() {
@@ -30,6 +31,28 @@ export function useNewNodeHotkey() {
       if (useNodeAddMenuStore.getState().visible)
         useNodeAddMenuStore.getState().closeAddMenu();
       else useNodeAddMenuStore.getState().openAddMenu();
+    });
+    return remove;
+  }, []);
+}
+
+export function useUndoHotkey() {
+  useEffect(() => {
+    // Use the cross-platform shortcut (Shift+Space on Mac, Ctrl+Space on others)
+    const shortcut = globalKeyTracker.appendPlatformModifier("z");
+    const remove = globalKeyTracker.registerShortcut(shortcut, (e) => {
+      undo()
+    });
+    return remove;
+  }, []);
+}
+
+export function useRedoHotkey() {
+  useEffect(() => {
+    // Use the cross-platform shortcut (Shift+Space on Mac, Ctrl+Space on others)
+    const shortcut = globalKeyTracker.appendPlatformModifier("y");
+    const remove = globalKeyTracker.registerShortcut(shortcut, (e) => {
+      redo();
     });
     return remove;
   }, []);
