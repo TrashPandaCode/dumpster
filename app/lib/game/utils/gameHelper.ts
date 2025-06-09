@@ -187,6 +187,7 @@ export function addBackgrounds(
     ]);
   }
 }
+export let moveDirection = 1;
 
 export function animPlayer(
   player: PlayerType,
@@ -218,9 +219,12 @@ export function animPlayer(
     if (k.isKeyDown("d") || k.isKeyDown("right")) player.pos.x += 7 * k.dt();
   } else if (movementMode === "loop" && loopConfig) {
     // walks infinitely if speed is < 0
-    player.pos.x += loopConfig.speed;
-    if (player.pos.x > loopConfig.maxX) {
-      player.pos.x = loopConfig.minX;
+
+    player.pos.x += loopConfig.speed * moveDirection * k.dt();
+    if (player.pos.x >= loopConfig.maxX) {
+      moveDirection = -1;
+    } else if (player.pos.x <= loopConfig.minX) {
+      moveDirection = 1;
     }
   }
 
