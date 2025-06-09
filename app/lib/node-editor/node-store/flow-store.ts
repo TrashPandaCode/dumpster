@@ -2,6 +2,7 @@ import { type Edge, type Node } from "@xyflow/react";
 import { create } from "zustand";
 
 import { LEVELS, type LevelId } from "~/lib/game/core/levels";
+import type { GameObject } from "~/lib/game/gameObjects";
 import { toast } from "../editor-components/Toast";
 
 type HighlightType = "cycle" | "duplicate";
@@ -76,14 +77,14 @@ export const useFlowStore = create<FlowState>((set, get) => ({
     const grouped: Record<string, Node[]> = {};
 
     for (const node of exportNodes) {
-      const gameObject = (
-        node.data.gameObject as { current: string } | undefined
-      )?.current;
-      if (!gameObject) continue;
-      if (!grouped[gameObject]) {
-        grouped[gameObject] = [];
+      const gameObjects = node.data.selectedGameObjects as GameObject[];
+
+      for (const gameObject of gameObjects) {
+        if (!grouped[gameObject]) {
+          grouped[gameObject] = [];
+        }
+        grouped[gameObject].push(node);
       }
-      grouped[gameObject].push(node);
     }
 
     for (const [_, group] of Object.entries(grouped)) {
