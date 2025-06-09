@@ -38,7 +38,6 @@ export function useNewNodeHotkey() {
 
 export function useUndoHotkey() {
   useEffect(() => {
-    // Use the cross-platform shortcut (Shift+Space on Mac, Ctrl+Space on others)
     const shortcut = globalKeyTracker.appendPlatformModifier("z");
     const remove = globalKeyTracker.registerShortcut(shortcut, (e) => {
       undo()
@@ -49,7 +48,6 @@ export function useUndoHotkey() {
 
 export function useRedoHotkey() {
   useEffect(() => {
-    // Use the cross-platform shortcut (Shift+Space on Mac, Ctrl+Space on others)
     const shortcut = globalKeyTracker.appendPlatformModifier("y");
     const remove = globalKeyTracker.registerShortcut(shortcut, (e) => {
       redo();
