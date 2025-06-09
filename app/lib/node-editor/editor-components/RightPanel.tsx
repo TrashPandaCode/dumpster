@@ -81,7 +81,7 @@ const RightPanel: React.FC<{ rfInstance: ReactFlowInstance | undefined }> = ({
             <CubeIcon className="text-white" />
           </IconButton>
           <IconButton
-            tooltip="Print Edges"
+            tooltip="Print Temporal State"
             side="left"
             onClick={() => {
               console.log(useFlowStore.temporal.getState());
