@@ -17,9 +17,10 @@ import { Panel } from "@xyflow/react";
 import LevelDialog from "~/lib/game/components/LevelDialog";
 import { useDataStore } from "~/lib/zustand/data";
 import { useGameStore } from "~/lib/zustand/game";
-import { redo, undo, useFlowStore } from "../node-store/flow-store";
+import { useFlowStore } from "../node-store/flow-store";
 import { useLoopStore } from "../node-store/loop-store";
 import { useNodeStore } from "../node-store/node-store";
+import { redo, undo } from "../utils/undo";
 import { IconButton } from "./IconButton";
 
 const LeftPanel = () => {
