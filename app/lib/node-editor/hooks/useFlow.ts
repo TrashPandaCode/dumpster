@@ -284,7 +284,6 @@ export function useFlow() {
           // the nodes family is moving, it is not up for adoption
         } else {
           // the node is directly adopted from it's old family, paperwork with old parent is required
-          console.log("node is directly adopted", node.id);
           const oldParentNode = getNode(node.parentId)!;
 
           if (!oldParentNode) {
@@ -320,11 +319,9 @@ export function useFlow() {
     updatedNodes.push(
       ...parentsToUpdate.map((p) => {
         const updatedChildren = updatedNodes.filter((n) => n.parentId === p.id);
-        console.log("updatedChildren", updatedChildren);
         const nonUpdatedChildren = getNodes().filter(
           (n) => n.parentId === p.id && !updatedNodes.some((c) => c.id === n.id)
         );
-        console.log("nonUpdatedChildren", nonUpdatedChildren);
 
         const children = [...updatedChildren, ...nonUpdatedChildren];
         const pSizings = computeGroupSizings(p, children);
