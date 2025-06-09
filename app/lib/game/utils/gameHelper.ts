@@ -176,7 +176,7 @@ export function addBackgrounds(
     k.pos(0, -BACKGROUND_OFFSET),
     k.z(0),
   ]);
-  if(light){
+  if (light) {
     game.add([
       k.sprite("backgroundLight"),
       k.anchor("center"),
@@ -214,8 +214,8 @@ export function animPlayer(
     player.pos.x = playerState!.get("xpos")!.value;
     player.pos.y = playerState!.get("ypos")!.value;
   } else if (movementMode === "input") {
-    if (k.isKeyDown("left")) player.pos.x -= 7 * k.dt();
-    if (k.isKeyDown("right")) player.pos.x += 7 * k.dt();
+    if (k.isKeyDown("a") || k.isKeyDown("left")) player.pos.x -= 7 * k.dt();
+    if (k.isKeyDown("d") || k.isKeyDown("right")) player.pos.x += 7 * k.dt();
   } else if (movementMode === "loop" && loopConfig) {
     // walks infinitely if speed is < 0
     player.pos.x += loopConfig.speed;
