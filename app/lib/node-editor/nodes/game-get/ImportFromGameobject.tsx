@@ -9,7 +9,8 @@ import LabelHandle from "../../node-components/LabelHandle";
 import MultiSelectDropDown from "../../node-components/MultiSelectDropDown";
 import NodeContent from "../../node-components/NodeContent";
 import type { nodeInputs, nodeResults } from "../../node-store/node-store";
-import { getHandleIntersection, getInput } from "../../utils";
+import { getInput } from "../../utils/compute";
+import { getHandleIntersection } from "../../utils/handles";
 import { IN_HANDLE_1 } from "../constants";
 
 /**

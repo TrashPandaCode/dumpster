@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-import { handleUUID } from "../utils";
+import { handleUUID } from "../utils/handles";
 
 type LoopType = Map<
   string, //loop id: same for start and end node

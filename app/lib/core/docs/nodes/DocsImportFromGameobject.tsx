@@ -8,7 +8,7 @@ import LabelHandle from "~/lib/node-editor/node-components/LabelHandle";
 import MultiSelectDropDown from "~/lib/node-editor/node-components/MultiSelectDropDown";
 import NodeContent from "~/lib/node-editor/node-components/NodeContent";
 import { IN_HANDLE_1 } from "~/lib/node-editor/nodes/constants";
-import { getHandleIntersection } from "~/lib/node-editor/utils";
+import { getHandleIntersection } from "~/lib/node-editor/utils/handles";
 import { type GameObjectsData } from "~/lib/zustand/data";
 
 const DocsImportFromGameobject = memo(

@@ -2,7 +2,7 @@ import { Panel, useReactFlow } from "@xyflow/react";
 import React, { useCallback } from "react";
 
 import { globalKeyTracker } from "~/lib/game/utils/globalKeyTracker";
-import { duplicateNodes } from "../utils";
+import { duplicateNodes } from "../utils/duplicate";
 
 type SelectionContextMenuProps = {
   nodeIds: string[];

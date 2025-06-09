@@ -1,9 +1,8 @@
 import { type Connection, type Edge, type Node } from "@xyflow/react";
 import { create } from "zustand";
 
-import type { LEVELS } from "~/lib/game/core/levels";
 import { toast } from "../editor-components/Toast";
-import { connectionToEdgeId } from "../utils";
+import { connectionToEdgeId } from "../utils/edges";
 import { useFlowStore } from "./flow-store";
 
 /**
