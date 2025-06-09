@@ -14,6 +14,7 @@ export function useDuplicateHotkey() {
     const shortcut = globalKeyTracker.appendPlatformModifier("d");
     const remove = globalKeyTracker.registerShortcut(shortcut, (e) => {
       const selectedNodeIds = getNodes().filter((n) => n.selected);
+      // If nodes are selected, duplicate them
       if (selectedNodeIds.length > 0)
         duplicateNodes(selectedNodeIds, getEdges, getNodes, setEdges, setNodes);
     });
@@ -27,7 +28,7 @@ export function useNewNodeHotkey() {
     // Use the cross-platform shortcut (Shift+Space on Mac, Ctrl+Space on others)
     const shortcut = globalKeyTracker.appendPlatformModifier(" ");
     const remove = globalKeyTracker.registerShortcut(shortcut, (e) => {
-      // Get the current mouse position in the flow editor
+      // Open the node add menu if it's not visible, or close it if it is
       if (useNodeAddMenuStore.getState().visible)
         useNodeAddMenuStore.getState().closeAddMenu();
       else useNodeAddMenuStore.getState().openAddMenu();
@@ -62,7 +63,9 @@ export function useEscapeHotkey(
   condition: boolean = true
 ) {
   useEffect(() => {
+    // Register the Escape key shortcut
     const remove = globalKeyTracker.registerShortcut("Escape", (e) => {
+      // If any menu is open, close it
       if (condition && callback) callback();
     });
     return remove;
