@@ -32,6 +32,15 @@ export const initializeParenting = () => {
 
     animPlayer(raccoon!, k, "input");
 
+    const trashcanFilledState = useDataStore
+      .getState()
+      .gameObjects.get("trashcanFilled");
+
+    if (trashcanFilled && trashcanFilledState) {
+      trashcanFilled!.pos.x = trashcanFilledState!.get("xpos")!.value;
+      trashcanFilled!.pos.y = trashcanFilledState!.get("ypos")!.value;
+    }
+
     const distGoal = trashcanFilled!.pos.dist(goalFlag!.pos);
 
     if (distGoal <= 1 && !useGameStore.getState().levelCompleted) {
