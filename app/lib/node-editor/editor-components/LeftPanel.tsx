@@ -17,7 +17,7 @@ import { Panel } from "@xyflow/react";
 import LevelDialog from "~/lib/game/components/LevelDialog";
 import { useDataStore } from "~/lib/zustand/data";
 import { useGameStore } from "~/lib/zustand/game";
-import { useFlowStore } from "../node-store/flow-store";
+import { redo, undo, useFlowStore } from "../node-store/flow-store";
 import { useLoopStore } from "../node-store/loop-store";
 import { useNodeStore } from "../node-store/node-store";
 import { IconButton } from "./IconButton";
@@ -27,8 +27,6 @@ const LeftPanel = () => {
   const isPaused = useGameStore((state) => state.isPaused);
   const play = useGameStore((state) => state.play);
   const pause = useGameStore((state) => state.pause);
-
-  const { undo, redo, clear } = useFlowStore.temporal.getState();
 
   return (
     <Panel

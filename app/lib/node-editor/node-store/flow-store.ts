@@ -40,7 +40,7 @@ export const useFlowStore = create<FlowState>()(
       resetHighlight: (type) => {
         const highlightNodes = get().highlightNodes.get(type);
         if (!highlightNodes) return;
-        
+
         set((state) => {
           get().highlightNodes.delete(type);
 
@@ -153,7 +153,7 @@ export const useFlowStore = create<FlowState>()(
       },
       equality: (pastState, currentState) => {
         // If only node positions changed, consider states equal (don't track)
-        if (pastState.edges !== currentState.edges) return false;
+        if (pastState.edges.length !== currentState.edges.length) return false;
         if (pastState.nodes.length !== currentState.nodes.length) return false;
 
         // Check if only positions changed
@@ -187,21 +187,34 @@ export const useFlowStore = create<FlowState>()(
           }
         }
 
-        // update the node store (by replacing all nodes and edges)
-        const nodeStoreState = useNodeStore.getState();
-        nodeStoreState.reset();
-
-        currentState.nodes.forEach((node) => {
-          nodeStoreState.replaceNode(node);
-        });
-
-        currentState.edges.forEach((edge) => {
-          nodeStoreState.addEdge(edge);
-        });
-
         // Only positions changed, so consider states equal
         return true;
       },
     }
   )
 );
+
+export function undo() {
+  useFlowStore.temporal.getState().undo();
+  updateNodeStore();
+}
+
+export function redo() {
+  useFlowStore.temporal.getState().redo();
+  updateNodeStore();
+}
+
+function updateNodeStore() {
+  const state = useFlowStore.getState();
+  // update the node store (by replacing all nodes and edges)
+  const nodeStoreState = useNodeStore.getState();
+  nodeStoreState.reset();
+
+  state.nodes.forEach((node) => {
+    nodeStoreState.replaceNode(node);
+  });
+
+  state.edges.forEach((edge) => {
+    nodeStoreState.addEdge(edge);
+  });
+}
