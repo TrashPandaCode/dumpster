@@ -187,7 +187,7 @@ export default function TutorialDialog({
           onEscapeKeyDown={(e) => {
             e.preventDefault();
           }}
-          className={`${steps[step].styling} z-[10001] max-w-2xl rounded-lg border-2 border-blue-300 bg-slate-800/85 p-8 font-mono text-white shadow-lg`}
+          className={`${steps[step].styling} z-[10001] max-w-2xl rounded-lg border-2 border-blue-300 bg-slate-800/90 p-8 font-mono text-white shadow-lg`}
         >
           <DialogTitle className="mb-2 text-2xl font-bold">
             {steps[step].title}
@@ -222,7 +222,7 @@ export default function TutorialDialog({
                 onClick={() => setStep(step - 1)}
                 disabled={step === 0}
                 className={
-                  "rounded-lg bg-slate-700/80 px-3 py-2 focus:outline-1 focus:outline-blue-300" +
+                  "rounded-lg bg-slate-700 px-3 py-2 focus:outline-1 focus:outline-blue-300" +
                   (step === 0
                     ? " opacity-50"
                     : " cursor-pointer hover:bg-slate-600")
@@ -232,14 +232,14 @@ export default function TutorialDialog({
               </button>
               {isLastStep ? (
                 <DialogClose
-                  className="cursor-pointer rounded-lg bg-slate-700/80 px-3 py-2 hover:bg-slate-600 focus:outline-1 focus:outline-blue-300"
+                  className="cursor-pointer rounded-lg bg-slate-700 px-3 py-2 hover:bg-slate-600 focus:outline-1 focus:outline-blue-300"
                 >
                   Start
                 </DialogClose>
               ) : (
                 <button
                   onClick={() => setStep(step + 1)}
-                  className="cursor-pointer rounded-lg bg-slate-700/80 px-3 py-2 hover:bg-slate-600 focus:outline-1 focus:outline-blue-300"
+                  className="cursor-pointer rounded-lg bg-slate-700 px-3 py-2 hover:bg-slate-600 focus:outline-1 focus:outline-blue-300"
                   autoFocus={step === 0}
                 >
                   Next
