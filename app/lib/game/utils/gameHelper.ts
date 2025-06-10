@@ -11,7 +11,11 @@ import type {
 } from "kaplay";
 
 import { useDataStore } from "~/lib/zustand/data";
-import { BACKGROUND_OFFSET, SPRITE_SCALE } from "../constants";
+import {
+  BACKGROUND_OFFSET,
+  SMALL_FLAG_OFFSET,
+  SPRITE_SCALE,
+} from "../constants";
 import { getKaplayCtx } from "../core/kaplayCtx";
 import { type GameObject } from "../gameObjects";
 
@@ -141,8 +145,44 @@ export function addGameobjects(gameobjects: GameObject[]) {
       k.scale(SPRITE_SCALE),
       k.z(1),
       k.opacity(1),
+      k.offscreen({ distance: 10 }),
       "goalFlag",
     ]);
+
+    const smallFlag = game.add([
+      k.sprite("flag", {
+        anim: "default",
+      }),
+      k.anchor("bot"),
+      k.pos(0, 0),
+      k.scale(SPRITE_SCALE * 0.25),
+      k.z(100),
+      k.opacity(1),
+    ]);
+
+    flag.onUpdate(() => {
+      if (flag.isOffScreen()) {
+        smallFlag.opacity = 1;
+        const screenPos = flag.screenPos()!;
+        smallFlag.screenPos(
+          k.vec2(
+            k.clamp(
+              screenPos.x,
+              SMALL_FLAG_OFFSET,
+              k.width() - SMALL_FLAG_OFFSET
+            ),
+            k.clamp(
+              screenPos.y,
+              SMALL_FLAG_OFFSET,
+              k.height() - SMALL_FLAG_OFFSET
+            )
+          )
+        );
+      } else {
+        smallFlag.opacity = 0;
+      }
+    });
+
     instances.goalFlag = flag;
   }
   return instances;
