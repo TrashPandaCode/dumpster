@@ -55,7 +55,8 @@ const DefaultNodeContextMenu = ({
   nodeId: string;
   onClose: () => void;
 }) => {
-  const { getNode, getNodes, getEdges, setNodes, setEdges } = useReactFlow();
+  const { getNode, getNodes, getEdges, setNodes, setEdges, deleteElements } =
+    useReactFlow();
 
   // handle node duplication
   const duplicateNode = useCallback(() => {
@@ -79,7 +80,7 @@ const DefaultNodeContextMenu = ({
   const deleteNode = useCallback(() => {
     const idsToDelete = [nodeId];
     if (getNode(nodeId)?.type === "Group") {
-      // if the node is a group, delete all its children
+      // if the node is a group, ungroup all its children
       const children = getNodes().filter((n) => n.parentId === nodeId);
       const parent = getNode(nodeId);
 
@@ -104,21 +105,18 @@ const DefaultNodeContextMenu = ({
       });
     }
 
-    // remove all nodes with the ids in idsToDelete
-    setNodes((nodes) => nodes.filter((node) => !idsToDelete.includes(node.id)));
-    // remove all edges that connect to the nodes with the ids in idsToDelete
-    setEdges((edges) =>
-      edges.filter(
+    const nodes = getNodes();
+    const edges = getEdges();
+    deleteElements({
+      nodes: nodes.filter((node) => idsToDelete.includes(node.id)),
+      edges: edges.filter(
         (edge) =>
-          !(
-            idsToDelete.includes(edge.source) ||
-            idsToDelete.includes(edge.target)
-          )
-      )
-    );
+          idsToDelete.includes(edge.source) || idsToDelete.includes(edge.target)
+      ),
+    });
 
     onClose();
-  }, [nodeId, getNode, setNodes, setEdges, onClose, getNodes]);
+  }, [deleteElements, getEdges, getNode, getNodes, nodeId, onClose, setNodes]);
 
   return (
     <>

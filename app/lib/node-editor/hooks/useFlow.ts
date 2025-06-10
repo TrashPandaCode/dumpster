@@ -4,6 +4,7 @@ import {
   useReactFlow,
   type Edge,
   type Node,
+  type OnBeforeDelete,
   type OnConnect,
   type OnEdgesChange,
   type OnNodeDrag,
@@ -33,7 +34,7 @@ const selector = (state: {
 });
 
 export function useFlow() {
-  const { getIntersectingNodes, getNode, getNodes } = useReactFlow();
+  const { getIntersectingNodes, getNode, getNodes, getEdges } = useReactFlow();
   const { nodes, edges, setNodes, setEdges, highlightDuplicateNodes } =
     useFlowStore(useShallow(selector));
 
@@ -42,59 +43,60 @@ export function useFlow() {
   const addEdgeStore = useNodeStore((state) => state.addEdge);
   const removeEdge = useNodeStore((state) => state.removeEdge);
 
+  const onBeforeDelete: OnBeforeDelete = useCallback(
+    async ({ nodes, edges }) => {
+      const deleteNodes = new Array(...nodes);
+      const deleteEdges = new Array(...edges);
+
+      for (const node of nodes) {
+        if (node?.data.loopId) {
+          const otherLoopNode = getNodes().filter(
+            (n) => n.id !== node.id && n.data.loopId === node.data.loopId
+          )[0];
+          deleteNodes.push(otherLoopNode);
+          setNodes((nds) =>
+            nds.map((n) => ({
+              ...n,
+              data: {
+                ...n.data,
+                parentLoopId:
+                  n.data.parentLoopId === node.data.loopId
+                    ? undefined
+                    : n.data.parentLoopId,
+              },
+            }))
+          );
+          deleteEdges.push(
+            ...getEdges().filter(
+              (edg) =>
+                edg.target === otherLoopNode.id ||
+                edg.source === otherLoopNode.id
+            )
+          );
+        }
+      }
+
+      return { nodes: deleteNodes, edges: deleteEdges };
+    },
+    [getEdges, getNodes, setNodes]
+  );
+
   const onNodesChange: OnNodesChange = useCallback(
     (changes) => {
       let handleHighlight = false;
 
       changes.forEach((element) => {
         switch (element.type) {
+          case "replace":
           case "add":
             replaceNode(element.item);
             handleHighlight = element.item.type === "ExportToGameobject";
             break;
           case "remove": {
-            const node = getNode(element.id);
-            if (node?.data.loopStart || node?.data.loopEnd) {
-              const nodeOther = getNodes().filter(
-                (n) => n.id !== element.id && n.data.loopId === node.data.loopId
-              )[0];
-              setNodes((nds) =>
-                nds
-                  .filter((n) => n.data.loopId !== node?.data.loopId)
-                  .map((n) => ({
-                    ...n,
-                    data: {
-                      ...n.data,
-                      parentLoopId:
-                        n.data.parentLoopId === node.data.loopId
-                          ? undefined
-                          : n.data.parentLoopId,
-                    },
-                  }))
-              );
-              setEdges((edgs) =>
-                edgs.filter((edg) => {
-                  if (
-                    edg.target === nodeOther.id ||
-                    edg.source === nodeOther.id
-                  ) {
-                    removeEdge(edg.id);
-                    return false;
-                  }
-                  return true;
-                })
-              );
-
-              removeNode(nodeOther.id);
-            }
             removeNode(element.id);
             handleHighlight = true;
             break;
           }
-          case "replace":
-            replaceNode(element.item);
-            handleHighlight = element.item.type === "ExportToGameobject";
-            break;
         }
       });
       setNodes((nds) => applyNodeChanges(changes, nds));
@@ -102,16 +104,7 @@ export function useFlow() {
         highlightDuplicateNodes();
       }
     },
-    [
-      setNodes,
-      replaceNode,
-      getNode,
-      removeNode,
-      getNodes,
-      setEdges,
-      removeEdge,
-      highlightDuplicateNodes,
-    ]
+    [highlightDuplicateNodes, removeNode, replaceNode, setNodes]
   );
 
   const onEdgesChange: OnEdgesChange = useCallback(
@@ -390,5 +383,6 @@ export function useFlow() {
     onEdgesChange,
     onConnect,
     onNodeDragStop,
+    onBeforeDelete,
   };
 }

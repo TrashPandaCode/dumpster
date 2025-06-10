@@ -33,6 +33,7 @@ const Editor = () => {
     onEdgesChange,
     onConnect,
     onNodeDragStop,
+    onBeforeDelete,
   } = useFlow();
 
   const {
@@ -74,6 +75,7 @@ const Editor = () => {
         proOptions={{ hideAttribution: true }}
         deleteKeyCode={["Delete", "Backspace"]}
         onNodeDragStop={onNodeDragStop}
+        onBeforeDelete={onBeforeDelete}
         ref={containerRef}
         defaultEdgeOptions={{
           type: "Deletable",
