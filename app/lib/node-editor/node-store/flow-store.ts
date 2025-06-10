@@ -152,7 +152,7 @@ export const useFlowStore = create<FlowState>()(
         return { nodes, edges };
       },
       equality: (pastState, currentState) => {
-        // on add the node "saves" the state
+        // on add the node "saves" the prev state
         if (pastState.edges.length < currentState.edges.length) {
           return (
             Object.values(diff(pastState.edges, currentState.edges)) as Edge[]
@@ -160,12 +160,12 @@ export const useFlowStore = create<FlowState>()(
         }
         if (pastState.nodes.length < currentState.nodes.length) return false;
 
-        // on remove the edge "saves" the sate
+        // on remove the edge "saves" the prev state
         if (pastState.edges.length > currentState.edges.length) return false;
         if (pastState.nodes.length > currentState.nodes.length) {
           return (
             Object.values(diff(currentState.nodes, pastState.nodes)) as Node[]
-          ).some((n) => n?.type === "ForStart" || n?.type === "ForEnd");
+          ).some((n) => n?.data.loopId || n?.data.parentLoopId);
         }
 
         for (let i = 0; i < pastState.nodes.length; i++) {
