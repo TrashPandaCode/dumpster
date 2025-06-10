@@ -90,7 +90,7 @@ const LeftPanel = () => {
       />
 
       <IconButton
-        tooltip="Print Edges"
+        tooltip="Undo"
         side="left"
         onClick={() => {
           undo();
@@ -99,7 +99,7 @@ const LeftPanel = () => {
         <ResetIcon className="text-white" />
       </IconButton>
       <IconButton
-        tooltip="Print Edges"
+        tooltip="Redo"
         side="left"
         onClick={() => {
           redo();
