@@ -226,6 +226,13 @@ export function addBackgrounds(
     ]);
   }
 }
+
+export function removeBackgrounds() {
+  const { game } = getKaplayCtx();
+  game.get("background").forEach((bg) => bg.destroy());
+  game.get("backgroundLight").forEach((bg) => bg.destroy());
+}
+
 export let moveDirection = 1;
 
 export function animPlayer(
