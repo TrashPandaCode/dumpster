@@ -8,7 +8,7 @@ import {
   ClipboardIcon,
   CopyIcon,
   CubeIcon,
-  HamburgerMenuIcon,
+  PlusIcon,
 } from "@radix-ui/react-icons";
 import { Panel, useReactFlow, type ReactFlowInstance } from "@xyflow/react";
 import { useState } from "react";
@@ -35,7 +35,7 @@ const RightPanel: React.FC<{ rfInstance: ReactFlowInstance | undefined }> = ({
       <DropdownMenu open={isDropdownOpen} onOpenChange={setIsDropdownOpen}>
         <DropdownMenuTrigger asChild>
           <IconButton side="left" tooltip="Add Node" aria-label="Add Node">
-            <HamburgerMenuIcon className="text-white" />
+            <PlusIcon className="text-white" />
           </IconButton>
         </DropdownMenuTrigger>
 

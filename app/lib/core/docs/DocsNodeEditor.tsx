@@ -17,8 +17,8 @@ import { v4 as uuidv4 } from "uuid";
 
 import "@xyflow/react/dist/style.css";
 
-import { TooltipProvider } from "../node-editor/editor-components/Tooltip";
-import { createForLoop } from "../node-editor/utils";
+import { TooltipProvider } from "~/lib/node-editor/editor-components/Tooltip";
+import { createForLoop } from "~/lib/node-editor/utils/loops";
 import { docsNodeTypes } from "./nodes/docsNodeTypes";
 
 const Editor: React.FC<{ type: string }> = ({ type }) => {

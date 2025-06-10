@@ -1,7 +1,7 @@
 import { Position, useReactFlow } from "@xyflow/react";
 import { memo, useEffect, useMemo } from "react";
 
-import type { GameObject } from "~/lib/game/constants";
+import type { GameObject } from "~/lib/game/gameObjects";
 import { useDataStore } from "~/lib/zustand/data";
 import { useGameobjectSelect } from "../../hooks/useGameobjectSelect";
 import BaseHandle from "../../node-components/BaseHandle";
@@ -9,7 +9,8 @@ import LabelHandle from "../../node-components/LabelHandle";
 import MultiSelectDropDown from "../../node-components/MultiSelectDropDown";
 import NodeContent from "../../node-components/NodeContent";
 import type { nodeInputs, nodeResults } from "../../node-store/node-store";
-import { getHandleIntersection, getInput } from "../../utils";
+import { getInput } from "../../utils/compute";
+import { getHandleIntersection } from "../../utils/handles";
 import { IN_HANDLE_1 } from "../constants";
 
 /**
@@ -51,7 +52,7 @@ const ImportFromGameobject = memo(({ id, data }: { id: string; data: any }) => {
   );
 
   const handleIntersection = useMemo(
-    () => getHandleIntersection("get", gameObjects, selectedGameObjects),
+    () => getHandleIntersection("import", gameObjects, selectedGameObjects),
     [gameObjects, selectedGameObjects]
   );
 
@@ -75,7 +76,7 @@ const ImportFromGameobject = memo(({ id, data }: { id: string; data: any }) => {
       },
       selectedGameObjects,
     });
-  }, [selectedGameObjects]);
+  }, [handleIntersection]);
 
   return (
     <div className="min-w-48">

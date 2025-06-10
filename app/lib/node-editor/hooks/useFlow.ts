@@ -15,7 +15,8 @@ import { useShallow } from "zustand/shallow";
 import { toast } from "../editor-components/Toast";
 import { useFlowStore } from "../node-store/flow-store";
 import { useNodeStore } from "../node-store/node-store";
-import { applyNodeChanges, computeGroupSizings } from "../utils";
+import { computeGroupSizings } from "../utils/groups";
+import { applyNodeChanges } from "../utils/node-changes";
 
 const selector = (state: {
   nodes: Node[];
@@ -173,6 +174,7 @@ export function useFlow() {
         )
           return true;
 
+        // Send a Toast Warning for invalid connections
         toast({
           title: "Invalid Loop Connection!",
           description:

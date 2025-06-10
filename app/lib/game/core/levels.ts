@@ -1,29 +1,32 @@
-import type { Edge, Node } from "@xyflow/react";
+import type { Node } from "@xyflow/react";
+import { v4 as uuidv4 } from "uuid";
 
 import alleyOne from "~/assets/alley_one.jpg";
 import alleyTwo from "~/assets/alley_two.png";
+import bounceCard from "~/assets/home-cards/bounce_card.png";
 import calcCard from "~/assets/home-cards/calc_card.png";
-import iffiesCard from "~/assets/home-cards/iffies_card.png";
 import playgroundCard from "~/assets/home-cards/playground_card.png";
 import sittingCard from "~/assets/home-cards/sitting_card.png";
 import houseImage from "~/assets/house.png";
 import type { NodeType } from "~/lib/node-editor/nodes/node-types";
-import { type GameObject } from "../constants";
+import { type GameObject } from "../gameObjects";
+import { initializeBounce } from "../levels/bounce";
 import { initializeCalculator } from "../levels/calculator";
-import { initializeIffies } from "../levels/iffies";
 import { initializeMove } from "../levels/move";
+import { initializeParenting } from "../levels/parenting";
 import { initializePlayground } from "../levels/playground";
 import { initializeSitting } from "../levels/sitting";
 import { initializeTimeTransform } from "../levels/timeTransform";
+import { initializeKinematics } from "../levels/kinematic";
 
-export type ConnectionAccess = "set" | "get" | "all";
+export type ConnectionAccess = "export" | "import" | "all";
 
 /**
  * The Level type represents a game level.
  */
 export type Level = {
   /**
-   * Unique identifying part of the web address.
+   * Unique identifying part of the web address. Must be identical to the key of the level.
    */
   slug: string;
   /**
@@ -54,8 +57,11 @@ export type Level = {
    * Image representing the level, used for visual identification.
    */
   image: string;
-  nodes: Node[];
-  edges: Edge[];
+  /**
+   * Initial nodes to be spawned on level init.
+   * TODO: move inital node declarations to separate file
+   */
+  initialNodes: Node[];
   /**
    * Function to initialize the state of the level.
    * This function is called when the level is loaded (after initGame).
@@ -97,8 +103,17 @@ export const LEVELS = {
     success: "Yesss! You nailed it! That number was exactly what we needed.",
     category: "Introduction",
     image: calcCard,
-    nodes: [],
-    edges: [],
+    initialNodes: [
+      {
+        id: uuidv4(),
+        type: "ExportToGameobject",
+        position: { x: 0, y: 0 },
+        data: { selectedGameObjects: ["raccoon"] as GameObject[] },
+        selected: false,
+        dragging: false,
+        measured: { width: 222, height: 166 },
+      },
+    ],
     initialState: initializeCalculator,
     hints: [
       "Start by placing Value nodes to represent the numbers in the equation.",
@@ -110,7 +125,7 @@ export const LEVELS = {
     modifiableGameObjects: [
       {
         id: "raccoon",
-        connections: [{ label: "solution", access: "set" }],
+        connections: [{ label: "solution", access: "export" }],
       },
     ],
     availableNodes: ["Display", "Value", "Math", "ExportToGameobject"],
@@ -131,64 +146,100 @@ export const LEVELS = {
       "Aaaahhh... perfect! Crunchy banana peels, the scent of mystery leftovers... this is luxury.",
     category: "Introduction",
     image: sittingCard,
-    nodes: [],
-    edges: [],
+    initialNodes: [],
     initialState: initializeSitting,
     hints: [],
     modifiableGameObjects: [
       {
         id: "raccoon",
         connections: [
-          { label: "xpos", access: "set" },
-          { label: "ypos", access: "set" },
+          { label: "xpos", access: "export" },
+          { label: "ypos", access: "export" },
         ],
       },
     ],
     availableNodes: ["Display", "Value", "ExportToGameobject"],
     difficulty: 0,
   },
-  iffies: {
-    slug: "iffies",
-    name: "Iffies",
-    description:
-      "This is the third level of the game, introducing if statements.",
+  bounce: {
+    slug: "bounce",
+    name: "Bounce",
+    description: "This is the third level of the game, introducing switches.",
     dialog: [
-      'This is the third level of the game. Complete the "sitting" level first, if you haven\'t done so yet.',
-      "You will learn how to use if statements to control game object behavior.",
+      "Okay, this one's a little trickier… There are two cans, but only one has the good stuff.",
+      "They swap every few seconds, so I've gotta time it just right and stay in the full one for at least 5 seconds.",
+      "Maybe I can use one of those switch nodes to keep track of which can is full...",
+      "No pressure - just my whole nap depends on it.",
     ],
     goals: [
-      "Use an if statement to make the raccoon move into the filled trashcan.",
+      "Try using a switch node to detect which trash can is full.",
+      "Sit in the full trash can for at least 5 consecutive seconds.",
     ],
     success:
-      "Luckily the raccoon doesn't have to search for food in an empty trashcan!",
+      "Mhhm...that was delicious, but also exhausting...can't tell me eating isn't hard work!",
     category: "Introduction",
-    image: iffiesCard,
-    nodes: [],
-    edges: [],
-    initialState: initializeIffies,
+    image: bounceCard,
+    initialNodes: [],
+    initialState: initializeBounce,
     hints: [],
     modifiableGameObjects: [
       {
         id: "raccoon",
         connections: [
-          { label: "xpos", access: "set" },
-          { label: "ypos", access: "set" },
+          { label: "xpos", access: "export" },
+          { label: "ypos", access: "export" },
         ],
       },
       {
         id: "trashcan1",
         connections: [
-          { label: "filled", access: "get" },
-          { label: "xpos", access: "get" },
-          { label: "ypos", access: "get" },
+          { label: "filled", access: "import" },
+          { label: "xpos", access: "import" },
+          { label: "ypos", access: "import" },
         ],
       },
       {
         id: "trashcan2",
         connections: [
-          { label: "filled", access: "get" },
-          { label: "xpos", access: "get" },
-          { label: "ypos", access: "get" },
+          { label: "filled", access: "import" },
+          { label: "xpos", access: "import" },
+          { label: "ypos", access: "import" },
+        ],
+      },
+    ],
+    availableNodes: [
+      "Display",
+      "Switch",
+      "ImportFromGameobject",
+      "ExportToGameobject",
+    ],
+    difficulty: 1,
+  },
+  move: {
+    slug: "move",
+    name: "Move",
+    description:
+      "This is the first level of the main game, introducing movement mechanics.",
+    // feel free to change the dialog
+    dialog: [
+      "Alright, today's the day — I’m finally gonna learn how to walk! I mean, even tiny humans can do it, so how hard can it be?",
+      "Left paw, right paw... wait, which one is my right again?",
+      "Imagine: me, strutting around, hunting for snacks all by myself! No more waiting for food to come to me—I'm gonna chase those leftovers down!",
+    ],
+    goals: ["Move the raccoon to the flag."],
+    success:
+      "Right foot, left foot, right foot, left foot...I could do this all day!",
+    category: "Main Game",
+    image: houseImage,
+    initialNodes: [],
+    initialState: initializeMove,
+    hints: [],
+    modifiableGameObjects: [
+      {
+        id: "raccoon",
+        connections: [
+          { label: "xpos", access: "export" },
+          { label: "ypos", access: "export" },
         ],
       },
     ],
@@ -196,8 +247,59 @@ export const LEVELS = {
       "Display",
       "Value",
       "Math",
-      "ImportFromGameobject",
       "Switch",
+      "KeyPress",
+      "ImportFromGameobject",
+      "ExportToGameobject",
+    ],
+    difficulty: 2,
+  },
+  parenting: {
+    slug: "parenting",
+    name: "Parenting",
+    description:
+      "This is the second level of the main game, introducing parenting mechanics.",
+    // feel free to change the dialog
+    dialog: [
+      "Whoa... this trash can is a real goldmine!",
+      "There’s so much food in here, there’s no way I can eat it all right now.",
+      "Maybe I should just take the whole can with me... but how?",
+      "Would you help me carry it back to my secret little hideout?",
+      "Just be careful not to drop it, okay?",
+    ],
+    goals: [
+      "Parent the trashcan to the raccoon.",
+      `Bring trashcans to the flag (3 total).`,
+    ],
+    success: "That should be enough food for a while... or at least two days.",
+    category: "Main Game",
+    image: alleyTwo,
+    initialNodes: [],
+    initialState: initializeParenting,
+    hints: [],
+    modifiableGameObjects: [
+      {
+        id: "raccoon",
+        connections: [
+          { label: "xpos", access: "import" },
+          { label: "ypos", access: "import" },
+        ],
+      },
+      {
+        id: "trashcanP",
+        connections: [
+          { label: "xpos", access: "all" },
+          { label: "ypos", access: "all" },
+        ],
+      },
+    ],
+    availableNodes: [
+      "Display",
+      "Value",
+      "Math",
+      "Switch",
+      "KeyPress",
+      "ImportFromGameobject",
       "ExportToGameobject",
     ],
     difficulty: 1,
@@ -207,100 +309,85 @@ export const LEVELS = {
     name: "Time Transform",
     description:
       "This is a level of the main game, introducing time-based transformations.",
+    // feel free to change the dialog
     dialog: [
-      "In this level, you will learn how time transformations can affect game objects.",
+      "Well... we just found, what ever this is, with all those numbers on it.",
+      "And there’s this thing spinning around in the middle really fast!",
+      "I’ve seen people use this, especially when they’re in a hurry. But it was never going that fast.",
+      "It might be broken... maybe I can fix it?",
+      "There might be a ladder we could use to get onto the roof — maybe we can spot something that helps us fixing our new little treasure.",
     ],
-    goals: ["Do something!"],
-    success: "Wow!",
+    goals: [
+      "Climb the ladder to the roof.",
+      "Find something that helps you fix the clock.",
+      "Make the clock spin in the proper speed and direction.",
+    ],
+    success:
+      "My brothers always said humans are stupid, but how can someone inventing such a masterpiece be stupid? I'm so happy we were able to save this!",
     category: "Main Game",
     image: alleyOne,
-    nodes: [],
-    edges: [],
+    initialNodes: [],
     initialState: initializeTimeTransform,
     hints: [],
     modifiableGameObjects: [
       {
         id: "raccoon",
-        connections: [{ label: "speed", access: "set" }],
+        connections: [
+          { label: "xpos", access: "import" },
+          { label: "ypos", access: "import" },
+          { label: "xpos", access: "export" },
+          { label: "ypos", access: "export" },
+        ],
       },
     ],
     availableNodes: [
       "Display",
       "Value",
       "Math",
-      "ImportFromGameobject",
       "Switch",
+      "ImportFromGameobject",
       "ExportToGameobject",
       "Time",
     ],
     difficulty: 1,
   },
-  move: {
-    slug: "move",
-    name: "Move",
+  kinematics: {
+    slug: "kinematics",
+    name: "Kinematics",
     description:
-      "This is the first level of the main game, introducing movement mechanics.",
+      "PlaceHolder",
     dialog: [
-      "This is the first level of the main game. It introduces movement mechanics.",
-      "You will learn how to move a game object using key inputs.",
+      "PlaceHolder",
     ],
-    goals: ["Move the raccoon to the flag."],
-    success: "Look, he just learned how to use his feet!",
+    goals: ["Do something!"],
+    success: "Wow!",
     category: "Main Game",
-    image: houseImage,
-    nodes: [],
-    edges: [],
-    initialState: initializeMove,
+    image: alleyOne,
+    initialNodes: [],
+    initialState: initializeKinematics,
     hints: [],
     modifiableGameObjects: [
       {
-        id: "raccoon",
+        id: "arm1",
         connections: [
-          { label: "xpos", access: "set" },
-          { label: "ypos", access: "set" },
+          { label: "xpos", access: "import" },
+          { label: "ypos", access: "import" },
+          { label: "rotation", access: "all"}
         ],
       },
-    ],
-    availableNodes: ["Display", "ExportToGameobject"],
-    difficulty: 2,
-  },
-  playground: {
-    slug: "playground",
-    name: "Playground",
-    description:
-      "This is a sandbox level where you can freely test game mechanics.",
-    dialog: [
-      "This is a playground level where you can freely implement game mechanics.",
-      "You are allowed to use all available nodes.",
-    ],
-    goals: [
-      "No goals, this level is designed for experimentation and testing.",
-    ],
-    success: "How did you complete a sandbox level?",
-    category: "Sandbox",
-    image: playgroundCard,
-    nodes: [],
-    edges: [],
-    initialState: initializePlayground,
-    hints: [
-      "This is a playground level",
-      "You don't need hints here",
-      "stop clicking there is nothing coming",
-      "42",
-    ],
-    modifiableGameObjects: [
       {
-        id: "raccoon",
+        id: "arm2",
         connections: [
           { label: "xpos", access: "all" },
           { label: "ypos", access: "all" },
+          { label: "rotation", access: "all"}
         ],
       },
       {
-        id: "trashcanFilled",
+        id: "platform",
         connections: [
-          { label: "xpos", access: "set" },
-          { label: "ypos", access: "set" },
+          { label: "xpos", access: "export" },
+          { label: "ypos", access: "export" }
         ],
       },
     ],
@@ -317,6 +404,76 @@ export const LEVELS = {
       "ForLoop",
       "MousePosition",
     ],
+    difficulty: 1,
+  },
+  playground: {
+    slug: "playground",
+    name: "Playground",
+    description:
+      "This is a sandbox level where you can freely test game mechanics.",
+    dialog: [
+      "This is a playground level where you can freely implement game mechanics.",
+      "You are allowed to use all available nodes.",
+    ],
+    goals: [
+      "No goals, this level is designed for experimentation and testing.",
+    ],
+    success: "How did you complete a sandbox level?",
+    category: "Sandbox",
+    image: playgroundCard,
+    initialNodes: [],
+    initialState: initializePlayground,
+    hints: [
+      "This is a playground level",
+      "You don't need hints here",
+      "stop clicking there is nothing coming",
+      "42",
+    ],
+    modifiableGameObjects: [
+      {
+        id: "raccoon",
+        connections: [
+          { label: "xpos", access: "all" },
+          { label: "ypos", access: "all" },
+        ],
+      },
+      {
+        id: "trashcanEmpty",
+        connections: [
+          { label: "xpos", access: "all" },
+          { label: "ypos", access: "all" },
+        ],
+      },
+      {
+        id: "trashcanFilled",
+        connections: [
+          { label: "xpos", access: "all" },
+          { label: "ypos", access: "all" },
+        ],
+      },
+      {
+        id: "goalFlag",
+        connections: [
+          { label: "xpos", access: "all" },
+          { label: "ypos", access: "all" },
+        ],
+      },
+    ],
+    availableNodes: [
+      "Display",
+      "Value",
+      "Math",
+      "Switch",
+      "KeyPress",
+      "ImportFromGameobject",
+      "ExportToGameobject",
+      "Time",
+      "ForLoop",
+      "Group",
+      "MousePosition",
+    ],
     difficulty: 0,
   },
 } satisfies Record<string, Level>;
+
+export type LevelId = keyof typeof LEVELS;

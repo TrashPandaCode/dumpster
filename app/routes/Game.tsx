@@ -9,11 +9,18 @@ import type { Route } from "./+types/Game";
 
 import "./game.css";
 
+import GoalsDialog from "~/lib/game/components/GoalsDialog";
 import LevelCompleteDialog from "~/lib/game/components/LevelCompleteDialog";
 import LevelDialog from "~/lib/game/components/LevelDialog";
+import TutorialDialog from "~/lib/game/components/TutorialDialog";
 import { cleanupKaplay } from "~/lib/game/core/kaplayCtx";
-import type { LEVELS } from "~/lib/game/core/levels";
+import { LEVELS, type LevelId } from "~/lib/game/core/levels";
 import { globalKeyTracker } from "~/lib/game/utils/globalKeyTracker";
+import { useFlowStore } from "~/lib/node-editor/node-store/flow-store";
+import { useLoopStore } from "~/lib/node-editor/node-store/loop-store";
+import { useNodeStore } from "~/lib/node-editor/node-store/node-store";
+import { useDataStore } from "~/lib/zustand/data";
+
 import { useTelemetryStore } from "~/lib/zustand/telemetry"
 
 const Game = ({ params }: Route.ComponentProps) => {
@@ -24,21 +31,35 @@ const Game = ({ params }: Route.ComponentProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   // load current level from params
-  const level = params.id || "calculator"; // default to "calculator" if no level is specified
+  const level = (params.id || "calculator") as LevelId; // default to "calculator" if no level is specified
+  if (!(level in LEVELS)) {
+    throw new Error(`Level ${level} not found`);
+  }
   //TODO: navigate to /levels/calculator too. easy option: use navigate("/levels/calculator") in the useEffect below, nice option: handle in router directly
 
-  const [levelDialogOpen, setLevelDialogOpen] = useState(true);
+  const [tutorialOpen, setTutorialOpen] = useState(
+    !JSON.parse(localStorage.getItem("hideTutorial") ?? "false")
+  );
+
+  const [levelDialogOpen, setLevelDialogOpen] = useState(!tutorialOpen);
 
   useEffect(() => {
     if (!canvasRef.current) {
       return;
     }
 
-    globalKeyTracker.init(); // TODO: maybe move this into init game??
+    globalKeyTracker.init();
     initGame(canvasRef.current);
+    loadLevel(level);
 
-    // load the game level
-    loadLevel(level as keyof typeof LEVELS);
+    // register auto save interval
+    const intervalId = setInterval(() => {
+      useFlowStore.getState().save();
+      useNodeStore.getState().save();
+      useLoopStore.getState().save();
+      useDataStore.getState().save();
+    }, 1000);
+    
     setTelemetryLevel(level as keyof typeof LEVELS);
     logStartTime(new Date().toLocaleTimeString('en-GB', {
       hour: '2-digit',
@@ -60,9 +81,8 @@ const Game = ({ params }: Route.ComponentProps) => {
 
     return () => {
       cleanupKaplay();
-
+      clearInterval(intervalId);
       setLevelDialogOpen(true);
-
       globalKeyTracker.cleanup();
       window.removeEventListener("keydown", handleKeyDown);
     };
@@ -70,7 +90,19 @@ const Game = ({ params }: Route.ComponentProps) => {
 
   return (
     <>
-      <LevelDialog open={levelDialogOpen} onOpenChange={setLevelDialogOpen} />
+      <div className="absolute top-0 left-0 z-10 h-full w-full bg-slate-900 p-8 text-center md:hidden">
+        <div className="flex h-full w-full items-center justify-center">
+          <h1 className="text-2xl font-bold text-white">
+            Please use a desktop browser to play the game.
+          </h1>
+        </div>
+      </div>
+      <TutorialDialog open={tutorialOpen} onOpenChange={setTutorialOpen} />
+      <LevelDialog
+        open={!tutorialOpen && levelDialogOpen}
+        onOpenChange={setLevelDialogOpen}
+      />
+      <GoalsDialog open={!tutorialOpen && !levelDialogOpen} />
       <LevelCompleteDialog />
       <PanelGroup direction="horizontal">
         {/* autoSaveId="main-layout" */}

@@ -2,8 +2,8 @@ import { CrossCircledIcon } from "@radix-ui/react-icons";
 import { Position, useReactFlow } from "@xyflow/react";
 import { memo, useEffect, useMemo, useRef } from "react";
 
-import type { GameObject } from "~/lib/game/constants";
 import { LEVELS } from "~/lib/game/core/levels";
+import type { GameObject } from "~/lib/game/gameObjects";
 import { useDataStore } from "~/lib/zustand/data";
 import { useGameStore } from "~/lib/zustand/game";
 import { useGameobjectSelect } from "../../hooks/useGameobjectSelect";
@@ -13,7 +13,8 @@ import LabelHandle from "../../node-components/LabelHandle";
 import MultiSelectDropDown from "../../node-components/MultiSelectDropDown";
 import NodeContent from "../../node-components/NodeContent";
 import type { nodeInputs, nodeResults } from "../../node-store/node-store";
-import { getHandleIntersection, getInput } from "../../utils";
+import { getInput } from "../../utils/compute";
+import { getHandleIntersection } from "../../utils/handles";
 import { IN_HANDLE_1 } from "../constants";
 
 /**
@@ -72,7 +73,7 @@ const ExportToGameobject = memo(
     );
 
     const handleIntersection = useMemo(
-      () => getHandleIntersection("set", gameObjects, selectedGameObjects),
+      () => getHandleIntersection("export", gameObjects, selectedGameObjects),
       [gameObjects, selectedGameObjects]
     );
 
@@ -100,7 +101,7 @@ const ExportToGameobject = memo(
         },
         selectedGameObjects,
       });
-    }, [selectedGameObjects]);
+    }, [handleIntersection]);
 
     return (
       <div>

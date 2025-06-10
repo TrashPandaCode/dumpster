@@ -1,14 +1,14 @@
 import { Position } from "@xyflow/react";
 import { memo, useMemo, useRef } from "react";
 
-import { type GameObject } from "~/lib/game/constants";
+import { type GameObject } from "~/lib/game/gameObjects";
 import { useGameobjectSelect } from "~/lib/node-editor/hooks/useGameobjectSelect";
 import BaseHandle from "~/lib/node-editor/node-components/BaseHandle";
 import LabelHandle from "~/lib/node-editor/node-components/LabelHandle";
 import MultiSelectDropDown from "~/lib/node-editor/node-components/MultiSelectDropDown";
 import NodeContent from "~/lib/node-editor/node-components/NodeContent";
 import { IN_HANDLE_1 } from "~/lib/node-editor/nodes/constants";
-import { getHandleIntersection } from "~/lib/node-editor/utils";
+import { getHandleIntersection } from "~/lib/node-editor/utils/handles";
 import { type GameObjectsData } from "~/lib/zustand/data";
 
 const DocsImportFromGameobject = memo(
@@ -20,20 +20,20 @@ const DocsImportFromGameobject = memo(
           new Map([
             ["xpos", { access: "all", value: 145.7 }],
             ["ypos", { access: "all", value: 89.3 }],
-            ["rotation", { access: "set", value: 1.57 }],
-            ["xvelocity", { access: "get", value: -2.4 }],
-            ["yvelocity", { access: "get", value: 0.8 }],
+            ["rotation", { access: "export", value: 1.57 }],
+            ["xvelocity", { access: "import", value: -2.4 }],
+            ["yvelocity", { access: "import", value: 0.8 }],
             ["health", { access: "all", value: 85.0 }],
           ]),
         ],
         [
           "trashcanFilled",
           new Map([
-            ["xpos", { access: "set", value: 145.7 }],
-            ["ypos", { access: "set", value: 89.3 }],
-            ["rotation", { access: "set", value: 1.57 }],
-            ["xvelocity", { access: "get", value: -2.4 }],
-            ["yvelocity", { access: "get", value: 0.8 }],
+            ["xpos", { access: "export", value: 145.7 }],
+            ["ypos", { access: "export", value: 89.3 }],
+            ["rotation", { access: "export", value: 1.57 }],
+            ["xvelocity", { access: "import", value: -2.4 }],
+            ["yvelocity", { access: "import", value: 0.8 }],
             ["health", { access: "all", value: 85.0 }],
           ]),
         ],
@@ -61,7 +61,11 @@ const DocsImportFromGameobject = memo(
 
     const handleIntersection = useMemo(
       () =>
-        getHandleIntersection("get", gameObjects.current, selectedGameObjects),
+        getHandleIntersection(
+          "import",
+          gameObjects.current,
+          selectedGameObjects
+        ),
       [gameObjects, selectedGameObjects]
     );
 

@@ -7,9 +7,10 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "~/lib/core/components/Breadcrumb";
-import DocsNodeEditor from "~/lib/core/DocsNodeEditor";
+} from "~/lib/core/docs/components/Breadcrumb";
+import DocsNodeEditor from "~/lib/core/docs/DocsNodeEditor";
 import type { Route } from "../docs/+types/DocsContent";
+
 import "katex/dist/katex.min.css";
 
 const docs = import.meta.glob("/content/docs/**/*.{md,mdx}");
@@ -42,7 +43,7 @@ export async function clientLoader({ params }: Route.LoaderArgs) {
 
   const mod = (await loader()) as {
     frontmatter: Record<string, any>;
-    default: React.ComponentType;
+    default: React.ComponentType<{ components?: Record<string, React.ComponentType<any>> }>;
   };
 
   return {
@@ -68,7 +69,9 @@ const Docs = ({ loaderData }: Route.ComponentProps) => {
           {category && (
             <>
               <BreadcrumbSeparator />
-              <BreadcrumbItem className="capitalize">{category.replaceAll("-", " ")}</BreadcrumbItem>
+              <BreadcrumbItem className="capitalize">
+                {category.replaceAll("-", " ")}
+              </BreadcrumbItem>
             </>
           )}
           <BreadcrumbSeparator />

@@ -2,7 +2,11 @@ import { useDataStore } from "~/lib/zustand/data";
 import { useGameStore } from "~/lib/zustand/game";
 import { BACKGROUND_OFFSET, CAM_SCALE } from "../constants";
 import { getKaplayCtx } from "../core/kaplayCtx";
-import { addBackgrounds, addGameobjects, handleReset } from "../utils/gameHelper";
+import {
+  addBackgrounds,
+  addGameobjects,
+  handleReset,
+} from "../utils/gameHelper";
 
 import { useTelemetryStore } from "~/lib/zustand/telemetry";
 
@@ -16,13 +20,14 @@ export const initializeCalculator = () => {
   k.setCamScale((CAM_SCALE * k.height()) / 947);
   raccoon!.scaleBy(-1, 1);
 
-  game.onUpdate(() => {
+  game.onUpdate(() => {    
     if (useGameStore.getState().isPaused) return;
 
     // Get value from exportToGameObject node
-    const value =
-      useDataStore.getState().gameObjects.get("raccoon")?.get("solution")
-        ?.value ?? 0;
+    const value = useDataStore
+      .getState()
+      .gameObjects.get("raccoon")!
+      .get("solution")!.value;
 
     if (value == 16 && !useGameStore.getState().levelCompleted) {
       useGameStore.getState().setLevelCompleteDialogOpen(true);
@@ -38,6 +43,6 @@ export const initializeCalculator = () => {
 
     if (useDataStore.getState().initData) {
       handleReset(raccoon!, -1);
-    };
+    }
   });
 };

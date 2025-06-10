@@ -10,5 +10,6 @@ export default [
   route("/imprint", "routes/Imprint.tsx"),
   route("/privacy-policy", "routes/PrivacyPolicy.tsx"),
   route("/cookie-policy", "routes/CookiePolicy.tsx"),
+  route("/attributions", "routes/Attributions.tsx"),
   route("*", "routes/NotFound.tsx"),
 ] satisfies RouteConfig;

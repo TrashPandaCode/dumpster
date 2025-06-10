@@ -1,3 +1,4 @@
+import { CheckCircledIcon } from "@radix-ui/react-icons";
 import { NavLink } from "react-router";
 
 import difficultyOneImage from "~/assets/D1.png";
@@ -53,6 +54,14 @@ const LevelCard: React.FC<{ level: Level }> = ({ level }) => (
         />
       )}
     </div>
+
+    {JSON.parse(localStorage.getItem(`game-store-${level.slug}`) ?? "{}")
+      .levelCompleted && (
+      <div className="absolute top-0 right-0 z-1 aspect-square w-11 bg-white [clip-path:polygon(100%_100%,0_0,100%_0)]">
+        <CheckCircledIcon className="absolute top-1.5 right-1.5 text-green-700" />
+      </div>
+    )}
+
     <div className="font-pixel absolute top-6 z-1 m-2 flex items-center justify-center rounded-full bg-white px-2 py-0.5 text-[11px]">
       {level.category}
     </div>

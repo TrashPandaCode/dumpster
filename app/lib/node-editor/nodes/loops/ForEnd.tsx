@@ -10,7 +10,7 @@ import type {
   nodeInputs,
   nodeResults,
 } from "../../node-store/node-store";
-import { getInput } from "../../utils";
+import { getInput } from "../../utils/compute";
 import { IN_HANDLE_1, MAIN_LOOP_CONNECTOR } from "../constants";
 
 /**

@@ -12,10 +12,11 @@ import {
 export const initializePlayground = () => {
   const { k, game } = getKaplayCtx();
 
-  addBackgrounds(["background1"]);
+  addBackgrounds(["background2"]);
 
-  const { raccoon, trashcanFilled, goalFlag } = addGameobjects([
+  const { raccoon, trashcanEmpty, trashcanFilled, goalFlag } = addGameobjects([
     "raccoon",
+    "trashcanEmpty",
     "trashcanFilled",
     "goalFlag",
   ]);
@@ -27,12 +28,22 @@ export const initializePlayground = () => {
 
     animPlayer(raccoon!, k);
 
-    trashcanFilled!.pos.x =
-      useDataStore.getState().gameObjects.get("trashcanFilled")?.get("xpos")
-        ?.value ?? 0;
-    trashcanFilled!.pos.y =
-      useDataStore.getState().gameObjects.get("trashcanFilled")?.get("ypos")
-        ?.value ?? 0;
+    const trashcanEmptyState = useDataStore
+      .getState()
+      .gameObjects.get("trashcanEmpty");
+    const trashcanFilledState = useDataStore
+      .getState()
+      .gameObjects.get("trashcanFilled");
+    const goalFlagState = useDataStore.getState().gameObjects.get("goalFlag");
+
+    trashcanEmpty!.pos.x = trashcanEmptyState!.get("xpos")!.value;
+    trashcanEmpty!.pos.y = trashcanEmptyState!.get("ypos")!.value;
+
+    trashcanFilled!.pos.x = trashcanFilledState!.get("xpos")!.value;
+    trashcanFilled!.pos.y = trashcanFilledState!.get("ypos")!.value;
+
+    goalFlag!.pos.x = goalFlagState!.get("xpos")!.value;
+    goalFlag!.pos.y = goalFlagState!.get("ypos")!.value;
 
     if (useDataStore.getState().initData) {
       handleReset(raccoon!, 1);

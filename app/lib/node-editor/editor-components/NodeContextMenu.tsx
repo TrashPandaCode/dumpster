@@ -1,36 +1,30 @@
 import { useReactFlow } from "@xyflow/react";
 import { useCallback } from "react";
 
-import { useLoopStore } from "../node-store/loop-store";
-import { duplicateNodes } from "../utils";
+import { globalKeyTracker } from "~/lib/game/utils/globalKeyTracker";
+import { duplicateNodes } from "../utils/duplicate";
 import AddNodes from "./AddNodes";
+import React from "react";
 
-type NodeContextMenuProps = {
-  nodeId: string;
-  nodeType: string | undefined;
-  nodeLoopId: string | undefined;
-  nodeParentId: string | undefined;
-  x: number;
-  y: number;
-  onClose: () => void;
-};
-
-const NodeContextMenu: React.FC<NodeContextMenuProps> = ({
-  nodeId,
-  nodeType,
-  nodeLoopId,
-  x,
-  y,
-  onClose,
-  nodeParentId,
-}) => {
+const NodeContextMenu = React.forwardRef<
+  HTMLDivElement,
+  {
+    nodeId: string;
+    nodeType: string | undefined;
+    nodeLoopId: string | undefined;
+    nodeParentId: string | undefined;
+    x: number;
+    y: number;
+    onClose: () => void;
+  }
+>(({ nodeId, nodeType, nodeLoopId, x, y, onClose, nodeParentId }, ref) => {
   return (
-    <div style={{ position: "absolute", top: y, left: x, zIndex: 1000 }}>
+    <div ref={ref} style={{ position: "absolute", top: y, left: x, zIndex: 1000 }}>
       {nodeType === "ForStart" || nodeType === "ForEnd" ? (
         <AddNodes
-          onClose={onClose}
           x={x}
           y={y}
+          onClose={onClose}
           parentLoopId={nodeLoopId}
           parentId={nodeParentId}
         >
@@ -44,7 +38,7 @@ const NodeContextMenu: React.FC<NodeContextMenuProps> = ({
       )}
     </div>
   );
-};
+});
 
 export default NodeContextMenu;
 
@@ -128,7 +122,7 @@ const DefaultNodeContextMenu = ({
       >
         <span>Duplicate</span>
         <span className="ml-2 rounded bg-slate-600 px-1.5 py-0.5 font-mono text-xs text-gray-300">
-          Ctrl+D
+          {globalKeyTracker.isMac ? "Shift+D" : "Ctrl+D"}
         </span>
       </button>
       <button
