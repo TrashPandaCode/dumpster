@@ -17,6 +17,7 @@ import { initializeParenting } from "../levels/parenting";
 import { initializePlayground } from "../levels/playground";
 import { initializeSitting } from "../levels/sitting";
 import { initializeTimeTransform } from "../levels/timeTransform";
+import { initializeKinematics } from "../levels/kinematic";
 
 export type ConnectionAccess = "export" | "import" | "all";
 
@@ -347,6 +348,61 @@ export const LEVELS = {
       "ImportFromGameobject",
       "ExportToGameobject",
       "Time",
+    ],
+    difficulty: 1,
+  },
+  kinematics: {
+    slug: "kinematics",
+    name: "Kinematics",
+    description:
+      "PlaceHolder",
+    dialog: [
+      "PlaceHolder",
+    ],
+    goals: ["Do something!"],
+    success: "Wow!",
+    category: "Main Game",
+    image: alleyOne,
+    initialNodes: [],
+    initialState: initializeKinematics,
+    hints: [],
+    modifiableGameObjects: [
+      {
+        id: "arm1",
+        connections: [
+          { label: "xpos", access: "import" },
+          { label: "ypos", access: "import" },
+          { label: "rotation", access: "all"}
+        ],
+      },
+      {
+        id: "arm2",
+        connections: [
+          { label: "xpos", access: "all" },
+          { label: "ypos", access: "all" },
+          { label: "rotation", access: "all"}
+        ],
+      },
+      {
+        id: "platform",
+        connections: [
+          { label: "xpos", access: "export" },
+          { label: "ypos", access: "export" }
+        ],
+      },
+    ],
+    availableNodes: [
+      "Display",
+      "Value",
+      "Time",
+      "KeyPress",
+      "Math",
+      "ExportToGameobject",
+      "ImportFromGameobject",
+      "Switch",
+      "Group",
+      "ForLoop",
+      "MousePosition",
     ],
     difficulty: 1,
   },

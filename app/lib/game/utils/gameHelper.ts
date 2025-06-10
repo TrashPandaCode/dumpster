@@ -8,6 +8,8 @@ import type {
   SpriteComp,
   StateComp,
   ZComp,
+  BodyComp,
+  AreaComp
 } from "kaplay";
 
 import { useDataStore } from "~/lib/zustand/data";
@@ -28,6 +30,8 @@ type PlayerType = GameObj<
   | AnchorComp
   | ZComp
   | StateComp<"idle" | "walkLeft" | "walkRight">
+  | BodyComp
+  | AreaComp
 >;
 
 interface GameObjectInstances {
@@ -67,6 +71,7 @@ export function addGameobjects(gameobjects: GameObject[]) {
       k.area(),
       k.z(2),
       k.opacity(1),
+      k.body(),
       "raccoon",
       k.state("idle", ["idle", "walkLeft", "walkRight"]),
     ]);
@@ -276,7 +281,7 @@ export function animPlayer(
     Math.min(playerClampX.maxX, player.pos.x)
   );
 
-  if (playerState!.get("xpos") && playerState!.get("ypos")) {
+  if (playerState?.get("xpos") && playerState?.get("ypos")) {
     playerState!.get("xpos")!.value = player.pos.x;
     playerState!.get("ypos")!.value = player.pos.y;
   }
