@@ -9,6 +9,7 @@ import {
 } from "@radix-ui/react-dialog";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { useState } from "react";
+import { useTelemetryStore } from "~/lib/zustand/telemetry";
 
 type StepHighlight = {
   top: number;
@@ -137,6 +138,12 @@ export default function TutorialDialog({
   const isLastStep = step === steps.length - 1;
   const highlight = steps[step].highlight;
 
+  const skippedTelemetry = useTelemetryStore((state) => state.skippedTutorial);
+
+  const handleSkip = () =>{
+    skippedTelemetry(true);
+  };
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogPortal>
@@ -220,7 +227,7 @@ export default function TutorialDialog({
             </div>
             <div className="flex justify-end gap-5">
               {isFirstStep && (
-                <DialogClose className="cursor-pointer rounded-lg bg-slate-700 px-3 py-2 hover:bg-slate-600 focus:outline-1 focus:outline-blue-300">
+                <DialogClose className="cursor-pointer rounded-lg bg-slate-700 px-3 py-2 hover:bg-slate-600 focus:outline-1 focus:outline-blue-300" onClick={handleSkip}>
                   Skip
                 </DialogClose>
               )}
