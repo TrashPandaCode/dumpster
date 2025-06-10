@@ -4,28 +4,22 @@ import { useCallback } from "react";
 import { globalKeyTracker } from "~/lib/game/utils/globalKeyTracker";
 import { duplicateNodes } from "../utils/duplicate";
 import AddNodes from "./AddNodes";
+import React from "react";
 
-type NodeContextMenuProps = {
-  nodeId: string;
-  nodeType: string | undefined;
-  nodeLoopId: string | undefined;
-  nodeParentId: string | undefined;
-  x: number;
-  y: number;
-  onClose: () => void;
-};
-
-const NodeContextMenu: React.FC<NodeContextMenuProps> = ({
-  nodeId,
-  nodeType,
-  nodeLoopId,
-  x,
-  y,
-  onClose,
-  nodeParentId,
-}) => {
+const NodeContextMenu = React.forwardRef<
+  HTMLDivElement,
+  {
+    nodeId: string;
+    nodeType: string | undefined;
+    nodeLoopId: string | undefined;
+    nodeParentId: string | undefined;
+    x: number;
+    y: number;
+    onClose: () => void;
+  }
+>(({ nodeId, nodeType, nodeLoopId, x, y, onClose, nodeParentId }, ref) => {
   return (
-    <div style={{ position: "absolute", top: y, left: x, zIndex: 1000 }}>
+    <div ref={ref} style={{ position: "absolute", top: y, left: x, zIndex: 1000 }}>
       {nodeType === "ForStart" || nodeType === "ForEnd" ? (
         <AddNodes
           x={x}
@@ -44,7 +38,7 @@ const NodeContextMenu: React.FC<NodeContextMenuProps> = ({
       )}
     </div>
   );
-};
+});
 
 export default NodeContextMenu;
 

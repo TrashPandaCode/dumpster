@@ -1,5 +1,5 @@
 import type { Node } from "@xyflow/react";
-import { useCallback, useState } from "react";
+import { useCallback, useLayoutEffect, useRef, useState } from "react";
 
 import { useNodeAddMenuStore } from "../../zustand/node-add-menu-store";
 import {
@@ -27,6 +27,20 @@ export function useContextMenu() {
     y: number;
   } | null>(null);
 
+  const [menuDimensions, setMenuDimensions] = useState<{
+    pane: { width: number; height: number };
+    node: { width: number; height: number };
+    selection: { width: number; height: number };
+  }>({
+    pane: { width: 270, height: 280 },
+    node: { width: 270, height: 280 },
+    selection: { width: 270, height: 280 },
+  });
+
+  const paneContextMenuRef = useRef<HTMLDivElement>(null);
+  const nodeContextMenuRef = useRef<HTMLDivElement>(null);
+  const selectionContextMenuRef = useRef<HTMLDivElement>(null);
+
   const {
     visible,
     closeAddMenu,
@@ -34,49 +48,88 @@ export function useContextMenu() {
     menuY: addMenuY,
   } = useNodeAddMenuStore();
 
+  useLayoutEffect(() => {
+    if (paneContextMenuRef.current) {
+      const rect = paneContextMenuRef.current.getBoundingClientRect();
+      setMenuDimensions((prev) => ({
+        ...prev,
+        pane: { width: rect.width, height: rect.height },
+      }));
+    }
+  }, [paneContextMenu]);
+
+  useLayoutEffect(() => {
+    if (nodeContextMenuRef.current) {
+      const rect = nodeContextMenuRef.current.getBoundingClientRect();
+      setMenuDimensions((prev) => ({
+        ...prev,
+        node: { width: rect.width, height: rect.height },
+      }));
+    }
+  }, [nodeContextMenu]);
+
+  useLayoutEffect(() => {
+    if (selectionContextMenuRef.current) {
+      const rect = selectionContextMenuRef.current.getBoundingClientRect();
+      setMenuDimensions((prev) => ({
+        ...prev,
+        selection: { width: rect.width, height: rect.height },
+      }));
+    }
+  }, [selectionContextMenu]);
+
   const handlePaneContextMenu = useCallback(
-    (event: MouseEvent | React.MouseEvent) => {
-      event.preventDefault();
-      const position = getContextMenuPosition(event);
-      setPaneContextMenu({
-        x: position.x,
-        y: position.y,
-      });
-    },
-    [setPaneContextMenu]
-  );
+  (event: MouseEvent | React.MouseEvent) => {
+    event.preventDefault();
+    const position = getContextMenuPosition(
+      event, 
+      menuDimensions.pane
+    );
+    setPaneContextMenu({
+      x: position.x,
+      y: position.y,
+    });
+  },
+  [menuDimensions.pane]
+);
 
-  const handleNodeContextMenu = useCallback(
-    (event: MouseEvent | React.MouseEvent, node: Node) => {
-      event.preventDefault();
-      const position = getContextMenuPosition(event);
-      setNodeContextMenu({
-        nodeId: node.id,
-        nodeType: node.type,
-        nodeLoopId: node.data.loopId as string | undefined,
-        nodeParentId: node.parentId,
-        x: position.x,
-        y: position.y,
-      });
-    },
-    [setNodeContextMenu]
-  );
+const handleNodeContextMenu = useCallback(
+  (event: MouseEvent | React.MouseEvent, node: Node) => {
+    event.preventDefault();
+    const position = getContextMenuPosition(
+      event, 
+      menuDimensions.node
+    );
+    setNodeContextMenu({
+      nodeId: node.id,
+      nodeType: node.type,
+      nodeLoopId: node.data.loopId as string | undefined,
+      nodeParentId: node.parentId,
+      x: position.x,
+      y: position.y,
+    });
+  },
+  [menuDimensions.node]
+);
 
-  const handleSelectionContextMenu = useCallback(
-    (event: MouseEvent | React.MouseEvent, nodes: Node[]) => {
-      event.preventDefault();
+const handleSelectionContextMenu = useCallback(
+  (event: MouseEvent | React.MouseEvent, nodes: Node[]) => {
+    event.preventDefault();
 
-      if (nodes.length === 0) return;
+    if (nodes.length === 0) return;
 
-      const position = getContextMenuPosition(event);
-      setSelectionContextMenu({
-        nodeIds: nodes.map((n) => n.id),
-        x: position.x,
-        y: position.y,
-      });
-    },
-    [setSelectionContextMenu]
-  );
+    const position = getContextMenuPosition(
+      event, 
+      menuDimensions.selection
+    );
+    setSelectionContextMenu({
+      nodeIds: nodes.map((n) => n.id),
+      x: position.x,
+      y: position.y,
+    });
+  },
+  [menuDimensions.selection]
+);
 
   const closeAllMenus = useCallback(() => {
     setPaneContextMenu(null);
@@ -121,22 +174,30 @@ export function useContextMenu() {
     handleSelectionContextMenu,
     handleCloseCombinedMenu,
     onPaneClick,
+    paneContextMenuRef,
+    nodeContextMenuRef,
+    selectionContextMenuRef,
   };
 }
 
-function getContextMenuPosition(event: MouseEvent | React.MouseEvent): {
+function getContextMenuPosition(
+  event: MouseEvent | React.MouseEvent,
+  dimensions: { width: number; height: number }
+): {
   x: number;
   y: number;
 } {
-  //Specific numbers for ContextMenu size might need to be changed later depending on if the ContextMenu receives any changes
-  //TODO: if this is really needed, calculate the size of the ContextMenu dynamically
+  const clientX = (event as React.MouseEvent).clientX;
+  const clientY = (event as React.MouseEvent).clientY;
+
   const x =
-    (event as React.MouseEvent).clientX > window.innerWidth - 274
-      ? window.innerWidth - 274
-      : (event as React.MouseEvent).clientX;
+    clientX > window.innerWidth - dimensions.width
+      ? window.innerWidth - dimensions.width
+      : clientX;
   const y =
-    (event as React.MouseEvent).clientY > window.innerHeight - 284
-      ? window.innerHeight - 284
-      : (event as React.MouseEvent).clientY;
+    clientY > window.innerHeight - dimensions.height
+      ? window.innerHeight - dimensions.height
+      : clientY;
+
   return { x: x - 15, y: y - 15 };
 }
