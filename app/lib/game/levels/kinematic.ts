@@ -118,6 +118,13 @@ export const initializeKinematics = () => {
         raccoon!.pos.x = 0;
         raccoon!.pos.y = 0;
     }
+
+    const distGoal = raccoon!.pos.dist(goalFlag!.pos);
+    if (distGoal <= 1 && !useGameStore.getState().levelCompleted) {
+        useGameStore.getState().setLevelCompleteDialogOpen(true);
+        useGameStore.getState().setLevelCompleted(true);
+    }
+
     if (useDataStore.getState().initData) {
         handleReset(raccoon!, 1);
     }
