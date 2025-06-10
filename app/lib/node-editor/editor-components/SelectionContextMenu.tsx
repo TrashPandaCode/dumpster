@@ -4,21 +4,17 @@ import React, { useCallback } from "react";
 import { globalKeyTracker } from "~/lib/game/utils/globalKeyTracker";
 import { duplicateNodes } from "../utils/duplicate";
 
-type SelectionContextMenuProps = {
-  nodeIds: string[];
-  x: number;
-  y: number;
-  onClose: () => void;
-};
 
-const SelectionContextMenu: React.FC<SelectionContextMenuProps> = ({
-  nodeIds,
-  x,
-  y,
-  onClose,
-}) => {
-  const { getNodes, getEdges, setNodes, setEdges, deleteElements } =
-    useReactFlow();
+const SelectionContextMenu = React.forwardRef<
+  HTMLDivElement,
+  {
+    nodeIds: string[];
+    x: number;
+    y: number;
+    onClose: () => void;
+  }
+>(({ nodeIds, x, y, onClose }, ref) => {
+  const { getNodes, getEdges, setNodes, setEdges, deleteElements } = useReactFlow();
 
   const deleteNodes = useCallback(() => {
     const nodes = getNodes();
@@ -33,7 +29,10 @@ const SelectionContextMenu: React.FC<SelectionContextMenuProps> = ({
   }, [deleteElements, getEdges, getNodes, nodeIds, onClose]);
 
   return (
-    <div style={{ position: "absolute", top: y, left: x, zIndex: 1000 }}>
+    <div
+      ref={ref}
+      style={{ position: "absolute", top: y, left: x, zIndex: 1000 }}
+    >
       <Panel className="flex w-55 flex-col gap-1 rounded bg-slate-800 p-2 font-mono shadow-lg outline-1 outline-slate-700 outline-solid">
         <button
           className="w-full rounded px-2 py-1 text-left text-sm text-white hover:bg-slate-700"
@@ -65,6 +64,6 @@ const SelectionContextMenu: React.FC<SelectionContextMenuProps> = ({
       </Panel>
     </div>
   );
-};
+});
 
 export default SelectionContextMenu;
