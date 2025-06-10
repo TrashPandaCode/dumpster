@@ -134,6 +134,7 @@ export function addGameobjects(gameobjects: GameObject[]) {
         default: { from: 0, to: 3, loop: true },
       },
     });
+    k.loadSprite("smallFlag", "/game/sprites/small_flag.png");
 
     const flag = game.add([
       k.sprite("flag", {
@@ -150,12 +151,10 @@ export function addGameobjects(gameobjects: GameObject[]) {
     ]);
 
     const smallFlag = game.add([
-      k.sprite("flag", {
-        anim: "default",
-      }),
-      k.anchor("bot"),
+      k.sprite("smallFlag"),
+      k.anchor("center"),
       k.pos(0, 0),
-      k.scale(SPRITE_SCALE * 0.25),
+      k.scale(SPRITE_SCALE * 0.5),
       k.z(100),
       k.opacity(1),
     ]);
