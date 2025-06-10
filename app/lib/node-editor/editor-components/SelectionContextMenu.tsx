@@ -4,7 +4,6 @@ import React, { useCallback } from "react";
 import { globalKeyTracker } from "~/lib/game/utils/globalKeyTracker";
 import { duplicateNodes } from "../utils/duplicate";
 
-
 const SelectionContextMenu = React.forwardRef<
   HTMLDivElement,
   {
@@ -14,7 +13,8 @@ const SelectionContextMenu = React.forwardRef<
     onClose: () => void;
   }
 >(({ nodeIds, x, y, onClose }, ref) => {
-  const { getNodes, getEdges, setNodes, setEdges, deleteElements } = useReactFlow();
+  const { getNodes, getEdges, setNodes, setEdges, deleteElements } =
+    useReactFlow();
 
   const deleteNodes = useCallback(() => {
     const nodes = getNodes();
