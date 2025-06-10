@@ -269,6 +269,11 @@ export function animPlayer(
     Math.min(playerClampX.maxX, player.pos.x)
   );
 
+  if (playerState!.get("xpos") && playerState!.get("ypos")) {
+    playerState!.get("xpos")!.value = player.pos.x;
+    playerState!.get("ypos")!.value = player.pos.y;
+  }
+
   //Clamp camera position
   const camX = Math.max(camClampX.minX, Math.min(camClampX.maxX, player.pos.x));
   k.setCamPos(k.lerp(k.getCamPos(), k.vec2(camX, -BACKGROUND_OFFSET), 0.1));
