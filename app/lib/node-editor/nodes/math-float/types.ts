@@ -15,7 +15,7 @@ export const TYPES = {
     "Absolute",
   ],
   Rounding: ["Round", "Floor", "Ceil", "Modulo"],
-  Trigonometric: ["Sine", "Cosine", "Tangent"],
+  Trigonometric: ["Sine", "Cosine", "Tangent", "Asin", "Acos", "Atan"],
   Conversion: ["To Radians", "To Degrees"],
   Compare: ["Equals", "Greater Than", "Less Than"],
   "Logical Operators": ["AND", "OR", "XOR", "NOT", "NAND", "NOR", "XNOR"],
@@ -39,7 +39,10 @@ export const INPUTS: { [key: string]: NumberInputType[] } = {
     Sine: [{enable: true, type: "float", label: "t"}, {enable: false, type: undefined, label: ""}],
     Cosine: [{enable: true, type: "float", label: "t"}, {enable: false, type: undefined, label: ""}],
     Tangent: [{enable: true, type: "float", label: "t"}, {enable: false, type: undefined, label: ""}],
-  
+    Asin: [{enable: true, type: "float", label: "x"}, {enable: false, type: undefined, label: ""}],
+    Acos: [{enable: true, type: "float", label: "x"}, {enable: false, type: undefined, label: ""}],
+    Atan: [{enable: true, type: "float", label: "x"}, {enable: false, type: undefined, label: ""}],
+
     "To Radians": [{enable: true, type: "float", label: "deg"}, {enable: false, type: undefined, label: ""}],
     "To Degrees": [{enable: true, type: "float", label: "rad"}, {enable: false, type: undefined, label: ""}],
   
@@ -74,6 +77,9 @@ export const COMPUTE: { [key: string]: (x: number, y: number) => number } = {
   Sine: (x, _) => Math.sin(x),
   Cosine: (x, _) => Math.cos(x),
   Tangent: (x, _) => Math.tan(x),
+  Asin: (x, _) => Math.asin(x),
+  Acos: (x, _) => Math.acos(x),
+  Atan: (x, _) => Math.atan(x),
 
   "To Radians": (x, _) => x * (Math.PI / 180),
   "To Degrees": (x, _) => x * (180 / Math.PI),

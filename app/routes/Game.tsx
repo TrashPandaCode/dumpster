@@ -12,7 +12,7 @@ import "./game.css";
 import GoalsDialog from "~/lib/game/components/GoalsDialog";
 import LevelCompleteDialog from "~/lib/game/components/LevelCompleteDialog";
 import LevelDialog from "~/lib/game/components/LevelDialog";
-import TutorialDialog from "~/lib/game/components/TutorialDialog";
+import Tutorial from "~/lib/game/components/Tutorial";
 import { cleanupKaplay } from "~/lib/game/core/kaplayCtx";
 import { LEVELS, type LevelId } from "~/lib/game/core/levels";
 import { globalKeyTracker } from "~/lib/game/utils/globalKeyTracker";
@@ -34,7 +34,6 @@ const Game = ({ params }: Route.ComponentProps) => {
   const [tutorialOpen, setTutorialOpen] = useState(
     !JSON.parse(localStorage.getItem("hideTutorial") ?? "false")
   );
-
   const [levelDialogOpen, setLevelDialogOpen] = useState(!tutorialOpen);
 
   useEffect(() => {
@@ -71,7 +70,7 @@ const Game = ({ params }: Route.ComponentProps) => {
           </h1>
         </div>
       </div>
-      <TutorialDialog open={tutorialOpen} onOpenChange={setTutorialOpen} />
+      {tutorialOpen && <Tutorial onClose={() => setTutorialOpen(false)} />}
       <LevelDialog
         open={!tutorialOpen && levelDialogOpen}
         onOpenChange={setLevelDialogOpen}

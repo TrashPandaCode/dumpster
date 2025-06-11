@@ -49,7 +49,7 @@ const SelectionContextMenu = React.forwardRef<
         >
           <span>Duplicate {nodeIds.length} nodes </span>
           <span className="ml-2 rounded bg-slate-600 px-1.5 py-0.5 font-mono text-xs text-gray-300">
-            {globalKeyTracker.isMac ? "Shift+D" : "Ctrl+D"}
+            {globalKeyTracker.isMac ? "⌥+D" : "Ctrl+D"}
           </span>
         </button>
         <button

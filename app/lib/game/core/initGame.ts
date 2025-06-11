@@ -29,7 +29,7 @@ export default function initGame(canvas: HTMLCanvasElement) {
   useKeyStore.getState().setKeyPressedFunction(globalKeyTracker.isKeyPressed);
   useKeyStore.getState().setKeyReleasedFunction(globalKeyTracker.isKeyReleased);
 
-  useMouseStore.getState().setMousePosFunction(() => k.mousePos());
+  useMouseStore.getState().setMousePosFunction(() => k.toWorld(k.mousePos()));
 
   useTimeStore.getState().setTimeFunction(() => k.time() - totalPausedTime);
   useTimeStore.getState().setDeltaTimeFunction(() => k.dt());
