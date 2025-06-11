@@ -1,6 +1,6 @@
 import { Position, useReactFlow } from "@xyflow/react";
 import classnames from "classnames";
-import { memo, useEffect, useRef, useState } from "react";
+import { memo, useEffect, useState } from "react";
 
 import { useKeyStore } from "~/lib/zustand/key";
 import LabelHandle from "../../node-components/LabelHandle";
@@ -48,7 +48,7 @@ type KeyState = "down" | "press" | "release";
  */
 const KeyPress = memo(({ id, data }: { id: string; data: any }) => {
   const { updateNodeData } = useReactFlow();
-  const curKey = useRef(data.curKey ? data.curKey.current : "");
+  const [curKey, setCurKey] = useState<string>(data.curKey ?? "");
   const [keyPressType, setKeyPressType] = useState<KeyState>(
     data.keyPressType ?? "down"
   );
@@ -64,15 +64,15 @@ const KeyPress = memo(({ id, data }: { id: string; data: any }) => {
         let active = false;
         switch (keyPressType) {
           case "down":
-            active = keyDown(curKey.current);
+            active = keyDown(curKey);
             results.set(OUT_HANDLE_1, +active);
             break;
           case "press":
-            active = keyPressed(curKey.current);
+            active = keyPressed(curKey);
             results.set(OUT_HANDLE_1, +active);
             break;
           case "release":
-            active = keyReleased(curKey.current);
+            active = keyReleased(curKey);
             results.set(OUT_HANDLE_1, +active);
             break;
         }
@@ -81,7 +81,7 @@ const KeyPress = memo(({ id, data }: { id: string; data: any }) => {
       curKey,
       keyPressType,
     });
-  }, [keyPressType]);
+  }, [keyPressType, curKey]);
 
   return (
     <div className="min-w-60">
@@ -134,9 +134,9 @@ const KeyPress = memo(({ id, data }: { id: string; data: any }) => {
         </div>
         <div className="flex w-full justify-end gap-2">
           <SelectDropDown
-            setSelected={(v) => (curKey.current = v)}
+            setSelected={(v) => setCurKey(v)}
             items={{ Keys: ["w", "a", "s", "d"], Other: ["space", "enter"] }}
-            defaultValue={curKey.current}
+            defaultValue={curKey}
           />
           <LabelHandle
             id={OUT_HANDLE_1}
