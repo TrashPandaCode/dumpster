@@ -13,6 +13,7 @@ import {
 import { Panel, useReactFlow, type ReactFlowInstance } from "@xyflow/react";
 import { useState } from "react";
 
+import { globalKeyTracker } from "~/lib/game/utils/globalKeyTracker";
 import { useNodeStore } from "../node-store/node-store";
 import AddNodes from "./AddNodes";
 import HelpMenu from "./HelpMenu";
@@ -37,7 +38,14 @@ const RightPanel: React.FC<{ rfInstance: ReactFlowInstance | undefined }> = ({
           <IconButton
             id="add-nodes"
             side="left"
-            tooltip="Add Node"
+            tooltip={
+              <p>
+                Add Node
+                <span className="ml-2 rounded bg-slate-600 px-1.5 py-0.5 font-mono text-xs text-gray-300">
+                  {globalKeyTracker.isMac ? "⌥+Space" : "Ctrl+Space"}
+                </span>
+              </p>
+            }
             aria-label="Add Node"
           >
             <PlusIcon className="text-white" />
