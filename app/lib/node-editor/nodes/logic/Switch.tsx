@@ -45,15 +45,6 @@ const Switch = memo(({ id, data }: { id: string; data: any }) => {
   const yInputData = useRef(data.yInputData ? data.yInputData.current : 0);
   const zInputData = useRef(data.zInputData ? data.zInputData.current : 0);
 
-  const yConnection = useNodeConnections({
-    handleId: IN_HANDLE_2,
-    handleType: "target",
-  });
-  const zConnection = useNodeConnections({
-    handleId: IN_HANDLE_3,
-    handleType: "target",
-  });
-
   useEffect(() => {
     updateNodeData(id, {
       compute: (inputs: nodeInputs, results: nodeResults) => {
@@ -86,7 +77,7 @@ const Switch = memo(({ id, data }: { id: string; data: any }) => {
             value={yDisplayData}
             setValue={(v) => (yInputData.current = v)}
             defaultValue={yInputData.current}
-            disabled={!!yConnection.length}
+            handleId={IN_HANDLE_2}
           />
           <BaseHandle id={IN_HANDLE_2} position={Position.Left} />
         </div>
@@ -96,7 +87,7 @@ const Switch = memo(({ id, data }: { id: string; data: any }) => {
             value={zDisplayData}
             setValue={(v) => (zInputData.current = v)}
             defaultValue={zInputData.current}
-            disabled={!!zConnection.length}
+            handleId={IN_HANDLE_3}
           />
           <BaseHandle id={IN_HANDLE_3} position={Position.Left} />
         </div>

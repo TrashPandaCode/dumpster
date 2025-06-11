@@ -92,11 +92,6 @@ const ForStart = memo(
       });
     }, []);
 
-    const iterConnection = useNodeConnections({
-      handleId: IN_HANDLE_1,
-      handleType: "target",
-    });
-
     return (
       <div className="min-w-60">
         <NodeContent label="For Start" type="loop" docsName="forloop">
@@ -110,7 +105,7 @@ const ForStart = memo(
                 }
               }}
               defaultValue={iterations.current}
-              disabled={!!iterConnection.length}
+              handleId={IN_HANDLE_1}
               type="int"
             />
             <BaseHandle id={IN_HANDLE_1} position={Position.Left} />

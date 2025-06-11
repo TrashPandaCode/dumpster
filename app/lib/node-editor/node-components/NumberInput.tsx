@@ -1,19 +1,25 @@
+import { useNodeConnections } from "@xyflow/react";
 import React, { useState } from "react";
 
 const NumberInput = ({
   value,
   setValue,
   defaultValue,
-  disabled = false,
+  handleId,
   type = "float",
   ...props
 }: {
   value?: number | string;
   setValue(input: number): void;
   defaultValue: number;
-  disabled?: boolean;
+  handleId?: string;
   type?: "float" | "int";
 }) => {
+  const disabled = !!useNodeConnections({
+    handleId,
+    handleType: "target",
+  }).length;
+
   const [rawValue, setRawValue] = useState(String(defaultValue));
 
   const parseFloatNumber = (evt: React.ChangeEvent<HTMLInputElement>) => {

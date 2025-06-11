@@ -52,15 +52,6 @@ const Math = memo(({ id, data }: { id: string; data: any }) => {
   const xInputData = useRef(data.xInputData ? data.xInputData.current : 0);
   const yInputData = useRef(data.yInputData ? data.yInputData.current : 0);
 
-  const xConnection = useNodeConnections({
-    handleId: IN_HANDLE_1,
-    handleType: "target",
-  });
-  const yConnection = useNodeConnections({
-    handleId: IN_HANDLE_2,
-    handleType: "target",
-  });
-
   useEffect(() => {
     updateNodeData(id, {
       compute: (inputs: nodeInputs, results: nodeResults) => {
@@ -98,7 +89,7 @@ const Math = memo(({ id, data }: { id: string; data: any }) => {
               value={xDisplayData}
               setValue={(v) => (xInputData.current = v)}
               defaultValue={xInputData.current}
-              disabled={!!xConnection.length}
+              handleId={IN_HANDLE_1}
               type={inputState[0].type}
             />
             <BaseHandle id={IN_HANDLE_1} position={Position.Left} />
@@ -111,7 +102,7 @@ const Math = memo(({ id, data }: { id: string; data: any }) => {
               value={yDisplayData}
               setValue={(v) => (yInputData.current = v)}
               defaultValue={yInputData.current}
-              disabled={!!yConnection.length}
+              handleId={IN_HANDLE_2}
               type={inputState[1].type}
             />
             <BaseHandle id={IN_HANDLE_2} position={Position.Left} />
