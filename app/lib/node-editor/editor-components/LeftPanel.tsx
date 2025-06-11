@@ -15,11 +15,13 @@ import {
 import { Panel } from "@xyflow/react";
 
 import LevelDialog from "~/lib/game/components/LevelDialog";
+import { globalKeyTracker } from "~/lib/game/utils/globalKeyTracker";
 import { useDataStore } from "~/lib/zustand/data";
 import { useGameStore } from "~/lib/zustand/game";
 import { useFlowStore } from "../node-store/flow-store";
 import { useLoopStore } from "../node-store/loop-store";
 import { useNodeStore } from "../node-store/node-store";
+import { redo, undo } from "../utils/undo";
 import { IconButton } from "./IconButton";
 
 const LeftPanel = () => {
@@ -27,8 +29,6 @@ const LeftPanel = () => {
   const isPaused = useGameStore((state) => state.isPaused);
   const play = useGameStore((state) => state.play);
   const pause = useGameStore((state) => state.pause);
-
-  const { undo, redo, clear } = useFlowStore.temporal.getState();
 
   return (
     <Panel
@@ -91,8 +91,15 @@ const LeftPanel = () => {
       />
 
       <IconButton
-        tooltip="Print Edges"
-        side="left"
+        tooltip={
+          <p>
+            Undo
+            <span className="ml-2 rounded bg-slate-600 px-1.5 py-0.5 font-mono text-xs text-gray-300">
+              {globalKeyTracker.isMac ? "⌥+Z" : "Ctrl+Z"}
+            </span>
+          </p>
+        }
+        side="right"
         onClick={() => {
           undo();
         }}
@@ -100,8 +107,15 @@ const LeftPanel = () => {
         <ResetIcon className="text-white" />
       </IconButton>
       <IconButton
-        tooltip="Print Edges"
-        side="left"
+        tooltip={
+          <p>
+            Redo
+            <span className="ml-2 rounded bg-slate-600 px-1.5 py-0.5 font-mono text-xs text-gray-300">
+              {globalKeyTracker.isMac ? "⌥+Y" : "Ctrl+Y"}
+            </span>
+          </p>
+        }
+        side="right"
         onClick={() => {
           redo();
         }}

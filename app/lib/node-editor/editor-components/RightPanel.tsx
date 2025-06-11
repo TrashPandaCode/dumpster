@@ -13,6 +13,7 @@ import {
 import { Panel, useReactFlow, type ReactFlowInstance } from "@xyflow/react";
 import { useState } from "react";
 
+import { useFlowStore } from "../node-store/flow-store";
 import { globalKeyTracker } from "~/lib/game/utils/globalKeyTracker";
 import { useNodeStore } from "../node-store/node-store";
 import AddNodes from "./AddNodes";
@@ -88,6 +89,15 @@ const RightPanel: React.FC<{ rfInstance: ReactFlowInstance | undefined }> = ({
             side="left"
             onClick={() => {
               console.log(getEdges());
+            }}
+          >
+            <CubeIcon className="text-white" />
+          </IconButton>
+          <IconButton
+            tooltip="Print Temporal State"
+            side="left"
+            onClick={() => {
+              console.log(useFlowStore.temporal.getState());
             }}
           >
             <CubeIcon className="text-white" />

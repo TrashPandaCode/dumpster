@@ -75,6 +75,8 @@ const macAltKeyMap: Record<string, string> = {
 const keyboardShortcuts = new Set<string>([
   `${primaryModifier}+d`,
   `${primaryModifier}+ `,
+  `${primaryModifier}+z`,
+  `${primaryModifier}+y`,
   "Escape",
 ]);
 

@@ -13,17 +13,20 @@ const SelectionContextMenu = React.forwardRef<
     onClose: () => void;
   }
 >(({ nodeIds, x, y, onClose }, ref) => {
-  const { getNodes, getEdges, setNodes, setEdges } = useReactFlow();
+  const { getNodes, getEdges, setNodes, setEdges, deleteElements } =
+    useReactFlow();
 
   const deleteNodes = useCallback(() => {
-    setNodes((nodes) => nodes.filter((n) => !nodeIds.includes(n.id)));
-    setEdges((edges) =>
-      edges.filter(
-        (e) => !nodeIds.includes(e.source) && !nodeIds.includes(e.target)
-      )
-    );
+    const nodes = getNodes();
+    const edges = getEdges();
+    deleteElements({
+      nodes: nodes.filter((n) => nodeIds.includes(n.id)),
+      edges: edges.filter(
+        (e) => nodeIds.includes(e.source) || nodeIds.includes(e.target)
+      ),
+    });
     onClose();
-  }, [nodeIds, setNodes, setEdges, onClose]);
+  }, [deleteElements, getEdges, getNodes, nodeIds, onClose]);
 
   return (
     <div
