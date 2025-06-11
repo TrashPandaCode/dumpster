@@ -55,7 +55,7 @@ const LeftPanel = () => {
 
       <Popover>
         <PopoverTrigger asChild>
-          <IconButton tooltip="Reset Level" side="right">
+          <IconButton tooltip="Reset Level" side="right" id="reset-level">
             <TrashIcon className="text-white" />
           </IconButton>
         </PopoverTrigger>

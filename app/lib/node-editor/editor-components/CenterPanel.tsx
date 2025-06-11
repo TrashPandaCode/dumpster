@@ -18,6 +18,7 @@ const CenterPanel = () => {
     <Panel
       position="top-center"
       className="flex flex-row items-center justify-center gap-2"
+      id="center-panel"
     >
       {neighborLevels?.prev && (
         <NavLink to={`/levels/${neighborLevels?.prev}`} onClick={() => pause()}>

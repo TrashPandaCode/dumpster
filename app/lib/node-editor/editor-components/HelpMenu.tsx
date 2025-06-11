@@ -45,7 +45,7 @@ const HelpMenu = () => {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <IconButton side="left" tooltip="Help Menu" aria-label="Help Menu">
+        <IconButton id="help-menu" side="left" tooltip="Help Menu" aria-label="Help Menu">
           <QuestionMarkIcon className="text-white" />
         </IconButton>
       </PopoverTrigger>

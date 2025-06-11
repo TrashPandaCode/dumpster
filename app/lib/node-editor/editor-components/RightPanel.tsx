@@ -34,7 +34,12 @@ const RightPanel: React.FC<{ rfInstance: ReactFlowInstance | undefined }> = ({
     >
       <DropdownMenu open={isDropdownOpen} onOpenChange={setIsDropdownOpen}>
         <DropdownMenuTrigger asChild>
-          <IconButton side="left" tooltip="Add Node" aria-label="Add Node">
+          <IconButton
+            id="add-nodes"
+            side="left"
+            tooltip="Add Node"
+            aria-label="Add Node"
+          >
             <PlusIcon className="text-white" />
           </IconButton>
         </DropdownMenuTrigger>
