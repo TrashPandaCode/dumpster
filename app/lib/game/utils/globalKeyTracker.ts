@@ -24,8 +24,52 @@ const detectMac = (): boolean => {
 
 const isMac = detectMac();
 
-// Cross-platform modifier key - using Shift on Mac to avoid conflicts
-const primaryModifier = isMac ? "Shift" : "Control";
+// Cross-platform modifier key - using Alt/Option on Mac, Ctrl on others
+const primaryModifier = isMac ? "Alt" : "Control";
+
+// Mapping for Mac Alt+Key combinations to get the original key
+const macAltKeyMap: Record<string, string> = {
+  // Letters
+  å: "a",
+  ç: "c",
+  "∂": "d",
+  "´": "e",
+  ƒ: "f",
+  "©": "g",
+  "˙": "h",
+  ˆ: "i",
+  "∆": "j",
+  "˚": "k",
+  "¬": "l",
+  µ: "m",
+  "˜": "n",
+  ø: "o",
+  π: "p",
+  œ: "q",
+  "®": "r",
+  ß: "s",
+  "†": "t",
+  "¨": "u",
+  "√": "v",
+  "∑": "w",
+  "≈": "x",
+  "¥": "y",
+  Ω: "z",
+
+  // Special characters
+  " ": " ", // Non-breaking space to regular space
+
+  // Function and modifier keys remain the same
+  Escape: "Escape",
+  Enter: "Enter",
+  Tab: "Tab",
+  Backspace: "Backspace",
+  Delete: "Delete",
+  ArrowUp: "ArrowUp",
+  ArrowDown: "ArrowDown",
+  ArrowLeft: "ArrowLeft",
+  ArrowRight: "ArrowRight",
+};
 
 // Set of default shortcuts that we want to prevent default behavior for
 const keyboardShortcuts = new Set<string>([
@@ -52,23 +96,50 @@ function normalizeKey(key: string): string {
 }
 
 /**
+ * Gets the original key from a potentially modified Alt+Key combination on Mac
+ */
+function getOriginalKey(e: KeyboardEvent): string {
+  // On Mac with Alt key pressed, use the code property to get original key
+  if (isMac && e.altKey && e.code) {
+    // Extract key from code (e.g., "KeyD" -> "d", "Space" -> " ")
+    if (e.code.startsWith("Key")) {
+      return e.code.replace("Key", "").toLowerCase();
+    }
+    if (e.code === "Space") {
+      return " ";
+    }
+  }
+
+  // Fallback: try to map the modified key back to original
+  if (isMac && e.altKey && macAltKeyMap[e.key]) {
+    return macAltKeyMap[e.key];
+  }
+
+  // For non-Mac or non-Alt combinations, return the key as-is
+  return e.key;
+}
+
+/**
  * Generates a string representation of the keyboard shortcut
- * Uses Shift on Mac, Ctrl on others to avoid system conflicts
+ * Uses Alt on Mac, Ctrl on others to avoid system conflicts
  */
 function getShortcutString(e: KeyboardEvent): string {
   const parts: string[] = [];
 
-  // Use Shift on Mac (Option key), Ctrl on others
-  if ((isMac && e.shiftKey) || (!isMac && e.ctrlKey)) {
+  // Use Alt on Mac, Ctrl on others
+  if ((isMac && e.altKey) || (!isMac && e.ctrlKey)) {
     parts.push(primaryModifier);
   }
 
+  // Get the original key (handles Mac Alt+Key modifications)
+  const originalKey = getOriginalKey(e);
+
   // Handle special keys
   const specialKeys = ["Escape", "Enter", "Tab", "Backspace", "Delete"];
-  if (specialKeys.includes(e.key)) {
-    parts.push(e.key);
+  if (specialKeys.includes(originalKey)) {
+    parts.push(originalKey);
   } else {
-    parts.push(e.key.toLowerCase());
+    parts.push(originalKey.toLowerCase());
   }
 
   return parts.join("+");
@@ -99,6 +170,7 @@ function initGlobalKeyTracker() {
 
   keydownHandler = (e) => {
     const shortcut = getShortcutString(e);
+
     // Check if the pressed key is a default shortcut and prevent default behavior
     if (keyboardShortcuts.has(shortcut)) {
       e.preventDefault();
@@ -106,17 +178,18 @@ function initGlobalKeyTracker() {
       return;
     }
 
-    const key = e.key;
-    if (!keysDown.has(key)) {
-      keysPressed.add(key);
+    // For regular key tracking, use the original key
+    const originalKey = getOriginalKey(e);
+    if (!keysDown.has(originalKey)) {
+      keysPressed.add(originalKey);
     }
-    keysDown.add(key);
+    keysDown.add(originalKey);
   };
 
   keyupHandler = (e) => {
-    const key = e.key;
-    keysDown.delete(key);
-    keysReleased.add(key);
+    const originalKey = getOriginalKey(e);
+    keysDown.delete(originalKey);
+    keysReleased.add(originalKey);
   };
 
   window.addEventListener("keydown", keydownHandler);
