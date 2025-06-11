@@ -1,5 +1,5 @@
 import { CrossCircledIcon } from "@radix-ui/react-icons";
-import { Position, useNodeConnections, useReactFlow } from "@xyflow/react";
+import { Position, useReactFlow } from "@xyflow/react";
 import { memo, useEffect, useMemo, useRef, useState } from "react";
 
 import AddHandle from "../../node-components/AddHandle";

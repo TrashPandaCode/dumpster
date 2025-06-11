@@ -1,4 +1,4 @@
-import { Position, useNodeConnections, useReactFlow } from "@xyflow/react";
+import { Position, useReactFlow } from "@xyflow/react";
 import { memo, useEffect, useRef, useState } from "react";
 
 import BaseHandle from "../../node-components/BaseHandle";
