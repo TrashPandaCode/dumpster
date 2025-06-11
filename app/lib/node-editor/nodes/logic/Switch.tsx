@@ -1,5 +1,5 @@
 import { Position, useReactFlow } from "@xyflow/react";
-import { memo, useEffect, useRef, useState } from "react";
+import { memo, useEffect, useState } from "react";
 
 import BaseHandle from "../../node-components/BaseHandle";
 import LabelHandle from "../../node-components/LabelHandle";
@@ -42,15 +42,15 @@ const Switch = memo(({ id, data }: { id: string; data: any }) => {
   const [yDisplayData, setyDisplayData] = useState(0);
   const [zDisplayData, setzDisplayData] = useState(0);
 
-  const yInputData = useRef(data.yInputData ? data.yInputData.current : 0);
-  const zInputData = useRef(data.zInputData ? data.zInputData.current : 0);
+  const [yInputData, setYInputData] = useState<number>(data.yInputData ?? 0);
+  const [zInputData, setZInputData] = useState<number>(data.zInputData ?? 0);
 
   useEffect(() => {
     updateNodeData(id, {
       compute: (inputs: nodeInputs, results: nodeResults) => {
         const x = getInput(inputs, IN_HANDLE_1, 0);
-        const y = getInput(inputs, IN_HANDLE_2, yInputData.current);
-        const z = getInput(inputs, IN_HANDLE_3, zInputData.current);
+        const y = getInput(inputs, IN_HANDLE_2, yInputData);
+        const z = getInput(inputs, IN_HANDLE_3, zInputData);
 
         setyDisplayData(y);
         setzDisplayData(z);
@@ -60,7 +60,7 @@ const Switch = memo(({ id, data }: { id: string; data: any }) => {
       yInputData,
       zInputData,
     });
-  }, []);
+  }, [yInputData, zInputData]);
 
   return (
     <div className="min-w-3xs">
@@ -75,8 +75,8 @@ const Switch = memo(({ id, data }: { id: string; data: any }) => {
           False
           <NumberInput
             value={yDisplayData}
-            setValue={(v) => (yInputData.current = v)}
-            defaultValue={yInputData.current}
+            setValue={(v) => setYInputData(v)}
+            defaultValue={yInputData}
             handleId={IN_HANDLE_2}
           />
           <BaseHandle id={IN_HANDLE_2} position={Position.Left} />
@@ -85,8 +85,8 @@ const Switch = memo(({ id, data }: { id: string; data: any }) => {
           True
           <NumberInput
             value={zDisplayData}
-            setValue={(v) => (zInputData.current = v)}
-            defaultValue={zInputData.current}
+            setValue={(v) => setZInputData(v)}
+            defaultValue={zInputData}
             handleId={IN_HANDLE_3}
           />
           <BaseHandle id={IN_HANDLE_3} position={Position.Left} />

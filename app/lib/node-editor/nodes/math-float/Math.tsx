@@ -1,5 +1,5 @@
 import { Position, useReactFlow } from "@xyflow/react";
-import { memo, useEffect, useRef, useState } from "react";
+import { memo, useEffect, useState } from "react";
 
 import BaseHandle from "../../node-components/BaseHandle";
 import LabelHandle from "../../node-components/LabelHandle";
@@ -36,45 +36,41 @@ import { COMPUTE, INPUTS, TYPES } from "./types";
 const Math = memo(({ id, data }: { id: string; data: any }) => {
   const { updateNodeData } = useReactFlow();
 
-  const computeType = useRef(data.initialComputeType ?? "Addition");
-  const [inputState, setInputState] = useState(
-    INPUTS[computeType.current ?? "Addition"]
+  const [computeType, setComputeType] = useState(
+    data.initialComputeType ?? "Addition"
   );
-  function setComputeType(type: string): void {
-    computeType.current = type;
-    updateNodeData(id, { initialComputeType: type });
-    setInputState(INPUTS[type]);
-  }
+  const inputState = INPUTS[computeType];
 
   const [xDisplayData, setxDisplayData] = useState(0);
   const [yDisplayData, setyDisplayData] = useState(0);
 
-  const xInputData = useRef(data.xInputData ? data.xInputData.current : 0);
-  const yInputData = useRef(data.yInputData ? data.yInputData.current : 0);
+  const [xInputData, setXInputData] = useState<number>(data.xInputData ?? 0);
+  const [yInputData, setYInputData] = useState<number>(data.yInputData ?? 0);
 
   useEffect(() => {
     updateNodeData(id, {
       compute: (inputs: nodeInputs, results: nodeResults) => {
-        const x = getInput(inputs, IN_HANDLE_1, xInputData.current);
-        const y = getInput(inputs, IN_HANDLE_2, yInputData.current);
+        const x = getInput(inputs, IN_HANDLE_1, xInputData);
+        const y = getInput(inputs, IN_HANDLE_2, yInputData);
 
         setxDisplayData(x);
         setyDisplayData(y);
 
-        results.set(OUT_HANDLE_1, COMPUTE[computeType.current](x, y));
+        results.set(OUT_HANDLE_1, COMPUTE[computeType](x, y));
       },
       xInputData,
       yInputData,
+      initialComuteType: computeType,
     });
-  }, []);
+  }, [computeType, xInputData, yInputData]);
 
   return (
     <div className="min-w-3xs">
-      <NodeContent label={computeType.current} type="math" docsName="math">
+      <NodeContent label={computeType} type="math" docsName="math">
         <SelectDropDown
           items={TYPES}
           setSelected={setComputeType}
-          defaultValue={computeType.current}
+          defaultValue={computeType}
         />
         <br />
         <LabelHandle
@@ -87,8 +83,8 @@ const Math = memo(({ id, data }: { id: string; data: any }) => {
             {inputState[0].label}
             <NumberInput
               value={xDisplayData}
-              setValue={(v) => (xInputData.current = v)}
-              defaultValue={xInputData.current}
+              setValue={(v) => setXInputData(v)}
+              defaultValue={xInputData}
               handleId={IN_HANDLE_1}
               type={inputState[0].type}
             />
@@ -100,8 +96,8 @@ const Math = memo(({ id, data }: { id: string; data: any }) => {
             {inputState[1].label}
             <NumberInput
               value={yDisplayData}
-              setValue={(v) => (yInputData.current = v)}
-              defaultValue={yInputData.current}
+              setValue={(v) => setYInputData(v)}
+              defaultValue={yInputData}
               handleId={IN_HANDLE_2}
               type={inputState[1].type}
             />

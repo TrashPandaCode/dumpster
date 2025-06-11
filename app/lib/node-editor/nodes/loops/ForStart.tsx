@@ -47,7 +47,7 @@ import { IN_HANDLE_1, MAIN_LOOP_CONNECTOR, OUT_HANDLE_1 } from "../constants";
 
 const ForStart = memo(
   ({ id, data, selected }: { id: string; data: any; selected: boolean }) => {
-    const iterations = useRef(1);
+    const [iterations, setIterations] = useState(1);
     const [iterDisplay, setIterDisplay] = useState(1);
 
     const loops = useLoopStore((state) => state.loops);
@@ -71,7 +71,7 @@ const ForStart = memo(
         ) => {
           const iters = Math.max(
             1,
-            Math.round(getInput(inputs, IN_HANDLE_1, iterations.current))
+            Math.round(getInput(inputs, IN_HANDLE_1, iterations))
           );
           setIterDisplay(iters);
 
@@ -90,7 +90,7 @@ const ForStart = memo(
         },
         loopStart: true,
       });
-    }, []);
+    }, [iterations]);
 
     return (
       <div className="min-w-60">
@@ -100,11 +100,9 @@ const ForStart = memo(
             <NumberInput
               value={iterDisplay}
               setValue={(v) => {
-                if (v > 0) {
-                  iterations.current = v;
-                }
+                if (v > 0) setIterations(v);
               }}
-              defaultValue={iterations.current}
+              defaultValue={iterations}
               handleId={IN_HANDLE_1}
               type="int"
             />

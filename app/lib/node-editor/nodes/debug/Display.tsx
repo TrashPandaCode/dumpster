@@ -16,7 +16,7 @@ import { IN_HANDLE_1 } from "../constants";
  */
 const Display = memo(({ id }: { id: string }) => {
   const { updateNodeData } = useReactFlow();
-  const [displaNumber, setDisplayNumber] = useState(0);
+  const [displayNumber, setDisplayNumber] = useState(0);
 
   useEffect(() => {
     updateNodeData(id, {
@@ -31,7 +31,7 @@ const Display = memo(({ id }: { id: string }) => {
       <NodeContent label="Display" type="debug" docsName="display">
         <div className="flex gap-2">
           <LabelHandle id={IN_HANDLE_1} position={Position.Left} />
-          <p>{displaNumber}</p>
+          <p>{displayNumber}</p>
         </div>
       </NodeContent>
     </div>
