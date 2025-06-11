@@ -1,0 +1,2 @@
+import{o as e}from"./chunk-AYJ5UCUI-BS9SflA5.js";const s={title:"FAQ"};function o(t){const n={h1:"h1",p:"p",...t.components};return e.jsxs(e.Fragment,{children:[e.jsx(n.h1,{children:"FAQ"}),`
+`,e.jsx(n.p,{children:"This section provides answers to frequently asked questions about the project. If you have a question that is not answered here, feel free to reach out to the community or check the project's documentation."})]})}function c(t={}){const{wrapper:n}=t.components||{};return n?e.jsx(n,{...t,children:e.jsx(o,{...t})}):o(t)}export{c as default,s as frontmatter};
