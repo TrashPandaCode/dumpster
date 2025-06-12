@@ -98,27 +98,54 @@ function normalizeKey(key: string): string {
 }
 
 /**
+ * Fixes Y/Z swap on German Mac keyboards using code-based detection
+ */
+function fixGermanMacKeySwap(e: KeyboardEvent): string {
+  if (!isMac) return e.key;
+
+  // Use e.code for layout-independent key detection
+  if (e.code === "KeyY") return "z"; // Physical Y key should be logical Z
+  if (e.code === "KeyZ") return "y"; // Physical Z key should be logical Y
+
+  return e.key;
+}
+
+/**
  * Gets the original key from a potentially modified Alt+Key combination on Mac
  */
 function getOriginalKey(e: KeyboardEvent): string {
+  let originalKey: string;
+
+  // First, check for Y/Z swap on Mac using code-based detection
+  if (isMac && (e.code === "KeyY" || e.code === "KeyZ")) {
+    originalKey = fixGermanMacKeySwap(e);
+  }
   // On Mac with Alt key pressed, use the code property to get original key
-  if (isMac && e.altKey && e.code) {
+  else if (isMac && e.altKey && e.code) {
     // Extract key from code (e.g., "KeyD" -> "d", "Space" -> " ")
     if (e.code.startsWith("Key")) {
-      return e.code.replace("Key", "").toLowerCase();
-    }
-    if (e.code === "Space") {
-      return " ";
+      originalKey = e.code.replace("Key", "").toLowerCase();
+      // Apply Y/Z fix even for Alt combinations
+      if (originalKey === "y" || originalKey === "z") {
+        const fakeEvent = { code: e.code } as KeyboardEvent;
+        originalKey = fixGermanMacKeySwap(fakeEvent);
+      }
+    } else if (e.code === "Space") {
+      originalKey = " ";
+    } else {
+      originalKey = e.key;
     }
   }
-
   // Fallback: try to map the modified key back to original
-  if (isMac && e.altKey && macAltKeyMap[e.key]) {
-    return macAltKeyMap[e.key];
+  else if (isMac && e.altKey && macAltKeyMap[e.key]) {
+    originalKey = macAltKeyMap[e.key];
+  }
+  // For non-Mac or non-Alt combinations, return the key as-is
+  else {
+    originalKey = e.key;
   }
 
-  // For non-Mac or non-Alt combinations, return the key as-is
-  return e.key;
+  return originalKey;
 }
 
 /**
@@ -133,7 +160,7 @@ function getShortcutString(e: KeyboardEvent): string {
     parts.push(primaryModifier);
   }
 
-  // Get the original key (handles Mac Alt+Key modifications)
+  // Get the original key (handles Mac Alt+Key modifications and German Y/Z swap)
   const originalKey = getOriginalKey(e);
 
   // Handle special keys
