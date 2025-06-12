@@ -368,28 +368,18 @@ export const LEVELS = {
     hints: [],
     modifiableGameObjects: [
       {
-        id: "arm1",
+        id: "arm",
         connections: [
-          { label: "xpos", access: "import" },
-          { label: "ypos", access: "import" },
-          { label: "rotation", access: "all"}
+          { label: "joint1x", access: "import" },
+          { label: "joint1y", access: "import" },
+          { label: "joint1rot", access: "all"},
+          { label: "joint2x", access: "import" },
+          { label: "joint2y", access: "import" },
+          { label: "joint2rot", access: "all"},
+          { label: "joint3x", access: "import" },
+          { label: "joint3y", access: "import" },
         ],
-      },
-      {
-        id: "arm2",
-        connections: [
-          { label: "xpos", access: "all" },
-          { label: "ypos", access: "all" },
-          { label: "rotation", access: "all"}
-        ],
-      },
-      {
-        id: "platform",
-        connections: [
-          { label: "xpos", access: "export" },
-          { label: "ypos", access: "export" }
-        ],
-      },
+      }
     ],
     availableNodes: [
       "Display",

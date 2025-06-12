@@ -13,6 +13,8 @@ import {
 import { Panel, useReactFlow, type ReactFlowInstance } from "@xyflow/react";
 import { useState } from "react";
 
+import { useFlowStore } from "../node-store/flow-store";
+import { globalKeyTracker } from "~/lib/game/utils/globalKeyTracker";
 import { useNodeStore } from "../node-store/node-store";
 import AddNodes from "./AddNodes";
 import HelpMenu from "./HelpMenu";
@@ -34,7 +36,19 @@ const RightPanel: React.FC<{ rfInstance: ReactFlowInstance | undefined }> = ({
     >
       <DropdownMenu open={isDropdownOpen} onOpenChange={setIsDropdownOpen}>
         <DropdownMenuTrigger asChild>
-          <IconButton side="left" tooltip="Add Node" aria-label="Add Node">
+          <IconButton
+            id="add-nodes"
+            side="left"
+            tooltip={
+              <p>
+                Add Node
+                <span className="ml-2 rounded bg-slate-600 px-1.5 py-0.5 font-mono text-xs text-gray-300">
+                  {globalKeyTracker.isMac ? "⌥+Space" : "Ctrl+Space"}
+                </span>
+              </p>
+            }
+            aria-label="Add Node"
+          >
             <PlusIcon className="text-white" />
           </IconButton>
         </DropdownMenuTrigger>
@@ -75,6 +89,15 @@ const RightPanel: React.FC<{ rfInstance: ReactFlowInstance | undefined }> = ({
             side="left"
             onClick={() => {
               console.log(getEdges());
+            }}
+          >
+            <CubeIcon className="text-white" />
+          </IconButton>
+          <IconButton
+            tooltip="Print Temporal State"
+            side="left"
+            onClick={() => {
+              console.log(useFlowStore.temporal.getState());
             }}
           >
             <CubeIcon className="text-white" />
