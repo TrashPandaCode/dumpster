@@ -22,6 +22,26 @@ import { useNodeStore } from "~/lib/node-editor/node-store/node-store";
 import { useDataStore } from "~/lib/zustand/data";
 
 import { useTelemetryStore } from "~/lib/zustand/telemetry"
+const detectMac = (): boolean => {
+  if (typeof navigator === "undefined") return false;
+
+  // Method 1: Modern userAgentData API (Chrome 90+, Edge 91+)
+  if ("userAgentData" in navigator && (navigator as any).userAgentData) {
+    const uaData = (navigator as any).userAgentData;
+    return uaData.platform === "macOS";
+  }
+
+  // Method 2: Check for Mac-specific properties
+  if ("maxTouchPoints" in navigator && navigator.maxTouchPoints > 0) {
+    // Could be iOS/iPadOS, check userAgent
+    return /iPad|iPhone|iPod/.test(navigator.userAgent);
+  }
+
+  // Method 3: Fallback to userAgent parsing
+  return /Mac/.test(navigator.userAgent);
+};
+
+const isMac = detectMac();
 
 const Game = ({ params }: Route.ComponentProps) => {
   const setTelemetryLevel = useTelemetryStore((state) => state.newLevel);
@@ -68,10 +88,11 @@ const Game = ({ params }: Route.ComponentProps) => {
     }));
 
     // Wait for Ctrl+S
+    const primaryModifier = isMac ? "Alt" : "Control";
     const handleKeyDown = (event: KeyboardEvent) => {
       if ((event.ctrlKey || event.metaKey) && event.key === "s") {
         event.preventDefault();
-        console.log("ctrl+s");
+        console.log("${primaryModifier}+s");
         downloadTelemetry();
       }
     };

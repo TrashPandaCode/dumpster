@@ -3,6 +3,7 @@ import Joyride, {
   type Step,
   type TooltipRenderProps,
 } from "react-joyride";
+import { useTelemetryStore } from "~/lib/zustand/telemetry";
 
 export default function Tutorial({ onClose }: { onClose: () => void }) {
   const steps = [
@@ -76,9 +77,11 @@ export default function Tutorial({ onClose }: { onClose: () => void }) {
     },
   ] satisfies Step[];
 
+  const skippedTelemetry = useTelemetryStore((state) => state.skippedTutorial);
+  
   const handleJoyrideCallback = (data: CallBackProps) => {
     if (data.status === "skipped") {
-      //TODO: track telemetry
+      skippedTelemetry(true);
     }
 
     if (data.status === "finished" || data.status === "skipped") {
