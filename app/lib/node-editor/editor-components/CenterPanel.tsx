@@ -10,13 +10,18 @@ const CenterPanel = () => {
   const currentLevel = useGameStore((state) => state.currentLevel);
   const neighborLevels = getNeighborLevels(currentLevel);
 
+  // when navigating between levels, we briefly pause the game to prevent a new update cycle in the middle of a render
+  // this is necessary because the game state is updated in the same cycle as the level changes
+  const pause = useGameStore((state) => state.pause);
+
   return (
     <Panel
       position="top-center"
       className="flex flex-row items-center justify-center gap-2"
+      id="center-panel"
     >
       {neighborLevels?.prev && (
-        <NavLink to={`/levels/${neighborLevels?.prev}`}>
+        <NavLink to={`/levels/${neighborLevels?.prev}`} onClick={() => pause()}>
           <IconButton
             tooltip="Previous Level"
             side="left"
@@ -32,7 +37,7 @@ const CenterPanel = () => {
         </IconButton>
       </NavLink>
       {neighborLevels?.next && (
-        <NavLink to={`/levels/${neighborLevels?.next}`}>
+        <NavLink to={`/levels/${neighborLevels?.next}`} onClick={() => pause()}>
           <IconButton tooltip="Next Level" side="right">
             <ArrowRightIcon className="text-white" />
           </IconButton>

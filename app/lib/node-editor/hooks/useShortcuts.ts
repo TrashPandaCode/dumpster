@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { globalKeyTracker } from "../../game/utils/globalKeyTracker";
 import { useNodeAddMenuStore } from "../../zustand/node-add-menu-store";
 import { duplicateNodes } from "../utils/duplicate";
+import { redo, undo } from "../utils/undo";
 
 // Hook to handle duplicating nodes with a hotkey
 export function useDuplicateHotkey() {
@@ -36,7 +37,27 @@ export function useNewNodeHotkey() {
   }, []);
 }
 
-//Hook to handle the Escape key for closing menus
+export function useUndoHotkey() {
+  useEffect(() => {
+    const shortcut = globalKeyTracker.appendPlatformModifier("z");
+    const remove = globalKeyTracker.registerShortcut(shortcut, (e) => {
+      undo()
+    });
+    return remove;
+  }, []);
+}
+
+export function useRedoHotkey() {
+  useEffect(() => {
+    const shortcut = globalKeyTracker.appendPlatformModifier("y");
+    const remove = globalKeyTracker.registerShortcut(shortcut, (e) => {
+      redo();
+    });
+    return remove;
+  }, []);
+}
+
+// Hook to handle the Escape key for closing menus
 export function useEscapeHotkey(
   callback?: () => void,
   condition: boolean = true

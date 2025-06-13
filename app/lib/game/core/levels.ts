@@ -17,6 +17,7 @@ import { initializeParenting } from "../levels/parenting";
 import { initializePlayground } from "../levels/playground";
 import { initializeSitting } from "../levels/sitting";
 import { initializeTimeTransform } from "../levels/timeTransform";
+import { initializeKinematics } from "../levels/kinematic";
 
 export type ConnectionAccess = "export" | "import" | "all";
 
@@ -208,8 +209,8 @@ export const LEVELS = {
     ],
     availableNodes: [
       "Display",
-      "ImportFromGameobject",
       "Switch",
+      "ImportFromGameobject",
       "ExportToGameobject",
     ],
     difficulty: 1,
@@ -242,7 +243,15 @@ export const LEVELS = {
         ],
       },
     ],
-    availableNodes: ["Display", "ExportToGameobject"],
+    availableNodes: [
+      "Display",
+      "Value",
+      "Math",
+      "Switch",
+      "KeyPress",
+      "ImportFromGameobject",
+      "ExportToGameobject",
+    ],
     difficulty: 2,
   },
   parenting: {
@@ -260,9 +269,9 @@ export const LEVELS = {
     ],
     goals: [
       "Parent the trashcan to the raccoon.",
-      "Bring the trashcan to the flag.",
+      `Bring trashcans to the flag (3 total).`,
     ],
-    success: "Wow!",
+    success: "That should be enough food for a while... or at least two days.",
     category: "Main Game",
     image: alleyTwo,
     initialNodes: [],
@@ -277,7 +286,7 @@ export const LEVELS = {
         ],
       },
       {
-        id: "trashcanFilled",
+        id: "trashcanP",
         connections: [
           { label: "xpos", access: "all" },
           { label: "ypos", access: "all" },
@@ -288,10 +297,10 @@ export const LEVELS = {
       "Display",
       "Value",
       "Math",
-      "ImportFromGameobject",
-      "ExportToGameobject",
       "Switch",
       "KeyPress",
+      "ImportFromGameobject",
+      "ExportToGameobject",
     ],
     difficulty: 1,
   },
@@ -300,11 +309,21 @@ export const LEVELS = {
     name: "Time Transform",
     description:
       "This is a level of the main game, introducing time-based transformations.",
+    // feel free to change the dialog
     dialog: [
-      "In this level, you will learn how time transformations can affect game objects.",
+      "Well... we just found, what ever this is, with all those numbers on it.",
+      "And there’s this thing spinning around in the middle really fast!",
+      "I’ve seen people use this, especially when they’re in a hurry. But it was never going that fast.",
+      "It might be broken... maybe I can fix it?",
+      "There might be a ladder we could use to get onto the roof — maybe we can spot something that helps us fixing our new little treasure.",
     ],
-    goals: ["Do something!"],
-    success: "Wow!",
+    goals: [
+      "Climb the ladder to the roof.",
+      "Find something that helps you fix the clock.",
+      "Make the clock spin in the proper speed and direction.",
+    ],
+    success:
+      "My brothers always said humans are stupid, but how can someone inventing such a masterpiece be stupid? I'm so happy we were able to save this!",
     category: "Main Game",
     image: alleyOne,
     initialNodes: [],
@@ -313,17 +332,67 @@ export const LEVELS = {
     modifiableGameObjects: [
       {
         id: "raccoon",
-        connections: [{ label: "speed", access: "export" }],
+        connections: [
+          { label: "xpos", access: "import" },
+          { label: "ypos", access: "import" },
+          { label: "xpos", access: "export" },
+          { label: "ypos", access: "export" },
+        ],
       },
     ],
     availableNodes: [
       "Display",
       "Value",
       "Math",
-      "ImportFromGameobject",
       "Switch",
+      "ImportFromGameobject",
       "ExportToGameobject",
       "Time",
+    ],
+    difficulty: 1,
+  },
+  kinematics: {
+    slug: "kinematics",
+    name: "Kinematics",
+    description:
+      "PlaceHolder",
+    dialog: [
+      "PlaceHolder",
+    ],
+    goals: ["Do something!"],
+    success: "Wow!",
+    category: "Main Game",
+    image: alleyOne,
+    initialNodes: [],
+    initialState: initializeKinematics,
+    hints: [],
+    modifiableGameObjects: [
+      {
+        id: "arm",
+        connections: [
+          { label: "joint1x", access: "import" },
+          { label: "joint1y", access: "import" },
+          { label: "joint1rot", access: "all"},
+          { label: "joint2x", access: "import" },
+          { label: "joint2y", access: "import" },
+          { label: "joint2rot", access: "all"},
+          { label: "joint3x", access: "import" },
+          { label: "joint3y", access: "import" },
+        ],
+      }
+    ],
+    availableNodes: [
+      "Display",
+      "Value",
+      "Time",
+      "KeyPress",
+      "Math",
+      "ExportToGameobject",
+      "ImportFromGameobject",
+      "Switch",
+      "Group",
+      "ForLoop",
+      "MousePosition",
     ],
     difficulty: 1,
   },
@@ -383,14 +452,14 @@ export const LEVELS = {
     availableNodes: [
       "Display",
       "Value",
-      "Time",
-      "KeyPress",
       "Math",
-      "ExportToGameobject",
-      "ImportFromGameobject",
       "Switch",
-      "Group",
+      "KeyPress",
+      "ImportFromGameobject",
+      "ExportToGameobject",
+      "Time",
       "ForLoop",
+      "Group",
       "MousePosition",
     ],
     difficulty: 0,

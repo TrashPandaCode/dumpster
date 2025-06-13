@@ -7,6 +7,7 @@ import {
   addGameobjects,
   animPlayer,
   handleReset,
+  removeBackgrounds,
 } from "../utils/gameHelper";
 
 export const initializeTimeTransform = () => {
@@ -19,7 +20,7 @@ export const initializeTimeTransform = () => {
   k.setCamScale((CAM_SCALE * k.height()) / 947);
 
   const ladder = game.add([
-    k.rect(0.1, 15),
+    k.rect(0.1, 13),
     k.opacity(0),
     k.anchor("bot"),
     k.pos(-11, -1),
@@ -36,18 +37,39 @@ export const initializeTimeTransform = () => {
       isClimbing = true;
     }
     if (k.isKeyDown("up") && raccoon.pos.y >= -15) {
-      raccoon.pos.y -= 7 * k.dt();
+      raccoon.pos.y -= 5 * k.dt();
     }
     if (k.isKeyDown("down") && raccoon.pos.y <= 0) {
-      raccoon.pos.y += 7 * k.dt();
+      raccoon.pos.y += 5 * k.dt();
     }
   });
+
+  let onRoof = false;
+  const raccoonState = useDataStore.getState().gameObjects.get("raccoon");
 
   game.onUpdate(() => {
     if (useGameStore.getState().isPaused) return;
 
+    if (raccoon!.pos.y < -13) {
+      removeBackgrounds();
+      addBackgrounds(["background2"]);
+
+      ladder.pos = k.vec2(-12, 5);
+      ladder.height = 5;
+
+      raccoonState!.get("xpos")!.value = -13;
+      raccoonState!.get("ypos")!.value == -5;
+      raccoon!.pos.x = -12;
+      raccoon!.pos.y = 5;
+      onRoof = true;
+    }
+
     if (!isClimbing) {
-      animPlayer(raccoon!, k, "input");
+      if (!onRoof) {
+        animPlayer(raccoon!, k, "input");
+      } else {
+        animPlayer(raccoon!, k, "input", undefined, { minX: -20, maxX: 2 });
+      }
     }
 
     if (useDataStore.getState().initData) {

@@ -33,6 +33,7 @@ const Editor = () => {
     onEdgesChange,
     onConnect,
     onNodeDragStop,
+    onBeforeDelete,
   } = useFlow();
 
   const {
@@ -48,6 +49,9 @@ const Editor = () => {
     setNodeContextMenu,
     setSelectionContextMenu,
     handleCloseCombinedMenu,
+    nodeContextMenuRef,
+    selectionContextMenuRef,
+    paneContextMenuRef,
   } = useContextMenu();
 
   const containerRef = useRef<HTMLDivElement>(null);
@@ -74,6 +78,7 @@ const Editor = () => {
         proOptions={{ hideAttribution: true }}
         deleteKeyCode={["Delete", "Backspace"]}
         onNodeDragStop={onNodeDragStop}
+        onBeforeDelete={onBeforeDelete}
         ref={containerRef}
         defaultEdgeOptions={{
           type: "Deletable",
@@ -88,6 +93,7 @@ const Editor = () => {
 
       {shouldShowPaneContextMenu && (
         <PaneContextMenu
+          ref={paneContextMenuRef}
           x={paneContextMenuX}
           y={paneContextMenuY}
           onClose={handleCloseCombinedMenu}
@@ -95,6 +101,7 @@ const Editor = () => {
       )}
       {nodeContextMenu && (
         <NodeContextMenu
+          ref={nodeContextMenuRef}
           nodeId={nodeContextMenu.nodeId}
           nodeType={nodeContextMenu.nodeType}
           nodeLoopId={nodeContextMenu.nodeLoopId}
@@ -106,6 +113,7 @@ const Editor = () => {
       )}
       {selectionContextMenu && (
         <SelectionContextMenu
+          ref={selectionContextMenuRef}
           nodeIds={selectionContextMenu.nodeIds}
           x={selectionContextMenu.x}
           y={selectionContextMenu.y}

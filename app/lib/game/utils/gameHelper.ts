@@ -8,10 +8,16 @@ import type {
   SpriteComp,
   StateComp,
   ZComp,
+  BodyComp,
+  AreaComp
 } from "kaplay";
 
 import { useDataStore } from "~/lib/zustand/data";
-import { BACKGROUND_OFFSET, SPRITE_SCALE } from "../constants";
+import {
+  BACKGROUND_OFFSET,
+  SMALL_FLAG_OFFSET,
+  SPRITE_SCALE,
+} from "../constants";
 import { getKaplayCtx } from "../core/kaplayCtx";
 import { type GameObject } from "../gameObjects";
 
@@ -24,6 +30,8 @@ type PlayerType = GameObj<
   | AnchorComp
   | ZComp
   | StateComp<"idle" | "walkLeft" | "walkRight">
+  | BodyComp
+  | AreaComp
 >;
 
 interface GameObjectInstances {
@@ -63,6 +71,7 @@ export function addGameobjects(gameobjects: GameObject[]) {
       k.area(),
       k.z(2),
       k.opacity(1),
+      k.body(),
       "raccoon",
       k.state("idle", ["idle", "walkLeft", "walkRight"]),
     ]);
@@ -130,6 +139,7 @@ export function addGameobjects(gameobjects: GameObject[]) {
         default: { from: 0, to: 3, loop: true },
       },
     });
+    k.loadSprite("smallFlag", "/game/sprites/small_flag.png");
 
     const flag = game.add([
       k.sprite("flag", {
@@ -141,8 +151,42 @@ export function addGameobjects(gameobjects: GameObject[]) {
       k.scale(SPRITE_SCALE),
       k.z(1),
       k.opacity(1),
+      k.offscreen({ distance: 10 }),
       "goalFlag",
     ]);
+
+    const smallFlag = game.add([
+      k.sprite("smallFlag"),
+      k.anchor("center"),
+      k.pos(0, 0),
+      k.scale(SPRITE_SCALE * 0.5),
+      k.z(100),
+      k.opacity(1),
+    ]);
+
+    flag.onUpdate(() => {
+      if (flag.isOffScreen()) {
+        smallFlag.opacity = 1;
+        const screenPos = flag.screenPos()!;
+        smallFlag.screenPos(
+          k.vec2(
+            k.clamp(
+              screenPos.x,
+              SMALL_FLAG_OFFSET,
+              k.width() - SMALL_FLAG_OFFSET
+            ),
+            k.clamp(
+              screenPos.y,
+              SMALL_FLAG_OFFSET,
+              k.height() - SMALL_FLAG_OFFSET
+            )
+          )
+        );
+      } else {
+        smallFlag.opacity = 0;
+      }
+    });
+
     instances.goalFlag = flag;
   }
   return instances;
@@ -187,6 +231,13 @@ export function addBackgrounds(
     ]);
   }
 }
+
+export function removeBackgrounds() {
+  const { game } = getKaplayCtx();
+  game.get("background").forEach((bg) => bg.destroy());
+  game.get("backgroundLight").forEach((bg) => bg.destroy());
+}
+
 export let moveDirection = 1;
 
 export function animPlayer(
@@ -207,16 +258,12 @@ export function animPlayer(
   const lastX = player.pos.x;
 
   //Move
-  if (
-    movementMode === "node" &&
-    playerState!.get("xpos") !== undefined &&
-    playerState!.get("ypos") !== undefined
-  ) {
+  if (movementMode === "node") {
     player.pos.x = playerState!.get("xpos")!.value;
     player.pos.y = playerState!.get("ypos")!.value;
   } else if (movementMode === "input") {
-    if (k.isKeyDown("a") || k.isKeyDown("left")) player.pos.x -= 7 * k.dt();
-    if (k.isKeyDown("d") || k.isKeyDown("right")) player.pos.x += 7 * k.dt();
+    if (k.isKeyDown("a") || k.isKeyDown("left")) player.pos.x -= 5 * k.dt();
+    if (k.isKeyDown("d") || k.isKeyDown("right")) player.pos.x += 5 * k.dt();
   } else if (movementMode === "loop" && loopConfig) {
     // walks infinitely if speed is < 0
 
@@ -234,10 +281,7 @@ export function animPlayer(
     Math.min(playerClampX.maxX, player.pos.x)
   );
 
-  if (
-    playerState!.get("xpos") !== undefined &&
-    playerState!.get("ypos") !== undefined
-  ) {
+  if (playerState?.get("xpos") && playerState?.get("ypos")) {
     playerState!.get("xpos")!.value = player.pos.x;
     playerState!.get("ypos")!.value = player.pos.y;
   }

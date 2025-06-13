@@ -1,31 +1,27 @@
 import { useReactFlow } from "@xyflow/react";
-import { useCallback } from "react";
+import React, { useCallback } from "react";
 
 import { globalKeyTracker } from "~/lib/game/utils/globalKeyTracker";
 import { duplicateNodes } from "../utils/duplicate";
 import AddNodes from "./AddNodes";
 
-type NodeContextMenuProps = {
-  nodeId: string;
-  nodeType: string | undefined;
-  nodeLoopId: string | undefined;
-  nodeParentId: string | undefined;
-  x: number;
-  y: number;
-  onClose: () => void;
-};
-
-const NodeContextMenu: React.FC<NodeContextMenuProps> = ({
-  nodeId,
-  nodeType,
-  nodeLoopId,
-  x,
-  y,
-  onClose,
-  nodeParentId,
-}) => {
+const NodeContextMenu = React.forwardRef<
+  HTMLDivElement,
+  {
+    nodeId: string;
+    nodeType: string | undefined;
+    nodeLoopId: string | undefined;
+    nodeParentId: string | undefined;
+    x: number;
+    y: number;
+    onClose: () => void;
+  }
+>(({ nodeId, nodeType, nodeLoopId, x, y, onClose, nodeParentId }, ref) => {
   return (
-    <div style={{ position: "absolute", top: y, left: x, zIndex: 1000 }}>
+    <div
+      ref={ref}
+      style={{ position: "absolute", top: y, left: x, zIndex: 1000 }}
+    >
       {nodeType === "ForStart" || nodeType === "ForEnd" ? (
         <AddNodes
           x={x}
@@ -44,7 +40,7 @@ const NodeContextMenu: React.FC<NodeContextMenuProps> = ({
       )}
     </div>
   );
-};
+});
 
 export default NodeContextMenu;
 
@@ -55,7 +51,8 @@ const DefaultNodeContextMenu = ({
   nodeId: string;
   onClose: () => void;
 }) => {
-  const { getNode, getNodes, getEdges, setNodes, setEdges } = useReactFlow();
+  const { getNode, getNodes, getEdges, setNodes, setEdges, deleteElements } =
+    useReactFlow();
 
   // handle node duplication
   const duplicateNode = useCallback(() => {
@@ -79,7 +76,7 @@ const DefaultNodeContextMenu = ({
   const deleteNode = useCallback(() => {
     const idsToDelete = [nodeId];
     if (getNode(nodeId)?.type === "Group") {
-      // if the node is a group, delete all its children
+      // if the node is a group, ungroup all its children
       const children = getNodes().filter((n) => n.parentId === nodeId);
       const parent = getNode(nodeId);
 
@@ -104,21 +101,18 @@ const DefaultNodeContextMenu = ({
       });
     }
 
-    // remove all nodes with the ids in idsToDelete
-    setNodes((nodes) => nodes.filter((node) => !idsToDelete.includes(node.id)));
-    // remove all edges that connect to the nodes with the ids in idsToDelete
-    setEdges((edges) =>
-      edges.filter(
+    const nodes = getNodes();
+    const edges = getEdges();
+    deleteElements({
+      nodes: nodes.filter((node) => idsToDelete.includes(node.id)),
+      edges: edges.filter(
         (edge) =>
-          !(
-            idsToDelete.includes(edge.source) ||
-            idsToDelete.includes(edge.target)
-          )
-      )
-    );
+          idsToDelete.includes(edge.source) || idsToDelete.includes(edge.target)
+      ),
+    });
 
     onClose();
-  }, [nodeId, getNode, setNodes, setEdges, onClose, getNodes]);
+  }, [deleteElements, getEdges, getNode, getNodes, nodeId, onClose, setNodes]);
 
   return (
     <>
@@ -128,7 +122,7 @@ const DefaultNodeContextMenu = ({
       >
         <span>Duplicate</span>
         <span className="ml-2 rounded bg-slate-600 px-1.5 py-0.5 font-mono text-xs text-gray-300">
-          {globalKeyTracker.isMac ? "Shift+D" : "Ctrl+D"}
+          {globalKeyTracker.isMac ? "⌥+D" : "Ctrl+D"}
         </span>
       </button>
       <button
