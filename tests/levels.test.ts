@@ -61,7 +61,7 @@ describe("LEVELS Object Validation", () => {
     test.each(requiredProperties)(
       "all levels should have required property: %s",
       (property) => {
-        levelValues.forEach((level, index) => {
+        levelValues.forEach((level) => {
           expect(level).toHaveProperty(property);
           expect(level[property]).toBeDefined();
         });
@@ -208,10 +208,12 @@ describe("LEVELS Object Validation", () => {
       levelValues.forEach((level) => {
         level.initialNodes.forEach((node) => {
           expect(node).toHaveProperty("id");
-          expect(node).toHaveProperty("type");
-          expect(node).toHaveProperty("position");
           expect(typeof node.id).toBe("string");
+
+          expect(node).toHaveProperty("type");
           expect(typeof node.type).toBe("string");
+
+          expect(node).toHaveProperty("position");
           expect(node.position).toHaveProperty("x");
           expect(node.position).toHaveProperty("y");
           expect(typeof node.position.x).toBe("number");
