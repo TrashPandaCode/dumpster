@@ -12,12 +12,13 @@ import type { NodeType } from "~/lib/node-editor/nodes/node-types";
 import { type GameObject } from "../gameObjects";
 import { initializeBounce } from "../levels/bounce";
 import { initializeCalculator } from "../levels/calculator";
+import { initializeInverse } from "../levels/inverse";
+import { initializeKinematics } from "../levels/kinematic";
 import { initializeMove } from "../levels/move";
 import { initializeParenting } from "../levels/parenting";
 import { initializePlayground } from "../levels/playground";
 import { initializeSitting } from "../levels/sitting";
 import { initializeTimeTransform } from "../levels/timeTransform";
-import { initializeKinematics } from "../levels/kinematic";
 
 export type ConnectionAccess = "export" | "import" | "all";
 
@@ -354,11 +355,8 @@ export const LEVELS = {
   kinematics: {
     slug: "kinematics",
     name: "Kinematics",
-    description:
-      "PlaceHolder",
-    dialog: [
-      "PlaceHolder",
-    ],
+    description: "PlaceHolder",
+    dialog: ["PlaceHolder"],
     goals: ["Do something!"],
     success: "Wow!",
     category: "Main Game",
@@ -372,14 +370,74 @@ export const LEVELS = {
         connections: [
           { label: "joint1x", access: "import" },
           { label: "joint1y", access: "import" },
-          { label: "joint1rot", access: "all"},
+          { label: "joint1rot", access: "all" },
           { label: "joint2x", access: "import" },
           { label: "joint2y", access: "import" },
-          { label: "joint2rot", access: "all"},
+          { label: "joint2rot", access: "all" },
           { label: "joint3x", access: "import" },
           { label: "joint3y", access: "import" },
         ],
-      }
+      },
+    ],
+    availableNodes: [
+      "Display",
+      "Value",
+      "Time",
+      "KeyPress",
+      "Math",
+      "ExportToGameobject",
+      "ImportFromGameobject",
+      "Switch",
+      "Group",
+      "ForLoop",
+      "MousePosition",
+    ],
+    difficulty: 1,
+  },
+  inverse: {
+    slug: "inverse",
+    name: "Inverse",
+    description: "PlaceHolder",
+    dialog: ["PlaceHolder"],
+    goals: ["Do something!"],
+    success: "Wow!",
+    category: "Kinematics",
+    image: alleyOne,
+    initialNodes: [],
+    initialState: initializeInverse,
+    hints: [],
+    modifiableGameObjects: [
+      {
+        id: "joint1",
+        connections: [
+          { label: "rot", access: "all" },
+          { label: "x", access: "import" },
+          { label: "y", access: "import" },
+        ],
+      },
+      {
+        id: "joint2",
+        connections: [
+          { label: "rot", access: "all" },
+          { label: "x", access: "import" },
+          { label: "y", access: "import" },
+        ],
+      },
+      {
+        id: "joint3",
+        connections: [
+          { label: "rot", access: "all" },
+          { label: "x", access: "import" },
+          { label: "y", access: "import" },
+        ],
+      },
+      {
+        id: "endeffector",
+        connections: [
+          { label: "x", access: "import" },
+          { label: "y", access: "import" },
+        ],
+      },
     ],
     availableNodes: [
       "Display",
