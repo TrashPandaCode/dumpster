@@ -31,7 +31,11 @@ const Value = memo(({ id, data }: { id: string; data: any }) => {
     <div className="min-w-48">
       <NodeContent label="Value" type="float" docsName="value">
         <div className="flex w-full justify-end gap-2">
-          <NumberInput setValue={(v) => setValue(v)} defaultValue={value} />
+          <NumberInput
+            setValue={(v) => setValue(v)}
+            defaultValue={value}
+            handleId={OUT_HANDLE_1}
+          />
           <LabelHandle
             id={OUT_HANDLE_1}
             position={Position.Right}
