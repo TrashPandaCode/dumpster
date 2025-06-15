@@ -8,6 +8,7 @@ import ForEnd from "~/lib/node-editor/nodes/loops/ForEnd";
 import ForStart from "~/lib/node-editor/nodes/loops/ForStart";
 import Math from "~/lib/node-editor/nodes/math-float/Math";
 import Value from "~/lib/node-editor/nodes/math-float/Value";
+import WorldToLocal from "~/lib/node-editor/nodes/math-float/WorldToLocal";
 import DocsExportToGameobject from "./DocsExportToGameobject";
 import DocsImportFromGameobject from "./DocsImportFromGameobject";
 
@@ -17,6 +18,7 @@ export const docsNodeTypes = {
   Time,
   KeyPress,
   Math,
+  WorldToLocal,
   DocsExportToGameobject,
   DocsImportFromGameobject,
   Switch,

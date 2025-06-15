@@ -10,6 +10,7 @@ import ForEnd from "./loops/ForEnd";
 import ForStart from "./loops/ForStart";
 import Math from "./math-float/Math";
 import Value from "./math-float/Value";
+import WorldToLocal from "./math-float/WorldToLocal";
 
 export const nodeTypes = {
   Value,
@@ -17,6 +18,7 @@ export const nodeTypes = {
   Time,
   KeyPress,
   Math,
+  WorldToLocal,
   ExportToGameobject,
   ImportFromGameobject,
   Switch,
