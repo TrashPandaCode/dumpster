@@ -51,6 +51,7 @@ const DocsImportFromGameobject = memo(
       highlightedIndex,
       getItemProps,
       selectedGameObjects,
+      handleReorder,
     } = useGameobjectSelect(
       selectableGameObjects,
       data.selectedGameObjects
@@ -85,6 +86,7 @@ const DocsImportFromGameobject = memo(
               isOpen={isOpen}
               selectableObjects={selectableGameObjects}
               selectedObjects={selectedGameObjects}
+              onReorder={handleReorder}
               useSelectProps={{
                 getItemProps: getItemProps,
                 getLabelProps: getLabelProps,
