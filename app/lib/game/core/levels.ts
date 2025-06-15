@@ -416,24 +416,24 @@ export const LEVELS = {
           { label: "y", access: "import" },
         ],
       },
-      {
-        id: "joint2",
-        connections: [
-          { label: "exportrot", access: "export" },
-          { label: "importrot", access: "import" },
-          { label: "x", access: "import" },
-          { label: "y", access: "import" },
-        ],
-      },
-      {
-        id: "joint3",
-        connections: [
-          { label: "exportrot", access: "export" },
-          { label: "importrot", access: "import" },
-          { label: "x", access: "import" },
-          { label: "y", access: "import" },
-        ],
-      },
+      // {
+      //   id: "joint2",
+      //   connections: [
+      //     { label: "exportrot", access: "export" },
+      //     { label: "importrot", access: "import" },
+      //     { label: "x", access: "import" },
+      //     { label: "y", access: "import" },
+      //   ],
+      // },
+      // {
+      //   id: "joint3",
+      //   connections: [
+      //     { label: "exportrot", access: "export" },
+      //     { label: "importrot", access: "import" },
+      //     { label: "x", access: "import" },
+      //     { label: "y", access: "import" },
+      //   ],
+      // },
       {
         id: "endeffector",
         connections: [
