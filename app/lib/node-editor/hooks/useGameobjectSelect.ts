@@ -56,6 +56,16 @@ export function useGameobjectSelect(
     },
   });
 
+  const handleReorder = (newOrder: GameObject[]) => {
+    setSelectedGameObjects(newOrder);
+    updateNodeInternals(id);
+    setEdges((edgs) =>
+      edgs.filter(
+        (edg) => !(edg.source === id || edg.target === id) || edg.animated
+      )
+    );
+  };
+
   return {
     isOpen,
     getToggleButtonProps,
@@ -64,6 +74,7 @@ export function useGameobjectSelect(
     highlightedIndex,
     getItemProps,
     selectedGameObjects,
+    handleReorder,
   };
 }
 
