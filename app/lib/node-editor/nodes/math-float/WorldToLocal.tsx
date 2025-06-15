@@ -17,6 +17,34 @@ import {
   OUT_HANDLE_2,
 } from "../constants";
 
+/**
+ * React component representing a coordinate transformation node that converts a world-space point
+ * to local-space coordinates of another point, based on a given origin and rotation.
+ *
+ * - Accepts a point in world space (`px`, `py`) and an origin (`ox`, `oy`, `orot`).
+ * - Computes the position of the point in the local space of the given origin.
+ * - Outputs the local x and y coordinates.
+ *
+ * Props:
+ * @param {string} id - Unique identifier for this node.
+ * @param {any} data - Initial data for the node, including default input values.
+ *
+ * React Flow:
+ * - Uses `useReactFlow` to register a compute function and update node data.
+ * - Each input handle can either be connected to upstream nodes or use a manual input.
+ *
+ * Internal State:
+ * - `pxInputData`, `pyInputData`: The world-space coordinates of the point.
+ * - `oxInputData`, `oyInputData`, `orotInputData`: The origin and orientation of the local space.
+ * - `pxDisplayData`, `pyDisplayData`, `oxDisplayData`, `oyDisplayData`, `orotDisplayData`:
+ *   UI state showing the resolved input values.
+ *
+ * Transformation:
+ * - Translates the world-space point relative to the origin.
+ * - Applies a 2D rotation matrix to calculate local coordinates:
+ *     localX = dx * cos(-θ) - dy * sin(-θ)
+ *     localY = dx * sin(-θ) + dy * cos(-θ)
+ */
 const WorldToLocal = memo(({ id, data }: { id: string; data: any }) => {
   const { updateNodeData } = useReactFlow();
 
