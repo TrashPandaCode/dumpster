@@ -46,13 +46,7 @@ export function useGameobjectSelect(
       } else {
         newSelection = [...selectedGameObjects, selectedItem];
       }
-      setSelectedGameObjects(newSelection);
-      updateNodeInternals(id);
-      setEdges((edgs) =>
-        edgs.filter(
-          (edg) => !(edg.source === id || edg.target === id) || edg.animated
-        )
-      );
+      handleReorder(newSelection);
     },
   });
 
