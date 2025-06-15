@@ -41,7 +41,7 @@ const WorldToLocal = memo(({ id, data }: { id: string; data: any }) => {
         const py = getInput(inputs, IN_HANDLE_2, pyInputData);
         const ox = getInput(inputs, IN_HANDLE_3, oxInputData);
         const oy = getInput(inputs, IN_HANDLE_4, oyInputData);
-        const orot = getInput(inputs, IN_HANDLE_5, orotInputData);
+        const orot = -getInput(inputs, IN_HANDLE_5, orotInputData);
 
         setPXDisplayData(px);
         setPYDisplayData(py);
@@ -52,7 +52,7 @@ const WorldToLocal = memo(({ id, data }: { id: string; data: any }) => {
         const dx = px - ox;
         const dy = py - oy;
         const cos = Math.cos(orot);
-        const sin = Math.cos(orot);
+        const sin = Math.sin(orot);
 
         results.set(OUT_HANDLE_1, dx * cos - dy * sin);
         results.set(OUT_HANDLE_2, dx * sin + dy * cos);
@@ -63,7 +63,7 @@ const WorldToLocal = memo(({ id, data }: { id: string; data: any }) => {
       oyInputData,
       orotInputData,
     });
-  }, []);
+  }, [orotInputData, oxInputData, oyInputData, pxInputData, pyInputData]);
 
   return (
     <div className="min-w-3xs">
