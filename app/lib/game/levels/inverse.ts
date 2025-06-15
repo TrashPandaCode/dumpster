@@ -74,7 +74,7 @@ export const initializeInverse = () => {
     "joint2",
     k.rect(0.2, JOINT_2_LENGTH),
     k.anchor("bot"),
-    k.pos(0, -JOINT_1_LENGTH),
+    k.pos(0, 0),
     k.rotate(0),
     k.area(),
     k.body({ isStatic: true }),
@@ -85,7 +85,7 @@ export const initializeInverse = () => {
     "joint3",
     k.rect(0.2, JOINT_3_LENGTH),
     k.anchor("bot"),
-    k.pos(0, -(JOINT_1_LENGTH + JOINT_2_LENGTH)),
+    k.pos(0, 0),
     k.rotate(0),
     k.area(),
     k.body({ isStatic: true }),
@@ -112,10 +112,8 @@ export const initializeInverse = () => {
     end: { x: number; y: number };
   } {
     joint1.angle = dataState.get("joint1")!.get("exportrot")!.getValue();
-    joint2.angle =
-      dataState.get("joint2")!.get("exportrot")!.getValue() + joint1.angle;
-    joint3.angle =
-      dataState.get("joint3")!.get("exportrot")!.getValue() + joint2.angle;
+    joint2.angle = dataState.get("joint2")!.get("exportrot")!.getValue();
+    joint3.angle = dataState.get("joint3")!.get("exportrot")!.getValue();
 
     joint2.pos.x =
       joint1.pos.x + JOINT_1_LENGTH * Math.sin((joint1.angle * Math.PI) / 180);
