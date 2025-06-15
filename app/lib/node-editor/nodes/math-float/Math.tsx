@@ -36,7 +36,7 @@ import { COMPUTE, INPUTS, TYPES } from "./types";
 const Math = memo(({ id, data }: { id: string; data: any }) => {
   const { updateNodeData } = useReactFlow();
 
-  const [computeType, setComputeType] = useState(
+  const [computeType, setComputeType] = useState<string>(
     data.initialComputeType ?? "Addition"
   );
   const inputState = INPUTS[computeType];
@@ -60,7 +60,7 @@ const Math = memo(({ id, data }: { id: string; data: any }) => {
       },
       xInputData,
       yInputData,
-      initialComuteType: computeType,
+      initialComputeType: computeType,
     });
   }, [computeType, xInputData, yInputData]);
 

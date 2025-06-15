@@ -47,7 +47,7 @@ import { IN_HANDLE_1, MAIN_LOOP_CONNECTOR, OUT_HANDLE_1 } from "../constants";
 
 const ForStart = memo(
   ({ id, data, selected }: { id: string; data: any; selected: boolean }) => {
-    const [iterations, setIterations] = useState(1);
+    const [iterations, setIterations] = useState<number>(data.iterations ?? 1);
     const [iterDisplay, setIterDisplay] = useState(1);
 
     const loops = useLoopStore((state) => state.loops);
@@ -89,6 +89,7 @@ const ForStart = memo(
           }
         },
         loopStart: true,
+        iterations,
       });
     }, [iterations]);
 
