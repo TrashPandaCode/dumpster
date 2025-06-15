@@ -74,7 +74,7 @@ const MultiSelectDropDown = <T extends string>({
   };
 
   return (
-    <>
+    <div className="relative">
       <div
         className="nodrag text-md mx-3 flex flex-1 items-baseline rounded-sm border border-slate-700 bg-slate-900 px-1 focus:border-slate-500 focus:outline-none"
         {...useSelectProps.getToggleButtonProps()}
@@ -116,7 +116,7 @@ const MultiSelectDropDown = <T extends string>({
 
       <ul
         className={classnames(
-          "nodrag nowheel absolute z-50 w-60 overflow-hidden rounded-md border border-slate-700 bg-slate-900 p-1 shadow-md",
+          "nodrag nowheel absolute top-0 z-50 w-full overflow-hidden rounded-md border border-slate-700 bg-slate-900 p-1 shadow-md",
           !isOpen && "hidden"
         )}
         {...useSelectProps.getMenuProps()}
@@ -143,7 +143,7 @@ const MultiSelectDropDown = <T extends string>({
             </li>
           ))}
       </ul>
-    </>
+    </div>
   );
 };
 
