@@ -46,18 +46,19 @@ export function useGameobjectSelect(
       } else {
         newSelection = [...selectedGameObjects, selectedItem];
       }
-      handleReorder(newSelection);
+
+      setSelectedGameObjects(newSelection);
+      updateNodeInternals(id);
+      setEdges((edgs) =>
+        edgs.filter(
+          (edg) => !(edg.source === id || edg.target === id) || edg.animated
+        )
+      );
     },
   });
 
   const handleReorder = (newOrder: GameObject[]) => {
     setSelectedGameObjects(newOrder);
-    updateNodeInternals(id);
-    setEdges((edgs) =>
-      edgs.filter(
-        (edg) => !(edg.source === id || edg.target === id) || edg.animated
-      )
-    );
   };
 
   return {
