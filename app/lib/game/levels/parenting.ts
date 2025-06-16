@@ -77,8 +77,8 @@ export const initializeParenting = () => {
       maxX: 5,
     });
 
-    trashcanP!.pos.x = trashcanPState!.get("xpos")!.value;
-    trashcanP!.pos.y = trashcanPState!.get("ypos")!.value;
+    trashcanP!.pos.x = trashcanPState!.get("xpos")!.getValue();
+    trashcanP!.pos.y = trashcanPState!.get("ypos")!.getValue();
 
     const distTrashRac = raccoon!.pos.dist(trashcanP!.pos);
 

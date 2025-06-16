@@ -58,7 +58,7 @@ export const initializeTimeTransform = () => {
       ladder.height = 5;
 
       raccoonState!.get("xpos")!.value = -13;
-      raccoonState!.get("ypos")!.value == -5;
+      raccoonState!.get("ypos")!.value = -5;
       raccoon!.pos.x = -12;
       raccoon!.pos.y = 5;
       onRoof = true;
