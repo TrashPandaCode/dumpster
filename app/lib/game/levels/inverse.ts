@@ -23,41 +23,16 @@ export const initializeInverse = () => {
   k.setCamPos(0, 0);
   k.setCamScale((CAM_SCALE * k.height()) / 1500);
 
-  const dataState = useDataStore.getState().gameObjects;
+  const dataStore = useDataStore.getState();
 
-  useDataStore
-    .getState()
-    .setData("endeffector", "x", () => setJointPos().end.x);
-  useDataStore
-    .getState()
-    .setData("endeffector", "y", () => setJointPos().end.y);
-  useDataStore
-    .getState()
-    .setData("joint1", "x", () => setJointPos().joint1.pos.x);
-  useDataStore
-    .getState()
-    .setData("joint1", "y", () => setJointPos().joint1.pos.y);
-  useDataStore
-    .getState()
-    .setData("joint1", "importrot", () => setJointPos().joint1.rot);
-  useDataStore
-    .getState()
-    .setData("joint2", "x", () => setJointPos().joint2.pos.x);
-  useDataStore
-    .getState()
-    .setData("joint2", "y", () => setJointPos().joint2.pos.y);
-  useDataStore
-    .getState()
-    .setData("joint2", "importrot", () => setJointPos().joint2.rot);
-  useDataStore
-    .getState()
-    .setData("joint3", "x", () => setJointPos().joint3.pos.x);
-  useDataStore
-    .getState()
-    .setData("joint3", "y", () => setJointPos().joint3.pos.y);
-  useDataStore
-    .getState()
-    .setData("joint3", "importrot", () => setJointPos().joint3.rot);
+  dataStore.setData("endeffector", "x", () => setJointPos().end.x);
+  dataStore.setData("endeffector", "y", () => setJointPos().end.y);
+  dataStore.setData("joint1", "x", () => setJointPos().joint1.x);
+  dataStore.setData("joint1", "y", () => setJointPos().joint1.y);
+  dataStore.setData("joint2", "x", () => setJointPos().joint2.x);
+  dataStore.setData("joint2", "y", () => setJointPos().joint2.y);
+  dataStore.setData("joint3", "x", () => setJointPos().joint3.x);
+  dataStore.setData("joint3", "y", () => setJointPos().joint3.y);
 
   const joint1 = k.add([
     "joint1",
@@ -106,14 +81,14 @@ export const initializeInverse = () => {
   // this function is computed multiple times unecessarily
   // there are prob. ways to make this more efficient
   function setJointPos(): {
-    joint1: { pos: { x: number; y: number }; rot: number };
-    joint2: { pos: { x: number; y: number }; rot: number };
-    joint3: { pos: { x: number; y: number }; rot: number };
+    joint1: { x: number; y: number };
+    joint2: { x: number; y: number };
+    joint3: { x: number; y: number };
     end: { x: number; y: number };
   } {
-    joint1.angle = dataState.get("joint1")!.get("exportrot")!.getValue();
-    joint2.angle = dataState.get("joint2")!.get("exportrot")!.getValue();
-    joint3.angle = dataState.get("joint3")!.get("exportrot")!.getValue();
+    joint1.angle = dataStore.getData("joint1", "rotation");
+    joint2.angle = dataStore.getData("joint2", "rotation");
+    joint3.angle = dataStore.getData("joint3", "rotation");
 
     joint2.pos.x =
       joint1.pos.x + JOINT_1_LENGTH * Math.sin((joint1.angle * Math.PI) / 180);
@@ -130,9 +105,9 @@ export const initializeInverse = () => {
     endeffector.pos.y =
       joint3.pos.y - JOINT_3_LENGTH * Math.cos((joint3.angle * Math.PI) / 180);
     return {
-      joint1: { pos: joint1.pos, rot: joint1.angle },
-      joint2: { pos: joint2.pos, rot: joint2.angle },
-      joint3: { pos: joint3.pos, rot: joint3.angle },
+      joint1: joint1.pos,
+      joint2: joint2.pos,
+      joint3: joint3.pos,
       end: endeffector.pos,
     };
   }

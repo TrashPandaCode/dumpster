@@ -410,8 +410,7 @@ export const LEVELS = {
       {
         id: "joint1",
         connections: [
-          { label: "exportrot", access: "export" },
-          { label: "importrot", access: "import" },
+          { label: "rotation", access: "all" },
           { label: "x", access: "import" },
           { label: "y", access: "import" },
         ],
@@ -419,8 +418,7 @@ export const LEVELS = {
       {
         id: "joint2",
         connections: [
-          { label: "exportrot", access: "export" },
-          { label: "importrot", access: "import" },
+          { label: "rotation", access: "all" },
           { label: "x", access: "import" },
           { label: "y", access: "import" },
         ],
@@ -428,8 +426,7 @@ export const LEVELS = {
       {
         id: "joint3",
         connections: [
-          { label: "exportrot", access: "export" },
-          { label: "importrot", access: "import" },
+          { label: "rotation", access: "all" },
           { label: "x", access: "import" },
           { label: "y", access: "import" },
         ],

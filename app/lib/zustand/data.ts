@@ -43,6 +43,7 @@ interface DataState {
     label: string,
     value: number | (() => number)
   ) => void;
+  getData: (gameObject: GameObject, label: string) => number;
   addHandle: (gameObject: GameObject, label: string) => void;
   removeHandle: (gameObject: GameObject, label: string) => void;
   init: (level: LevelId) => void;
@@ -55,6 +56,9 @@ export const useDataStore = create<DataState>((set, get) => ({
   gameObjects: new Map(),
   setData: (gameObject, label, value) => {
     get().gameObjects.get(gameObject)!.get(label)!.setValue(value);
+  },
+  getData: (gameObject, label) => {
+    return get().gameObjects.get(gameObject)!.get(label)!.getValue();
   },
   addHandle: (gameObject, label) =>
     set((state) => {
