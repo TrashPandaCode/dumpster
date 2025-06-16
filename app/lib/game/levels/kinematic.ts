@@ -15,6 +15,8 @@ export const KINEMATICS_GAME_OBJECTS = [ARM] as const;
 
 export const initializeKinematics = () => {
   const { k, game } = getKaplayCtx();
+  const dataStore = useDataStore.getState();
+
   k.setGravity(100);
 
   addBackgrounds(["background2"]);
@@ -76,22 +78,20 @@ export const initializeKinematics = () => {
   ]);
 
   // Initialize data store
-  const armState = useDataStore.getState().gameObjects.get("arm");
+  dataStore.setData("arm", "joint1x", arm1.pos.x);
+  dataStore.setData("arm", "joint1y", arm1.pos.y);
 
-  armState!.get("joint1x")!.value = arm1.pos.x;
-  armState!.get("joint1y")!.value = arm1.pos.y;
+  dataStore.setData("arm", "joint2x", arm2.pos.x);
+  dataStore.setData("arm", "joint2y", arm2.pos.y);
 
-  armState!.get("joint2x")!.value = arm2.pos.x;
-  armState!.get("joint2y")!.value = arm2.pos.y;
-
-  armState!.get("joint3x")!.value = platform.pos.x;
-  armState!.get("joint3y")!.value = platform.pos.y;
+  dataStore.setData("arm", "joint3x", platform.pos.x);
+  dataStore.setData("arm", "joint3y", platform.pos.y);
 
   game.onUpdate(() => {
     if (useGameStore.getState().isPaused) return;
 
-    arm1.angle = armState!.get("joint1rot")!.getValue();
-    arm2.angle = armState!.get("joint2rot")!.getValue() + arm1.angle;
+    arm1.angle = dataStore.getData("arm", "joint1rot");
+    arm2.angle = dataStore.getData("arm", "joint2rot") + arm1.angle;
 
     arm2.pos.x =
       arm1.pos.x + ARM_LENGTH * Math.sin((arm1.angle * Math.PI) / 180);
@@ -103,14 +103,14 @@ export const initializeKinematics = () => {
     platform.pos.y =
       arm2.pos.y - ARM_LENGTH * Math.cos((arm2.angle * Math.PI) / 180);
 
-    armState!.get("joint1x")!.value = arm1.pos.x;
-    armState!.get("joint1y")!.value = arm1.pos.y;
+    dataStore.setData("arm", "joint1x", arm1.pos.x);
+    dataStore.setData("arm", "joint1y", arm1.pos.y);
 
-    armState!.get("joint2x")!.value = arm2.pos.x;
-    armState!.get("joint2y")!.value = arm2.pos.y;
+    dataStore.setData("arm", "joint2x", arm2.pos.x);
+    dataStore.setData("arm", "joint2y", arm2.pos.y);
 
-    armState!.get("joint3x")!.value = platform.pos.x;
-    armState!.get("joint3y")!.value = platform.pos.y;
+    dataStore.setData("arm", "joint3x", platform.pos.x);
+    dataStore.setData("arm", "joint3y", platform.pos.y);
 
     // Movement
     animPlayer(raccoon!, k, "input", undefined, undefined, {
@@ -134,7 +134,7 @@ export const initializeKinematics = () => {
       useGameStore.getState().setLevelCompleteDialogOpen(true);
       useGameStore.getState().setLevelCompleted(true);
     }
-    if (useDataStore.getState().initData) {
+    if (dataStore.initData) {
       handleReset(raccoon!, 1);
     }
   });
