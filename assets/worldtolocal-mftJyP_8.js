@@ -1,0 +1,51 @@
+const o=`---
+title: World To Local
+---
+
+# World To Local
+
+The _World To Local_ node transforms a point from world space into a local coordinate system defined by an origin and a rotation.
+
+## Properties
+
+- **x**: The local-space X coordinate (output).
+- **y**: The local-space Y coordinate (output).
+- **Point X**: The world-space X coordinate of the point to transform.
+- **Point Y**: The world-space Y coordinate of the point to transform.
+- **Origin X**: The world-space X position of the origin.
+- **Origin Y**: The world-space Y position of the origin.
+- **Origin Rot**: The world-space rotation (in radians) of the origin.
+
+## Transformation
+
+The transformation involves:
+
+1. **Translation**: Move the point relative to the origin:
+
+   $$
+   dx = px - ox \\\\
+   dy = py - oy
+   $$
+
+2. **Rotation**: Negate the origin rotation:
+
+   $$
+   \\theta = -\\text{Origin Rot}
+   $$
+
+This happens because the world coordinate system has the y-axis pointing down.
+
+3. **Compute Local Coordinates**:
+   $$
+   x = dx \\cdot \\cos(\\theta) - dy \\cdot \\sin(\\theta) \\\\
+   y = dx \\cdot \\sin(\\theta) + dy \\cdot \\cos(\\theta)
+   $$
+
+Where:
+
+- $$(px, py)$$ is the point in world space.
+- $$(ox, oy)$$ is the origin.
+- $$\\theta$$ is the negative of the origin's rotation angle.
+
+<DocsNodeEditor type="WorldToLocal" />
+`;export{o as default};
