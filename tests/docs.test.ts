@@ -4,6 +4,7 @@ import { describe, expect, test } from "@jest/globals";
 
 import navigation from "~/lib/core/docs/navigation.json";
 import type { NavigationSection } from "~/lib/core/docs/search-utils";
+import { LEVELS } from "~/lib/game/core/levels";
 
 // Helper function to recursively find all markdown files
 function findMarkdownFiles(dir: string, baseDir: string = dir): string[] {
@@ -821,6 +822,125 @@ describe("Documentation System Tests", () => {
       }
 
       expect(imagesWithoutAlt).toEqual([]);
+    });
+  });
+
+  describe("Level Documentation Coverage", () => {
+    test("should have level guide documentation for each game level", () => {
+      const missingLevelDocs: string[] = [];
+      const levelSlugs = Object.keys(LEVELS);
+
+      levelSlugs.forEach((levelSlug) => {
+        const expectedLevelDocPath = `/docs/levels/${levelSlug}`;
+
+        if (!navigationPaths.includes(expectedLevelDocPath)) {
+          missingLevelDocs.push(levelSlug);
+        }
+      });
+
+      if (missingLevelDocs.length > 0) {
+        console.log("Levels missing documentation files:", missingLevelDocs);
+        console.log(
+          "Expected paths:",
+          missingLevelDocs.map((slug) => `/docs/levels/${slug}`)
+        );
+      }
+
+      expect(missingLevelDocs).toEqual([]);
+    });
+
+    test("level documentation should match actual level metadata", () => {
+      const levelDocumentationIssues: string[] = [];
+
+      // Find all level documentation files
+      const levelDocPaths = navigationPaths.filter((path) =>
+        path.startsWith("/docs/levels/")
+      );
+
+      levelDocPaths.forEach((docPath) => {
+        const levelSlug = docPath.replace("/docs/levels/", "") as keyof typeof LEVELS;
+
+        // Check if the level exists in the game
+        if (!LEVELS[levelSlug]) {
+          levelDocumentationIssues.push(
+            `Documentation exists for non-existent level: ${levelSlug}`
+          );
+          return;
+        }
+
+        const level = LEVELS[levelSlug];
+        let filePath = getFilePathFromNavigationPath(docPath);
+
+        try {
+          if (!statSync(filePath).isFile()) {
+            filePath = filePath.replace(".mdx", ".md");
+          }
+
+          const content = readFileSync(filePath, "utf-8");
+          const frontmatter = extractFrontmatter(content);
+
+          // Check if frontmatter title matches level name
+          if (frontmatter?.title && frontmatter.title !== level.name) {
+            levelDocumentationIssues.push(
+              `Title mismatch for ${levelSlug}: doc="${frontmatter.title}" vs level="${level.name}"`
+            );
+          }
+        } catch (error) {
+          levelDocumentationIssues.push(
+            `Error reading documentation for ${levelSlug}: ${error}`
+          );
+        }
+      });
+
+      if (levelDocumentationIssues.length > 0) {
+        console.log("Level documentation issues:", levelDocumentationIssues);
+      }
+
+      expect(levelDocumentationIssues).toEqual([]);
+    });
+
+    test("should have proper level documentation organization in navigation", () => {
+      const levelDocPaths = navigationPaths.filter((path) =>
+        path.startsWith("/docs/levels/")
+      );
+
+      // Check if there's a levels section in navigation
+      const sections = navigation as NavigationSection[];
+      const levelsSection = sections.find(
+        (section) =>
+          section.title.toLowerCase().includes("level") ||
+          (section.items &&
+            section.items.some((item) => item.path.startsWith("/docs/levels/")))
+      );
+
+      if (levelDocPaths.length > 0) {
+        expect(levelsSection).toBeDefined();
+
+        if (levelsSection) {
+          // All level docs should be properly categorized
+          const navigationLevelPaths = levelsSection.items
+            ? levelsSection.items
+                .filter((item) => item.path.startsWith("/docs/levels/"))
+                .map((item) => item.path)
+            : levelsSection.path &&
+                levelsSection.path.startsWith("/docs/levels/")
+              ? [levelsSection.path]
+              : [];
+
+          const missingFromNavigation = levelDocPaths.filter(
+            (path) => !navigationLevelPaths.includes(path)
+          );
+
+          if (missingFromNavigation.length > 0) {
+            console.log(
+              "Level docs not properly organized in navigation:",
+              missingFromNavigation
+            );
+          }
+
+          expect(missingFromNavigation).toEqual([]);
+        }
+      }
     });
   });
 });
