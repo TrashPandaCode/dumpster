@@ -1,5 +1,7 @@
 import type {
   AnchorComp,
+  AreaComp,
+  BodyComp,
   GameObj,
   KAPLAYCtx,
   PosComp,
@@ -8,8 +10,6 @@ import type {
   SpriteComp,
   StateComp,
   ZComp,
-  BodyComp,
-  AreaComp
 } from "kaplay";
 
 import { useDataStore } from "~/lib/zustand/data";
@@ -259,8 +259,8 @@ export function animPlayer(
 
   //Move
   if (movementMode === "node") {
-    player.pos.x = playerState!.get("xpos")!.value;
-    player.pos.y = playerState!.get("ypos")!.value;
+    player.pos.x = playerState!.get("xpos")!.getValue();
+    player.pos.y = playerState!.get("ypos")!.getValue();
   } else if (movementMode === "input") {
     if (k.isKeyDown("a") || k.isKeyDown("left")) player.pos.x -= 5 * k.dt();
     if (k.isKeyDown("d") || k.isKeyDown("right")) player.pos.x += 5 * k.dt();

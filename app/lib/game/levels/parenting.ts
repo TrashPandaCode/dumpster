@@ -16,6 +16,7 @@ export const PARENTING_GAME_OBJECTS = [TRASHCANP] as const;
 
 export const initializeParenting = () => {
   const { k, game } = getKaplayCtx();
+  const dataStore = useDataStore.getState();
 
   addBackgrounds(["background1"]);
 
@@ -43,9 +44,7 @@ export const initializeParenting = () => {
     "trashcanP",
   ]);
 
-  const trashcanPState = useDataStore.getState().gameObjects.get("trashcanP");
-
-  trashcanPState!.get("xpos")!.value = 5;
+  dataStore.setData("trashcanP", "xpos", 5);
 
   trashcanP!.z = 3;
   trashcanP!.pos.x = 5;
@@ -77,8 +76,8 @@ export const initializeParenting = () => {
       maxX: 5,
     });
 
-    trashcanP!.pos.x = trashcanPState!.get("xpos")!.value;
-    trashcanP!.pos.y = trashcanPState!.get("ypos")!.value;
+    trashcanP!.pos.x = dataStore.getData("trashcanP", "xpos");
+    trashcanP!.pos.y = dataStore.getData("trashcanP", "ypos");
 
     const distTrashRac = raccoon!.pos.dist(trashcanP!.pos);
 

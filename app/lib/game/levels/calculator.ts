@@ -10,6 +10,7 @@ import {
 
 export const initializeCalculator = () => {
   const { k, game } = getKaplayCtx();
+  const dataStore = useDataStore.getState();
 
   addBackgrounds(["backgroundCalc"], -200);
 
@@ -18,21 +19,18 @@ export const initializeCalculator = () => {
   k.setCamScale((CAM_SCALE * k.height()) / 947);
   raccoon!.scaleBy(-1, 1);
 
-  game.onUpdate(() => {    
+  game.onUpdate(() => {
     if (useGameStore.getState().isPaused) return;
 
     // Get value from exportToGameObject node
-    const value = useDataStore
-      .getState()
-      .gameObjects.get("raccoon")!
-      .get("solution")!.value;
+    const value = dataStore.getData("raccoon", "solution");
 
     if (value == 16 && !useGameStore.getState().levelCompleted) {
       useGameStore.getState().setLevelCompleteDialogOpen(true);
       useGameStore.getState().setLevelCompleted(true);
     }
 
-    if (useDataStore.getState().initData) {
+    if (dataStore.initData) {
       handleReset(raccoon!, -1);
     }
   });

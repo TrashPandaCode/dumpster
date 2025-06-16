@@ -9,6 +9,7 @@ import CustomDialog from "./CustomDialog";
 const LevelCompleteDialog = () => {
   const currentLevel = useGameStore((state) => state.currentLevel);
   const nextLevel = getNeighborLevels(currentLevel)?.next;
+  const pause = useGameStore((state) => state.pause);
 
   const levelCompleteDialogOpen = useGameStore(
     (state) => state.levelCompleteDialogOpen
@@ -71,6 +72,7 @@ const LevelCompleteDialog = () => {
               <NavLink
                 to={`/levels/${nextLevel}`}
                 className="cursor-pointer rounded-lg bg-slate-700/80 px-4 py-2 text-white hover:bg-slate-600 focus:outline-1 focus:outline-blue-300"
+                onClick={() => pause()}
               >
                 Next Level
               </NavLink>

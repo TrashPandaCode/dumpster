@@ -72,7 +72,7 @@ const ImportFromGameobject = memo(({ id, data }: { id: string; data: any }) => {
         }
         const gob = selectedGameObjects[index];
         handleIntersection.forEach((handle) => {
-          results.set(handle, gameObjects.get(gob)!.get(handle)!.value);
+          results.set(handle, gameObjects.get(gob)!.get(handle)!.getValue());
         });
       },
       selectedGameObjects,

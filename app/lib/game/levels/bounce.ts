@@ -16,6 +16,7 @@ export const BOUNCE_GAME_OBJECTS = [TRASHCAN1, TRASHCAN2] as const;
 
 export const initializeBounce = () => {
   const { k, game } = getKaplayCtx();
+  const dataStore = useDataStore.getState();
 
   addBackgrounds(["background1"]);
 
@@ -55,16 +56,13 @@ export const initializeBounce = () => {
   ]);
 
   // Initialize trashcan states in the data store
-  const trashcan1State = useDataStore.getState().gameObjects.get("trashcan1");
-  const trashcan2State = useDataStore.getState().gameObjects.get("trashcan2");
+  dataStore.setData("trashcan1", "filled", 0);
+  dataStore.setData("trashcan1", "xpos", -7);
+  dataStore.setData("trashcan1", "ypos", -1.75);
 
-  trashcan1State!.get("filled")!.value = 0;
-  trashcan1State!.get("xpos")!.value = -7;
-  trashcan1State!.get("ypos")!.value = -1.75;
-
-  trashcan2State!.get("filled")!.value = 1;
-  trashcan2State!.get("xpos")!.value = -5;
-  trashcan2State!.get("ypos")!.value = -2;
+  dataStore.setData("trashcan2", "filled", 1);
+  dataStore.setData("trashcan2", "xpos", -5);
+  dataStore.setData("trashcan2", "ypos", -2);
 
   // Set initial positions and z-index for trashcans
   trashcan1!.z = 3;
@@ -111,8 +109,8 @@ export const initializeBounce = () => {
       }
       trashcan1IsFilled = !trashcan1IsFilled;
 
-      trashcan1State!.get("filled")!.value = trashcan1IsFilled ? 1 : 0;
-      trashcan2State!.get("filled")!.value = trashcan1IsFilled ? 0 : 1;
+      dataStore.setData("trashcan1", "filled", trashcan1IsFilled ? 1 : 0);
+      dataStore.setData("trashcan2", "filled", trashcan1IsFilled ? 0 : 1);
 
       swapTimer = 0;
       nextSwap = Math.random() * 4 + 1; // Reset the timer with a new random value
@@ -145,7 +143,7 @@ export const initializeBounce = () => {
       }
     }
 
-    if (useDataStore.getState().initData) {
+    if (dataStore.initData) {
       handleReset(raccoon!, 1);
     }
   });

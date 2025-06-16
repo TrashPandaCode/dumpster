@@ -7,21 +7,43 @@ import {
 } from "../game/core/levels";
 import type { GameObject } from "../game/gameObjects";
 
+export class HandleData {
+  access: ConnectionAccess;
+  value: number | (() => number);
+
+  constructor(access: ConnectionAccess, value: number | (() => number)) {
+    this.access = access;
+    this.value = value;
+  }
+
+  getValue(): number {
+    if (typeof this.value === "number") return this.value;
+    else if (typeof this.value === "function") return this.value();
+    else return 0;
+  }
+
+  setValue(value: number | (() => number)) {
+    this.value = value;
+  }
+}
+
 export type GameObjectsData = Map<
   GameObject, // gameobject label
   Map<
     string, // handle display name and id
-    {
-      access: ConnectionAccess;
-      value: number;
-    }
+    HandleData
   >
 >;
 
 interface DataState {
   initData: boolean;
   gameObjects: GameObjectsData;
-  setData: (gameObject: GameObject, label: string, value: number) => void;
+  setData: (
+    gameObject: GameObject,
+    label: string,
+    value: number | (() => number)
+  ) => void;
+  getData: (gameObject: GameObject, label: string) => number;
   addHandle: (gameObject: GameObject, label: string) => void;
   removeHandle: (gameObject: GameObject, label: string) => void;
   init: (level: LevelId) => void;
@@ -33,21 +55,17 @@ export const useDataStore = create<DataState>((set, get) => ({
   initData: true,
   gameObjects: new Map(),
   setData: (gameObject, label, value) => {
-    const gob = get().gameObjects.get(gameObject)!;
-    const { access } = gob.get(label)!;
-    gob.set(label, {
-      access,
-      value,
-    });
+    get().gameObjects.get(gameObject)!.get(label)!.setValue(value);
+  },
+  getData: (gameObject, label) => {
+    return get().gameObjects.get(gameObject)!.get(label)!.getValue();
   },
   addHandle: (gameObject, label) =>
     set((state) => {
       if (state.gameObjects.get(gameObject)!.has(label)) return state;
 
       const newGameObjectsMap = new Map(state.gameObjects);
-      newGameObjectsMap
-        .get(gameObject)!
-        .set(label, { access: "all", value: 0 });
+      newGameObjectsMap.get(gameObject)!.set(label, new HandleData("all", 0));
 
       return { ...state, gameObjects: newGameObjectsMap };
     }),
@@ -65,19 +83,17 @@ export const useDataStore = create<DataState>((set, get) => ({
 
     const dataStoreData = JSON.parse(stored) as {
       initData: boolean;
-      gameObjects: [
-        GameObject,
-        [string, { access: ConnectionAccess; value: number }][],
-      ][];
+      gameObjects: [GameObject, [string, HandleData][]][];
     };
 
-    const gameObjects = new Map<
-      GameObject,
-      Map<string, { access: ConnectionAccess; value: number }>
-    >();
+    const gameObjects: GameObjectsData = new Map();
 
     for (const [gobId, handles] of dataStoreData.gameObjects) {
-      gameObjects.set(gobId, new Map(handles));
+      const handleMap = new Map();
+      for (const [handle, data] of handles) {
+        handleMap.set(handle, new HandleData(data.access, 0));
+      }
+      gameObjects.set(gobId, handleMap);
     }
 
     set({
@@ -110,7 +126,7 @@ export const useDataStore = create<DataState>((set, get) => ({
           new Map(
             item.connections.map((conn) => [
               conn.label,
-              { access: conn.access, value: 0 },
+              new HandleData(conn.access, 0),
             ])
           ),
         ])
