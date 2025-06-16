@@ -7,7 +7,7 @@ import {
 } from "../game/core/levels";
 import type { GameObject } from "../game/gameObjects";
 
-class HandleData {
+export class HandleData {
   access: ConnectionAccess;
   value: number | (() => number);
 
