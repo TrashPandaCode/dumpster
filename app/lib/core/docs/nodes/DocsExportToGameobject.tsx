@@ -69,6 +69,7 @@ const DocsExportToGameobject = memo(
       highlightedIndex,
       getItemProps,
       selectedGameObjects,
+      handleReorder,
     } = useGameobjectSelect(
       selectableGameObjects,
       data.selectedGameObjects
@@ -116,6 +117,7 @@ const DocsExportToGameobject = memo(
               isOpen={isOpen}
               selectableObjects={selectableGameObjects}
               selectedObjects={selectedGameObjects}
+              onReorder={handleReorder}
               useSelectProps={{
                 getItemProps: getItemProps,
                 getLabelProps: getLabelProps,
