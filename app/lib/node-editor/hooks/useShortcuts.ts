@@ -3,7 +3,7 @@ import { useHotkeys } from "react-hotkeys-hook";
 
 import { useNodeAddMenuStore } from "../../zustand/node-add-menu-store";
 import { duplicateNodes } from "../utils/duplicate";
-import useMacOS from "../utils/ismac";
+import useMacOS from "../utils/mac";
 import { redo, undo } from "../utils/undo";
 
 // Hook to handle duplicating nodes with a hotkey
