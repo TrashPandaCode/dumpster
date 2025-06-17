@@ -19,18 +19,19 @@ export const initializeKinematics = () => {
 
   k.setGravity(100);
 
-  addBackgrounds(["background2"]);
+  addBackgrounds(["background2pers2"]);
 
   const { raccoon, goalFlag } = addGameobjects(["raccoon", "goalFlag"]);
-  k.setCamPos(7.5, -BACKGROUND_OFFSET);
+  k.setCamPos(0, -BACKGROUND_OFFSET);
   k.setCamScale((CAM_SCALE * k.height()) / 947);
 
-  goalFlag!.pos.x = 18;
+  raccoon!.pos.x = -10
+  goalFlag!.pos.x = 10;
 
   const floor1 = k.add([
     k.rect(20, 1),
     k.anchor("top"),
-    k.pos(-8, 0),
+    k.pos(-17.2, 0),
     k.area(),
     k.body({ isStatic: true }),
     k.opacity(0),
@@ -39,17 +40,20 @@ export const initializeKinematics = () => {
   const floor2 = k.add([
     k.rect(20, 1),
     k.anchor("top"),
-    k.pos(27, 0),
+    k.pos(17, 0),
     k.area(),
     k.body({ isStatic: true }),
     k.opacity(0),
   ]);
 
+  const leftArmX = -3;
+  const rightArmX = 3;
+
   const arm1 = k.add([
     "arm1",
     k.rect(0.2, ARM_LENGTH),
     k.anchor("bot"),
-    k.pos(8, 4),
+    k.pos(leftArmX, 4),
     k.rotate(0),
     k.area(),
     k.body({ isStatic: true }),
@@ -60,7 +64,7 @@ export const initializeKinematics = () => {
     "arm2",
     k.rect(0.2, ARM_LENGTH),
     k.anchor("bot"),
-    k.pos(8, 1),
+    k.pos(leftArmX, 1),
     k.rotate(0),
     k.area(),
     k.body({ isStatic: true }),
@@ -70,28 +74,51 @@ export const initializeKinematics = () => {
   const platform = k.add([
     k.rect(4, 0.2),
     k.anchor("bot"),
-    k.pos(8, -2),
+    k.pos(leftArmX, -2),
     k.area(),
     k.body({ isStatic: true }),
-    k.color(25, 25, 255),
+    k.color(255, 255, 255),
     k.z(3),
   ]);
 
-  // Initialize data store
-  dataHelper.setData("arm", "joint1x", arm1.pos.x);
-  dataHelper.setData("arm", "joint1y", arm1.pos.y);
+    const arm3 = k.add([
+    "arm1",
+    k.rect(0.2, ARM_LENGTH),
+    k.anchor("bot"),
+    k.pos(rightArmX, 4),
+    k.rotate(0),
+    k.area(),
+    k.body({ isStatic: true }),
+    k.color(255, 155, 25),
+    k.z(1),
+  ]);
+  const arm4 = k.add([
+    "arm2",
+    k.rect(0.2, ARM_LENGTH),
+    k.anchor("bot"),
+    k.pos(rightArmX, 1),
+    k.rotate(0),
+    k.area(),
+    k.body({ isStatic: true }),
+    k.color(25, 25, 255),
+    k.z(2),
+  ]);
+  const platform2 = k.add([
+    k.rect(4, 0.2),
+    k.anchor("bot"),
+    k.pos(rightArmX, -2),
+    k.area(),
+    k.body({ isStatic: true }),
+    k.color(255, 255, 255),
+    k.z(3),
+  ]);
 
-  dataHelper.setData("arm", "joint2x", arm2.pos.x);
-  dataHelper.setData("arm", "joint2y", arm2.pos.y);
-
-  dataHelper.setData("arm", "joint3x", platform.pos.x);
-  dataHelper.setData("arm", "joint3y", platform.pos.y);
 
   game.onUpdate(() => {
     if (useGameStore.getState().isPaused) return;
 
-    arm1.angle = dataHelper.getData("arm", "joint1rot");
-    arm2.angle = dataHelper.getData("arm", "joint2rot") + arm1.angle;
+    arm1.angle = dataHelper.getData("arm", "Red Rotation");
+    arm2.angle = dataHelper.getData("arm", "Green Rotation") + arm1.angle;
 
     arm2.pos.x =
       arm1.pos.x + ARM_LENGTH * Math.sin((arm1.angle * Math.PI) / 180);
@@ -103,19 +130,23 @@ export const initializeKinematics = () => {
     platform.pos.y =
       arm2.pos.y - ARM_LENGTH * Math.cos((arm2.angle * Math.PI) / 180);
 
-    dataHelper.setData("arm", "joint1x", arm1.pos.x);
-    dataHelper.setData("arm", "joint1y", arm1.pos.y);
+    arm3.angle = dataHelper.getData("arm", "Orange Rotation");
+    arm4.angle = dataHelper.getData("arm", "Blue Rotation") + arm3.angle;
 
-    dataHelper.setData("arm", "joint2x", arm2.pos.x);
-    dataHelper.setData("arm", "joint2y", arm2.pos.y);
+    arm4.pos.x =
+      arm3.pos.x + ARM_LENGTH * Math.sin((arm3.angle * Math.PI) / 180);
+    arm4.pos.y =
+      arm3.pos.y - ARM_LENGTH * Math.cos((arm3.angle * Math.PI) / 180);
 
-    dataHelper.setData("arm", "joint3x", platform.pos.x);
-    dataHelper.setData("arm", "joint3y", platform.pos.y);
+    platform2.pos.x =
+      arm4.pos.x + ARM_LENGTH * Math.sin((arm4.angle * Math.PI) / 180);
+    platform2.pos.y =
+      arm4.pos.y - ARM_LENGTH * Math.cos((arm4.angle * Math.PI) / 180);
 
     // Movement
     animPlayer(raccoon!, k, "input", undefined, undefined, {
-      minX: 5,
-      maxX: 15,
+      minX: -2,
+      maxX: 12,
     });
     k.onKeyDown("space", () => {
       if (raccoon!.isGrounded()) {
@@ -124,8 +155,9 @@ export const initializeKinematics = () => {
     });
     // Raccoon fall die :(
     if (raccoon!.pos.y > 10) {
-      raccoon!.pos.x = 0;
+      raccoon!.pos.x = -10;
       raccoon!.pos.y = 0;
+      raccoon!.vel = k.vec2(0, 0);
     }
 
     //Handle Finish + Reset

@@ -21,7 +21,7 @@ import {
 import { getKaplayCtx } from "../core/kaplayCtx";
 import { type GameObject } from "../gameObjects";
 
-type Background = "background1" | "background2" | "backgroundCalc";
+type Background = "background1" | "background2" | "backgroundCalc" | "background2pers2";
 type PlayerType = GameObj<
   | PosComp
   | RotateComp
@@ -68,7 +68,10 @@ export function addGameobjects(gameobjects: GameObject[]) {
       k.rotate(0),
       k.scale(SPRITE_SCALE),
       k.anchor("bot"),
-      k.area(),
+      k.area({
+        shape: new k.Rect(k.vec2(0, 0), 10, 20),
+        offset: k.vec2(0, 0),
+      }),
       k.z(2),
       k.opacity(1),
       k.body(),
@@ -206,6 +209,9 @@ export function addBackgrounds(
   }
   if (backgrounds.includes("background2")) {
     k.loadSprite("background", "/game/backgrounds/background2.png");
+  }
+  if (backgrounds.includes("background2pers2")) {
+    k.loadSprite("background", "/game/backgrounds/background2pers2.png");
   }
   if (backgrounds.includes("backgroundCalc")) {
     k.loadSprite("background", "/game/backgrounds/background_calculator.png");
