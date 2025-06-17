@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
-const useMacOS = () => {
-  const [isMacOS, setIsMacOS] = useState(false);
+const useIsMac = () => {
+  const [isMac, setIsMacOS] = useState(false);
 
   useEffect(() => {
     const userAgent = navigator.userAgent.toLowerCase();
@@ -12,7 +12,7 @@ const useMacOS = () => {
     setIsMacOS(isMac);
   }, []);
 
-  return isMacOS;
+  return isMac;
 };
 
-export default useMacOS;
+export default useIsMac;

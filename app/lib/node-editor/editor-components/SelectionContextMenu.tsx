@@ -3,7 +3,7 @@ import React, { useCallback } from "react";
 
 import { globalKeyTracker } from "~/lib/game/utils/globalKeyTracker";
 import { duplicateNodes } from "../utils/duplicate";
-import useMacOS from "../utils/ismac";
+import useMacOS from "../utils/mac";
 
 const SelectionContextMenu = React.forwardRef<
   HTMLDivElement,
@@ -28,7 +28,7 @@ const SelectionContextMenu = React.forwardRef<
     });
     onClose();
   }, [deleteElements, getEdges, getNodes, nodeIds, onClose]);
-  const isMacOS = useMacOS();
+  const isMac = useMacOS();
   return (
     <div
       ref={ref}
@@ -50,7 +50,7 @@ const SelectionContextMenu = React.forwardRef<
         >
           <span>Duplicate {nodeIds.length} nodes </span>
           <span className="ml-2 rounded bg-slate-600 px-1.5 py-0.5 font-mono text-xs text-gray-300">
-            {isMacOS ? "⌥+D" : "Ctrl+D"}
+            {isMac ? "⌥+D" : "Ctrl+D"}
           </span>
         </button>
         <button
