@@ -1,4 +1,4 @@
-import { useDataStore } from "~/lib/zustand/data";
+import { createLevelDataHelpers } from "~/lib/zustand/data";
 import { useGameStore } from "~/lib/zustand/game";
 import { BACKGROUND_OFFSET, CAM_SCALE } from "../constants";
 import { getKaplayCtx } from "../core/kaplayCtx";
@@ -11,7 +11,7 @@ import {
 
 export const initializePlayground = () => {
   const { k, game } = getKaplayCtx();
-  const dataStore = useDataStore.getState();
+  const dataHelper = createLevelDataHelpers("playground");
 
   addBackgrounds(["background2"]);
 
@@ -29,16 +29,16 @@ export const initializePlayground = () => {
 
     animPlayer(raccoon!, k);
 
-    trashcanEmpty!.pos.x = dataStore.getData("trashcanEmpty", "xpos");
-    trashcanEmpty!.pos.y = dataStore.getData("trashcanEmpty", "ypos");
+    trashcanEmpty!.pos.x = dataHelper.getData("trashcanEmpty", "xpos");
+    trashcanEmpty!.pos.y = dataHelper.getData("trashcanEmpty", "ypos");
 
-    trashcanFilled!.pos.x = dataStore.getData("trashcanFilled", "xpos");
-    trashcanFilled!.pos.y = dataStore.getData("trashcanFilled", "ypos");
+    trashcanFilled!.pos.x = dataHelper.getData("trashcanFilled", "xpos");
+    trashcanFilled!.pos.y = dataHelper.getData("trashcanFilled", "ypos");
 
-    goalFlag!.pos.x = dataStore.getData("goalFlag", "xpos");
-    goalFlag!.pos.y = dataStore.getData("goalFlag", "ypos");
+    goalFlag!.pos.x = dataHelper.getData("goalFlag", "xpos");
+    goalFlag!.pos.y = dataHelper.getData("goalFlag", "ypos");
 
-    if (useDataStore.getState().initData) {
+    if (dataHelper.initData) {
       handleReset(raccoon!, 1);
     }
   });

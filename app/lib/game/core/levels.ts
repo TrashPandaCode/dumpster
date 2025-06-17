@@ -523,6 +523,6 @@ export const LEVELS = {
     ],
     difficulty: 0,
   },
-} satisfies Record<string, Level>;
+} as const satisfies Record<string, Level>;
 
 export type LevelId = keyof typeof LEVELS;
