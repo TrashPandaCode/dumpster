@@ -1,6 +1,6 @@
 import { SizeIcon } from "@radix-ui/react-icons";
-import { NodeResizeControl } from "@xyflow/react";
-import { memo } from "react";
+import { NodeResizeControl, useReactFlow } from "@xyflow/react";
+import { memo, useEffect, useState } from "react";
 
 import NodeContent from "../../node-components/NodeContent";
 import { INITIAL_GROUP_SIZE } from "../constants";
@@ -27,7 +27,16 @@ const controlStyle = {
  * Notes:
  * - This node acts as a visual and structural container only; no compute logic is applied.
  */
-const Group = memo(({ data }: { data: any }) => {
+const Group = memo(({ id, data }: { id: string; data: any }) => {
+  const { updateNodeData } = useReactFlow();
+  const [editLabel, setEditLabel] = useState(data.editLabel ?? "Group");
+
+  useEffect(() => {
+    updateNodeData(id, {
+      editLabel,
+    });
+  }, [editLabel]);
+
   return (
     <>
       <NodeResizeControl
@@ -40,7 +49,15 @@ const Group = memo(({ data }: { data: any }) => {
       </NodeResizeControl>
 
       <NodeContent
-        label="Group"
+        label={
+          <input
+            className="w-full rounded font-bold focus:outline-1 focus:outline-slate-500"
+            value={editLabel}
+            onChange={(e) => {
+              setEditLabel(e.target.value);
+            }}
+          />
+        }
         type="group"
         className="h-full bg-slate-900"
         docsName="group"
