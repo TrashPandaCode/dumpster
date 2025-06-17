@@ -14,6 +14,7 @@ import { initializeBounce } from "../levels/bounce";
 import { initializeCalculator } from "../levels/calculator";
 import { initializeInverse } from "../levels/inverse";
 import { initializeKinematics } from "../levels/kinematic";
+import { initializeLooping } from "../levels/looping";
 import { initializeMove } from "../levels/move";
 import { initializeParenting } from "../levels/parenting";
 import { initializePlayground } from "../levels/playground";
@@ -213,6 +214,38 @@ export const LEVELS = {
       "Switch",
       "ImportFromGameobject",
       "ExportToGameobject",
+    ],
+    difficulty: 1,
+  },
+  looping: {
+    slug: "looping",
+    name: "Looping",
+    description: "This is the forth level of the game, introducing for loops.",
+    dialog: [],
+    goals: [],
+    success: "",
+    category: "Introduction",
+    image: bounceCard,
+    initialNodes: [],
+    initialState: initializeLooping,
+    hints: [],
+    modifiableGameObjects: [
+      {
+        id: "raccoon",
+        connections: [
+          { label: "xpos", access: "all" },
+          { label: "ypos", access: "all" },
+        ],
+      },
+    ],
+    availableNodes: [
+      "Display",
+      "Value",
+      "Math",
+      "KeyPress",
+      "ImportFromGameobject",
+      "ExportToGameobject",
+      "ForLoop",
     ],
     difficulty: 1,
   },
