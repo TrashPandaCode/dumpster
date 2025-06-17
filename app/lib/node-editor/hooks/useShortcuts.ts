@@ -3,18 +3,19 @@ import { useHotkeys } from "react-hotkeys-hook";
 
 import { useNodeAddMenuStore } from "../../zustand/node-add-menu-store";
 import { duplicateNodes } from "../utils/duplicate";
+import useMacOS from "../utils/ismac";
 import { redo, undo } from "../utils/undo";
 
 // Hook to handle duplicating nodes with a hotkey
 export function useDuplicateHotkey() {
   const { getNodes, getEdges, setEdges, setNodes } = useReactFlow();
+  const shortcuts = ["ctrl+d", "alt+d"];
 
   useHotkeys(
-    ["ctrl+d", "alt+d"],
+    shortcuts,
     (e) => {
       e.preventDefault();
       const selectedNodes = getNodes().filter((n) => n.selected);
-      // If nodes are selected, duplicate them
       if (selectedNodes.length > 0) {
         duplicateNodes(selectedNodes, getEdges, getNodes, setEdges, setNodes);
       }
@@ -30,12 +31,12 @@ export function useDuplicateHotkey() {
 // Hook to handle adding a new node with a hotkey
 export function useNewNodeHotkey() {
   const { visible, openAddMenu, closeAddMenu } = useNodeAddMenuStore();
+  const shortcuts = ["ctrl+space", "alt+space"];
 
   useHotkeys(
-    ["ctrl+space", "alt+space"],
+    shortcuts,
     (e) => {
       e.preventDefault();
-      // Toggle the visibility of the add menu
       visible ? closeAddMenu() : openAddMenu();
     },
     {
@@ -48,25 +49,35 @@ export function useNewNodeHotkey() {
 
 // Hook to handle undo
 export function useUndoHotkey() {
+  const isMacOS = useMacOS();
+  const shortcuts = isMacOS ? "alt+y" : "ctrl+z";
+
   useHotkeys(
-    ["ctrl+z", "alt+z"],
+    shortcuts,
     (e) => {
       e.preventDefault();
       undo();
     },
-    { preventDefault: true, enableOnFormTags: true, useKey: true }
+    { preventDefault: true, enableOnFormTags: true, useKey: true },
+    [isMacOS]
   );
 }
 
 // Hook to handle redo
 export function useRedoHotkey() {
+  const isMacOS = useMacOS();
+  const shortcuts = isMacOS
+    ? ["alt+shift+y", "alt+z"]
+    : ["ctrl+y", "ctrl+shift+z"];
+
   useHotkeys(
-    ["ctrl+y", "alt+y"],
+    shortcuts,
     (e) => {
       e.preventDefault();
       redo();
     },
-    { preventDefault: true, enableOnFormTags: true, useKey: true }
+    { preventDefault: true, enableOnFormTags: true, useKey: true },
+    [isMacOS]
   );
 }
 
@@ -79,7 +90,6 @@ export function useEscapeHotkey(
     "esc",
     (e) => {
       e.preventDefault();
-      // If any menu is open, close it
       if (condition && callback) callback();
     },
     {
