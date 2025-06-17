@@ -14,7 +14,6 @@ export function useDuplicateHotkey() {
   useHotkeys(
     shortcuts,
     (e) => {
-      e.preventDefault();
       const selectedNodes = getNodes().filter((n) => n.selected);
       if (selectedNodes.length > 0) {
         duplicateNodes(selectedNodes, getEdges, getNodes, setEdges, setNodes);
@@ -22,7 +21,6 @@ export function useDuplicateHotkey() {
     },
     {
       enableOnFormTags: false,
-      preventDefault: true,
     },
     [getNodes, getEdges, setEdges, setNodes]
   );
