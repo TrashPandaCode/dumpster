@@ -15,7 +15,7 @@ export const TYPES = {
     "Absolute",
   ],
   Rounding: ["Round", "Floor", "Ceil", "Modulo"],
-  Trigonometric: ["Sine", "Cosine", "Tangent", "Asin", "Acos", "Atan"],
+  Trigonometric: ["Sine", "Cosine", "Tangent", "Asin", "Acos", "Atan", "Atan2"],
   Conversion: ["To Radians", "To Degrees"],
   Compare: ["Equals", "Greater Than", "Less Than"],
   "Logical Operators": ["AND", "OR", "XOR", "NOT", "NAND", "NOR", "XNOR"],
@@ -42,6 +42,7 @@ export const INPUTS: { [key: string]: NumberInputType[] } = {
     Asin: [{enable: true, type: "float", label: "x"}, {enable: false, type: undefined, label: ""}],
     Acos: [{enable: true, type: "float", label: "x"}, {enable: false, type: undefined, label: ""}],
     Atan: [{enable: true, type: "float", label: "x"}, {enable: false, type: undefined, label: ""}],
+    Atan2: [{enable: true, type: "float", label: "x"}, {enable: true, type: "float", label: "y"}],
 
     "To Radians": [{enable: true, type: "float", label: "deg"}, {enable: false, type: undefined, label: ""}],
     "To Degrees": [{enable: true, type: "float", label: "rad"}, {enable: false, type: undefined, label: ""}],
@@ -80,6 +81,7 @@ export const COMPUTE: { [key: string]: (x: number, y: number) => number } = {
   Asin: (x, _) => Math.asin(x),
   Acos: (x, _) => Math.acos(x),
   Atan: (x, _) => Math.atan(x),
+  Atan2: (x, y) => Math.atan2(x, y),
 
   "To Radians": (x, _) => x * (Math.PI / 180),
   "To Degrees": (x, _) => x * (180 / Math.PI),

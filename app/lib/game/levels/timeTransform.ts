@@ -1,4 +1,4 @@
-import { useDataStore } from "~/lib/zustand/data";
+import { createLevelDataHelpers } from "~/lib/zustand/data";
 import { useGameStore } from "~/lib/zustand/game";
 import { BACKGROUND_OFFSET, CAM_SCALE } from "../constants";
 import { getKaplayCtx } from "../core/kaplayCtx";
@@ -12,6 +12,7 @@ import {
 
 export const initializeTimeTransform = () => {
   const { k, game } = getKaplayCtx();
+  const dataHelper = createLevelDataHelpers("timeTransform");
 
   addBackgrounds(["background1"]);
 
@@ -45,7 +46,6 @@ export const initializeTimeTransform = () => {
   });
 
   let onRoof = false;
-  const raccoonState = useDataStore.getState().gameObjects.get("raccoon");
 
   game.onUpdate(() => {
     if (useGameStore.getState().isPaused) return;
@@ -57,8 +57,8 @@ export const initializeTimeTransform = () => {
       ladder.pos = k.vec2(-12, 5);
       ladder.height = 5;
 
-      raccoonState!.get("xpos")!.value = -13;
-      raccoonState!.get("ypos")!.value == -5;
+      dataHelper.setData("raccoon", "xpos", -13);
+      dataHelper.setData("raccoon", "ypos", -5);
       raccoon!.pos.x = -12;
       raccoon!.pos.y = 5;
       onRoof = true;
@@ -72,7 +72,7 @@ export const initializeTimeTransform = () => {
       }
     }
 
-    if (useDataStore.getState().initData) {
+    if (dataHelper.initData) {
       handleReset(raccoon!, 1);
     }
   });

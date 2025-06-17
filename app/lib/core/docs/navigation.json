@@ -15,6 +15,10 @@
         "path": "/docs/nodes/math"
       },
       {
+        "title": "World To Local",
+        "path": "/docs/nodes/worldtolocal"
+      },
+      {
         "title": "Export To Gameobject",
         "path": "/docs/nodes/export"
       },
@@ -49,6 +53,43 @@
       {
         "title": "Group",
         "path": "/docs/nodes/group"
+      }
+    ]
+  },
+  {
+    "title": "Level Guides",
+    "items": [
+      {
+        "title": "Calculator",
+        "path": "/docs/levels/calculator"
+      },
+      {
+        "title": "Sitting",
+        "path": "/docs/levels/sitting"
+      },
+      {
+        "title": "Bounce",
+        "path": "/docs/levels/bounce"
+      },
+      {
+        "title": "Move",
+        "path": "/docs/levels/move"
+      },
+      {
+        "title": "Parenting",
+        "path": "/docs/levels/parenting"
+      },
+      {
+        "title": "Time Transform",
+        "path": "/docs/levels/time-transform"
+      },
+      {
+        "title": "Kinematics",
+        "path": "/docs/levels/kinematics"
+      },
+      {
+        "title": "Playground",
+        "path": "/docs/levels/playground"
       }
     ]
   },
