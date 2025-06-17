@@ -3,6 +3,7 @@ import React, { useCallback } from "react";
 
 import { globalKeyTracker } from "~/lib/game/utils/globalKeyTracker";
 import { duplicateNodes } from "../utils/duplicate";
+import useMacOS from "../utils/ismac";
 import AddNodes from "./AddNodes";
 
 const NodeContextMenu = React.forwardRef<
@@ -103,6 +104,7 @@ const DefaultNodeContextMenu = ({
 
     const nodes = getNodes();
     const edges = getEdges();
+
     deleteElements({
       nodes: nodes.filter((node) => idsToDelete.includes(node.id)),
       edges: edges.filter(
@@ -113,7 +115,7 @@ const DefaultNodeContextMenu = ({
 
     onClose();
   }, [deleteElements, getEdges, getNode, getNodes, nodeId, onClose, setNodes]);
-
+  const isMacOS = useMacOS();
   return (
     <>
       <button
@@ -122,7 +124,7 @@ const DefaultNodeContextMenu = ({
       >
         <span>Duplicate</span>
         <span className="ml-2 rounded bg-slate-600 px-1.5 py-0.5 font-mono text-xs text-gray-300">
-          {globalKeyTracker.isMac ? "⌥+D" : "Ctrl+D"}
+          {isMacOS ? "⌥+D" : "Ctrl+D"}
         </span>
       </button>
       <button

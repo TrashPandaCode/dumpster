@@ -14,8 +14,8 @@ import { Panel, useReactFlow, type ReactFlowInstance } from "@xyflow/react";
 import { useState } from "react";
 
 import { useFlowStore } from "../node-store/flow-store";
-import { globalKeyTracker } from "~/lib/game/utils/globalKeyTracker";
 import { useNodeStore } from "../node-store/node-store";
+import useMacOS from "../utils/ismac";
 import AddNodes from "./AddNodes";
 import HelpMenu from "./HelpMenu";
 import { IconButton } from "./IconButton";
@@ -28,6 +28,7 @@ const RightPanel: React.FC<{ rfInstance: ReactFlowInstance | undefined }> = ({
 
   const nodeStateDebugPrint = useNodeStore((state) => state.debugPrint);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const isMacOS = useMacOS();
 
   return (
     <Panel
@@ -43,7 +44,7 @@ const RightPanel: React.FC<{ rfInstance: ReactFlowInstance | undefined }> = ({
               <p>
                 Add Node
                 <span className="ml-2 rounded bg-slate-600 px-1.5 py-0.5 font-mono text-xs text-gray-300">
-                  {globalKeyTracker.isMac ? "⌥+Space" : "Ctrl+Space"}
+                  {isMacOS ? "⌥+Space" : "Ctrl+Space"}
                 </span>
               </p>
             }
