@@ -27,6 +27,30 @@ export class HandleData {
   }
 }
 
+type ExtractLabels<T> = T extends {
+  modifiableGameObjects: readonly {
+    connections: readonly { label: infer L }[];
+  }[];
+}
+  ? L extends string
+    ? L
+    : never
+  : never;
+
+type AllPossibleLabels = ExtractLabels<(typeof LEVELS)[keyof typeof LEVELS]>;
+
+type ExtractLevelGameObjects<L extends LevelId> =
+  (typeof LEVELS)[L]["modifiableGameObjects"][number]["id"];
+
+// Fixed type to properly extract labels for specific game objects
+type ExtractLevelLabels<
+  L extends LevelId,
+  G extends ExtractLevelGameObjects<L>,
+> = Extract<
+  (typeof LEVELS)[L]["modifiableGameObjects"][number],
+  { id: G }
+>["connections"][number]["label"];
+
 export type GameObjectsData = Map<
   GameObject, // gameobject label
   Map<
@@ -133,3 +157,41 @@ export const useDataStore = create<DataState>((set, get) => ({
       ),
     }),
 }));
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export function createLevelDataHelpers<L extends LevelId>(level: L) {
+  const store = useDataStore.getState();
+
+  return {
+    setData: <G extends ExtractLevelGameObjects<L>>(
+      gameObject: G,
+      label: ExtractLevelLabels<L, G>,
+      value: number | (() => number)
+    ) => {
+      store.setData(
+        gameObject as GameObject,
+        label as AllPossibleLabels,
+        value
+      );
+    },
+    getData: <G extends ExtractLevelGameObjects<L>>(
+      gameObject: G,
+      label: ExtractLevelLabels<L, G>
+    ): number => {
+      return store.getData(
+        gameObject as GameObject,
+        label as AllPossibleLabels
+      );
+    },
+    addHandle: (gameObject: ExtractLevelGameObjects<L>, label: string) => {
+      store.addHandle(gameObject as GameObject, label);
+    },
+    removeHandle: <G extends ExtractLevelGameObjects<L>>(
+      gameObject: G,
+      label: ExtractLevelLabels<L, G>
+    ) => {
+      store.removeHandle(gameObject as GameObject, label as AllPossibleLabels);
+    },
+    initData: store.initData,
+  };
+}

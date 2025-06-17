@@ -1,4 +1,4 @@
-import { useDataStore } from "~/lib/zustand/data";
+import { createLevelDataHelpers } from "~/lib/zustand/data";
 import { useGameStore } from "~/lib/zustand/game";
 import { BACKGROUND_OFFSET, CAM_SCALE, SPRITE_SCALE } from "../constants";
 import { getKaplayCtx } from "../core/kaplayCtx";
@@ -16,7 +16,7 @@ export const BOUNCE_GAME_OBJECTS = [TRASHCAN1, TRASHCAN2] as const;
 
 export const initializeBounce = () => {
   const { k, game } = getKaplayCtx();
-  const dataStore = useDataStore.getState();
+  const dataHelper = createLevelDataHelpers("bounce");
 
   addBackgrounds(["background1"]);
 
@@ -56,13 +56,13 @@ export const initializeBounce = () => {
   ]);
 
   // Initialize trashcan states in the data store
-  dataStore.setData("trashcan1", "filled", 0);
-  dataStore.setData("trashcan1", "xpos", -7);
-  dataStore.setData("trashcan1", "ypos", -1.75);
+  dataHelper.setData("trashcan1", "filled", 0);
+  dataHelper.setData("trashcan1", "xpos", -7);
+  dataHelper.setData("trashcan1", "ypos", -1.75);
 
-  dataStore.setData("trashcan2", "filled", 1);
-  dataStore.setData("trashcan2", "xpos", -5);
-  dataStore.setData("trashcan2", "ypos", -2);
+  dataHelper.setData("trashcan2", "filled", 1);
+  dataHelper.setData("trashcan2", "xpos", -5);
+  dataHelper.setData("trashcan2", "ypos", -2);
 
   // Set initial positions and z-index for trashcans
   trashcan1!.z = 3;
@@ -109,8 +109,8 @@ export const initializeBounce = () => {
       }
       trashcan1IsFilled = !trashcan1IsFilled;
 
-      dataStore.setData("trashcan1", "filled", trashcan1IsFilled ? 1 : 0);
-      dataStore.setData("trashcan2", "filled", trashcan1IsFilled ? 0 : 1);
+      dataHelper.setData("trashcan1", "filled", trashcan1IsFilled ? 1 : 0);
+      dataHelper.setData("trashcan2", "filled", trashcan1IsFilled ? 0 : 1);
 
       swapTimer = 0;
       nextSwap = Math.random() * 4 + 1; // Reset the timer with a new random value
@@ -143,7 +143,7 @@ export const initializeBounce = () => {
       }
     }
 
-    if (dataStore.initData) {
+    if (dataHelper.initData) {
       handleReset(raccoon!, 1);
     }
   });

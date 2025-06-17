@@ -1,4 +1,4 @@
-import { useDataStore } from "~/lib/zustand/data";
+import { createLevelDataHelpers } from "~/lib/zustand/data";
 import { useGameStore } from "~/lib/zustand/game";
 import { BACKGROUND_OFFSET, CAM_SCALE } from "../constants";
 import { getKaplayCtx } from "../core/kaplayCtx";
@@ -10,7 +10,7 @@ import {
 
 export const initializeCalculator = () => {
   const { k, game } = getKaplayCtx();
-  const dataStore = useDataStore.getState();
+  const dataHelper = createLevelDataHelpers("calculator");
 
   addBackgrounds(["backgroundCalc"], -200);
 
@@ -23,14 +23,14 @@ export const initializeCalculator = () => {
     if (useGameStore.getState().isPaused) return;
 
     // Get value from exportToGameObject node
-    const value = dataStore.getData("raccoon", "solution");
+    const value = dataHelper.getData("raccoon", "solution");
 
     if (value == 16 && !useGameStore.getState().levelCompleted) {
       useGameStore.getState().setLevelCompleteDialogOpen(true);
       useGameStore.getState().setLevelCompleted(true);
     }
 
-    if (dataStore.initData) {
+    if (dataHelper.initData) {
       handleReset(raccoon!, -1);
     }
   });

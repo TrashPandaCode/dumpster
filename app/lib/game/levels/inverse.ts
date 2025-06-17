@@ -1,4 +1,4 @@
-import { useDataStore } from "~/lib/zustand/data";
+import { createLevelDataHelpers } from "~/lib/zustand/data";
 import { useGameStore } from "~/lib/zustand/game";
 import { CAM_SCALE } from "../constants";
 import { getKaplayCtx } from "../core/kaplayCtx";
@@ -23,16 +23,16 @@ export const initializeInverse = () => {
   k.setCamPos(0, 0);
   k.setCamScale((CAM_SCALE * k.height()) / 1500);
 
-  const dataStore = useDataStore.getState();
+  const dataHelper = createLevelDataHelpers("inverse");
 
-  dataStore.setData("endeffector", "x", () => setJointPos().end.x);
-  dataStore.setData("endeffector", "y", () => setJointPos().end.y);
-  dataStore.setData("joint1", "x", () => setJointPos().joint1.x);
-  dataStore.setData("joint1", "y", () => setJointPos().joint1.y);
-  dataStore.setData("joint2", "x", () => setJointPos().joint2.x);
-  dataStore.setData("joint2", "y", () => setJointPos().joint2.y);
-  dataStore.setData("joint3", "x", () => setJointPos().joint3.x);
-  dataStore.setData("joint3", "y", () => setJointPos().joint3.y);
+  dataHelper.setData("endeffector", "x", () => setJointPos().end.x);
+  dataHelper.setData("endeffector", "y", () => setJointPos().end.y);
+  dataHelper.setData("joint1", "x", () => setJointPos().joint1.x);
+  dataHelper.setData("joint1", "y", () => setJointPos().joint1.y);
+  dataHelper.setData("joint2", "x", () => setJointPos().joint2.x);
+  dataHelper.setData("joint2", "y", () => setJointPos().joint2.y);
+  dataHelper.setData("joint3", "x", () => setJointPos().joint3.x);
+  dataHelper.setData("joint3", "y", () => setJointPos().joint3.y);
 
   const joint1 = k.add([
     "joint1",
@@ -86,9 +86,9 @@ export const initializeInverse = () => {
     joint3: { x: number; y: number };
     end: { x: number; y: number };
   } {
-    joint1.angle = dataStore.getData("joint1", "rotation");
-    joint2.angle = dataStore.getData("joint2", "rotation");
-    joint3.angle = dataStore.getData("joint3", "rotation");
+    joint1.angle = dataHelper.getData("joint1", "rotation");
+    joint2.angle = dataHelper.getData("joint2", "rotation");
+    joint3.angle = dataHelper.getData("joint3", "rotation");
 
     joint2.pos.x =
       joint1.pos.x + JOINT_1_LENGTH * Math.sin((joint1.angle * Math.PI) / 180);

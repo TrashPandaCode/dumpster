@@ -1,4 +1,4 @@
-import { useDataStore } from "~/lib/zustand/data";
+import { createLevelDataHelpers } from "~/lib/zustand/data";
 import { useGameStore } from "~/lib/zustand/game";
 import { BACKGROUND_OFFSET, CAM_SCALE } from "../constants";
 import { getKaplayCtx } from "../core/kaplayCtx";
@@ -15,7 +15,7 @@ export const KINEMATICS_GAME_OBJECTS = [ARM] as const;
 
 export const initializeKinematics = () => {
   const { k, game } = getKaplayCtx();
-  const dataStore = useDataStore.getState();
+  const dataHelper = createLevelDataHelpers("kinematics");
 
   k.setGravity(100);
 
@@ -78,20 +78,20 @@ export const initializeKinematics = () => {
   ]);
 
   // Initialize data store
-  dataStore.setData("arm", "joint1x", arm1.pos.x);
-  dataStore.setData("arm", "joint1y", arm1.pos.y);
+  dataHelper.setData("arm", "joint1x", arm1.pos.x);
+  dataHelper.setData("arm", "joint1y", arm1.pos.y);
 
-  dataStore.setData("arm", "joint2x", arm2.pos.x);
-  dataStore.setData("arm", "joint2y", arm2.pos.y);
+  dataHelper.setData("arm", "joint2x", arm2.pos.x);
+  dataHelper.setData("arm", "joint2y", arm2.pos.y);
 
-  dataStore.setData("arm", "joint3x", platform.pos.x);
-  dataStore.setData("arm", "joint3y", platform.pos.y);
+  dataHelper.setData("arm", "joint3x", platform.pos.x);
+  dataHelper.setData("arm", "joint3y", platform.pos.y);
 
   game.onUpdate(() => {
     if (useGameStore.getState().isPaused) return;
 
-    arm1.angle = dataStore.getData("arm", "joint1rot");
-    arm2.angle = dataStore.getData("arm", "joint2rot") + arm1.angle;
+    arm1.angle = dataHelper.getData("arm", "joint1rot");
+    arm2.angle = dataHelper.getData("arm", "joint2rot") + arm1.angle;
 
     arm2.pos.x =
       arm1.pos.x + ARM_LENGTH * Math.sin((arm1.angle * Math.PI) / 180);
@@ -103,14 +103,14 @@ export const initializeKinematics = () => {
     platform.pos.y =
       arm2.pos.y - ARM_LENGTH * Math.cos((arm2.angle * Math.PI) / 180);
 
-    dataStore.setData("arm", "joint1x", arm1.pos.x);
-    dataStore.setData("arm", "joint1y", arm1.pos.y);
+    dataHelper.setData("arm", "joint1x", arm1.pos.x);
+    dataHelper.setData("arm", "joint1y", arm1.pos.y);
 
-    dataStore.setData("arm", "joint2x", arm2.pos.x);
-    dataStore.setData("arm", "joint2y", arm2.pos.y);
+    dataHelper.setData("arm", "joint2x", arm2.pos.x);
+    dataHelper.setData("arm", "joint2y", arm2.pos.y);
 
-    dataStore.setData("arm", "joint3x", platform.pos.x);
-    dataStore.setData("arm", "joint3y", platform.pos.y);
+    dataHelper.setData("arm", "joint3x", platform.pos.x);
+    dataHelper.setData("arm", "joint3y", platform.pos.y);
 
     // Movement
     animPlayer(raccoon!, k, "input", undefined, undefined, {
@@ -134,7 +134,7 @@ export const initializeKinematics = () => {
       useGameStore.getState().setLevelCompleteDialogOpen(true);
       useGameStore.getState().setLevelCompleted(true);
     }
-    if (dataStore.initData) {
+    if (dataHelper.initData) {
       handleReset(raccoon!, 1);
     }
   });
