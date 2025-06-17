@@ -43,6 +43,7 @@ const ImportFromGameobject = memo(({ id, data }: { id: string; data: any }) => {
     highlightedIndex,
     getItemProps,
     selectedGameObjects,
+    handleReorder,
   } = useGameobjectSelect(
     selectableGameObjects,
     data.selectedGameObjects
@@ -71,7 +72,7 @@ const ImportFromGameobject = memo(({ id, data }: { id: string; data: any }) => {
         }
         const gob = selectedGameObjects[index];
         handleIntersection.forEach((handle) => {
-          results.set(handle, gameObjects.get(gob)!.get(handle)!.value);
+          results.set(handle, gameObjects.get(gob)!.get(handle)!.getValue());
         });
       },
       selectedGameObjects,
@@ -94,6 +95,7 @@ const ImportFromGameobject = memo(({ id, data }: { id: string; data: any }) => {
             isOpen={isOpen}
             selectableObjects={selectableGameObjects}
             selectedObjects={selectedGameObjects}
+            onReorder={handleReorder}
             useSelectProps={{
               getItemProps: getItemProps,
               getLabelProps: getLabelProps,

@@ -1,4 +1,4 @@
-import { useDataStore } from "~/lib/zustand/data";
+import { createLevelDataHelpers } from "~/lib/zustand/data";
 import { useGameStore } from "~/lib/zustand/game";
 import { BACKGROUND_OFFSET, CAM_SCALE, SPRITE_SCALE } from "../constants";
 import { getKaplayCtx } from "../core/kaplayCtx";
@@ -16,6 +16,7 @@ export const PARENTING_GAME_OBJECTS = [TRASHCANP] as const;
 
 export const initializeParenting = () => {
   const { k, game } = getKaplayCtx();
+  const dataHelper = createLevelDataHelpers("parenting");
 
   addBackgrounds(["background1"]);
 
@@ -43,9 +44,7 @@ export const initializeParenting = () => {
     "trashcanP",
   ]);
 
-  const trashcanPState = useDataStore.getState().gameObjects.get("trashcanP");
-
-  trashcanPState!.get("xpos")!.value = 5;
+  dataHelper.setData("trashcanP", "xpos", 5);
 
   trashcanP!.z = 3;
   trashcanP!.pos.x = 5;
@@ -77,8 +76,8 @@ export const initializeParenting = () => {
       maxX: 5,
     });
 
-    trashcanP!.pos.x = trashcanPState!.get("xpos")!.value;
-    trashcanP!.pos.y = trashcanPState!.get("ypos")!.value;
+    trashcanP!.pos.x = dataHelper.getData("trashcanP", "xpos");
+    trashcanP!.pos.y = dataHelper.getData("trashcanP", "ypos");
 
     const distTrashRac = raccoon!.pos.dist(trashcanP!.pos);
 
@@ -102,7 +101,7 @@ export const initializeParenting = () => {
       timeParenting = 0;
     }
 
-    if (useDataStore.getState().initData) {
+    if (dataHelper.initData) {
       handleReset(raccoon!, 1);
     }
   });

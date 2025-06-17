@@ -9,6 +9,7 @@ import CustomDialog from "./CustomDialog";
 const LevelCompleteDialog = () => {
   const currentLevel = useGameStore((state) => state.currentLevel);
   const nextLevel = getNeighborLevels(currentLevel)?.next;
+  const pause = useGameStore((state) => state.pause);
 
   const levelCompleteDialogOpen = useGameStore(
     (state) => state.levelCompleteDialogOpen
@@ -30,10 +31,10 @@ const LevelCompleteDialog = () => {
       <div className="flex flex-col gap-5">
         <div className="flex flex-1 flex-row">
           {/* Left side: Raccoon sprite */}
-          <div className="my-auto w-1/3 pr-4">
+          <div className="my-auto w-1/3">
             <div
               style={{
-                aspectRatio: "1 / 1",
+                aspectRatio: "7 / 6",
                 width: "100%",
                 backgroundImage: "url('/game/sprites/raccoon_spritesheet.png')",
                 backgroundPosition: "0 0",
@@ -71,6 +72,7 @@ const LevelCompleteDialog = () => {
               <NavLink
                 to={`/levels/${nextLevel}`}
                 className="cursor-pointer rounded-lg bg-slate-700/80 px-4 py-2 text-white hover:bg-slate-600 focus:outline-1 focus:outline-blue-300"
+                onClick={() => pause()}
               >
                 Next Level
               </NavLink>
