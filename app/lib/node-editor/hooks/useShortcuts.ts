@@ -21,6 +21,7 @@ export function useDuplicateHotkey() {
     },
     {
       enableOnFormTags: false,
+      preventDefault: true,
     },
     [getNodes, getEdges, setEdges, setNodes]
   );
@@ -34,7 +35,6 @@ export function useNewNodeHotkey() {
   useHotkeys(
     shortcuts,
     (e) => {
-      e.preventDefault();
       visible ? closeAddMenu() : openAddMenu();
     },
     {
@@ -53,7 +53,6 @@ export function useUndoHotkey() {
   useHotkeys(
     shortcuts,
     (e) => {
-      e.preventDefault();
       undo();
     },
     { preventDefault: true, enableOnFormTags: true, useKey: true },
@@ -71,7 +70,6 @@ export function useRedoHotkey() {
   useHotkeys(
     shortcuts,
     (e) => {
-      e.preventDefault();
       redo();
     },
     { preventDefault: true, enableOnFormTags: true, useKey: true },
@@ -87,7 +85,6 @@ export function useEscapeHotkey(
   useHotkeys(
     "esc",
     (e) => {
-      e.preventDefault();
       if (condition && callback) callback();
     },
     {
