@@ -1,6 +1,6 @@
 import { CrossCircledIcon } from "@radix-ui/react-icons";
 import { Position, useReactFlow } from "@xyflow/react";
-import { memo, useEffect, useMemo, useRef, useState } from "react";
+import { memo, useEffect, useMemo, useState } from "react";
 
 import AddHandle from "../../node-components/AddHandle";
 import BaseHandle from "../../node-components/BaseHandle";
@@ -53,8 +53,6 @@ const ForStart = memo(
     const loops = useLoopStore((state) => state.loops);
     const addHandle = useLoopStore((state) => state.addHandle);
     const removeHandle = useLoopStore((state) => state.removeHandle);
-
-    const curLabel = useRef("");
 
     const { updateNodeData } = useReactFlow();
     const handles = useMemo(
@@ -142,11 +140,10 @@ const ForStart = memo(
             </div>
           ))}
           <AddHandle
-            addHandle={addHandle}
             handleIdentifiers={[data.loopId]}
-            handleLabel={curLabel}
             nodeId={id}
-            updateNodeData={updateNodeData}
+            initialLabel=""
+            addHandle={addHandle}
           />
         </NodeContent>
       </div>

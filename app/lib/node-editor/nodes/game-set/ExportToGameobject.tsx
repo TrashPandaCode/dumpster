@@ -1,6 +1,6 @@
 import { CrossCircledIcon } from "@radix-ui/react-icons";
 import { Position, useReactFlow } from "@xyflow/react";
-import { memo, useEffect, useMemo, useRef } from "react";
+import { memo, useEffect, useMemo } from "react";
 
 import { LEVELS } from "~/lib/game/core/levels";
 import type { GameObject } from "~/lib/game/gameObjects";
@@ -81,7 +81,6 @@ const ExportToGameobject = memo(
     const setData = useDataStore((state) => state.setData);
     const addHandle = useDataStore((state) => state.addHandle);
     const removeHandle = useDataStore((state) => state.removeHandle);
-    const curLabel = useRef(data.curLabel ? data.curLabel.current : "");
 
     const { updateNodeData } = useReactFlow();
 
@@ -161,11 +160,10 @@ const ExportToGameobject = memo(
           ))}
           {!!selectedGameObjects.length && (
             <AddHandle
-              addHandle={(id, label) => addHandle(id as GameObject, label)}
               handleIdentifiers={selectedGameObjects}
-              handleLabel={curLabel}
               nodeId={id}
-              updateNodeData={updateNodeData}
+              initialLabel={data.handleLabel ?? ""}
+              addHandle={(id, label) => addHandle(id as GameObject, label)}
             />
           )}
         </NodeContent>
