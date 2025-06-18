@@ -1,13 +1,8 @@
-import {
-  Background,
-  ReactFlow,
-  ReactFlowProvider,
-  type ReactFlowInstance,
-} from "@xyflow/react";
+import { Background, ReactFlow, ReactFlowProvider } from "@xyflow/react";
 
 import "@xyflow/react/dist/style.css";
 
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { Toaster } from "sonner";
 
 import { useMouseTrackingInPane } from "../zustand/node-add-menu-store";
@@ -24,8 +19,6 @@ import { useFlow } from "./hooks/useFlow";
 import { nodeTypes } from "./nodes/node-types";
 
 const Editor = () => {
-  const [rfInstance, setRfInstance] = useState<ReactFlowInstance>();
-
   const {
     nodes,
     edges,
@@ -61,7 +54,6 @@ const Editor = () => {
     <>
       <ReactFlow
         id="node-editor"
-        onInit={setRfInstance}
         nodeTypes={nodeTypes}
         edgeTypes={edgeTypes}
         nodes={nodes}
@@ -85,7 +77,7 @@ const Editor = () => {
         }}
       >
         <Background bgColor="#14141d" color="#a7abc2" />
-        <RightPanel rfInstance={rfInstance} />
+        <RightPanel />
         <CenterPanel />
         <LeftPanel />
         <Toaster />

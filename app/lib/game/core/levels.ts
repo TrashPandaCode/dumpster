@@ -12,12 +12,14 @@ import type { NodeType } from "~/lib/node-editor/nodes/node-types";
 import { type GameObject } from "../gameObjects";
 import { initializeBounce } from "../levels/bounce";
 import { initializeCalculator } from "../levels/calculator";
+import { initializeInverse } from "../levels/inverse";
+import { initializeKinematics } from "../levels/kinematic";
+import { initializeLooping } from "../levels/looping";
 import { initializeMove } from "../levels/move";
 import { initializeParenting } from "../levels/parenting";
 import { initializePlayground } from "../levels/playground";
 import { initializeSitting } from "../levels/sitting";
 import { initializeTimeTransform } from "../levels/timeTransform";
-import { initializeKinematics } from "../levels/kinematic";
 
 export type ConnectionAccess = "export" | "import" | "all";
 
@@ -215,6 +217,38 @@ export const LEVELS = {
     ],
     difficulty: 1,
   },
+  looping: {
+    slug: "looping",
+    name: "Looping",
+    description: "This is the forth level of the game, introducing for loops.",
+    dialog: [],
+    goals: [],
+    success: "",
+    category: "Introduction",
+    image: bounceCard,
+    initialNodes: [],
+    initialState: initializeLooping,
+    hints: [],
+    modifiableGameObjects: [
+      {
+        id: "raccoon",
+        connections: [
+          { label: "xpos", access: "all" },
+          { label: "ypos", access: "all" },
+        ],
+      },
+    ],
+    availableNodes: [
+      "Display",
+      "Value",
+      "Math",
+      "KeyPress",
+      "ImportFromGameobject",
+      "ExportToGameobject",
+      "ForLoop",
+    ],
+    difficulty: 1,
+  },
   move: {
     slug: "move",
     name: "Move",
@@ -354,13 +388,18 @@ export const LEVELS = {
   kinematics: {
     slug: "kinematics",
     name: "Kinematics",
-    description:
-      "PlaceHolder",
+    description: "This is a level of the main game, introducing forward kinematics.",
     dialog: [
-      "PlaceHolder",
+      "Hey! Quick, I could use some help here!",
+      "I was fighting this cat for some left over rotissery chicken and I thought I scared it away..",
+      "But it came back with a bunch of its friends and now I'm stuck on this roof.",
+      "Can you move these platforms for me so I can make a quick escape?"
     ],
-    goals: ["Do something!"],
-    success: "Wow!",
+    goals: [
+      "Find a way to move the platforms.",
+      "Jump over to the other roof.",
+    ],
+    success: "Oh, just in time.",
     category: "Main Game",
     image: alleyOne,
     initialNodes: [],
@@ -370,16 +409,67 @@ export const LEVELS = {
       {
         id: "arm",
         connections: [
-          { label: "joint1x", access: "import" },
-          { label: "joint1y", access: "import" },
-          { label: "joint1rot", access: "all"},
-          { label: "joint2x", access: "import" },
-          { label: "joint2y", access: "import" },
-          { label: "joint2rot", access: "all"},
-          { label: "joint3x", access: "import" },
-          { label: "joint3y", access: "import" },
+          { label: "Red Rotation", access: "all" },
+          { label: "Green Rotation", access: "all" },
+          { label: "Orange Rotation", access: "all" },
+          { label: "Blue Rotation", access: "all" },
         ],
-      }
+      },
+    ],
+    availableNodes: [
+      "Display",
+      "Value",
+      "Math",
+      "ExportToGameobject",
+      "ImportFromGameobject",
+      "Group",
+    ],
+    difficulty: 1,
+  },
+  inverse: {
+    slug: "inverse",
+    name: "Inverse",
+    description: "PlaceHolder",
+    dialog: ["PlaceHolder"],
+    goals: ["Do something!"],
+    success: "Wow!",
+    category: "Kinematics",
+    image: alleyOne,
+    initialNodes: [],
+    initialState: initializeInverse,
+    hints: [],
+    modifiableGameObjects: [
+      {
+        id: "joint1",
+        connections: [
+          { label: "rotation", access: "all" },
+          { label: "x", access: "import" },
+          { label: "y", access: "import" },
+        ],
+      },
+      {
+        id: "joint2",
+        connections: [
+          { label: "rotation", access: "all" },
+          { label: "x", access: "import" },
+          { label: "y", access: "import" },
+        ],
+      },
+      {
+        id: "joint3",
+        connections: [
+          { label: "rotation", access: "all" },
+          { label: "x", access: "import" },
+          { label: "y", access: "import" },
+        ],
+      },
+      {
+        id: "endeffector",
+        connections: [
+          { label: "x", access: "import" },
+          { label: "y", access: "import" },
+        ],
+      },
     ],
     availableNodes: [
       "Display",
@@ -387,6 +477,7 @@ export const LEVELS = {
       "Time",
       "KeyPress",
       "Math",
+      "WorldToLocal",
       "ExportToGameobject",
       "ImportFromGameobject",
       "Switch",
@@ -464,6 +555,6 @@ export const LEVELS = {
     ],
     difficulty: 0,
   },
-} satisfies Record<string, Level>;
+} as const satisfies Record<string, Level>;
 
 export type LevelId = keyof typeof LEVELS;

@@ -5,33 +5,30 @@ import { getKaplayCtx } from "../core/kaplayCtx";
 import {
   addBackgrounds,
   addGameobjects,
+  animPlayer,
   handleReset,
 } from "../utils/gameHelper";
 
-export const initializeCalculator = () => {
+export const initializeLooping = () => {
   const { k, game } = getKaplayCtx();
-  const dataHelper = createLevelDataHelpers("calculator");
+  const dataHelper = createLevelDataHelpers("looping");
 
-  addBackgrounds(["backgroundCalc"], -200);
+  addBackgrounds(["background1"]);
 
   const { raccoon } = addGameobjects(["raccoon"]);
-  k.setCamPos(-5, -BACKGROUND_OFFSET);
+  k.setCamPos(0, -BACKGROUND_OFFSET);
   k.setCamScale((CAM_SCALE * k.height()) / 947);
-  raccoon!.scaleBy(-1, 1);
 
   game.onUpdate(() => {
     if (useGameStore.getState().isPaused) return;
 
-    // Get value from exportToGameObject node
-    const value = dataHelper.getData("raccoon", "solution");
+    animPlayer(raccoon!, k);
 
-    if (value == 16 && !useGameStore.getState().levelCompleted) {
-      useGameStore.getState().setLevelCompleteDialogOpen(true);
-      useGameStore.getState().setLevelCompleted(true);
-    }
+    // useGameStore.getState().setLevelCompleteDialogOpen(true);
+    // useGameStore.getState().setLevelCompleted(true);
 
     if (dataHelper.initData) {
-      handleReset(raccoon!, -1);
+      handleReset(raccoon!, 1);
     }
   });
 };
