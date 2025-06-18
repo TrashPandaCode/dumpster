@@ -31,7 +31,9 @@ const AddNodes = ({
   parentId?: string;
 }) => {
   const level = useGameStore((state) => state.currentLevel);
-  const searchNodeTypes = LEVELS[level].availableNodes;
+  const searchNodeTypes = parentLoopId
+    ? LEVELS[level].availableNodes.filter((type) => type != "Group")
+    : LEVELS[level].availableNodes;
 
   const MathComputeTypes = Object.values(TYPES).flat();
 
