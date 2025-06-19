@@ -12,7 +12,7 @@ import { globalKeyTracker } from "../utils/globalKeyTracker";
 
 export const initializeTimeTransform = () => {
   const { k, game } = getKaplayCtx();
-  const dataHelper = createLevelDataHelpers("timeTransform");
+  const dataHelper = createLevelDataHelpers("time-transform");
 
   addBackgrounds(["default"]);
 
