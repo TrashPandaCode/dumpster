@@ -338,16 +338,16 @@ export const LEVELS = {
     ],
     difficulty: 1,
   },
-  timeTransform: {
-    slug: "timeTransform",
+  "time-transform": {
+    slug: "time-transform",
     name: "Time Transform",
     description:
       "This is a level of the main game, introducing time-based transformations.",
     // feel free to change the dialog
     dialog: [
       "Well... we just found, what ever this is, with all those numbers on it.",
-      "And there’s this thing spinning around in the middle really fast!",
-      "I’ve seen people use this, especially when they’re in a hurry. But it was never going that fast.",
+      "And there's this thing spinning around in the middle really fast!",
+      "I've seen people use this, especially when they're in a hurry. But it was never going that fast.",
       "It might be broken... maybe I can fix it?",
       "There might be a ladder we could use to get onto the roof — maybe we can spot something that helps us fixing our new little treasure.",
     ],
@@ -367,10 +367,8 @@ export const LEVELS = {
       {
         id: "raccoon",
         connections: [
-          { label: "xpos", access: "import" },
-          { label: "ypos", access: "import" },
-          { label: "xpos", access: "export" },
-          { label: "ypos", access: "export" },
+          { label: "xpos", access: "all" },
+          { label: "ypos", access: "all" },
         ],
       },
     ],
@@ -388,12 +386,13 @@ export const LEVELS = {
   kinematics: {
     slug: "kinematics",
     name: "Kinematics",
-    description: "This is a level of the main game, introducing forward kinematics.",
+    description:
+      "This is a level of the main game, introducing forward kinematics.",
     dialog: [
       "Hey! Quick, I could use some help here!",
       "I was fighting this cat for some left over rotissery chicken and I thought I scared it away..",
       "But it came back with a bunch of its friends and now I'm stuck on this roof.",
-      "Can you move these platforms for me so I can make a quick escape?"
+      "Can you move these platforms for me so I can make a quick escape?",
     ],
     goals: [
       "Find a way to move the platforms.",
