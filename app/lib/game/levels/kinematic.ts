@@ -1,6 +1,5 @@
 import { createLevelDataHelpers } from "~/lib/zustand/data";
 import { useGameStore } from "~/lib/zustand/game";
-import { BACKGROUND_OFFSET, CAM_SCALE } from "../constants";
 import { getKaplayCtx } from "../core/kaplayCtx";
 import {
   addBackgrounds,
@@ -19,14 +18,12 @@ export const initializeKinematics = () => {
 
   k.setGravity(100);
 
-  addBackgrounds(["background2pers2"]);
+  addBackgrounds(["roofWithoutPerspective"]);
 
   const { raccoon, goalFlag } = addGameobjects(["raccoon", "goalFlag"]);
-  k.setCamPos(0, -BACKGROUND_OFFSET);
-  k.setCamScale((CAM_SCALE * k.height()) / 947);
 
-  raccoon!.pos.x = -10
-  goalFlag!.pos.x = 10;
+  raccoon.pos.x = -10;
+  goalFlag.pos.x = 10;
 
   const floor1 = k.add([
     k.rect(20, 1),
@@ -81,7 +78,7 @@ export const initializeKinematics = () => {
     k.z(3),
   ]);
 
-    const arm3 = k.add([
+  const arm3 = k.add([
     "arm1",
     k.rect(0.2, ARM_LENGTH),
     k.anchor("bot"),
@@ -113,7 +110,6 @@ export const initializeKinematics = () => {
     k.z(3),
   ]);
 
-
   game.onUpdate(() => {
     if (useGameStore.getState().isPaused) return;
 
@@ -144,30 +140,34 @@ export const initializeKinematics = () => {
       arm4.pos.y - ARM_LENGTH * Math.cos((arm4.angle * Math.PI) / 180);
 
     // Movement
-    animPlayer(raccoon!, k, "input", undefined, undefined, {
-      minX: -2,
-      maxX: 12,
+    animPlayer(raccoon, k, {
+      movementMode: "input",
+      camClampX: {
+        min: -2,
+        max: 12,
+      },
     });
+
     k.onKeyDown("space", () => {
-      if (raccoon!.isGrounded()) {
-        raccoon!.jump(20);
+      if (raccoon.isGrounded()) {
+        raccoon.jump(20);
       }
     });
     // Raccoon fall die :(
-    if (raccoon!.pos.y > 10) {
-      raccoon!.pos.x = -10;
-      raccoon!.pos.y = 0;
-      raccoon!.vel = k.vec2(0, 0);
+    if (raccoon.pos.y > 10) {
+      raccoon.pos.x = -10;
+      raccoon.pos.y = 0;
+      raccoon.vel = k.vec2(0, 0);
     }
 
     //Handle Finish + Reset
-    const distGoal = raccoon!.pos.dist(goalFlag!.pos);
+    const distGoal = raccoon.pos.dist(goalFlag.pos);
     if (distGoal <= 1 && !useGameStore.getState().levelCompleted) {
       useGameStore.getState().setLevelCompleteDialogOpen(true);
       useGameStore.getState().setLevelCompleted(true);
     }
     if (dataHelper.initData) {
-      handleReset(raccoon!, 1);
+      handleReset(raccoon, 1);
     }
   });
 };

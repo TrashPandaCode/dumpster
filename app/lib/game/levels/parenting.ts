@@ -1,6 +1,6 @@
 import { createLevelDataHelpers } from "~/lib/zustand/data";
 import { useGameStore } from "~/lib/zustand/game";
-import { BACKGROUND_OFFSET, CAM_SCALE, SPRITE_SCALE } from "../constants";
+import { SPRITE_SCALE } from "../constants";
 import { getKaplayCtx } from "../core/kaplayCtx";
 import {
   addBackgrounds,
@@ -18,11 +18,9 @@ export const initializeParenting = () => {
   const { k, game } = getKaplayCtx();
   const dataHelper = createLevelDataHelpers("parenting");
 
-  addBackgrounds(["background1"]);
+  addBackgrounds(["default"]);
 
   const { raccoon, goalFlag } = addGameobjects(["raccoon", "goalFlag"]);
-  k.setCamPos(0, -BACKGROUND_OFFSET);
-  k.setCamScale((CAM_SCALE * k.height()) / 947);
 
   k.loadSprite("trashcan", "/game/sprites/trashcan_spritesheet.png", {
     sliceX: 2,
@@ -46,12 +44,12 @@ export const initializeParenting = () => {
 
   dataHelper.setData("trashcanP", "xpos", 5);
 
-  trashcanP!.z = 3;
-  trashcanP!.pos.x = 5;
+  trashcanP.z = 3;
+  trashcanP.pos.x = 5;
 
-  raccoon!.pos.x = -15;
+  raccoon.pos.x = -15;
 
-  goalFlag!.pos.x = -22;
+  goalFlag.pos.x = -22;
 
   let timeParenting = 0;
   let trashCounter = 0;
@@ -70,16 +68,19 @@ export const initializeParenting = () => {
       trashcanP!.play("empty");
     }
 
-    animPlayer(raccoon!, k, "loop", {
-      speed: 5,
-      minX: -21,
-      maxX: 5,
+    animPlayer(raccoon, k, {
+      movementMode: "loop",
+      loopConfig: {
+        speed: 5,
+        minX: -21,
+        maxX: 5,
+      },
     });
 
-    trashcanP!.pos.x = dataHelper.getData("trashcanP", "xpos");
-    trashcanP!.pos.y = dataHelper.getData("trashcanP", "ypos");
+    trashcanP.pos.x = dataHelper.getData("trashcanP", "xpos");
+    trashcanP.pos.y = dataHelper.getData("trashcanP", "ypos");
 
-    const distTrashRac = raccoon!.pos.dist(trashcanP!.pos);
+    const distTrashRac = raccoon!.pos.dist(trashcanP.pos);
 
     if (distTrashRac <= 1.5) {
       timeParenting += k.dt();
@@ -102,7 +103,7 @@ export const initializeParenting = () => {
     }
 
     if (dataHelper.initData) {
-      handleReset(raccoon!, 1);
+      handleReset(raccoon, 1);
     }
   });
 };

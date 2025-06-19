@@ -1,6 +1,5 @@
 import { createLevelDataHelpers } from "~/lib/zustand/data";
 import { useGameStore } from "~/lib/zustand/game";
-import { BACKGROUND_OFFSET, CAM_SCALE } from "../constants";
 import { getKaplayCtx } from "../core/kaplayCtx";
 import {
   addBackgrounds,
@@ -9,16 +8,15 @@ import {
   handleReset,
   removeBackgrounds,
 } from "../utils/gameHelper";
+import { globalKeyTracker } from "../utils/globalKeyTracker";
 
 export const initializeTimeTransform = () => {
   const { k, game } = getKaplayCtx();
   const dataHelper = createLevelDataHelpers("timeTransform");
 
-  addBackgrounds(["background1"]);
+  addBackgrounds(["default"]);
 
   const { raccoon } = addGameobjects(["raccoon"]);
-  k.setCamPos(0, -BACKGROUND_OFFSET);
-  k.setCamScale((CAM_SCALE * k.height()) / 947);
 
   const ladder = game.add([
     k.rect(0.1, 13),
@@ -37,10 +35,10 @@ export const initializeTimeTransform = () => {
     if (raccoon.pos.y < 0) {
       isClimbing = true;
     }
-    if (k.isKeyDown("up") && raccoon.pos.y >= -15) {
+    if (globalKeyTracker.isKeyDown("w") && raccoon.pos.y >= -15) {
       raccoon.pos.y -= 5 * k.dt();
     }
-    if (k.isKeyDown("down") && raccoon.pos.y <= 0) {
+    if (globalKeyTracker.isKeyDown("s") && raccoon.pos.y <= 0) {
       raccoon.pos.y += 5 * k.dt();
     }
   });
@@ -50,30 +48,35 @@ export const initializeTimeTransform = () => {
   game.onUpdate(() => {
     if (useGameStore.getState().isPaused) return;
 
-    if (raccoon!.pos.y < -13) {
+    if (raccoon.pos.y < -13) {
       removeBackgrounds();
-      addBackgrounds(["background2"]);
+      addBackgrounds(["roof"]);
 
       ladder.pos = k.vec2(-12, 5);
       ladder.height = 5;
 
       dataHelper.setData("raccoon", "xpos", -13);
       dataHelper.setData("raccoon", "ypos", -5);
-      raccoon!.pos.x = -12;
-      raccoon!.pos.y = 5;
+      raccoon.pos.x = -12;
+      raccoon.pos.y = 5;
       onRoof = true;
     }
 
     if (!isClimbing) {
       if (!onRoof) {
-        animPlayer(raccoon!, k, "input");
+        animPlayer(raccoon, k, {
+          movementMode: "input",
+        });
       } else {
-        animPlayer(raccoon!, k, "input", undefined, { minX: -20, maxX: 2 });
+        animPlayer(raccoon, k, {
+          movementMode: "input",
+          playerClampX: { min: -20, max: 2 },
+        });
       }
     }
 
     if (dataHelper.initData) {
-      handleReset(raccoon!, 1);
+      handleReset(raccoon, 1);
     }
   });
 };

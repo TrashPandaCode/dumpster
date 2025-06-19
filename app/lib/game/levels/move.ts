@@ -1,6 +1,5 @@
 import { useDataStore } from "~/lib/zustand/data";
 import { useGameStore } from "~/lib/zustand/game";
-import { BACKGROUND_OFFSET, CAM_SCALE } from "../constants";
 import { getKaplayCtx } from "../core/kaplayCtx";
 import {
   addBackgrounds,
@@ -8,35 +7,34 @@ import {
   animPlayer,
   handleReset,
 } from "../utils/gameHelper";
+import { globalKeyTracker } from "../utils/globalKeyTracker";
 
 export const initializeMove = () => {
   const { k, game } = getKaplayCtx();
 
-  addBackgrounds(["background1"]);
+  addBackgrounds(["default"]);
 
   const { raccoon, goalFlag } = addGameobjects(["raccoon", "goalFlag"]);
-  k.setCamPos(0, -BACKGROUND_OFFSET);
-  k.setCamScale((CAM_SCALE * k.height()) / 947);
 
-  goalFlag!.pos.x = -22;
+  goalFlag.pos.x = -22;
 
   game.onUpdate(() => {
     if (useGameStore.getState().isPaused) return;
 
-    animPlayer(raccoon!, k);
+    animPlayer(raccoon, k);
 
-    const distGoal = raccoon!.pos.dist(goalFlag!.pos);
+    const distGoal = raccoon.pos.dist(goalFlag.pos);
 
     if (distGoal <= 1 && !useGameStore.getState().levelCompleted) {
       //TODO: Raccoon continues walking after "Continue Playing" is clicked
 
       if (
-        k.isKeyDown("w") ||
-        k.isKeyDown("a") ||
-        k.isKeyDown("s") ||
-        k.isKeyDown("d") ||
-        k.isKeyDown("space") ||
-        k.isKeyDown("enter")
+        globalKeyTracker.isKeyDown("w") ||
+        globalKeyTracker.isKeyDown("a") ||
+        globalKeyTracker.isKeyDown("s") ||
+        globalKeyTracker.isKeyDown("d") ||
+        globalKeyTracker.isKeyDown("space") ||
+        globalKeyTracker.isKeyDown("enter")
       ) {
         useGameStore.getState().setLevelCompleteDialogOpen(true);
         useGameStore.getState().setLevelCompleted(true);
@@ -44,7 +42,7 @@ export const initializeMove = () => {
     }
 
     if (useDataStore.getState().initData) {
-      handleReset(raccoon!, 1);
+      handleReset(raccoon, 1);
     }
   });
 };

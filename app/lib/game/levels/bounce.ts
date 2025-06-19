@@ -1,6 +1,6 @@
 import { createLevelDataHelpers } from "~/lib/zustand/data";
 import { useGameStore } from "~/lib/zustand/game";
-import { BACKGROUND_OFFSET, CAM_SCALE, SPRITE_SCALE } from "../constants";
+import { SPRITE_SCALE } from "../constants";
 import { getKaplayCtx } from "../core/kaplayCtx";
 import {
   addBackgrounds,
@@ -18,11 +18,9 @@ export const initializeBounce = () => {
   const { k, game } = getKaplayCtx();
   const dataHelper = createLevelDataHelpers("bounce");
 
-  addBackgrounds(["background1"]);
+  addBackgrounds(["default"]);
 
   const { raccoon } = addGameobjects(["raccoon"]);
-  k.setCamPos(0, -BACKGROUND_OFFSET);
-  k.setCamScale((CAM_SCALE * k.height()) / 947);
 
   k.loadSprite("trashcan", "/game/sprites/trashcan_spritesheet.png", {
     sliceX: 2,
@@ -65,13 +63,13 @@ export const initializeBounce = () => {
   dataHelper.setData("trashcan2", "ypos", -2);
 
   // Set initial positions and z-index for trashcans
-  trashcan1!.z = 3;
-  trashcan1!.pos.x = -7;
-  trashcan1!.pos.y = -1.75;
+  trashcan1.z = 3;
+  trashcan1.pos.x = -7;
+  trashcan1.pos.y = -1.75;
 
-  trashcan2!.z = 3;
-  trashcan2!.pos.x = -5;
-  trashcan2!.pos.y = -2;
+  trashcan2.z = 3;
+  trashcan2.pos.x = -5;
+  trashcan2.pos.y = -2;
 
   let swapTimer = 0;
   let nextSwap = Math.random() * 4 + 1; // Random time between 1 and 5 seconds
@@ -101,11 +99,11 @@ export const initializeBounce = () => {
     if (swapTimer >= nextSwap) {
       // Swap the trashcan sprites and filled states
       if (trashcan1IsFilled) {
-        trashcan1!.play("empty");
-        trashcan2!.play("filled");
+        trashcan1.play("empty");
+        trashcan2.play("filled");
       } else {
-        trashcan1!.play("filled");
-        trashcan2!.play("empty");
+        trashcan1.play("filled");
+        trashcan2.play("empty");
       }
       trashcan1IsFilled = !trashcan1IsFilled;
 
@@ -116,10 +114,10 @@ export const initializeBounce = () => {
       nextSwap = Math.random() * 4 + 1; // Reset the timer with a new random value
     }
 
-    animPlayer(raccoon!, k);
+    animPlayer(raccoon, k);
 
     const trashcanFilled = trashcan1IsFilled ? trashcan1 : trashcan2;
-    const distFilled = raccoon!.pos.dist(trashcanFilled!.pos);
+    const distFilled = raccoon.pos.dist(trashcanFilled!.pos);
 
     if (distFilled <= 0.5 && !useGameStore.getState().levelCompleted) {
       timeInFilled += k.dt();
@@ -144,7 +142,7 @@ export const initializeBounce = () => {
     }
 
     if (dataHelper.initData) {
-      handleReset(raccoon!, 1);
+      handleReset(raccoon, 1);
     }
   });
 };
