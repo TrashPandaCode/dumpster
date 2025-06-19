@@ -42,7 +42,7 @@ export const initializeParenting = () => {
     "trashcanP",
   ]);
 
-  dataHelper.setData("trashcanP", "xpos", 5);
+  dataHelper.setData("trashcanP", "x", 5);
 
   trashcanP.z = 3;
   trashcanP.pos.x = 5;
@@ -77,8 +77,8 @@ export const initializeParenting = () => {
       },
     });
 
-    trashcanP.pos.x = dataHelper.getData("trashcanP", "xpos");
-    trashcanP.pos.y = dataHelper.getData("trashcanP", "ypos");
+    trashcanP.pos.x = dataHelper.getData("trashcanP", "x");
+    trashcanP.pos.y = dataHelper.getData("trashcanP", "y");
 
     const distTrashRac = raccoon.pos.dist(trashcanP.pos);
 

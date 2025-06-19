@@ -18,8 +18,8 @@ const DocsImportFromGameobject = memo(
         [
           "raccoon",
           new Map([
-            ["xpos", new HandleData("all", 145.7)],
-            ["ypos", new HandleData("all", 89.3)],
+            ["x", new HandleData("all", 145.7)],
+            ["y", new HandleData("all", 89.3)],
             ["rotation", new HandleData("export", 1.57)],
             ["xvelocity", new HandleData("import", -2.4)],
             ["yvelocity", new HandleData("import", 0.8)],
@@ -29,8 +29,8 @@ const DocsImportFromGameobject = memo(
         [
           "trashcanFilled",
           new Map([
-            ["xpos", new HandleData("export", 145.7)],
-            ["ypos", new HandleData("export", 89.3)],
+            ["x", new HandleData("export", 145.7)],
+            ["y", new HandleData("export", 89.3)],
             ["rotation", new HandleData("export", 1.57)],
             ["xvelocity", new HandleData("import", -2.4)],
             ["yvelocity", new HandleData("import", 0.8)],

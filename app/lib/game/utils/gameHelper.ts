@@ -334,13 +334,12 @@ export function removeBackgrounds(): void {
 export let moveDirection = 1;
 
 function handleNodeMovement(player: PlayerType): void {
-  player.pos.x = useDataStore.getState().getData("raccoon", "xpos");
-  player.pos.y = useDataStore.getState().getData("raccoon", "ypos");
+  player.pos.x = useDataStore.getState().getData("raccoon", "x");
+  player.pos.y = useDataStore.getState().getData("raccoon", "y");
 }
 
 function handleInputMovement(player: PlayerType, k: KAPLAYCtx): void {
   const SPEED = 5;
-
   const moveLeft = globalKeyTracker.isKeyDown("a");
   const moveRight = globalKeyTracker.isKeyDown("d");
 
@@ -363,20 +362,6 @@ function handleLoopMovement(
     moveDirection = -1;
   } else if (player.pos.x <= config.minX) {
     moveDirection = 1;
-  }
-}
-
-function updatePlayerState(player: PlayerType): void {
-  const playerState = useDataStore.getState().gameObjects.get("raccoon");
-
-  if (playerState) {
-    const xpos = playerState.get("xpos");
-    const ypos = playerState.get("ypos");
-
-    if (xpos && ypos) {
-      xpos.value = player.pos.x;
-      ypos.value = player.pos.y;
-    }
   }
 }
 
@@ -460,7 +445,7 @@ export function animPlayer(
   clampPlayerPosition(player, playerClampX);
 
   if (enableStateUpdate) {
-    updatePlayerState(player);
+    handleNodeMovement(player);
   }
 
   if (enableCameraUpdate) {

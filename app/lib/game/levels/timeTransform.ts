@@ -55,8 +55,8 @@ export const initializeTimeTransform = () => {
       ladder.pos = k.vec2(-12, 5);
       ladder.height = 5;
 
-      dataHelper.setData("raccoon", "xpos", -13);
-      dataHelper.setData("raccoon", "ypos", -5);
+      dataHelper.setData("raccoon", "x", -13);
+      dataHelper.setData("raccoon", "y", -5);
       raccoon.pos.x = -12;
       raccoon.pos.y = 5;
       onRoof = true;

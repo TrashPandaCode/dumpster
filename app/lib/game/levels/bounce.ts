@@ -55,12 +55,12 @@ export const initializeBounce = () => {
 
   // Initialize trashcan states in the data store
   dataHelper.setData("trashcan1", "filled", 0);
-  dataHelper.setData("trashcan1", "xpos", -7);
-  dataHelper.setData("trashcan1", "ypos", -1.75);
+  dataHelper.setData("trashcan1", "x", -7);
+  dataHelper.setData("trashcan1", "y", -1.75);
 
   dataHelper.setData("trashcan2", "filled", 1);
-  dataHelper.setData("trashcan2", "xpos", -5);
-  dataHelper.setData("trashcan2", "ypos", -2);
+  dataHelper.setData("trashcan2", "x", -5);
+  dataHelper.setData("trashcan2", "y", -2);
 
   // Set initial positions and z-index for trashcans
   trashcan1.z = 3;

@@ -155,8 +155,8 @@ export const LEVELS = {
       {
         id: "raccoon",
         connections: [
-          { label: "xpos", access: "export" },
-          { label: "ypos", access: "export" },
+          { label: "x", access: "export" },
+          { label: "y", access: "export" },
         ],
       },
     ],
@@ -188,24 +188,24 @@ export const LEVELS = {
       {
         id: "raccoon",
         connections: [
-          { label: "xpos", access: "export" },
-          { label: "ypos", access: "export" },
+          { label: "x", access: "export" },
+          { label: "y", access: "export" },
         ],
       },
       {
         id: "trashcan1",
         connections: [
           { label: "filled", access: "import" },
-          { label: "xpos", access: "import" },
-          { label: "ypos", access: "import" },
+          { label: "x", access: "import" },
+          { label: "y", access: "import" },
         ],
       },
       {
         id: "trashcan2",
         connections: [
           { label: "filled", access: "import" },
-          { label: "xpos", access: "import" },
-          { label: "ypos", access: "import" },
+          { label: "x", access: "import" },
+          { label: "y", access: "import" },
         ],
       },
     ],
@@ -233,8 +233,8 @@ export const LEVELS = {
       {
         id: "raccoon",
         connections: [
-          { label: "xpos", access: "all" },
-          { label: "ypos", access: "all" },
+          { label: "x", access: "all" },
+          { label: "y", access: "all" },
         ],
       },
     ],
@@ -272,8 +272,8 @@ export const LEVELS = {
       {
         id: "raccoon",
         connections: [
-          { label: "xpos", access: "export" },
-          { label: "ypos", access: "export" },
+          { label: "x", access: "export" },
+          { label: "y", access: "export" },
         ],
       },
     ],
@@ -315,15 +315,15 @@ export const LEVELS = {
       {
         id: "raccoon",
         connections: [
-          { label: "xpos", access: "import" },
-          { label: "ypos", access: "import" },
+          { label: "x", access: "import" },
+          { label: "y", access: "import" },
         ],
       },
       {
         id: "trashcanP",
         connections: [
-          { label: "xpos", access: "all" },
-          { label: "ypos", access: "all" },
+          { label: "x", access: "all" },
+          { label: "y", access: "all" },
         ],
       },
     ],
@@ -367,8 +367,8 @@ export const LEVELS = {
       {
         id: "raccoon",
         connections: [
-          { label: "xpos", access: "all" },
-          { label: "ypos", access: "all" },
+          { label: "x", access: "all" },
+          { label: "y", access: "all" },
         ],
       },
     ],
@@ -513,29 +513,29 @@ export const LEVELS = {
       {
         id: "raccoon",
         connections: [
-          { label: "xpos", access: "all" },
-          { label: "ypos", access: "all" },
+          { label: "x", access: "all" },
+          { label: "y", access: "all" },
         ],
       },
       {
         id: "trashcanEmpty",
         connections: [
-          { label: "xpos", access: "all" },
-          { label: "ypos", access: "all" },
+          { label: "x", access: "all" },
+          { label: "y", access: "all" },
         ],
       },
       {
         id: "trashcanFilled",
         connections: [
-          { label: "xpos", access: "all" },
-          { label: "ypos", access: "all" },
+          { label: "x", access: "all" },
+          { label: "y", access: "all" },
         ],
       },
       {
         id: "goalFlag",
         connections: [
-          { label: "xpos", access: "all" },
-          { label: "ypos", access: "all" },
+          { label: "x", access: "all" },
+          { label: "y", access: "all" },
         ],
       },
     ],

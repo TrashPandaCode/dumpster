@@ -26,14 +26,14 @@ export const initializePlayground = () => {
 
     animPlayer(raccoon, k);
 
-    trashcanEmpty.pos.x = dataHelper.getData("trashcanEmpty", "xpos");
-    trashcanEmpty.pos.y = dataHelper.getData("trashcanEmpty", "ypos");
+    trashcanEmpty.pos.x = dataHelper.getData("trashcanEmpty", "x");
+    trashcanEmpty.pos.y = dataHelper.getData("trashcanEmpty", "y");
 
-    trashcanFilled.pos.x = dataHelper.getData("trashcanFilled", "xpos");
-    trashcanFilled.pos.y = dataHelper.getData("trashcanFilled", "ypos");
+    trashcanFilled.pos.x = dataHelper.getData("trashcanFilled", "x");
+    trashcanFilled.pos.y = dataHelper.getData("trashcanFilled", "y");
 
-    goalFlag.pos.x = dataHelper.getData("goalFlag", "xpos");
-    goalFlag.pos.y = dataHelper.getData("goalFlag", "ypos");
+    goalFlag.pos.x = dataHelper.getData("goalFlag", "x");
+    goalFlag.pos.y = dataHelper.getData("goalFlag", "y");
 
     if (dataHelper.initData) {
       handleReset(raccoon, 1);
