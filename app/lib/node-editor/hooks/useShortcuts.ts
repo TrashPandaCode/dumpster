@@ -1,10 +1,66 @@
 import { useReactFlow } from "@xyflow/react";
 import { useHotkeys } from "react-hotkeys-hook";
 
+import { useClipboardStore } from "~/lib/zustand/clipboard";
 import { useNodeAddMenuStore } from "../../zustand/node-add-menu-store";
 import { duplicateNodes } from "../utils/duplicate";
 import { redo, undo } from "../utils/undo";
 import useIsMac from "./useMac";
+
+// Hook to handle copying nodes with a hotkey
+export function useCopyHotkey() {
+  const { getNodes } = useReactFlow();
+  const { setCopiedNodes } = useClipboardStore();
+  const isMacOS = useIsMac();
+  const shortcuts = isMacOS ? "cmd+c" : "ctrl+c";
+
+  useHotkeys(
+    shortcuts,
+    (e) => {
+      const selectedNodes = getNodes().filter((n) => n.selected);
+      if (selectedNodes.length > 0) {
+        setCopiedNodes(selectedNodes);
+        console.log(`${selectedNodes.length} node(s) copied to clipboard`);
+      }
+    },
+    {
+      enableOnFormTags: false,
+      preventDefault: true,
+    },
+    [getNodes, setCopiedNodes, isMacOS]
+  );
+}
+
+// Hook to handle pasting nodes with a hotkey
+export function usePasteHotkey() {
+  const { getNodes, getEdges, setEdges, setNodes } = useReactFlow();
+  const { copiedNodes, hasCopiedNodes } = useClipboardStore();
+  const isMacOS = useIsMac();
+  const shortcuts = isMacOS ? "cmd+v" : "ctrl+v";
+
+  useHotkeys(
+    shortcuts,
+    (e) => {
+      if (hasCopiedNodes()) {
+        duplicateNodes(copiedNodes, getEdges, getNodes, setEdges, setNodes);
+        console.log(`${copiedNodes.length} node(s) pasted`);
+      }
+    },
+    {
+      enableOnFormTags: false,
+      preventDefault: true,
+    },
+    [
+      copiedNodes,
+      hasCopiedNodes,
+      getNodes,
+      getEdges,
+      setEdges,
+      setNodes,
+      isMacOS,
+    ]
+  );
+}
 
 // Hook to handle duplicating nodes with a hotkey
 export function useDuplicateHotkey() {
