@@ -2,8 +2,8 @@ import { useReactFlow } from "@xyflow/react";
 import React, { useCallback } from "react";
 
 import { globalKeyTracker } from "~/lib/game/utils/globalKeyTracker";
+import useIsMac from "../hooks/useMac";
 import { duplicateNodes } from "../utils/duplicate";
-import useMacOS from "../utils/mac";
 import AddNodes from "./AddNodes";
 
 const NodeContextMenu = React.forwardRef<
@@ -115,7 +115,7 @@ const DefaultNodeContextMenu = ({
 
     onClose();
   }, [deleteElements, getEdges, getNode, getNodes, nodeId, onClose, setNodes]);
-  const isMac = useMacOS();
+  const isMac = useIsMac();
   return (
     <>
       <button
