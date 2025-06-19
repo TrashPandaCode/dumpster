@@ -81,6 +81,7 @@ export type Level = {
 
 export type ModifiableGameObject = {
   id: GameObject;
+  displayName?: string;
   connections: { label: string; access: ConnectionAccess }[];
 };
 

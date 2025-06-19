@@ -2,7 +2,7 @@ import { CrossCircledIcon } from "@radix-ui/react-icons";
 import { Position, useReactFlow } from "@xyflow/react";
 import { memo, useEffect, useMemo } from "react";
 
-import { LEVELS } from "~/lib/game/core/levels";
+import { LEVELS, type ModifiableGameObject } from "~/lib/game/core/levels";
 import type { GameObject } from "~/lib/game/gameObjects";
 import { useDataStore } from "~/lib/zustand/data";
 import { useGameStore } from "~/lib/zustand/game";
@@ -51,10 +51,18 @@ import { IN_HANDLE_1 } from "../constants";
 const ExportToGameobject = memo(
   ({ id, data, selected }: { id: string; data: any; selected: boolean }) => {
     const level = useGameStore((state) => state.currentLevel);
-    const modifiableGameObjects = LEVELS[level].modifiableGameObjects;
+    const modifiableGameObjects: ModifiableGameObject[] =
+      LEVELS[level].modifiableGameObjects;
 
     const gameObjects = useDataStore((state) => state.gameObjects);
     const selectableGameObjects: GameObject[] = Array.from(gameObjects.keys());
+
+    const getDisplayName = (gameObject: GameObject) => {
+      const modifiableObject = modifiableGameObjects.find(
+        (obj) => obj.id === gameObject
+      );
+      return modifiableObject?.displayName || gameObject;
+    };
 
     const {
       isOpen,
@@ -120,6 +128,7 @@ const ExportToGameobject = memo(
               selectableObjects={selectableGameObjects}
               selectedObjects={selectedGameObjects}
               onReorder={handleReorder}
+              getDisplayName={getDisplayName}
               useSelectProps={{
                 getItemProps: getItemProps,
                 getLabelProps: getLabelProps,

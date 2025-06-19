@@ -14,6 +14,7 @@ const MultiSelectDropDown = <T extends string>({
   highlightedIndex,
   useSelectProps,
   onReorder,
+  getDisplayName,
 }: {
   selectedObjects: T[];
   selectableObjects: T[];
@@ -21,14 +22,18 @@ const MultiSelectDropDown = <T extends string>({
   highlightedIndex: number;
   useSelectProps: UseSelectPropGetters<T>;
   onReorder: (newOrder: T[]) => void;
+  getDisplayName?: (gameObject: T) => string;
 }) => {
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
   const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
   const draggedItemRef = useRef<string | null>(null);
 
+  const displayName = (gameObject: T) =>
+    getDisplayName ? getDisplayName(gameObject) : gameObject;
+
   const buttonText =
     selectedObjects.length === 1
-      ? selectedObjects[0]
+      ? displayName(selectedObjects[0])
       : selectedObjects.length > 1
         ? `${selectedObjects.length} selected`
         : "select";
@@ -106,7 +111,7 @@ const MultiSelectDropDown = <T extends string>({
             >
               <span className="flex items-center gap-1">
                 <DragHandleDots2Icon className="text-gray-400" />
-                {item}
+                {displayName(item)}
               </span>
               <span className="text-xs text-gray-400">#{index}</span>
             </div>
@@ -137,7 +142,7 @@ const MultiSelectDropDown = <T extends string>({
                   index === highlightedIndex && "bg-slate-800"
                 )}
               >
-                <span>{item}</span>
+                <span>{displayName(item)}</span>
                 {selectedObjects.includes(item) && <CheckIcon />}
               </div>
             </li>

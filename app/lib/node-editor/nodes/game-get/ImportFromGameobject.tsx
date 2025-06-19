@@ -1,8 +1,10 @@
 import { Position, useReactFlow } from "@xyflow/react";
 import { memo, useEffect, useMemo } from "react";
 
+import { LEVELS, type ModifiableGameObject } from "~/lib/game/core/levels";
 import type { GameObject } from "~/lib/game/gameObjects";
 import { useDataStore } from "~/lib/zustand/data";
+import { useGameStore } from "~/lib/zustand/game";
 import { useGameobjectSelect } from "../../hooks/useGameobjectSelect";
 import BaseHandle from "../../node-components/BaseHandle";
 import LabelHandle from "../../node-components/LabelHandle";
@@ -33,7 +35,17 @@ import { IN_HANDLE_1 } from "../constants";
  */
 const ImportFromGameobject = memo(({ id, data }: { id: string; data: any }) => {
   const gameObjects = useDataStore((state) => state.gameObjects);
+  const level = useGameStore((state) => state.currentLevel);
+  const modifiableGameObjects: ModifiableGameObject[] =
+    LEVELS[level].modifiableGameObjects;
   const selectableGameObjects: GameObject[] = Array.from(gameObjects.keys());
+
+  const getDisplayName = (gameObject: GameObject) => {
+    const modifiableObject = modifiableGameObjects.find(
+      (obj) => obj.id === gameObject
+    );
+    return modifiableObject?.displayName || gameObject;
+  };
 
   const {
     isOpen,
@@ -96,6 +108,7 @@ const ImportFromGameobject = memo(({ id, data }: { id: string; data: any }) => {
             selectableObjects={selectableGameObjects}
             selectedObjects={selectedGameObjects}
             onReorder={handleReorder}
+            getDisplayName={getDisplayName}
             useSelectProps={{
               getItemProps: getItemProps,
               getLabelProps: getLabelProps,
