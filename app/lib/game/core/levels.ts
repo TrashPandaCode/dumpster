@@ -304,7 +304,7 @@ export const LEVELS = {
     ],
     goals: [
       "Parent the trashcan to the raccoon.",
-      `Bring trashcans to the flag (3 total).`,
+      "Bring trashcans to the flag (3 total).",
     ],
     success: "That should be enough food for a while... or at least two days.",
     category: "Main Game",
