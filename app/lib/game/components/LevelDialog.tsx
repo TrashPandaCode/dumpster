@@ -16,9 +16,8 @@ const LevelDialog = ({
   trigger?: React.ReactNode;
 }) => {
   const currentLevel = useGameStore((state) => state.currentLevel);
-  const dialogs = LEVELS[currentLevel]?.dialog || [
-    "No dialog available for this level.",
-  ];
+  const levelName = LEVELS[currentLevel].name;
+  const dialogs = LEVELS[currentLevel].dialog;
 
   const [currentDialogIndex, setCurrentDialogIndex] = useState(0);
   const dialog = dialogs[currentDialogIndex];
@@ -63,12 +62,12 @@ const LevelDialog = ({
 
   return (
     <CustomDialog
-      title={currentLevel}
+      title={levelName}
       trigger={trigger}
       open={open}
       onOpenChange={onOpenChange}
       desc={`This dialog displays the level goals and instructions for the
-            ${currentLevel} level. You can close it by clicking the close button or
+            ${levelName} level. You can close it by clicking the close button or
             pressing the escape key.`}
     >
       <div className="flex flex-col gap-5">
