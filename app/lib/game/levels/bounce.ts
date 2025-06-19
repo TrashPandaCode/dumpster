@@ -1,6 +1,5 @@
 import { createLevelDataHelpers } from "~/lib/zustand/data";
 import { useGameStore } from "~/lib/zustand/game";
-import { SPRITE_SCALE } from "../constants";
 import { getKaplayCtx } from "../core/kaplayCtx";
 import {
   addBackgrounds,
@@ -9,18 +8,17 @@ import {
   handleReset,
 } from "../utils/gameHelper";
 
-const TRASHCAN1 = "trashcan1";
-const TRASHCAN2 = "trashcan2";
-
-export const BOUNCE_GAME_OBJECTS = [TRASHCAN1, TRASHCAN2] as const;
-
 export const initializeBounce = () => {
   const { k, game } = getKaplayCtx();
   const dataHelper = createLevelDataHelpers("bounce");
 
   addBackgrounds(["default"]);
 
-  const { raccoon } = addGameobjects(["raccoon"]);
+  const {
+    raccoon,
+    trashcanFilled: trashcan1,
+    trashcanEmpty: trashcan2,
+  } = addGameobjects(["raccoon", "trashcanFilled", "trashcanEmpty"]);
 
   k.loadSprite("trashcan", "/game/sprites/trashcan_spritesheet.png", {
     sliceX: 2,
@@ -30,37 +28,15 @@ export const initializeBounce = () => {
       filled: { from: 1, to: 1, loop: false },
     },
   });
-  const trashcan1 = game.add([
-    k.sprite("trashcan", {
-      anim: "empty",
-    }),
-    k.anchor("bot"),
-    k.pos(0, 0),
-    k.scale(SPRITE_SCALE),
-    k.area(),
-    k.z(1),
-    "trashcan1",
-  ]);
-  const trashcan2 = game.add([
-    k.sprite("trashcan", {
-      anim: "filled",
-    }),
-    k.anchor("bot"),
-    k.pos(0, 0),
-    k.scale(SPRITE_SCALE),
-    k.area(),
-    k.z(1),
-    "trashcan2",
-  ]);
 
   // Initialize trashcan states in the data store
-  dataHelper.setData("trashcan1", "filled", 0);
-  dataHelper.setData("trashcan1", "x", -7);
-  dataHelper.setData("trashcan1", "y", -1.75);
+  dataHelper.setData("trashcanFilled", "filled", 0);
+  dataHelper.setData("trashcanFilled", "x", -7);
+  dataHelper.setData("trashcanFilled", "y", -1.75);
 
-  dataHelper.setData("trashcan2", "filled", 1);
-  dataHelper.setData("trashcan2", "x", -5);
-  dataHelper.setData("trashcan2", "y", -2);
+  dataHelper.setData("trashcanEmpty", "filled", 1);
+  dataHelper.setData("trashcanEmpty", "x", -5);
+  dataHelper.setData("trashcanEmpty", "y", -2);
 
   // Set initial positions and z-index for trashcans
   trashcan1.z = 3;
@@ -78,7 +54,9 @@ export const initializeBounce = () => {
   let graceTimer = 0;
   const GRACE_PERIOD = 0.2;
 
-  k.loadFont("Pixelify Sans", "/fonts/PixelifySans-VariableFont_wght.ttf", {filter: "nearest"})
+  k.loadFont("Pixelify Sans", "/fonts/PixelifySans-VariableFont_wght.ttf", {
+    filter: "nearest",
+  });
   const timerText = game.add([
     k.text("5", {
       size: 2,
@@ -108,8 +86,8 @@ export const initializeBounce = () => {
       }
       trashcan1IsFilled = !trashcan1IsFilled;
 
-      dataHelper.setData("trashcan1", "filled", trashcan1IsFilled ? 1 : 0);
-      dataHelper.setData("trashcan2", "filled", trashcan1IsFilled ? 0 : 1);
+      dataHelper.setData("trashcanFilled", "filled", trashcan1IsFilled ? 1 : 0);
+      dataHelper.setData("trashcanEmpty", "filled", trashcan1IsFilled ? 0 : 1);
 
       swapTimer = 0;
       nextSwap = Math.random() * 4 + 1; // Reset the timer with a new random value
