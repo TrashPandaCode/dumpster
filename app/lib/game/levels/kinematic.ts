@@ -25,11 +25,11 @@ export const initializeKinematics = () => {
   k.setCamPos(0, -BACKGROUND_OFFSET);
   k.setCamScale((CAM_SCALE * k.height()) / 947);
 
-  raccoon!.pos.x = -10
+  raccoon!.pos.x = -10;
   goalFlag!.pos.x = 10;
 
   const floor1 = k.add([
-    k.rect(20, 1),
+    k.rect(19, 1),
     k.anchor("top"),
     k.pos(-17.2, 0),
     k.area(),
@@ -38,7 +38,7 @@ export const initializeKinematics = () => {
   ]);
 
   const floor2 = k.add([
-    k.rect(20, 1),
+    k.rect(18.5, 1),
     k.anchor("top"),
     k.pos(17, 0),
     k.area(),
@@ -81,7 +81,7 @@ export const initializeKinematics = () => {
     k.z(3),
   ]);
 
-    const arm3 = k.add([
+  const arm3 = k.add([
     "arm1",
     k.rect(0.2, ARM_LENGTH),
     k.anchor("bot"),
@@ -112,7 +112,6 @@ export const initializeKinematics = () => {
     k.color(255, 255, 255),
     k.z(3),
   ]);
-
 
   game.onUpdate(() => {
     if (useGameStore.getState().isPaused) return;
