@@ -2,8 +2,8 @@ import { Panel, useReactFlow } from "@xyflow/react";
 import React, { useCallback } from "react";
 
 import { globalKeyTracker } from "~/lib/game/utils/globalKeyTracker";
+import useIsMac from "../hooks/useMac";
 import { duplicateNodes } from "../utils/duplicate";
-import useMacOS from "../utils/mac";
 
 const SelectionContextMenu = React.forwardRef<
   HTMLDivElement,
@@ -28,7 +28,7 @@ const SelectionContextMenu = React.forwardRef<
     });
     onClose();
   }, [deleteElements, getEdges, getNodes, nodeIds, onClose]);
-  const isMac = useMacOS();
+  const isMac = useIsMac();
   return (
     <div
       ref={ref}

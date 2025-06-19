@@ -15,10 +15,10 @@ import { useState } from "react";
 
 import { useDataStore } from "~/lib/zustand/data";
 import { useGameStore } from "~/lib/zustand/game";
+import useIsMac from "../hooks/useMac";
 import { useFlowStore } from "../node-store/flow-store";
 import { useLoopStore } from "../node-store/loop-store";
 import { useNodeStore } from "../node-store/node-store";
-import useMacOS from "../utils/mac";
 import AddNodes from "./AddNodes";
 import HelpMenu from "./HelpMenu";
 import { IconButton } from "./IconButton";
@@ -28,7 +28,7 @@ const RightPanel = () => {
 
   const nodeStateDebugPrint = useNodeStore((state) => state.debugPrint);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const isMac = useMacOS();
+  const isMac = useIsMac();
 
   return (
     <Panel

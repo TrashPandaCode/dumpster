@@ -3,8 +3,8 @@ import { useHotkeys } from "react-hotkeys-hook";
 
 import { useNodeAddMenuStore } from "../../zustand/node-add-menu-store";
 import { duplicateNodes } from "../utils/duplicate";
-import useMacOS from "../utils/mac";
 import { redo, undo } from "../utils/undo";
+import useIsMac from "./useMac";
 
 // Hook to handle duplicating nodes with a hotkey
 export function useDuplicateHotkey() {
@@ -47,7 +47,7 @@ export function useNewNodeHotkey() {
 
 // Hook to handle undo
 export function useUndoHotkey() {
-  const isMacOS = useMacOS();
+  const isMacOS = useIsMac();
   const shortcuts = isMacOS ? "alt+y" : "ctrl+z";
 
   useHotkeys(
@@ -62,7 +62,7 @@ export function useUndoHotkey() {
 
 // Hook to handle redo
 export function useRedoHotkey() {
-  const isMacOS = useMacOS();
+  const isMacOS = useIsMac();
   const shortcuts = isMacOS
     ? ["alt+shift+y", "alt+z"]
     : ["ctrl+y", "ctrl+shift+z"];
