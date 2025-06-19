@@ -12,7 +12,7 @@ export function useCopyHotkey() {
   const { getNodes } = useReactFlow();
   const { setCopiedNodes } = useClipboardStore();
   const isMacOS = useIsMac();
-  const shortcuts = isMacOS ? "cmd+c" : "ctrl+c";
+  const shortcuts = isMacOS ? "alt+c" : "ctrl+c";
 
   useHotkeys(
     shortcuts,
@@ -34,11 +34,11 @@ export function useCopyHotkey() {
 export function usePasteHotkey() {
   const { getNodes, getEdges, setEdges, setNodes, screenToFlowPosition } =
     useReactFlow();
-  const { copiedNodes, hasCopiedNodes, lastPastePosition, setCopiedNodes } =
+  const { copiedNodes, hasCopiedNodes, lastPastePosition } =
     useClipboardStore();
   const { mousePosition, canvasContainer } = useNodeAddMenuStore();
   const isMacOS = useIsMac();
-  const shortcuts = isMacOS ? "cmd+v" : "ctrl+v";
+  const shortcuts = isMacOS ? "alt+v" : "ctrl+v";
 
   // Function to get the paste position based on mouse position or last paste position
   const getPastePosition = (): { x: number; y: number } | null => {
