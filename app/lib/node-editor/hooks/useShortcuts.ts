@@ -20,7 +20,6 @@ export function useCopyHotkey() {
       const selectedNodes = getNodes().filter((n) => n.selected);
       if (selectedNodes.length > 0) {
         setCopiedNodes(selectedNodes);
-        console.log(`${selectedNodes.length} node(s) copied to clipboard`);
       }
     },
     {
@@ -33,17 +32,61 @@ export function useCopyHotkey() {
 
 // Hook to handle pasting nodes with a hotkey
 export function usePasteHotkey() {
-  const { getNodes, getEdges, setEdges, setNodes } = useReactFlow();
-  const { copiedNodes, hasCopiedNodes } = useClipboardStore();
+  const { getNodes, getEdges, setEdges, setNodes, screenToFlowPosition } =
+    useReactFlow();
+  const { copiedNodes, hasCopiedNodes, lastPastePosition, setCopiedNodes } =
+    useClipboardStore();
+  const { mousePosition, canvasContainer } = useNodeAddMenuStore();
   const isMacOS = useIsMac();
   const shortcuts = isMacOS ? "cmd+v" : "ctrl+v";
+
+  // Function to get the paste position based on mouse position or last paste position
+  const getPastePosition = (): { x: number; y: number } | null => {
+    let pasteX: number;
+    let pasteY: number;
+
+    if (mousePosition) {
+      // If mouse position is available, use it (client coordinates for screen position)
+      pasteX = mousePosition.clientX;
+      pasteY = mousePosition.clientY;
+    } else if (lastPastePosition) {
+      // If mouse position is not available, use the last paste position with offset
+      pasteX = lastPastePosition.x + 50;
+      pasteY = lastPastePosition.y + 50;
+    } else if (canvasContainer) {
+      // If no coordinates are available, use the center of the canvas container
+      const bounds = canvasContainer.getBoundingClientRect();
+      pasteX = bounds.left + bounds.width / 2;
+      pasteY = bounds.top + bounds.height / 2;
+    } else {
+      console.warn("Cannot determine paste position: no coordinates available");
+      return null;
+    }
+
+    return { x: pasteX, y: pasteY };
+  };
 
   useHotkeys(
     shortcuts,
     (e) => {
       if (hasCopiedNodes()) {
-        duplicateNodes(copiedNodes, getEdges, getNodes, setEdges, setNodes);
-        console.log(`${copiedNodes.length} node(s) pasted`);
+        const screenPosition = getPastePosition();
+
+        if (screenPosition) {
+          // Convert screen coordinates to flow coordinates
+          const flowPosition = screenToFlowPosition(screenPosition);
+          duplicateNodes(copiedNodes, getEdges, getNodes, setEdges, setNodes, {
+            targetPosition: flowPosition,
+          });
+
+          // Store this position for next time in clipboard store
+          useClipboardStore.setState({
+            lastPastePosition: screenPosition,
+          });
+        } else {
+          // Fallback to default behavior if no position available
+          duplicateNodes(copiedNodes, getEdges, getNodes, setEdges, setNodes);
+        }
       }
     },
     {
@@ -53,10 +96,14 @@ export function usePasteHotkey() {
     [
       copiedNodes,
       hasCopiedNodes,
+      lastPastePosition,
+      mousePosition,
+      canvasContainer,
       getNodes,
       getEdges,
       setEdges,
       setNodes,
+      screenToFlowPosition,
       isMacOS,
     ]
   );
