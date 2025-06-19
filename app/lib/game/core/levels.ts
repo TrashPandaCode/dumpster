@@ -257,9 +257,8 @@ export const LEVELS = {
     name: "Move",
     description:
       "This is the first level of the main game, introducing movement mechanics.",
-    // feel free to change the dialog
     dialog: [
-      "Alright, today's the day — I’m finally gonna learn how to walk! I mean, even tiny humans can do it, so how hard can it be?",
+      "Alright, today's the day — I'm finally gonna learn how to walk! I mean, even tiny humans can do it, so how hard can it be?",
       "Left paw, right paw... wait, which one is my right again?",
       "Imagine: me, strutting around, hunting for snacks all by myself! No more waiting for food to come to me—I'm gonna chase those leftovers down!",
     ],
@@ -296,10 +295,9 @@ export const LEVELS = {
     name: "Parenting",
     description:
       "This is the second level of the main game, introducing parenting mechanics.",
-    // feel free to change the dialog
     dialog: [
       "Whoa... this trash can is a real goldmine!",
-      "There’s so much food in here, there’s no way I can eat it all right now.",
+      "There's so much food in here, there's no way I can eat it all right now.",
       "Maybe I should just take the whole can with me... but how?",
       "Would you help me carry it back to my secret little hideout?",
       "Just be careful not to drop it, okay?",
@@ -347,7 +345,6 @@ export const LEVELS = {
     name: "Time Transform",
     description:
       "This is a level of the main game, introducing time-based transformations.",
-    // feel free to change the dialog
     dialog: [
       "Well... we just found, what ever this is, with all those numbers on it.",
       "And there's this thing spinning around in the middle really fast!",
@@ -387,9 +384,9 @@ export const LEVELS = {
     ],
     difficulty: 1,
   },
-  kinematics: {
-    slug: "kinematics",
-    name: "Kinematics",
+  forward: {
+    slug: "forward",
+    name: "Forward",
     description:
       "This is a level of the main game, introducing forward kinematics.",
     dialog: [
@@ -403,7 +400,7 @@ export const LEVELS = {
       "Jump over to the other roof.",
     ],
     success: "Oh, just in time.",
-    category: "Main Game",
+    category: "Kinematics",
     image: alleyOne,
     initialNodes: [],
     initialState: initializeKinematics,
