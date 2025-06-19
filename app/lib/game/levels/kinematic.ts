@@ -26,7 +26,7 @@ export const initializeKinematics = () => {
   goalFlag.pos.x = 10;
 
   const floor1 = k.add([
-    k.rect(20, 1),
+    k.rect(19, 1),
     k.anchor("top"),
     k.pos(-17.2, 0),
     k.area(),
@@ -35,7 +35,7 @@ export const initializeKinematics = () => {
   ]);
 
   const floor2 = k.add([
-    k.rect(20, 1),
+    k.rect(18.5, 1),
     k.anchor("top"),
     k.pos(17, 0),
     k.area(),
