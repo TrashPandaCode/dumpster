@@ -1,6 +1,5 @@
 import { createLevelDataHelpers } from "~/lib/zustand/data";
 import { useGameStore } from "~/lib/zustand/game";
-import { SPRITE_SCALE } from "../constants";
 import { getKaplayCtx } from "../core/kaplayCtx";
 import {
   addBackgrounds,
@@ -10,17 +9,13 @@ import {
   moveDirection,
 } from "../utils/gameHelper";
 
-const TRASHCANP = "trashcanP";
-
-export const PARENTING_GAME_OBJECTS = [TRASHCANP] as const;
-
 export const initializeParenting = () => {
   const { k, game } = getKaplayCtx();
   const dataHelper = createLevelDataHelpers("parenting");
 
   addBackgrounds(["default"]);
 
-  const { raccoon, goalFlag } = addGameobjects(["raccoon", "goalFlag"]);
+  const { raccoon, goalFlag, trashcanFilled: trashcan } = addGameobjects(["raccoon", "goalFlag", "trashcanFilled"]);
 
   k.loadSprite("trashcan", "/game/sprites/trashcan_spritesheet.png", {
     sliceX: 2,
@@ -30,22 +25,11 @@ export const initializeParenting = () => {
       filled: { from: 1, to: 1, loop: false },
     },
   });
-  const trashcanP = game.add([
-    k.sprite("trashcan", {
-      anim: "filled",
-    }),
-    k.anchor("bot"),
-    k.pos(0, 0),
-    k.scale(SPRITE_SCALE),
-    k.area(),
-    k.z(1),
-    "trashcanP",
-  ]);
 
-  dataHelper.setData("trashcanP", "x", 5);
+  dataHelper.setData("trashcanFilled", "x", 5);
 
-  trashcanP.z = 3;
-  trashcanP.pos.x = 5;
+  trashcan.z = 3;
+  trashcan.pos.x = 5;
 
   raccoon.pos.x = -15;
 
@@ -58,14 +42,14 @@ export const initializeParenting = () => {
   game.onUpdate(() => {
     if (useGameStore.getState().isPaused) return;
 
-    const distTrashStart = trashcanP.pos.dist(5);
-    const distTrashGoal = trashcanP.pos.dist(goalFlag!.pos);
+    const distTrashStart = trashcan.pos.dist(5);
+    const distTrashGoal = trashcan.pos.dist(goalFlag!.pos);
 
     if (moveDirection === -1 && distTrashStart <= 1.5 + 5) {
       // Swap the trashcan sprites
-      trashcanP.play("filled");
+      trashcan.play("filled");
     } else if (moveDirection === 1 && distTrashGoal <= 1.5) {
-      trashcanP.play("empty");
+      trashcan.play("empty");
     }
 
     animPlayer(raccoon, k, {
@@ -77,10 +61,10 @@ export const initializeParenting = () => {
       },
     });
 
-    trashcanP.pos.x = dataHelper.getData("trashcanP", "x");
-    trashcanP.pos.y = dataHelper.getData("trashcanP", "y");
+    trashcan.pos.x = dataHelper.getData("trashcanFilled", "x");
+    trashcan.pos.y = dataHelper.getData("trashcanFilled", "y");
 
-    const distTrashRac = raccoon.pos.dist(trashcanP.pos);
+    const distTrashRac = raccoon.pos.dist(trashcan.pos);
 
     if (distTrashRac <= 1.5) {
       timeParenting += k.dt();
