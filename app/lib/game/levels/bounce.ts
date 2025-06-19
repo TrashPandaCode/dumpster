@@ -78,10 +78,11 @@ export const initializeBounce = () => {
   let graceTimer = 0;
   const GRACE_PERIOD = 0.2;
 
+  k.loadFont("Pixelify Sans", "/fonts/PixelifySans-VariableFont_wght.ttf", {filter: "nearest"})
   const timerText = game.add([
     k.text("5", {
       size: 2,
-      font: "satoshi",
+      font: "Pixelify Sans",
     }),
     k.pos(0, -8),
     k.anchor("center"),

@@ -249,11 +249,10 @@ export function addGameobjects<T extends readonly (keyof GameObjectTypeMap)[]>(
   const { k, game } = getKaplayCtx();
   const instances = {} as GameObjectInstancesFromArray<T>;
 
-  // Load trashcan sprite if needed
-  const needsTrashcan =
+  if (
     gameobjects.includes("trashcanEmpty") ||
-    gameobjects.includes("trashcanFilled");
-  if (needsTrashcan) {
+    gameobjects.includes("trashcanFilled")
+  ) {
     loadTrashcanSprite(k);
   }
 
@@ -335,16 +334,8 @@ export function removeBackgrounds(): void {
 export let moveDirection = 1;
 
 function handleNodeMovement(player: PlayerType): void {
-  const playerState = useDataStore.getState().gameObjects.get("raccoon");
-  if (playerState) {
-    const xpos = playerState.get("xpos");
-    const ypos = playerState.get("ypos");
-
-    if (xpos && ypos) {
-      player.pos.x = xpos.getValue();
-      player.pos.y = ypos.getValue();
-    }
-  }
+  player.pos.x = useDataStore.getState().getData("raccoon", "xpos");
+  player.pos.y = useDataStore.getState().getData("raccoon", "ypos");
 }
 
 function handleInputMovement(player: PlayerType, k: KAPLAYCtx): void {

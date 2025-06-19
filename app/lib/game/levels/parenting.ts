@@ -58,14 +58,14 @@ export const initializeParenting = () => {
   game.onUpdate(() => {
     if (useGameStore.getState().isPaused) return;
 
-    const distTrashStart = trashcanP!.pos.dist(5);
-    const distTrashGoal = trashcanP!.pos.dist(goalFlag!.pos);
+    const distTrashStart = trashcanP.pos.dist(5);
+    const distTrashGoal = trashcanP.pos.dist(goalFlag!.pos);
 
     if (moveDirection === -1 && distTrashStart <= 1.5 + 5) {
       // Swap the trashcan sprites
-      trashcanP!.play("filled");
+      trashcanP.play("filled");
     } else if (moveDirection === 1 && distTrashGoal <= 1.5) {
-      trashcanP!.play("empty");
+      trashcanP.play("empty");
     }
 
     animPlayer(raccoon, k, {
@@ -80,7 +80,7 @@ export const initializeParenting = () => {
     trashcanP.pos.x = dataHelper.getData("trashcanP", "xpos");
     trashcanP.pos.y = dataHelper.getData("trashcanP", "ypos");
 
-    const distTrashRac = raccoon!.pos.dist(trashcanP.pos);
+    const distTrashRac = raccoon.pos.dist(trashcanP.pos);
 
     if (distTrashRac <= 1.5) {
       timeParenting += k.dt();
