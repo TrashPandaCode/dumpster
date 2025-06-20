@@ -35,7 +35,14 @@ type PlayerType = GameObj<
   | SpriteComp
   | AnchorComp
   | ZComp
-  | StateComp<"idle" | "walkLeft" | "walkRight">
+  | StateComp<
+      | "idle"
+      | "idleHolding"
+      | "walkLeft"
+      | "walkRight"
+      | "walkLeftHolding"
+      | "walkRightHolding"
+    >
   | BodyComp
   | AreaComp
 >;
@@ -136,11 +143,22 @@ function createRaccoon(k: KAPLAYCtx, game: any): PlayerType {
     k.opacity(1),
     k.body(),
     "raccoon",
-    k.state("idle", ["idle", "walkLeft", "walkRight"]),
+    k.state("idle", [
+      "idle",
+      "walkLeft",
+      "walkRight",
+      "idleHolding",
+      "walkLeftHolding",
+      "walkRightHolding",
+    ]),
   ]);
 
   raccoon.onStateEnter("idle", () => {
     raccoon.play("idle");
+  });
+
+  raccoon.onStateEnter("idleHolding", () => {
+    raccoon.play("idleHolding");
   });
 
   raccoon.onStateEnter("walkLeft", () => {
@@ -150,6 +168,16 @@ function createRaccoon(k: KAPLAYCtx, game: any): PlayerType {
 
   raccoon.onStateEnter("walkRight", () => {
     raccoon.play("walk");
+    raccoon.scaleTo(k.vec2(SPRITE_SCALE, SPRITE_SCALE));
+  });
+
+  raccoon.onStateEnter("walkLeftHolding", () => {
+    raccoon.play("walkHolding");
+    raccoon.scaleTo(k.vec2(-SPRITE_SCALE, SPRITE_SCALE));
+  });
+
+  raccoon.onStateEnter("walkRightHolding", () => {
+    raccoon.play("walkHolding");
     raccoon.scaleTo(k.vec2(SPRITE_SCALE, SPRITE_SCALE));
   });
 
