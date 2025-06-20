@@ -1,7 +1,7 @@
 import { Panel, useReactFlow } from "@xyflow/react";
 import React, { useCallback } from "react";
 
-import { globalKeyTracker } from "~/lib/game/utils/globalKeyTracker";
+import { useClipboardStore } from "~/lib/zustand/clipboard";
 import useIsMac from "../hooks/useMac";
 import { duplicateNodes } from "../utils/duplicate";
 
@@ -16,6 +16,14 @@ const SelectionContextMenu = React.forwardRef<
 >(({ nodeIds, x, y, onClose }, ref) => {
   const { getNodes, getEdges, setNodes, setEdges, deleteElements } =
     useReactFlow();
+  const { setCopiedNodes } = useClipboardStore();
+
+  // handle copying selected nodes
+  const copyNodes = useCallback(() => {
+    const nodesToCopy = getNodes().filter((n) => nodeIds.includes(n.id));
+    setCopiedNodes(nodesToCopy);
+    onClose();
+  }, [getNodes, nodeIds, setCopiedNodes, onClose]);
 
   const deleteNodes = useCallback(() => {
     const nodes = getNodes();
@@ -37,6 +45,15 @@ const SelectionContextMenu = React.forwardRef<
       <Panel className="flex w-55 flex-col gap-1 rounded bg-slate-800 p-2 font-mono shadow-lg outline-1 outline-slate-700 outline-solid">
         <button
           className="w-full rounded px-2 py-1 text-left text-sm text-white hover:bg-slate-700"
+          onClick={copyNodes}
+        >
+          <span>Copy {nodeIds.length} nodes</span>
+          <span className="ml-2 rounded bg-slate-600 px-1.5 py-0.5 font-mono text-xs text-gray-300">
+            {isMac ? "⌥+C" : "Ctrl+C"}
+          </span>
+        </button>
+        <button
+          className="w-full rounded px-2 py-1 text-left text-sm text-white hover:bg-slate-700"
           onClick={() => {
             duplicateNodes(
               getNodes().filter((n) => nodeIds.includes(n.id)),
@@ -48,7 +65,7 @@ const SelectionContextMenu = React.forwardRef<
             onClose();
           }}
         >
-          <span>Duplicate {nodeIds.length} nodes </span>
+          <span>Duplicate {nodeIds.length} nodes</span>
           <span className="ml-2 rounded bg-slate-600 px-1.5 py-0.5 font-mono text-xs text-gray-300">
             {isMac ? "⌥+D" : "Ctrl+D"}
           </span>
@@ -57,7 +74,7 @@ const SelectionContextMenu = React.forwardRef<
           className="w-full rounded px-2 py-1 text-left text-sm text-white hover:bg-slate-700"
           onClick={deleteNodes}
         >
-          <span>Delete {nodeIds.length} nodes </span>
+          <span>Delete {nodeIds.length} nodes</span>
           <span className="ml-2 rounded bg-slate-600 px-1.5 py-0.5 font-mono text-xs text-gray-300">
             Del
           </span>

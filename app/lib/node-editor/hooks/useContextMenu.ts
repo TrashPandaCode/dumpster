@@ -3,9 +3,11 @@ import { useCallback, useLayoutEffect, useRef, useState } from "react";
 
 import { useNodeAddMenuStore } from "../../zustand/node-add-menu-store";
 import {
+  useCopyHotkey,
   useDuplicateHotkey,
   useEscapeHotkey,
   useNewNodeHotkey,
+  usePasteHotkey,
   useRedoHotkey,
   useUndoHotkey,
 } from "./useShortcuts";
@@ -81,57 +83,48 @@ export function useContextMenu() {
   }, [selectionContextMenu]);
 
   const handlePaneContextMenu = useCallback(
-  (event: MouseEvent | React.MouseEvent) => {
-    event.preventDefault();
-    const position = getContextMenuPosition(
-      event, 
-      menuDimensions.pane
-    );
-    setPaneContextMenu({
-      x: position.x,
-      y: position.y,
-    });
-  },
-  [menuDimensions.pane]
-);
+    (event: MouseEvent | React.MouseEvent) => {
+      event.preventDefault();
+      const position = getContextMenuPosition(event, menuDimensions.pane);
+      setPaneContextMenu({
+        x: position.x,
+        y: position.y,
+      });
+    },
+    [menuDimensions.pane]
+  );
 
-const handleNodeContextMenu = useCallback(
-  (event: MouseEvent | React.MouseEvent, node: Node) => {
-    event.preventDefault();
-    const position = getContextMenuPosition(
-      event, 
-      menuDimensions.node
-    );
-    setNodeContextMenu({
-      nodeId: node.id,
-      nodeType: node.type,
-      nodeLoopId: node.data.loopId as string | undefined,
-      nodeParentId: node.parentId,
-      x: position.x,
-      y: position.y,
-    });
-  },
-  [menuDimensions.node]
-);
+  const handleNodeContextMenu = useCallback(
+    (event: MouseEvent | React.MouseEvent, node: Node) => {
+      event.preventDefault();
+      const position = getContextMenuPosition(event, menuDimensions.node);
+      setNodeContextMenu({
+        nodeId: node.id,
+        nodeType: node.type,
+        nodeLoopId: node.data.loopId as string | undefined,
+        nodeParentId: node.parentId,
+        x: position.x,
+        y: position.y,
+      });
+    },
+    [menuDimensions.node]
+  );
 
-const handleSelectionContextMenu = useCallback(
-  (event: MouseEvent | React.MouseEvent, nodes: Node[]) => {
-    event.preventDefault();
+  const handleSelectionContextMenu = useCallback(
+    (event: MouseEvent | React.MouseEvent, nodes: Node[]) => {
+      event.preventDefault();
 
-    if (nodes.length === 0) return;
+      if (nodes.length === 0) return;
 
-    const position = getContextMenuPosition(
-      event, 
-      menuDimensions.selection
-    );
-    setSelectionContextMenu({
-      nodeIds: nodes.map((n) => n.id),
-      x: position.x,
-      y: position.y,
-    });
-  },
-  [menuDimensions.selection]
-);
+      const position = getContextMenuPosition(event, menuDimensions.selection);
+      setSelectionContextMenu({
+        nodeIds: nodes.map((n) => n.id),
+        x: position.x,
+        y: position.y,
+      });
+    },
+    [menuDimensions.selection]
+  );
 
   const closeAllMenus = useCallback(() => {
     setPaneContextMenu(null);
@@ -153,6 +146,8 @@ const handleSelectionContextMenu = useCallback(
   useNewNodeHotkey();
   useUndoHotkey();
   useRedoHotkey();
+  useCopyHotkey();
+  usePasteHotkey();
 
   const shouldShowPaneContextMenu = paneContextMenu || visible;
   const paneContextMenuX = paneContextMenu?.x ?? addMenuX;

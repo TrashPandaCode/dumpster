@@ -1,7 +1,7 @@
 import { useReactFlow } from "@xyflow/react";
 import React, { useCallback } from "react";
 
-import { globalKeyTracker } from "~/lib/game/utils/globalKeyTracker";
+import { useClipboardStore } from "~/lib/zustand/clipboard";
 import useIsMac from "../hooks/useMac";
 import { duplicateNodes } from "../utils/duplicate";
 import AddNodes from "./AddNodes";
@@ -54,6 +54,25 @@ const DefaultNodeContextMenu = ({
 }) => {
   const { getNode, getNodes, getEdges, setNodes, setEdges, deleteElements } =
     useReactFlow();
+  const { setCopiedNodes } = useClipboardStore();
+
+  // handle node copying
+  const copyNode = useCallback(() => {
+    const node = getNode(nodeId);
+    if (!node) return;
+
+    const nodesToCopy = getNodes().filter(
+      (n) =>
+        n.id === node.id || // always copy the node itself
+        n.parentId === node.id || // if the node is a group, copy all its children
+        ((n.data.loopId === node.data.loopId || // if node is part of a loop, copy both start and end nodes
+          n.data.parentLoopId === node.data.loopId) && // also get all children if its a loop node
+          node.data.loopId != undefined) // ensure we are dealing with a loop node
+    );
+
+    setCopiedNodes(nodesToCopy);
+    onClose();
+  }, [getNode, getNodes, nodeId, setCopiedNodes, onClose]);
 
   // handle node duplication
   const duplicateNode = useCallback(() => {
@@ -118,6 +137,15 @@ const DefaultNodeContextMenu = ({
   const isMac = useIsMac();
   return (
     <>
+      <button
+        className="w-full rounded px-2 py-1 text-left text-sm text-white hover:bg-slate-700"
+        onClick={copyNode}
+      >
+        <span>Copy</span>
+        <span className="ml-2 rounded bg-slate-600 px-1.5 py-0.5 font-mono text-xs text-gray-300">
+          {isMac ? "⌥+C" : "Ctrl+C"}
+        </span>
+      </button>
       <button
         className="w-full rounded px-2 py-1 text-left text-sm text-white hover:bg-slate-700"
         onClick={duplicateNode}
