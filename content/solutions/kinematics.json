@@ -1,0 +1,126 @@
+{
+    "nodes": [
+        {
+            "id": "dd8a5fde-f1e8-43b7-87bd-edeb4db2ef4a",
+            "type": "Value",
+            "position": {
+                "x": -180.11391767955934,
+                "y": 304.4607154854592
+            },
+            "data": {
+                "value": -50
+            },
+            "selected": false,
+            "dragging": false,
+            "measured": {
+                "width": 192,
+                "height": 104
+            }
+        },
+        {
+            "id": "f9958096-34ff-4964-be57-8bda1167f442",
+            "type": "Value",
+            "position": {
+                "x": -180.11391767955934,
+                "y": 439.9018565258922
+            },
+            "data": {
+                "value": 90
+            },
+            "selected": false,
+            "dragging": false,
+            "measured": {
+                "width": 192,
+                "height": 104
+            }
+        },
+        {
+            "id": "f7bf1044-f64f-46ce-b991-3a8e2ba9c782",
+            "type": "Value",
+            "position": {
+                "x": -184.8496219117423,
+                "y": 585.7615468771279
+            },
+            "data": {
+                "value": 50
+            },
+            "selected": false,
+            "dragging": false,
+            "measured": {
+                "width": 192,
+                "height": 104
+            }
+        },
+        {
+            "id": "73324a46-4b55-4b32-91a0-46fc856c234f",
+            "type": "Value",
+            "position": {
+                "x": -172.53679090806656,
+                "y": 713.6255611460682
+            },
+            "data": {
+                "value": -90
+            },
+            "selected": false,
+            "dragging": false,
+            "measured": {
+                "width": 192,
+                "height": 104
+            }
+        },
+        {
+            "id": "16bed4af-2317-4fa2-8b14-83aad15100df",
+            "type": "ExportToGameobject",
+            "position": {
+                "x": 96.45120947992635,
+                "y": 403.9105043613017
+            },
+            "data": {
+                "selectedGameObjects": [
+                    "arm"
+                ]
+            },
+            "selected": false,
+            "dragging": false,
+            "measured": {
+                "width": 224,
+                "height": 238
+            }
+        }
+    ],
+    "edges": [
+        {
+            "type": "Deletable",
+            "source": "dd8a5fde-f1e8-43b7-87bd-edeb4db2ef4a",
+            "sourceHandle": "output-handle-x",
+            "target": "16bed4af-2317-4fa2-8b14-83aad15100df",
+            "targetHandle": "Red Rotation",
+            "id": "xy-edge__dd8a5fde-f1e8-43b7-87bd-edeb4db2ef4aoutput-handle-x-16bed4af-2317-4fa2-8b14-83aad15100dfRed Rotation"
+        },
+        {
+            "type": "Deletable",
+            "source": "f9958096-34ff-4964-be57-8bda1167f442",
+            "sourceHandle": "output-handle-x",
+            "target": "16bed4af-2317-4fa2-8b14-83aad15100df",
+            "targetHandle": "Green Rotation",
+            "id": "xy-edge__f9958096-34ff-4964-be57-8bda1167f442output-handle-x-16bed4af-2317-4fa2-8b14-83aad15100dfGreen Rotation"
+        },
+        {
+            "type": "Deletable",
+            "source": "f7bf1044-f64f-46ce-b991-3a8e2ba9c782",
+            "sourceHandle": "output-handle-x",
+            "target": "16bed4af-2317-4fa2-8b14-83aad15100df",
+            "targetHandle": "Orange Rotation",
+            "id": "xy-edge__f7bf1044-f64f-46ce-b991-3a8e2ba9c782output-handle-x-16bed4af-2317-4fa2-8b14-83aad15100dfOrange Rotation"
+        },
+        {
+            "type": "Deletable",
+            "source": "73324a46-4b55-4b32-91a0-46fc856c234f",
+            "sourceHandle": "output-handle-x",
+            "target": "16bed4af-2317-4fa2-8b14-83aad15100df",
+            "targetHandle": "Blue Rotation",
+            "id": "xy-edge__73324a46-4b55-4b32-91a0-46fc856c234foutput-handle-x-16bed4af-2317-4fa2-8b14-83aad15100dfBlue Rotation"
+        }
+    ],
+    "viewport": { "x": 291.6433172551674, "y": 426.6737152862116, "zoom": 0.5 }
+}

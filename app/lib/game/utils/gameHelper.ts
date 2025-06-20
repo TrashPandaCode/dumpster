@@ -390,7 +390,6 @@ interface AnimPlayerConfig {
   playerClampX?: ClampConfig;
   camClampX?: ClampConfig;
   enableCameraUpdate?: boolean;
-  enableStateUpdate?: boolean;
 }
 
 function applyMovement(
@@ -435,7 +434,6 @@ export function animPlayer(
     playerClampX = DEFAULT_PLAYER_CLAMP,
     camClampX = DEFAULT_CAMERA_CLAMP,
     enableCameraUpdate = true,
-    enableStateUpdate = true,
   } = config;
 
   const lastX = player.pos.x;
@@ -443,10 +441,6 @@ export function animPlayer(
   applyMovement(player, k, movementMode, loopConfig);
 
   clampPlayerPosition(player, playerClampX);
-
-  if (enableStateUpdate) {
-    handleNodeMovement(player);
-  }
 
   if (enableCameraUpdate) {
     updateCamera(player, k, camClampX);

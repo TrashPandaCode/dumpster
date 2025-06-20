@@ -17,7 +17,6 @@ export function getKaplayCtx(canvas?: HTMLCanvasElement) {
     debugKey: "f1",
     canvas: canvas,
     background: "#2b292f",
-    crisp: true,
   });
   const game = k.add([k.timer()]);
 
