@@ -15,6 +15,7 @@ export const KINEMATICS_GAME_OBJECTS = [ARM] as const;
 
 export const initializeKinematics = () => {
   const { k, game } = getKaplayCtx();
+
   const dataHelper = createLevelDataHelpers("kinematics");
 
   k.setGravity(100);
@@ -166,6 +167,7 @@ export const initializeKinematics = () => {
       useGameStore.getState().setLevelCompleted(true);
     }
     if (dataHelper.initData) {
+      raccoon!.pos = k.vec2(-10, 0);
       handleReset(raccoon!, 1);
     }
   });
