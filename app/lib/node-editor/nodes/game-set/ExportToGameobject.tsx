@@ -1,6 +1,6 @@
 import { CrossCircledIcon } from "@radix-ui/react-icons";
 import { Position, useReactFlow } from "@xyflow/react";
-import { memo, useEffect, useMemo } from "react";
+import { memo, useCallback, useEffect, useMemo } from "react";
 
 import { LEVELS, type ModifiableGameObject } from "~/lib/game/core/levels";
 import type { GameObject } from "~/lib/game/gameObjects";
@@ -14,6 +14,7 @@ import MultiSelectDropDown from "../../node-components/MultiSelectDropDown";
 import NodeContent from "../../node-components/NodeContent";
 import type { nodeInputs } from "../../node-store/node-store";
 import { getInput } from "../../utils/compute";
+import { getDisplayName } from "../../utils/display";
 import { getHandleIntersection } from "../../utils/handles";
 import { IN_HANDLE_1 } from "../constants";
 
@@ -57,12 +58,11 @@ const ExportToGameobject = memo(
     const gameObjects = useDataStore((state) => state.gameObjects);
     const selectableGameObjects: GameObject[] = Array.from(gameObjects.keys());
 
-    const getDisplayName = (gameObject: GameObject) => {
-      const modifiableObject = modifiableGameObjects.find(
-        (obj) => obj.id === gameObject
-      );
-      return modifiableObject?.displayName || gameObject;
-    };
+    const callbackDisplayName = useCallback(
+      (gameObject: GameObject) =>
+        getDisplayName(gameObject, modifiableGameObjects),
+      [modifiableGameObjects]
+    );
 
     const {
       isOpen,
@@ -128,7 +128,7 @@ const ExportToGameobject = memo(
               selectableObjects={selectableGameObjects}
               selectedObjects={selectedGameObjects}
               onReorder={handleReorder}
-              getDisplayName={getDisplayName}
+              getDisplayName={callbackDisplayName}
               useSelectProps={{
                 getItemProps: getItemProps,
                 getLabelProps: getLabelProps,
