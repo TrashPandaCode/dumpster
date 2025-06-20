@@ -255,6 +255,7 @@ describe("LEVELS Object Validation", () => {
         "ForLoop",
         "Group",
         "MousePosition",
+        "WorldToLocal",
       ];
 
       levelValues.forEach((level) => {
