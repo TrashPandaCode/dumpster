@@ -1,8 +1,12 @@
 import { createLevelDataHelpers } from "~/lib/zustand/data";
 import { useGameStore } from "~/lib/zustand/game";
-import { BACKGROUND_OFFSET, CAM_SCALE } from "../constants";
 import { getKaplayCtx } from "../core/kaplayCtx";
-import { addBackgrounds, addGameobjects, animPlayer, handleReset } from "../utils/gameHelper";
+import {
+  addBackgrounds,
+  addGameobjects,
+  animPlayer,
+  handleReset,
+} from "../utils/gameHelper";
 
 const JOINT_1 = "joint1";
 const JOINT_1_LENGTH = 3;
@@ -23,12 +27,9 @@ export const initializeInverse = () => {
 
   k.setGravity(100);
 
-  addBackgrounds(["background1"]);
+  addBackgrounds(["default"]);
   const { raccoon } = addGameobjects(["raccoon"]);
 
-  k.setCamPos(0, -BACKGROUND_OFFSET);
-  k.setCamScale((CAM_SCALE * k.height()) / 947);
-  
   const floor1 = k.add([
     k.rect(100, 1),
     k.anchor("top"),
@@ -126,29 +127,39 @@ export const initializeInverse = () => {
 
     setJointPos();
 
-    animPlayer(raccoon!, k, "input", undefined, undefined, {
-      minX: -5,
-      maxX: 5,
+    animPlayer(raccoon!, k, {
+      movementMode: "input",
+      camClampX: {
+        min: -5,
+        max: 5,
+      },
     });
+
     k.onKeyDown("space", () => {
       if (raccoon!.isGrounded()) {
         raccoon!.jump(20);
       }
     });
-    
+
     // wincon
-    if(Math.pow(Math.pow(endeffector.pos.x - raccoon!.pos.x, 2) + Math.pow(endeffector.pos.y - (raccoon!.pos.y - 1), 2), 0.5) < 1){
+    if (
+      Math.pow(
+        Math.pow(endeffector.pos.x - raccoon!.pos.x, 2) +
+          Math.pow(endeffector.pos.y - (raccoon!.pos.y - 1), 2),
+        0.5
+      ) < 1
+    ) {
       pettingTimer += k.dt();
-      if(pettingTimer > 5){
+      if (pettingTimer > 5) {
         useGameStore.getState().setLevelCompleteDialogOpen(true);
         useGameStore.getState().setLevelCompleted(true);
       }
-    }else{
+    } else {
       pettingTimer = 0;
     }
-    
+
     if (dataHelper.initData) {
-     handleReset(raccoon!, -1);
+      handleReset(raccoon!, -1);
     }
   });
 };
