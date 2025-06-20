@@ -3,7 +3,7 @@ import { Position, useReactFlow } from "@xyflow/react";
 import { memo, useCallback, useEffect, useMemo } from "react";
 
 import { LEVELS, type ModifiableGameObject } from "~/lib/game/core/levels";
-import type { GameObject } from "~/lib/game/gameObjects";
+import type { GameObject } from "~/lib/game/game-objects";
 import { useDataStore } from "~/lib/zustand/data";
 import { useGameStore } from "~/lib/zustand/game";
 import { useGameobjectSelect } from "../../hooks/useGameobjectSelect";

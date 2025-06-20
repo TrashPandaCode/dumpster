@@ -4,8 +4,8 @@ import { useKeyStore } from "~/lib/zustand/key";
 import { useMouseStore } from "~/lib/zustand/mouse";
 import { useTimeStore } from "~/lib/zustand/time";
 import { BACKGROUND_OFFSET, CAM_SCALE } from "../constants";
-import { globalKeyTracker } from "../utils/globalKeyTracker";
-import { getKaplayCtx } from "./kaplayCtx";
+import { globalKeyTracker } from "../utils/global-keytracker";
+import { getKaplayCtx } from "./kaplay-ctx";
 
 export const state = {
   first: true,

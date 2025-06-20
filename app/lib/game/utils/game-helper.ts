@@ -18,8 +18,8 @@ import {
   SMALL_FLAG_OFFSET,
   SPRITE_SCALE,
 } from "../constants";
-import { getKaplayCtx } from "../core/kaplayCtx";
-import { globalKeyTracker } from "./globalKeyTracker";
+import { getKaplayCtx } from "../core/kaplay-ctx";
+import { globalKeyTracker } from "./global-keytracker";
 
 // Type definitions
 type Background =

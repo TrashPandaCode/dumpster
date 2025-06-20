@@ -2,8 +2,8 @@ import { createLevelDataHelpers } from "~/lib/zustand/data";
 import { useGameStore } from "~/lib/zustand/game";
 import { useTimeStore } from "~/lib/zustand/time";
 import { BACKGROUND_OFFSET } from "../constants";
-import { getKaplayCtx } from "../core/kaplayCtx";
-import { addBackgrounds, addGameobjects } from "../utils/gameHelper";
+import { getKaplayCtx } from "../core/kaplay-ctx";
+import { addBackgrounds, addGameobjects } from "../utils/game-helper";
 
 export const TIME_TRANSFORM_GAME_OBJECTS = ["clock"] as const;
 

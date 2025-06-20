@@ -19,7 +19,7 @@ import "@xyflow/react/dist/style.css";
 
 import { TooltipProvider } from "~/lib/node-editor/editor-components/Tooltip";
 import { createForLoop } from "~/lib/node-editor/utils/loops";
-import { docsNodeTypes } from "./nodes/docsNodeTypes";
+import { docsNodeTypes } from "./nodes/docs-node-types";
 
 const Editor: React.FC<{ type: string }> = ({ type }) => {
   const [nodes, setNodes] = useState<Node[]>(

@@ -1,13 +1,13 @@
 import { useDataStore } from "~/lib/zustand/data";
 import { useGameStore } from "~/lib/zustand/game";
-import { getKaplayCtx } from "../core/kaplayCtx";
+import { getKaplayCtx } from "../core/kaplay-ctx";
 import {
   addBackgrounds,
   addGameobjects,
   animPlayer,
   handleReset,
-} from "../utils/gameHelper";
-import { globalKeyTracker } from "../utils/globalKeyTracker";
+} from "../utils/game-helper";
+import { globalKeyTracker } from "../utils/global-keytracker";
 
 export const initializeMove = () => {
   const { k, game } = getKaplayCtx();

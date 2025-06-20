@@ -5,7 +5,7 @@ import {
   type ConnectionAccess,
   type LevelId,
 } from "../game/core/levels";
-import type { GameObject } from "../game/gameObjects";
+import type { GameObject } from "../game/game-objects";
 
 export class HandleData {
   access: ConnectionAccess;

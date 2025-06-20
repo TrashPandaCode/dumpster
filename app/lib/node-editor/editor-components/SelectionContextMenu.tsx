@@ -1,7 +1,7 @@
 import { Panel, useReactFlow } from "@xyflow/react";
 import React, { useCallback } from "react";
 
-import { globalKeyTracker } from "~/lib/game/utils/globalKeyTracker";
+import { globalKeyTracker } from "~/lib/game/utils/global-keytracker";
 import useIsMac from "../hooks/useMac";
 import { duplicateNodes } from "../utils/duplicate";
 

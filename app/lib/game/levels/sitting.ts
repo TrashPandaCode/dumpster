@@ -1,12 +1,12 @@
 import { useDataStore } from "~/lib/zustand/data";
 import { useGameStore } from "~/lib/zustand/game";
-import { getKaplayCtx } from "../core/kaplayCtx";
+import { getKaplayCtx } from "../core/kaplay-ctx";
 import {
   addBackgrounds,
   addGameobjects,
   animPlayer,
   handleReset,
-} from "../utils/gameHelper";
+} from "../utils/game-helper";
 
 export const initializeSitting = () => {
   const { k, game } = getKaplayCtx();

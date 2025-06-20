@@ -3,7 +3,7 @@ import { Position } from "@xyflow/react";
 import { memo, useMemo, useState } from "react";
 
 import type { ModifiableGameObject } from "~/lib/game/core/levels";
-import { type GameObject } from "~/lib/game/gameObjects";
+import { type GameObject } from "~/lib/game/game-objects";
 import { useGameobjectSelect } from "~/lib/node-editor/hooks/useGameobjectSelect";
 import AddHandle from "~/lib/node-editor/node-components/AddHandle";
 import BaseHandle from "~/lib/node-editor/node-components/BaseHandle";

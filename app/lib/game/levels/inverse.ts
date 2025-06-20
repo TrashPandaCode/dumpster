@@ -1,12 +1,12 @@
 import { createLevelDataHelpers } from "~/lib/zustand/data";
 import { useGameStore } from "~/lib/zustand/game";
-import { getKaplayCtx } from "../core/kaplayCtx";
+import { getKaplayCtx } from "../core/kaplay-ctx";
 import {
   addBackgrounds,
   addGameobjects,
   animPlayer,
   handleReset,
-} from "../utils/gameHelper";
+} from "../utils/game-helper";
 
 const JOINT_1 = "joint1";
 const JOINT_1_LENGTH = 3;

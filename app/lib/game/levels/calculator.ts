@@ -1,12 +1,12 @@
 import { createLevelDataHelpers } from "~/lib/zustand/data";
 import { useGameStore } from "~/lib/zustand/game";
 import { BACKGROUND_OFFSET } from "../constants";
-import { getKaplayCtx } from "../core/kaplayCtx";
+import { getKaplayCtx } from "../core/kaplay-ctx";
 import {
   addBackgrounds,
   addGameobjects,
   handleReset,
-} from "../utils/gameHelper";
+} from "../utils/game-helper";
 
 export const initializeCalculator = () => {
   const { k, game } = getKaplayCtx();

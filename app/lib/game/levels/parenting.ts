@@ -1,13 +1,13 @@
 import { createLevelDataHelpers } from "~/lib/zustand/data";
 import { useGameStore } from "~/lib/zustand/game";
-import { getKaplayCtx } from "../core/kaplayCtx";
+import { getKaplayCtx } from "../core/kaplay-ctx";
 import {
   addBackgrounds,
   addGameobjects,
   animPlayer,
   handleReset,
   moveDirection,
-} from "../utils/gameHelper";
+} from "../utils/game-helper";
 
 export const initializeParenting = () => {
   const { k, game } = getKaplayCtx();

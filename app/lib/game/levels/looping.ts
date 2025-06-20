@@ -1,12 +1,12 @@
 import { createLevelDataHelpers } from "~/lib/zustand/data";
 import { useGameStore } from "~/lib/zustand/game";
-import { getKaplayCtx } from "../core/kaplayCtx";
+import { getKaplayCtx } from "../core/kaplay-ctx";
 import {
   addBackgrounds,
   addGameobjects,
   animPlayer,
   handleReset,
-} from "../utils/gameHelper";
+} from "../utils/game-helper";
 
 export const initializeLooping = () => {
   const { k, game } = getKaplayCtx();
