@@ -1,6 +1,6 @@
 import kaplay, { type GameObj, type KAPLAYCtx, type TimerComp } from "kaplay";
 
-import { state } from "./initGame";
+import { state } from "./init-game";
 
 let ctx: { k: KAPLAYCtx; game: GameObj<TimerComp> } | undefined = undefined;
 

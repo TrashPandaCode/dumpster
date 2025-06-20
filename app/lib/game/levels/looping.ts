@@ -1,34 +1,31 @@
 import { createLevelDataHelpers } from "~/lib/zustand/data";
 import { useGameStore } from "~/lib/zustand/game";
-import { BACKGROUND_OFFSET, CAM_SCALE } from "../constants";
-import { getKaplayCtx } from "../core/kaplayCtx";
+import { getKaplayCtx } from "../core/kaplay-ctx";
 import {
   addBackgrounds,
   addGameobjects,
   animPlayer,
   handleReset,
-} from "../utils/gameHelper";
+} from "../utils/game-helper";
 
 export const initializeLooping = () => {
   const { k, game } = getKaplayCtx();
   const dataHelper = createLevelDataHelpers("looping");
 
-  addBackgrounds(["background1"]);
+  addBackgrounds(["default"]);
 
   const { raccoon } = addGameobjects(["raccoon"]);
-  k.setCamPos(0, -BACKGROUND_OFFSET);
-  k.setCamScale((CAM_SCALE * k.height()) / 947);
 
   game.onUpdate(() => {
     if (useGameStore.getState().isPaused) return;
 
-    animPlayer(raccoon!, k);
+    animPlayer(raccoon, k);
 
     // useGameStore.getState().setLevelCompleteDialogOpen(true);
     // useGameStore.getState().setLevelCompleted(true);
 
     if (dataHelper.initData) {
-      handleReset(raccoon!, 1);
+      handleReset(raccoon, 1);
     }
   });
 };

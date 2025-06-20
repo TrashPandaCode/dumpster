@@ -9,7 +9,7 @@ import playgroundCard from "~/assets/home-cards/playground_card.png";
 import sittingCard from "~/assets/home-cards/sitting_card.png";
 import houseImage from "~/assets/house.png";
 import type { NodeType } from "~/lib/node-editor/nodes/node-types";
-import { type GameObject } from "../gameObjects";
+import { type GameObject } from "../game-objects";
 import { initializeBounce } from "../levels/bounce";
 import { initializeCalculator } from "../levels/calculator";
 import { initializeInverse } from "../levels/inverse";
@@ -19,7 +19,7 @@ import { initializeMove } from "../levels/move";
 import { initializeParenting } from "../levels/parenting";
 import { initializePlayground } from "../levels/playground";
 import { initializeSitting } from "../levels/sitting";
-import { initializeTimeTransform } from "../levels/timeTransform";
+import { initializeTimeTransform } from "../levels/time-transform";
 
 export type ConnectionAccess = "export" | "import" | "all";
 
@@ -81,6 +81,7 @@ export type Level = {
 
 export type ModifiableGameObject = {
   id: GameObject;
+  displayName?: string;
   connections: { label: string; access: ConnectionAccess }[];
 };
 
@@ -155,8 +156,8 @@ export const LEVELS = {
       {
         id: "raccoon",
         connections: [
-          { label: "xpos", access: "export" },
-          { label: "ypos", access: "export" },
+          { label: "x", access: "export" },
+          { label: "y", access: "export" },
         ],
       },
     ],
@@ -188,24 +189,26 @@ export const LEVELS = {
       {
         id: "raccoon",
         connections: [
-          { label: "xpos", access: "export" },
-          { label: "ypos", access: "export" },
+          { label: "x", access: "export" },
+          { label: "y", access: "export" },
         ],
       },
       {
-        id: "trashcan1",
+        id: "trashcanFilled",
+        displayName: "trashcan1",
         connections: [
           { label: "filled", access: "import" },
-          { label: "xpos", access: "import" },
-          { label: "ypos", access: "import" },
+          { label: "x", access: "import" },
+          { label: "y", access: "import" },
         ],
       },
       {
-        id: "trashcan2",
+        id: "trashcanEmpty",
+        displayName: "trashcan2",
         connections: [
           { label: "filled", access: "import" },
-          { label: "xpos", access: "import" },
-          { label: "ypos", access: "import" },
+          { label: "x", access: "import" },
+          { label: "y", access: "import" },
         ],
       },
     ],
@@ -233,8 +236,8 @@ export const LEVELS = {
       {
         id: "raccoon",
         connections: [
-          { label: "xpos", access: "all" },
-          { label: "ypos", access: "all" },
+          { label: "x", access: "all" },
+          { label: "y", access: "all" },
         ],
       },
     ],
@@ -254,9 +257,8 @@ export const LEVELS = {
     name: "Move",
     description:
       "This is the first level of the main game, introducing movement mechanics.",
-    // feel free to change the dialog
     dialog: [
-      "Alright, today's the day — I’m finally gonna learn how to walk! I mean, even tiny humans can do it, so how hard can it be?",
+      "Alright, today's the day — I'm finally gonna learn how to walk! I mean, even tiny humans can do it, so how hard can it be?",
       "Left paw, right paw... wait, which one is my right again?",
       "Imagine: me, strutting around, hunting for snacks all by myself! No more waiting for food to come to me—I'm gonna chase those leftovers down!",
     ],
@@ -272,8 +274,8 @@ export const LEVELS = {
       {
         id: "raccoon",
         connections: [
-          { label: "xpos", access: "export" },
-          { label: "ypos", access: "export" },
+          { label: "x", access: "export" },
+          { label: "y", access: "export" },
         ],
       },
     ],
@@ -293,17 +295,16 @@ export const LEVELS = {
     name: "Parenting",
     description:
       "This is the second level of the main game, introducing parenting mechanics.",
-    // feel free to change the dialog
     dialog: [
       "Whoa... this trash can is a real goldmine!",
-      "There’s so much food in here, there’s no way I can eat it all right now.",
+      "There's so much food in here, there's no way I can eat it all right now.",
       "Maybe I should just take the whole can with me... but how?",
       "Would you help me carry it back to my secret little hideout?",
       "Just be careful not to drop it, okay?",
     ],
     goals: [
       "Parent the trashcan to the raccoon.",
-      `Bring trashcans to the flag (3 total).`,
+      "Bring trashcans to the flag (3 total).",
     ],
     success: "That should be enough food for a while... or at least two days.",
     category: "Main Game",
@@ -315,15 +316,16 @@ export const LEVELS = {
       {
         id: "raccoon",
         connections: [
-          { label: "xpos", access: "import" },
-          { label: "ypos", access: "import" },
+          { label: "x", access: "import" },
+          { label: "y", access: "import" },
         ],
       },
       {
-        id: "trashcanP",
+        id: "trashcanFilled",
+        displayName: "trashcan",
         connections: [
-          { label: "xpos", access: "all" },
-          { label: "ypos", access: "all" },
+          { label: "x", access: "all" },
+          { label: "y", access: "all" },
         ],
       },
     ],
@@ -338,16 +340,15 @@ export const LEVELS = {
     ],
     difficulty: 1,
   },
-  timeTransform: {
-    slug: "timeTransform",
+  "time-transform": {
+    slug: "time-transform",
     name: "Time Transform",
     description:
       "This is a level of the main game, introducing time-based transformations.",
-    // feel free to change the dialog
     dialog: [
       "Well... we just found, what ever this is, with all those numbers on it.",
-      "And there’s this thing spinning around in the middle really fast!",
-      "I’ve seen people use this, especially when they’re in a hurry. But it was never going that fast.",
+      "And there's this thing spinning around in the middle really fast!",
+      "I've seen people use this, especially when they're in a hurry. But it was never going that fast.",
       "It might be broken... maybe I can fix it?",
       "There might be a ladder we could use to get onto the roof — maybe we can spot something that helps us fixing our new little treasure.",
     ],
@@ -365,13 +366,8 @@ export const LEVELS = {
     hints: [],
     modifiableGameObjects: [
       {
-        id: "raccoon",
-        connections: [
-          { label: "xpos", access: "import" },
-          { label: "ypos", access: "import" },
-          { label: "xpos", access: "export" },
-          { label: "ypos", access: "export" },
-        ],
+        id: "pocketwatch",
+        connections: [{ label: "time", access: "export" }],
       },
     ],
     availableNodes: [
@@ -385,22 +381,23 @@ export const LEVELS = {
     ],
     difficulty: 1,
   },
-  kinematics: {
-    slug: "kinematics",
-    name: "Kinematics",
-    description: "This is a level of the main game, introducing forward kinematics.",
+  forward: {
+    slug: "forward",
+    name: "Forward",
+    description:
+      "This is a level of the main game, introducing forward kinematics.",
     dialog: [
       "Hey! Quick, I could use some help here!",
       "I was fighting this cat for some left over rotissery chicken and I thought I scared it away..",
       "But it came back with a bunch of its friends and now I'm stuck on this roof.",
-      "Can you move these platforms for me so I can make a quick escape?"
+      "Can you move these platforms for me so I can make a quick escape?",
     ],
     goals: [
       "Find a way to move the platforms.",
       "Jump over to the other roof.",
     ],
     success: "Oh, just in time.",
-    category: "Main Game",
+    category: "Kinematics",
     image: alleyOne,
     initialNodes: [],
     initialState: initializeKinematics,
@@ -514,29 +511,29 @@ export const LEVELS = {
       {
         id: "raccoon",
         connections: [
-          { label: "xpos", access: "all" },
-          { label: "ypos", access: "all" },
+          { label: "x", access: "all" },
+          { label: "y", access: "all" },
         ],
       },
       {
         id: "trashcanEmpty",
         connections: [
-          { label: "xpos", access: "all" },
-          { label: "ypos", access: "all" },
+          { label: "x", access: "all" },
+          { label: "y", access: "all" },
         ],
       },
       {
         id: "trashcanFilled",
         connections: [
-          { label: "xpos", access: "all" },
-          { label: "ypos", access: "all" },
+          { label: "x", access: "all" },
+          { label: "y", access: "all" },
         ],
       },
       {
         id: "goalFlag",
         connections: [
-          { label: "xpos", access: "all" },
-          { label: "ypos", access: "all" },
+          { label: "x", access: "all" },
+          { label: "y", access: "all" },
         ],
       },
     ],
