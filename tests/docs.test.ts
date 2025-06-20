@@ -1,6 +1,6 @@
 import { readdirSync, readFileSync, statSync } from "fs";
 import { join } from "path";
-import { describe, expect, test } from "@jest/globals";
+import { describe, expect, test } from "bun:test";
 
 import navigation from "~/lib/core/docs/navigation.json";
 import type { NavigationSection } from "~/lib/core/docs/search-utils";
@@ -858,7 +858,10 @@ describe("Documentation System Tests", () => {
       );
 
       levelDocPaths.forEach((docPath) => {
-        const levelSlug = docPath.replace("/docs/levels/", "") as keyof typeof LEVELS;
+        const levelSlug = docPath.replace(
+          "/docs/levels/",
+          ""
+        ) as keyof typeof LEVELS;
 
         // Check if the level exists in the game
         if (!LEVELS[levelSlug]) {

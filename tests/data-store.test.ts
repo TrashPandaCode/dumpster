@@ -1,37 +1,11 @@
-import { beforeEach, describe, expect, it, jest } from "@jest/globals";
-import { act, renderHook } from "@testing-library/react";
+import { beforeEach, describe, expect, it, jest, spyOn } from "bun:test";
 
-import { LEVELS, type LevelId } from "../app/lib/game/core/levels";
+import { LEVELS, type LevelId } from "~/lib/game/core/levels";
 import {
   createLevelDataHelpers,
   HandleData,
   useDataStore,
-} from "../app/lib/zustand/data";
-
-// Mock localStorage
-const localStorageMock = (() => {
-  let store: Record<string, string> = {};
-
-  return {
-    getItem: jest.fn((key: string) => store[key] || null),
-    setItem: jest.fn((key: string, value: string) => {
-      store[key] = value;
-    }),
-    removeItem: jest.fn((key: string) => {
-      delete store[key];
-    }),
-    clear: jest.fn(() => {
-      store = {};
-    }),
-    length: 0,
-    key: jest.fn((index: number) => {
-      const keys = Object.keys(store);
-      return keys[index] || null;
-    }),
-  };
-})();
-
-global.localStorage = localStorageMock;
+} from "~/lib/zustand/data";
 
 describe("HandleData", () => {
   beforeEach(() => {
@@ -71,7 +45,7 @@ describe("HandleData", () => {
 describe("useDataStore", () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    localStorageMock.clear();
+    localStorage.clear();
 
     // Reset the store state
     useDataStore.setState({
@@ -82,39 +56,34 @@ describe("useDataStore", () => {
 
   describe("initial state", () => {
     it("should have correct initial state", () => {
-      const { result } = renderHook(() => useDataStore());
-
-      expect(result.current.initData).toBe(true);
-      expect(result.current.gameObjects).toBeInstanceOf(Map);
-      expect(result.current.gameObjects.size).toBe(0);
+      expect(useDataStore.getState().initData).toBe(true);
+      expect(useDataStore.getState().gameObjects).toBeInstanceOf(Map);
+      expect(useDataStore.getState().gameObjects.size).toBe(0);
     });
   });
 
   describe("reset", () => {
     it("should reset store with level data for all levels", () => {
-      const { result } = renderHook(() => useDataStore());
-
       // Test each level in LEVELS
       Object.entries(LEVELS).forEach(([_, level]) => {
         // Reset store for current level
-        act(() => {
-          result.current.reset(level.slug);
-        });
+        useDataStore.getState().reset(level.slug);
 
         // Verify basic store state
-        expect(result.current.initData).toBe(true);
-        expect(result.current.gameObjects.size).toBe(
+        expect(useDataStore.getState().initData).toBe(true);
+        expect(useDataStore.getState().gameObjects.size).toBe(
           level.modifiableGameObjects.length
         );
 
         // Test each modifiable game object in the level
         level.modifiableGameObjects.forEach((modifiableGameObject) => {
-          const gameObjectData = result.current.gameObjects.get(
-            modifiableGameObject.id
-          );
+          const gameObjectData = useDataStore
+            .getState()
+            .gameObjects.get(modifiableGameObject.id);
 
           // Verify game object exists in store
           expect(gameObjectData).toBeDefined();
+
           expect(gameObjectData!.size).toBe(
             modifiableGameObject.connections.length
           );
@@ -138,32 +107,22 @@ describe("useDataStore", () => {
 
   describe("setData and getData", () => {
     beforeEach(() => {
-      const { result } = renderHook(() => useDataStore());
-      act(() => {
-        result.current.reset("calculator");
-      });
+      useDataStore.getState().reset("calculator");
     });
 
     it("should set and get numeric data", () => {
-      const { result } = renderHook(() => useDataStore());
+      useDataStore.getState().setData("raccoon", "solution", 42);
 
-      act(() => {
-        result.current.setData("raccoon", "solution", 42);
-      });
-
-      const value = result.current.getData("raccoon", "solution");
+      const value = useDataStore.getState().getData("raccoon", "solution");
       expect(value).toBe(42);
     });
 
     it("should set and get function data", () => {
-      const { result } = renderHook(() => useDataStore());
       const mockFn = jest.fn(() => 100);
 
-      act(() => {
-        result.current.setData("raccoon", "solution", mockFn);
-      });
+      useDataStore.getState().setData("raccoon", "solution", mockFn);
 
-      const value = result.current.getData("raccoon", "solution");
+      const value = useDataStore.getState().getData("raccoon", "solution");
       expect(value).toBe(100);
       expect(mockFn).toHaveBeenCalledTimes(1);
     });
@@ -171,20 +130,15 @@ describe("useDataStore", () => {
 
   describe("addHandle and removeHandle", () => {
     beforeEach(() => {
-      const { result } = renderHook(() => useDataStore());
-      act(() => {
-        result.current.reset("calculator");
-      });
+      useDataStore.getState().reset("calculator");
     });
 
     it("should add new handle", () => {
-      const { result } = renderHook(() => useDataStore());
+      useDataStore.getState().addHandle("raccoon", "newHandle");
 
-      act(() => {
-        result.current.addHandle("raccoon", "newHandle");
-      });
-
-      const gameObject1Data = result.current.gameObjects.get("raccoon");
+      const gameObject1Data = useDataStore
+        .getState()
+        .gameObjects.get("raccoon");
       expect(gameObject1Data!.has("newHandle")).toBe(true);
 
       const newHandle = gameObject1Data!.get("newHandle");
@@ -194,29 +148,25 @@ describe("useDataStore", () => {
     });
 
     it("should not add duplicate handle", () => {
-      const { result } = renderHook(() => useDataStore());
-      const initialSize = result.current.gameObjects.get("raccoon")!.size;
+      const initialSize = useDataStore
+        .getState()
+        .gameObjects.get("raccoon")!.size;
 
-      act(() => {
-        result.current.addHandle("raccoon", "solution"); // existing handle
-      });
+      useDataStore.getState().addHandle("raccoon", "solution"); // existing handle
 
-      const finalSize = result.current.gameObjects.get("raccoon")!.size;
+      const finalSize = useDataStore
+        .getState()
+        .gameObjects.get("raccoon")!.size;
       expect(finalSize).toBe(initialSize);
     });
 
     it("should remove handle", () => {
-      const { result } = renderHook(() => useDataStore());
+      useDataStore.getState().addHandle("raccoon", "newHandle");
+      useDataStore.getState().removeHandle("raccoon", "newHandle");
 
-      act(() => {
-        result.current.addHandle("raccoon", "newHandle");
-      });
-
-      act(() => {
-        result.current.removeHandle("raccoon", "newHandle");
-      });
-
-      const gameObject1Data = result.current.gameObjects.get("raccoon");
+      const gameObject1Data = useDataStore
+        .getState()
+        .gameObjects.get("raccoon");
       expect(gameObject1Data!.has("newHandle")).toBe(false);
       expect(gameObject1Data!.size).toBe(1); // should have only solution left
     });
@@ -224,29 +174,22 @@ describe("useDataStore", () => {
 
   describe("save and init", () => {
     beforeEach(() => {
-      localStorageMock.setItem("level", "calculator");
+      localStorage.clear();
+      localStorage.setItem("level", "calculator");
+      useDataStore.getState().reset("calculator");
     });
 
     it("should save store state to localStorage", () => {
-      const { result } = renderHook(() => useDataStore());
+      const store = useDataStore.getState();
 
-      act(() => {
-        result.current.reset(localStorageMock.getItem("level")! as LevelId);
-        result.current.setData("raccoon", "solution", 42);
-      });
+      store.reset(localStorage.getItem("level")! as LevelId);
+      store.setData("raccoon", "solution", 42);
 
-      act(() => {
-        result.current.save();
-      });
-
-      expect(localStorageMock.setItem).toHaveBeenCalledWith(
-        "data-store-calculator",
-        expect.stringContaining("raccoon")
-      );
+      store.save();
 
       // Verify the saved data structure
       const savedData = JSON.parse(
-        localStorageMock.getItem("data-store-calculator")!
+        localStorage.getItem("data-store-calculator")!
       );
       expect(savedData).toBeDefined();
       expect(savedData.initData).toBe(true);
@@ -265,37 +208,28 @@ describe("useDataStore", () => {
         ],
       };
 
-      localStorageMock.setItem(
-        "data-store-calculator",
-        JSON.stringify(savedData)
-      );
+      localStorage.setItem("data-store-calculator", JSON.stringify(savedData));
 
-      const { result } = renderHook(() => useDataStore());
+      useDataStore.getState().init("calculator");
+      // getState returns a snapshop of the store, so it needs to be called again after the store is modified
+      const store = useDataStore.getState();
 
-      act(() => {
-        result.current.init("calculator");
-      });
-
-      expect(result.current.initData).toBe(false);
-      expect(result.current.gameObjects.size).toBe(
+      expect(store.initData).toBe(false);
+      expect(store.gameObjects.size).toBe(
         LEVELS.calculator.modifiableGameObjects.length
       );
-      expect(result.current.gameObjects.has("raccoon")).toBe(true);
-      expect(
-        result.current.gameObjects.get("raccoon")!.get("solution")?.access
-      ).toEqual("export");
-      expect(result.current.getData("raccoon", "solution")).toBe(42);
+      expect(store.gameObjects.has("raccoon")).toBe(true);
+      expect(store.gameObjects.get("raccoon")!.get("solution")?.access).toEqual(
+        "export"
+      );
+      expect(store.getData("raccoon", "solution")).toBe(42);
     });
 
     it("should reset when no saved data exists", () => {
-      localStorageMock.getItem.mockReturnValue(null);
+      const store = useDataStore.getState();
+      const resetSpy = spyOn(store, "reset");
 
-      const { result } = renderHook(() => useDataStore());
-      const resetSpy = jest.spyOn(result.current, "reset");
-
-      act(() => {
-        result.current.init("calculator");
-      });
+      store.init("calculator");
 
       expect(resetSpy).toHaveBeenCalledWith("calculator");
     });
@@ -304,21 +238,11 @@ describe("useDataStore", () => {
 
 describe("createLevelDataHelpers", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
-    localStorageMock.clear();
-    useDataStore.setState({
-      initData: true,
-      gameObjects: new Map(),
-    });
+    localStorage.clear();
+    useDataStore.getState().reset("calculator");
   });
 
   it("should create type-safe helpers for a specific level", () => {
-    // Initialize store with level data
-    const { result } = renderHook(() => useDataStore());
-    act(() => {
-      result.current.reset("calculator");
-    });
-
     const helpers = createLevelDataHelpers("calculator");
 
     expect(helpers.initData).toBe(true);
@@ -329,11 +253,6 @@ describe("createLevelDataHelpers", () => {
   });
 
   it("should provide working setData and getData methods", () => {
-    const { result } = renderHook(() => useDataStore());
-    act(() => {
-      result.current.reset("calculator");
-    });
-
     const helpers = createLevelDataHelpers("calculator");
 
     // These calls should be type-safe based on the level configuration
@@ -345,57 +264,37 @@ describe("createLevelDataHelpers", () => {
 });
 
 describe("integration tests", () => {
-  beforeEach(() => {
-    jest.clearAllMocks();
-    localStorageMock.clear();
-    localStorageMock.setItem("level", "calculator");
+  it("should handle complete workflow: reset -> modify -> save -> init", () => {
+    localStorage.clear();
+    localStorage.setItem("level", "calculator");
+    let store = useDataStore.getState();
+
+    // Reset with level data
+    store.reset("calculator");
+
+    // Modify data
+    store.setData("raccoon", "solution", 42);
+    store.addHandle("raccoon", "customHandle");
+    store.setData("raccoon", "customHandle", 100);
+
+    // Save
+    store.save();
+
+    // Clear store
     useDataStore.setState({
       initData: true,
       gameObjects: new Map(),
     });
-  });
-
-  it("should handle complete workflow: reset -> modify -> save -> init", () => {
-    const { result } = renderHook(() => useDataStore());
-
-    // Reset with level data
-    act(() => {
-      result.current.reset("calculator");
-    });
-
-    // Modify data
-    act(() => {
-      result.current.setData("raccoon", "solution", 42);
-      result.current.addHandle("raccoon", "customHandle");
-      result.current.setData("raccoon", "customHandle", 100);
-    });
-
-    // Save
-    act(() => {
-      result.current.save();
-    });
-
-    // Clear store
-    act(() => {
-      useDataStore.setState({
-        initData: true,
-        gameObjects: new Map(),
-      });
-    });
 
     // Initialize from saved data
-    act(() => {
-      result.current.init("calculator");
-    });
+    store.init("calculator");
+
+    store = useDataStore.getState();
 
     // Verify data persistence (note: values are reset to 0 in init due to HandleData constructor)
-    expect(result.current.gameObjects.get("raccoon")!.has("customHandle")).toBe(
-      true
-    );
-    expect(result.current.getData("raccoon", "customHandle")).toBe(100);
-    expect(result.current.gameObjects.get("raccoon")!.has("solution")).toBe(
-      true
-    );
-    expect(result.current.getData("raccoon", "solution")).toBe(42);
+    expect(store.gameObjects.get("raccoon")!.has("customHandle")).toBe(true);
+    expect(store.getData("raccoon", "customHandle")).toBe(100);
+    expect(store.gameObjects.get("raccoon")!.has("solution")).toBe(true);
+    expect(store.getData("raccoon", "solution")).toBe(42);
   });
 });

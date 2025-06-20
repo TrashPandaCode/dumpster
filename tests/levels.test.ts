@@ -1,6 +1,6 @@
-import { describe, expect, test } from "@jest/globals";
+import { describe, expect, test } from "bun:test";
 
-import { LEVELS, type Level } from "~/lib/game/core/levels";
+import { LEVELS, type Level, type LevelId } from "~/lib/game/core/levels";
 
 describe("LEVELS Object Validation", () => {
   const levelEntries = Object.entries(LEVELS);
@@ -22,7 +22,7 @@ describe("LEVELS Object Validation", () => {
   describe("Slug and Key Consistency", () => {
     test("slug should match the object key for each level", () => {
       levelEntries.forEach(([key, level]) => {
-        expect(level.slug).toBe(key);
+        expect(level.slug).toBe(key as LevelId);
       });
     });
 
@@ -255,6 +255,7 @@ describe("LEVELS Object Validation", () => {
         "ForLoop",
         "Group",
         "MousePosition",
+        "WorldToLocal",
       ];
 
       levelValues.forEach((level) => {
