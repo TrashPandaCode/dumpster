@@ -1,6 +1,7 @@
 import { describe, expect, test } from "bun:test";
 
 import { LEVELS, type Level, type LevelId } from "~/lib/game/core/levels";
+import { nodeTypes } from "~/lib/node-editor/nodes/node-types";
 
 describe("LEVELS Object Validation", () => {
   const levelEntries = Object.entries(LEVELS);
@@ -244,18 +245,10 @@ describe("LEVELS Object Validation", () => {
   describe("AvailableNodes Validation", () => {
     test("availableNodes should contain valid node types", () => {
       const expectedNodeTypes = [
-        "Display",
-        "Value",
-        "Math",
-        "Switch",
-        "KeyPress",
-        "ImportFromGameobject",
-        "ExportToGameobject",
-        "Time",
+        ...Object.keys(nodeTypes).filter(
+          (key) => key !== "ForStart" && key !== "ForEnd"
+        ),
         "ForLoop",
-        "Group",
-        "MousePosition",
-        "WorldToLocal",
       ];
 
       levelValues.forEach((level) => {
