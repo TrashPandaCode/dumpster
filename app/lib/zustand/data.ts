@@ -115,7 +115,7 @@ export const useDataStore = create<DataState>((set, get) => ({
     for (const [gobId, handles] of dataStoreData.gameObjects) {
       const handleMap = new Map();
       for (const [handle, data] of handles) {
-        handleMap.set(handle, new HandleData(data.access, 0));
+        handleMap.set(handle, new HandleData(data.access, data.value));
       }
       gameObjects.set(gobId, handleMap);
     }
