@@ -127,7 +127,7 @@ export const initializeInverse = () => {
 
     setJointPos();
 
-    animPlayer(raccoon!, k, {
+    animPlayer(raccoon, k, {
       movementMode: "input",
       camClampX: {
         min: -5,
@@ -136,16 +136,16 @@ export const initializeInverse = () => {
     });
 
     k.onKeyDown("space", () => {
-      if (raccoon!.isGrounded()) {
-        raccoon!.jump(20);
+      if (raccoon.isGrounded()) {
+        raccoon.jump(20);
       }
     });
 
     // wincon
     if (
       Math.pow(
-        Math.pow(endeffector.pos.x - raccoon!.pos.x, 2) +
-          Math.pow(endeffector.pos.y - (raccoon!.pos.y - 1), 2),
+        Math.pow(endeffector.pos.x - raccoon.pos.x, 2) +
+          Math.pow(endeffector.pos.y - (raccoon.pos.y - 1), 2),
         0.5
       ) < 1
     ) {
@@ -159,7 +159,7 @@ export const initializeInverse = () => {
     }
 
     if (dataHelper.initData) {
-      handleReset(raccoon!, -1);
+      handleReset(raccoon, -1);
     }
   });
 };
