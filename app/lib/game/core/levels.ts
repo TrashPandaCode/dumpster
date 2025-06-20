@@ -366,7 +366,7 @@ export const LEVELS = {
     hints: [],
     modifiableGameObjects: [
       {
-        id: "clock",
+        id: "pocketwatch",
         connections: [{ label: "time", access: "export" }],
       },
     ],
