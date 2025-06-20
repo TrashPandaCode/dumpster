@@ -19,7 +19,7 @@ import { initializeMove } from "../levels/move";
 import { initializeParenting } from "../levels/parenting";
 import { initializePlayground } from "../levels/playground";
 import { initializeSitting } from "../levels/sitting";
-import { initializeTimeTransform } from "../levels/timeTransform";
+import { initializeTimeTransform } from "../levels/time-transform";
 
 export type ConnectionAccess = "export" | "import" | "all";
 
@@ -366,11 +366,8 @@ export const LEVELS = {
     hints: [],
     modifiableGameObjects: [
       {
-        id: "raccoon",
-        connections: [
-          { label: "x", access: "all" },
-          { label: "y", access: "all" },
-        ],
+        id: "clock",
+        connections: [{ label: "time", access: "export" }],
       },
     ],
     availableNodes: [
