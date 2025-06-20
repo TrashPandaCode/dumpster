@@ -340,9 +340,9 @@ export const LEVELS = {
     ],
     difficulty: 1,
   },
-  "time-transform": {
-    slug: "time-transform",
-    name: "Time Transform",
+  linear: {
+    slug: "linear",
+    name: "Linear",
     description:
       "This is a level of the main game, introducing time-based transformations.",
     dialog: [
@@ -359,7 +359,7 @@ export const LEVELS = {
     ],
     success:
       "My brothers always said humans are stupid, but how can someone inventing such a masterpiece be stupid? I'm so happy we were able to save this!",
-    category: "Main Game",
+    category: "Time Transformation",
     image: alleyOne,
     initialNodes: [],
     initialState: initializeTimeTransform,
