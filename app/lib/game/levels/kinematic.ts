@@ -15,7 +15,7 @@ export const KINEMATICS_GAME_OBJECTS = [ARM] as const;
 export const initializeKinematics = () => {
   const { k, game } = getKaplayCtx();
 
-  const dataHelper = createLevelDataHelpers("kinematics");
+  const dataHelper = createLevelDataHelpers("forward");
 
   k.setGravity(100);
 
