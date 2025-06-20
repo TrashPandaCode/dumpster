@@ -454,7 +454,6 @@ export function handleReset(raccoon: PlayerType, initDirection: number): void {
   useDataStore.setState({ initData: false });
 }
 
-// Export types for use in other files
 export type {
   PlayerType,
   StandardGameObjectType,
