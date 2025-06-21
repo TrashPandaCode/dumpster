@@ -61,8 +61,7 @@ export type Level = {
    */
   image: string;
   /**
-   * Initial nodes to be spawned on level init.
-   * TODO: move inital node declarations to separate file
+   * Initial nodes to be spawned on level init or path to nodes JSON file.
    */
   initialNodes: Node[];
   /**
@@ -340,14 +339,36 @@ export const LEVELS = {
         connections: [{ label: "time", access: "export" }],
       },
     ],
-    availableNodes: [
-      "Display",
-      "Value",
-      "Math",
-      "ImportFromGameobject",
-      "ExportToGameobject",
-      "Time",
+    availableNodes: ["Display", "Value", "Math", "ExportToGameobject", "Time"],
+    difficulty: 1,
+  },
+  reverse: {
+    slug: "reverse",
+    name: "Reverse",
+    description: "",
+    dialog: [
+      "Okay... maybe I rushed things with that last watch.",
+      "I think I messed it up even more—now it's ticking at a totally different speed.",
+      "All I want is for it to run at the same speed as the big clock... just in reverse.",
+      "Please, if you can get it working for at least 5 seconds, I promise I'll stop bugging you about it.",
     ],
+    goals: [
+      "Make the small watch run in reverse at the same speed as the big clock.",
+    ],
+    success:
+      "Whoa! It's actually working! Backwards brilliance! I knew bothering you would pay off!",
+    category: "Time Transformation",
+    image: alleyOne,
+    initialNodes: [],
+    initialState: initializeReverse,
+    hints: [],
+    modifiableGameObjects: [
+      {
+        id: "pocketwatch",
+        connections: [{ label: "time", access: "export" }],
+      },
+    ],
+    availableNodes: ["Display", "Value", "Math", "ExportToGameobject", "Time"],
     difficulty: 1,
   },
   forward: {
