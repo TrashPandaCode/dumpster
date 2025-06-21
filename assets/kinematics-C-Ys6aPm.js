@@ -1,1 +1,0 @@
-import{o as e}from"./chunk-AYJ5UCUI-BS9SflA5.js";const r={title:"Kinematics"};function o(t){const n={h1:"h1",...t.components};return e.jsx(n.h1,{children:"Kinematics"})}function s(t={}){const{wrapper:n}=t.components||{};return n?e.jsx(n,{...t,children:e.jsx(o,{...t})}):o(t)}export{s as default,r as frontmatter};

@@ -1,1 +1,0 @@
-import{o as e}from"./chunk-AYJ5UCUI-BS9SflA5.js";const s={title:"Time Transform"};function o(t){const n={h1:"h1",...t.components};return e.jsx(n.h1,{children:"Time Transform"})}function c(t={}){const{wrapper:n}=t.components||{};return n?e.jsx(n,{...t,children:e.jsx(o,{...t})}):o(t)}export{c as default,s as frontmatter};

@@ -1,6 +1,6 @@
 const n=`---
-title: Time Transform
+title: Linear
 ---
 
-# Time Transform
+# Linear
 `;export{n as default};
