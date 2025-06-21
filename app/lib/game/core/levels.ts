@@ -321,7 +321,7 @@ export const LEVELS = {
       "Try adding an offset of 50 seconds and maybe make my time 100 times faster?",
       "If this works for like... 5 seconds, I'll call it good enough.",
     ],
-    goals: ["Make the pocketwatch match the tower watch."],
+    goals: ["Make the pocketwatch match the clock tower."],
     success:
       "Nice! The watch finally works like I want it to — it looks great now.",
     category: "Time Transformation",
