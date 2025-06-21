@@ -65,11 +65,13 @@ export const initializeReverse = () => {
   game.onUpdate(() => {
     if (useGameStore.getState().isPaused) return;
 
-    bigClockHand.rotateTo(lastTime * TIME_SCALE + TIME_OFFSET);
-    pocketwatchHand.rotateTo(dataHelper.getData("pocketwatch", "time"));
+    const userTime = dataHelper.getData("pocketwatch", "time");
 
-    if (bigClockHand.angle - pocketwatchHand.angle < Number.EPSILON)
-      matchTimer -= k.dt();
+    bigClockHand.rotateTo(lastTime * TIME_SCALE + TIME_OFFSET);
+    pocketwatchHand.rotateTo(userTime);
+
+    // check that they are running in opposite directions
+    if (userTime == -(lastTime * TIME_SCALE + TIME_OFFSET)) matchTimer -= k.dt();
 
     if (matchTimer < 0 && !useGameStore.getState().levelCompleted) {
       useGameStore.getState().setLevelCompleteDialogOpen(true);

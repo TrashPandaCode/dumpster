@@ -12,15 +12,15 @@ import type { NodeType } from "~/lib/node-editor/nodes/node-types";
 import { type GameObject } from "../game-objects";
 import { initializeBounce } from "../levels/bounce";
 import { initializeCalculator } from "../levels/calculator";
-import { initializeInverse } from "../levels/inverse";
 import { initializeForward } from "../levels/forward";
+import { initializeInverse } from "../levels/inverse";
+import { initializeLinear } from "../levels/linear";
 import { initializeLooping } from "../levels/looping";
 import { initializeMove } from "../levels/move";
 import { initializeParenting } from "../levels/parenting";
 import { initializePlayground } from "../levels/playground";
-import { initializeSitting } from "../levels/sitting";
-import { initializeLinear } from "../levels/linear";
 import { initializeReverse } from "../levels/reverse";
+import { initializeSitting } from "../levels/sitting";
 
 export type ConnectionAccess = "export" | "import" | "all";
 
@@ -61,8 +61,7 @@ export type Level = {
    */
   image: string;
   /**
-   * Initial nodes to be spawned on level init.
-   * TODO: move inital node declarations to separate file
+   * Initial nodes to be spawned on level init or path to nodes JSON file.
    */
   initialNodes: Node[];
   /**
@@ -366,30 +365,21 @@ export const LEVELS = {
         connections: [{ label: "time", access: "export" }],
       },
     ],
-    availableNodes: [
-      "Display",
-      "Value",
-      "Math",
-      "ImportFromGameobject",
-      "ExportToGameobject",
-      "Time",
-    ],
+    availableNodes: ["Display", "Value", "Math", "ExportToGameobject", "Time"],
     difficulty: 1,
   },
   reverse: {
     slug: "reverse",
     name: "Reverse",
-    description:
-      "",
+    description: "",
     dialog: [
-      // "This watch isn't doing anything… maybe it needs a time signal?",
-      // "Okay, it's moving now — but way maybe 100 times slower and about 50 seconds behind that big clock over there.",
-      // "Maybe the gears are glued together or something? No idea…",
-      // "Looks like we'll need to tweak the time signal to make it match properly.",
-      // "If it matches the other clock for like... 5 seconds, I'll call it good enough.",
+      "Okay... maybe I rushed things with that last watch.",
+      "I think I messed it up even more—now it's ticking at a totally different speed.",
+      "All I want is for it to run at the same speed as the big clock... just in reverse.",
+      "Please, if you can get it working for at least 5 seconds, I promise I'll stop bugging you about it.",
     ],
-    goals: ["Make the pocketwatch match the tower watch."],
-    success: "Nice! The watch is finally in sync — it looks great now.",
+    goals: ["Make the small watch run in reverse at the same speed as the big clock."],
+    success: "Whoa! It's actually working! Backwards brilliance! I knew bothering you would pay off!",
     category: "Time Transformation",
     image: alleyOne,
     initialNodes: [],
@@ -401,14 +391,7 @@ export const LEVELS = {
         connections: [{ label: "time", access: "export" }],
       },
     ],
-    availableNodes: [
-      "Display",
-      "Value",
-      "Math",
-      "ImportFromGameobject",
-      "ExportToGameobject",
-      "Time",
-    ],
+    availableNodes: ["Display", "Value", "Math", "ExportToGameobject", "Time"],
     difficulty: 1,
   },
   forward: {
