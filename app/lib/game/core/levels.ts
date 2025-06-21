@@ -12,14 +12,15 @@ import type { NodeType } from "~/lib/node-editor/nodes/node-types";
 import { type GameObject } from "../game-objects";
 import { initializeBounce } from "../levels/bounce";
 import { initializeCalculator } from "../levels/calculator";
+import { initializeForward } from "../levels/forward";
 import { initializeInverse } from "../levels/inverse";
-import { initializeKinematics } from "../levels/kinematic";
+import { initializeLinear } from "../levels/linear";
 import { initializeLooping } from "../levels/looping";
 import { initializeMove } from "../levels/move";
 import { initializeParenting } from "../levels/parenting";
 import { initializePlayground } from "../levels/playground";
+import { initializeReverse } from "../levels/reverse";
 import { initializeSitting } from "../levels/sitting";
-import { initializeTimeTransform } from "../levels/time-transform";
 
 export type ConnectionAccess = "export" | "import" | "all";
 
@@ -357,7 +358,7 @@ export const LEVELS = {
     category: "Time Transformation",
     image: alleyOne,
     initialNodes: [],
-    initialState: initializeTimeTransform,
+    initialState: initializeLinear,
     hints: [
       "Try add a time and an export node.",
       "Now connect the time output of the time node into the time input of the export node.",
@@ -378,7 +379,7 @@ export const LEVELS = {
       "ExportToGameobject",
       "Time",
     ],
-    difficulty: 2,
+    difficulty: 1,
   },
   forward: {
     slug: "forward",
@@ -399,7 +400,7 @@ export const LEVELS = {
     category: "Kinematics",
     image: alleyOne,
     initialNodes: [],
-    initialState: initializeKinematics,
+    initialState: initializeForward,
     hints: [],
     modifiableGameObjects: [
       {

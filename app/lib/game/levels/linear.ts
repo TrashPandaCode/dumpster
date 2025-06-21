@@ -5,9 +5,9 @@ import { BACKGROUND_OFFSET } from "../constants";
 import { getKaplayCtx } from "../core/kaplay-ctx";
 import { addBackgrounds, addGameobjects } from "../utils/game-helper";
 
-export const TIME_TRANSFORM_GAME_OBJECTS = ["pocketwatch"] as const;
+export const LINEAR_GAME_OBJECTS = ["pocketwatch"] as const;
 
-export const initializeTimeTransform = () => {
+export const initializeLinear = () => {
   const { k, game } = getKaplayCtx();
   const dataHelper = createLevelDataHelpers("linear");
 

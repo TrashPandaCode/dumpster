@@ -10,9 +10,9 @@ import {
 
 const ARM_LENGTH = 3;
 const ARM = "arm";
-export const KINEMATICS_GAME_OBJECTS = [ARM] as const;
+export const FORWARD_GAME_OBJECTS = [ARM] as const;
 
-export const initializeKinematics = () => {
+export const initializeForward = () => {
   const { k, game } = getKaplayCtx();
 
   const dataHelper = createLevelDataHelpers("forward");
