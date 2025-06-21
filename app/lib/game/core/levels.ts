@@ -358,7 +358,12 @@ export const LEVELS = {
     image: alleyOne,
     initialNodes: [],
     initialState: initializeTimeTransform,
-    hints: [],
+    hints: [
+      "Try add a time and an export node.",
+      "Now connect the time output of the time node into the time input of the export node.",
+      "The pocketwatch displays the time 100 times slower so try multiplying the time using a math node.",
+      "The pocketwatch time is offset by 50 seconds, so add this time using a math node.",
+    ],
     modifiableGameObjects: [
       {
         id: "pocketwatch",
