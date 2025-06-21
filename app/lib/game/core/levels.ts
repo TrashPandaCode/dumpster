@@ -322,7 +322,8 @@ export const LEVELS = {
       "If this works for like... 5 seconds, I'll call it good enough.",
     ],
     goals: ["Make the pocketwatch match the tower watch."],
-    success: "Nice! The watch is finally in sync — it looks great now.",
+    success:
+      "Nice! The watch finally works like I want it to — it looks great now.",
     category: "Time Transformation",
     image: alleyOne,
     initialNodes: [],
