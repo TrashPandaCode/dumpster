@@ -13,7 +13,7 @@ import { type GameObject } from "../game-objects";
 import { initializeBounce } from "../levels/bounce";
 import { initializeCalculator } from "../levels/calculator";
 import { initializeInverse } from "../levels/inverse";
-import { initializeKinematics } from "../levels/kinematic";
+import { initializeForward } from "../levels/forward";
 import { initializeLooping } from "../levels/looping";
 import { initializeMove } from "../levels/move";
 import { initializeParenting } from "../levels/parenting";
@@ -430,7 +430,7 @@ export const LEVELS = {
     category: "Kinematics",
     image: alleyOne,
     initialNodes: [],
-    initialState: initializeKinematics,
+    initialState: initializeForward,
     hints: [],
     modifiableGameObjects: [
       {
