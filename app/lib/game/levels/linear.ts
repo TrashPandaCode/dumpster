@@ -10,16 +10,11 @@ export const LINEAR_GAME_OBJECTS = ["pocketwatch"] as const;
 export const initializeLinear = () => {
   const { k, game } = getKaplayCtx();
   const dataHelper = createLevelDataHelpers("linear");
-
   addBackgrounds(["roof"]);
-
   k.setCamPos(2, -BACKGROUND_OFFSET);
-
   const { raccoon } = addGameobjects(["raccoon"]);
-
   raccoon.enterState("idleHolding");
   raccoon.pos = k.vec2(1, 0);
-
   k.loadSprite("clockHand", "/game/sprites/clockHand.png");
   const bigClockHand = game.add([
     k.sprite("clockHand"),
@@ -30,7 +25,6 @@ export const initializeLinear = () => {
     k.scale(0.075),
     "bigClockHand",
   ]);
-
   k.loadSprite("pocketwatch", "/game/sprites/pocketwatch.png");
   const pocketwatch = game.add([
     k.sprite("pocketwatch"),
@@ -42,7 +36,6 @@ export const initializeLinear = () => {
     k.z(2),
     "pocketwatch",
   ]);
-
   const pocketwatchHand = game.add([
     k.sprite("clockHand"),
     k.anchor("center"),
@@ -53,29 +46,22 @@ export const initializeLinear = () => {
     k.z(3),
     "pocketwatchHand",
   ]);
-
   const getTime = useTimeStore.getState().getTime;
-
   const TIME_SCALE = 100;
   const TIME_OFFSET = 50;
-
   let lastTime = getTime();
   let matchTimer = 5;
-
   game.onUpdate(() => {
     if (useGameStore.getState().isPaused) return;
-
-    bigClockHand.rotateTo(lastTime * TIME_SCALE + TIME_OFFSET);
-    pocketwatchHand.rotateTo(dataHelper.getData("pocketwatch", "time"));
-
-    if (bigClockHand.angle - pocketwatchHand.angle < Number.EPSILON)
+    const userTime = dataHelper.getData("pocketwatch", "time");
+    bigClockHand.rotateTo(lastTime);
+    pocketwatchHand.rotateTo(userTime);
+    if (lastTime * TIME_SCALE + TIME_OFFSET - userTime < Number.EPSILON)
       matchTimer -= k.dt();
-
     if (matchTimer < 0 && !useGameStore.getState().levelCompleted) {
       useGameStore.getState().setLevelCompleteDialogOpen(true);
       useGameStore.getState().setLevelCompleted(true);
     }
-
     lastTime = getTime();
   });
 };
