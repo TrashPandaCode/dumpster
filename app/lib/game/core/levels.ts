@@ -19,7 +19,8 @@ import { initializeMove } from "../levels/move";
 import { initializeParenting } from "../levels/parenting";
 import { initializePlayground } from "../levels/playground";
 import { initializeSitting } from "../levels/sitting";
-import { initializeTimeTransform } from "../levels/time-transform";
+import { initializeLinear } from "../levels/linear";
+import { initializeReverse } from "../levels/reverse";
 
 export type ConnectionAccess = "export" | "import" | "all";
 
@@ -357,7 +358,7 @@ export const LEVELS = {
     category: "Time Transformation",
     image: alleyOne,
     initialNodes: [],
-    initialState: initializeTimeTransform,
+    initialState: initializeLinear,
     hints: [],
     modifiableGameObjects: [
       {
@@ -373,7 +374,42 @@ export const LEVELS = {
       "ExportToGameobject",
       "Time",
     ],
-    difficulty: 2,
+    difficulty: 1,
+  },
+  reverse: {
+    slug: "reverse",
+    name: "Reverse",
+    description:
+      "",
+    dialog: [
+      // "This watch isn't doing anything… maybe it needs a time signal?",
+      // "Okay, it's moving now — but way maybe 100 times slower and about 50 seconds behind that big clock over there.",
+      // "Maybe the gears are glued together or something? No idea…",
+      // "Looks like we'll need to tweak the time signal to make it match properly.",
+      // "If it matches the other clock for like... 5 seconds, I'll call it good enough.",
+    ],
+    goals: ["Make the pocketwatch match the tower watch."],
+    success: "Nice! The watch is finally in sync — it looks great now.",
+    category: "Time Transformation",
+    image: alleyOne,
+    initialNodes: [],
+    initialState: initializeReverse,
+    hints: [],
+    modifiableGameObjects: [
+      {
+        id: "pocketwatch",
+        connections: [{ label: "time", access: "export" }],
+      },
+    ],
+    availableNodes: [
+      "Display",
+      "Value",
+      "Math",
+      "ImportFromGameobject",
+      "ExportToGameobject",
+      "Time",
+    ],
+    difficulty: 1,
   },
   forward: {
     slug: "forward",
