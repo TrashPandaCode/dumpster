@@ -56,7 +56,7 @@ export const initializeLinear = () => {
     const userTime = dataHelper.getData("pocketwatch", "time");
     bigClockHand.rotateTo(lastTime);
     pocketwatchHand.rotateTo(userTime);
-    if (lastTime * TIME_SCALE + TIME_OFFSET - userTime < Number.EPSILON)
+    if ((lastTime + TIME_OFFSET) * TIME_SCALE - userTime < Number.EPSILON)
       matchTimer -= k.dt();
     if (matchTimer < 0 && !useGameStore.getState().levelCompleted) {
       useGameStore.getState().setLevelCompleteDialogOpen(true);

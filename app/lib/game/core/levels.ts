@@ -318,7 +318,7 @@ export const LEVELS = {
       "This watch isn't doing anything… maybe it needs a time signal?",
       "Now I want this clock to move faster than that big clock over there!",
       "The clock tower is soooo slow. Also could you offset my time?",
-      "About 100 times as fast and an offset of 50 seconds will do.",
+      "Try adding an offset of 50 seconds and maybe make my time 100 times faster?",
       "If this works for like... 5 seconds, I'll call it good enough.",
     ],
     goals: ["Make the pocketwatch match the tower watch."],
