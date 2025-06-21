@@ -330,8 +330,8 @@ export const LEVELS = {
     hints: [
       "Try add a time and an export node.",
       "Now connect the time output of the time node into the time input of the export node.",
-      "The pocketwatch displays the time 100 times slower so try multiplying the time using a math node.",
-      "The pocketwatch time is offset by 50 seconds, so add this time using a math node.",
+      "The pocketwatch should have an offset of 50 seconds, so try adding this to the time",
+      "The pocketwatch should be 100 times faster than the clock tower, so try multiplying the time by 100.",
     ],
     modifiableGameObjects: [
       {

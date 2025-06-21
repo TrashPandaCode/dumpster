@@ -1,0 +1,74 @@
+{
+  "nodes": [
+    {
+      "id": "79a86d54-9649-437a-8f98-4633f1f04c39",
+      "type": "Time",
+      "position": { "x": -311.018886759075, "y": 567.4460950649911 },
+      "data": {},
+      "selected": false,
+      "dragging": false,
+      "measured": { "width": 192, "height": 126 }
+    },
+    {
+      "id": "b0f9c8da-3e53-437f-b71e-751e99445859",
+      "type": "ExportToGameobject",
+      "position": { "x": 552.8897843320212, "y": 538.8820036351868 },
+      "data": { "selectedGameObjects": ["pocketwatch"] },
+      "selected": false,
+      "dragging": false,
+      "measured": { "width": 222, "height": 166 }
+    },
+    {
+      "id": "a08db468-4d2b-494a-ab78-b29e25083d69",
+      "type": "Math",
+      "position": { "x": -67.40732736637771, "y": 528.5437184402134 },
+      "data": {
+        "initialComputeType": "Addition",
+        "xInputData": 0,
+        "yInputData": 50
+      },
+      "selected": false,
+      "dragging": false,
+      "measured": { "width": 256, "height": 204 }
+    },
+    {
+      "id": "2897953c-71be-4521-82dc-8382f027b58b",
+      "type": "Math",
+      "position": { "x": 247.9419926379374, "y": 531.447085885335 },
+      "data": {
+        "initialComputeType": "Multiply",
+        "xInputData": 0,
+        "yInputData": 100
+      },
+      "selected": false,
+      "dragging": false,
+      "measured": { "width": 256, "height": 204 }
+    }
+  ],
+  "edges": [
+    {
+      "type": "Deletable",
+      "source": "79a86d54-9649-437a-8f98-4633f1f04c39",
+      "sourceHandle": "output-handle-x",
+      "target": "a08db468-4d2b-494a-ab78-b29e25083d69",
+      "targetHandle": "input-handle-x",
+      "id": "xy-edge__79a86d54-9649-437a-8f98-4633f1f04c39output-handle-x-a08db468-4d2b-494a-ab78-b29e25083d69input-handle-x"
+    },
+    {
+      "type": "Deletable",
+      "source": "a08db468-4d2b-494a-ab78-b29e25083d69",
+      "sourceHandle": "output-handle-x",
+      "target": "2897953c-71be-4521-82dc-8382f027b58b",
+      "targetHandle": "input-handle-x",
+      "id": "xy-edge__a08db468-4d2b-494a-ab78-b29e25083d69output-handle-x-2897953c-71be-4521-82dc-8382f027b58binput-handle-x"
+    },
+    {
+      "type": "Deletable",
+      "source": "2897953c-71be-4521-82dc-8382f027b58b",
+      "sourceHandle": "output-handle-x",
+      "target": "b0f9c8da-3e53-437f-b71e-751e99445859",
+      "targetHandle": "time",
+      "id": "xy-edge__2897953c-71be-4521-82dc-8382f027b58boutput-handle-x-b0f9c8da-3e53-437f-b71e-751e99445859time"
+    }
+  ]
+}
