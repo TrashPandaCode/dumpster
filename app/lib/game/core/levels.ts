@@ -358,7 +358,12 @@ export const LEVELS = {
     image: alleyOne,
     initialNodes: [],
     initialState: initializeLinear,
-    hints: [],
+    hints: [
+      "Try add a time and an export node.",
+      "Now connect the time output of the time node into the time input of the export node.",
+      "The pocketwatch displays the time 100 times slower so try multiplying the time using a math node.",
+      "The pocketwatch time is offset by 50 seconds, so add this time using a math node.",
+    ],
     modifiableGameObjects: [
       {
         id: "pocketwatch",
@@ -378,8 +383,11 @@ export const LEVELS = {
       "All I want is for it to run at the same speed as the big clock... just in reverse.",
       "Please, if you can get it working for at least 5 seconds, I promise I'll stop bugging you about it.",
     ],
-    goals: ["Make the small watch run in reverse at the same speed as the big clock."],
-    success: "Whoa! It's actually working! Backwards brilliance! I knew bothering you would pay off!",
+    goals: [
+      "Make the small watch run in reverse at the same speed as the big clock.",
+    ],
+    success:
+      "Whoa! It's actually working! Backwards brilliance! I knew bothering you would pay off!",
     category: "Time Transformation",
     image: alleyOne,
     initialNodes: [],

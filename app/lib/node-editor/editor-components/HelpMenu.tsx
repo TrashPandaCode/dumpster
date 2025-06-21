@@ -45,7 +45,12 @@ const HelpMenu = () => {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <IconButton id="help-menu" side="left" tooltip="Help Menu" aria-label="Help Menu">
+        <IconButton
+          id="help-menu"
+          side="left"
+          tooltip="Help Menu"
+          aria-label="Help Menu"
+        >
           <QuestionMarkIcon className="text-white" />
         </IconButton>
       </PopoverTrigger>
@@ -57,7 +62,7 @@ const HelpMenu = () => {
             <NavLink
               className="text-slate-400 italic hover:underline"
               target="_blank"
-              to="/docs/"
+              to={`/docs/levels/${LEVELS[level].slug}`}
             >
               Find information on this topic here
             </NavLink>
@@ -95,15 +100,14 @@ const HelpMenu = () => {
               >
                 Next Hint
               </button>
-              <button className="cursor-pointer rounded bg-slate-700 px-2 py-1 text-left text-sm text-white hover:bg-slate-600">
-                First Correct Node
-              </button>
-              <button
-                className="hover:bg-jam-600 cursor-pointer rounded bg-slate-700 px-2 py-1 text-left text-sm text-white"
-                onClick={handleFullSolution}
-              >
-                Full Solution
-              </button>
+              {hintIndex === hints.length - 1 && (
+                <button
+                  className="hover:bg-jam-600 cursor-pointer rounded bg-slate-700 px-2 py-1 text-left text-sm text-white"
+                  onClick={handleFullSolution}
+                >
+                  Full Solution
+                </button>
+              )}
             </div>
           </div>
         </PopoverContent>

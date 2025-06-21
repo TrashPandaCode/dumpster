@@ -80,12 +80,12 @@
         "path": "/docs/levels/parenting"
       },
       {
-        "title": "Time Transform",
-        "path": "/docs/levels/time-transform"
+        "title": "Linear",
+        "path": "/docs/levels/linear"
       },
       {
-        "title": "Kinematics",
-        "path": "/docs/levels/kinematics"
+        "title": "Forward",
+        "path": "/docs/levels/forward"
       },
       {
         "title": "Playground",
