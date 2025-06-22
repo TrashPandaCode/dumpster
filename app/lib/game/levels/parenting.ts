@@ -37,7 +37,7 @@ export const initializeParenting = () => {
 
   raccoon.pos.x = -15;
 
-  goalFlag.pos.x = -22;
+  goalFlag.pos.x = -18;
 
   let timeParenting = 0;
   let trashCounter = 0;
@@ -60,7 +60,7 @@ export const initializeParenting = () => {
       movementMode: "loop",
       loopConfig: {
         speed: 5,
-        minX: -21,
+        minX: -17,
         maxX: 5,
       },
     });
