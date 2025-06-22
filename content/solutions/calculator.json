@@ -1,0 +1,262 @@
+{
+  "nodes": [
+    {
+      "id": "4a15c1a7-8359-4d0f-8200-78ca44db3315",
+      "type": "ExportToGameobject",
+      "position": {
+        "x": 470.44927631273174,
+        "y": -17.26353541534219
+      },
+      "data": {
+        "selectedGameObjects": ["raccoon"]
+      },
+      "selected": false,
+      "dragging": false,
+      "measured": {
+        "width": 222,
+        "height": 166
+      }
+    },
+    {
+      "id": "73882aa5-e305-49f0-9932-e8b2c96ee70f",
+      "type": "Math",
+      "position": {
+        "x": -228.22297328235885,
+        "y": -271.8948642281932
+      },
+      "data": {
+        "initialComputeType": "Addition",
+        "xInputData": 0,
+        "yInputData": 0
+      },
+      "selected": false,
+      "dragging": false,
+      "measured": {
+        "width": 256,
+        "height": 204
+      }
+    },
+    {
+      "id": "e59886f9-c512-401e-bbed-c993957e7303",
+      "type": "Math",
+      "position": {
+        "x": -530.8292170983746,
+        "y": -53.1761261146821
+      },
+      "data": {
+        "initialComputeType": "Multiply",
+        "xInputData": 0,
+        "yInputData": 0
+      },
+      "selected": false,
+      "dragging": false,
+      "measured": {
+        "width": 256,
+        "height": 204
+      }
+    },
+    {
+      "id": "71442215-b994-4485-bdca-922fc852063f",
+      "type": "Math",
+      "position": {
+        "x": 125.6779231716944,
+        "y": -37.83989981848933
+      },
+      "data": {
+        "initialComputeType": "Substraction",
+        "xInputData": 0,
+        "yInputData": 0
+      },
+      "selected": false,
+      "dragging": false,
+      "measured": {
+        "width": 256,
+        "height": 204
+      }
+    },
+    {
+      "id": "6db79ef9-a762-419f-a360-9038c9da001f",
+      "type": "Math",
+      "position": {
+        "x": -532.7499320337668,
+        "y": 188.87330713403176
+      },
+      "data": {
+        "initialComputeType": "Divide",
+        "xInputData": 0,
+        "yInputData": 0
+      },
+      "selected": false,
+      "dragging": false,
+      "measured": {
+        "width": 256,
+        "height": 204
+      }
+    },
+    {
+      "id": "bb99ed6c-5920-4022-bc47-5ec750939908",
+      "type": "Value",
+      "position": {
+        "x": -829.0524683277133,
+        "y": -231.25976123882572
+      },
+      "data": {
+        "value": 7
+      },
+      "selected": false,
+      "dragging": false,
+      "measured": {
+        "width": 192,
+        "height": 104
+      }
+    },
+    {
+      "id": "29f31f7a-38b8-4c8f-9375-db3b54e92b5b",
+      "type": "Value",
+      "position": {
+        "x": -834.3891446253301,
+        "y": -48.97051946483568
+      },
+      "data": {
+        "value": 5
+      },
+      "selected": false,
+      "dragging": false,
+      "measured": {
+        "width": 192,
+        "height": 104
+      }
+    },
+    {
+      "id": "cc4236c7-0368-4f03-97ce-05a324e5d64b",
+      "type": "Value",
+      "position": {
+        "x": -825.8916518485428,
+        "y": 111.7028331303978
+      },
+      "data": {
+        "value": 2
+      },
+      "selected": false,
+      "dragging": false,
+      "measured": {
+        "width": 192,
+        "height": 104
+      }
+    },
+    {
+      "id": "2cd8e1c4-bfa8-499d-825d-c62898189aad",
+      "type": "Value",
+      "position": {
+        "x": -825.1758791761075,
+        "y": 271.51155015848093
+      },
+      "data": {
+        "value": 3
+      },
+      "selected": false,
+      "dragging": false,
+      "measured": {
+        "width": 192,
+        "height": 104
+      }
+    },
+    {
+      "id": "5554d637-d3ba-4f6b-93ee-7fa95630e179",
+      "type": "Display",
+      "position": {
+        "x": 472.9323230663398,
+        "y": -152.84881210531898
+      },
+      "data": {},
+      "selected": false,
+      "dragging": false,
+      "measured": {
+        "width": 192,
+        "height": 102
+      }
+    }
+  ],
+  "edges": [
+    {
+      "type": "Deletable",
+      "source": "2cd8e1c4-bfa8-499d-825d-c62898189aad",
+      "sourceHandle": "output-handle-x",
+      "target": "6db79ef9-a762-419f-a360-9038c9da001f",
+      "targetHandle": "input-handle-x",
+      "id": "xy-edge__2cd8e1c4-bfa8-499d-825d-c62898189aadoutput-handle-x-6db79ef9-a762-419f-a360-9038c9da001finput-handle-x"
+    },
+    {
+      "type": "Deletable",
+      "source": "29f31f7a-38b8-4c8f-9375-db3b54e92b5b",
+      "sourceHandle": "output-handle-x",
+      "target": "e59886f9-c512-401e-bbed-c993957e7303",
+      "targetHandle": "input-handle-x",
+      "id": "xy-edge__29f31f7a-38b8-4c8f-9375-db3b54e92b5boutput-handle-x-e59886f9-c512-401e-bbed-c993957e7303input-handle-x"
+    },
+    {
+      "type": "Deletable",
+      "source": "2cd8e1c4-bfa8-499d-825d-c62898189aad",
+      "sourceHandle": "output-handle-x",
+      "target": "6db79ef9-a762-419f-a360-9038c9da001f",
+      "targetHandle": "input-handle-y",
+      "id": "xy-edge__2cd8e1c4-bfa8-499d-825d-c62898189aadoutput-handle-x-6db79ef9-a762-419f-a360-9038c9da001finput-handle-y"
+    },
+    {
+      "type": "Deletable",
+      "source": "cc4236c7-0368-4f03-97ce-05a324e5d64b",
+      "sourceHandle": "output-handle-x",
+      "target": "e59886f9-c512-401e-bbed-c993957e7303",
+      "targetHandle": "input-handle-y",
+      "id": "xy-edge__cc4236c7-0368-4f03-97ce-05a324e5d64boutput-handle-x-e59886f9-c512-401e-bbed-c993957e7303input-handle-y"
+    },
+    {
+      "type": "Deletable",
+      "source": "bb99ed6c-5920-4022-bc47-5ec750939908",
+      "sourceHandle": "output-handle-x",
+      "target": "73882aa5-e305-49f0-9932-e8b2c96ee70f",
+      "targetHandle": "input-handle-x",
+      "id": "xy-edge__bb99ed6c-5920-4022-bc47-5ec750939908output-handle-x-73882aa5-e305-49f0-9932-e8b2c96ee70finput-handle-x"
+    },
+    {
+      "type": "Deletable",
+      "source": "e59886f9-c512-401e-bbed-c993957e7303",
+      "sourceHandle": "output-handle-x",
+      "target": "73882aa5-e305-49f0-9932-e8b2c96ee70f",
+      "targetHandle": "input-handle-y",
+      "id": "xy-edge__e59886f9-c512-401e-bbed-c993957e7303output-handle-x-73882aa5-e305-49f0-9932-e8b2c96ee70finput-handle-y"
+    },
+    {
+      "type": "Deletable",
+      "source": "73882aa5-e305-49f0-9932-e8b2c96ee70f",
+      "sourceHandle": "output-handle-x",
+      "target": "71442215-b994-4485-bdca-922fc852063f",
+      "targetHandle": "input-handle-x",
+      "id": "xy-edge__73882aa5-e305-49f0-9932-e8b2c96ee70foutput-handle-x-71442215-b994-4485-bdca-922fc852063finput-handle-x"
+    },
+    {
+      "type": "Deletable",
+      "source": "6db79ef9-a762-419f-a360-9038c9da001f",
+      "sourceHandle": "output-handle-x",
+      "target": "71442215-b994-4485-bdca-922fc852063f",
+      "targetHandle": "input-handle-y",
+      "id": "xy-edge__6db79ef9-a762-419f-a360-9038c9da001foutput-handle-x-71442215-b994-4485-bdca-922fc852063finput-handle-y"
+    },
+    {
+      "type": "Deletable",
+      "source": "71442215-b994-4485-bdca-922fc852063f",
+      "sourceHandle": "output-handle-x",
+      "target": "5554d637-d3ba-4f6b-93ee-7fa95630e179",
+      "targetHandle": "input-handle-x",
+      "id": "xy-edge__71442215-b994-4485-bdca-922fc852063foutput-handle-x-5554d637-d3ba-4f6b-93ee-7fa95630e179input-handle-x"
+    },
+    {
+      "type": "Deletable",
+      "source": "71442215-b994-4485-bdca-922fc852063f",
+      "sourceHandle": "output-handle-x",
+      "target": "4a15c1a7-8359-4d0f-8200-78ca44db3315",
+      "targetHandle": "solution",
+      "id": "xy-edge__71442215-b994-4485-bdca-922fc852063foutput-handle-x-4a15c1a7-8359-4d0f-8200-78ca44db3315solution"
+    }
+  ]
+}

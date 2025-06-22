@@ -301,8 +301,6 @@ export const LEVELS = {
       "Display",
       "Value",
       "Math",
-      "Switch",
-      "KeyPress",
       "ImportFromGameobject",
       "ExportToGameobject",
     ],
