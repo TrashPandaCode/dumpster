@@ -154,9 +154,9 @@ describe("LEVELS Object Validation", () => {
   });
 
   describe("Difficulty Validation", () => {
-    test("difficulty should be 0, 1, or 2", () => {
+    test("difficulty should be 0, 1, 2, or 3", () => {
       levelValues.forEach((level) => {
-        expect([0, 1, 2]).toContain(level.difficulty);
+        expect([0, 1, 2, 3]).toContain(level.difficulty);
       });
     });
   });

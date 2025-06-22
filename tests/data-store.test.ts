@@ -245,7 +245,7 @@ describe("createLevelDataHelpers", () => {
   it("should create type-safe helpers for a specific level", () => {
     const helpers = createLevelDataHelpers("calculator");
 
-    expect(helpers.initData).toBe(true);
+    expect(helpers.initData()).toBe(true);
     expect(typeof helpers.setData).toBe("function");
     expect(typeof helpers.getData).toBe("function");
     expect(typeof helpers.addHandle).toBe("function");
