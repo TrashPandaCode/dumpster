@@ -50,39 +50,45 @@ export const initializeInverse = () => {
   dataHelper.setData("joint3", "x", () => setJointPos().joint3.x);
   dataHelper.setData("joint3", "y", () => setJointPos().joint3.y);
 
-  const joint1 = k.add([
+  k.loadSprite("joint", "/game/sprites/joint.png");
+  k.loadSprite("jointend", "/game/sprites/jointend.png");
+  k.loadSprite("soap", "/game/sprites/soap.png");
+  const joint1 = game.add([
     "joint1",
-    k.rect(0.2, JOINT_1_LENGTH),
-    k.anchor("bot"),
+    k.sprite("joint"),
+    k.anchor(k.vec2(0, 0.8)),
+    k.scale(0.058),
+    k.color(255, 100, 100),
     k.pos(0, 0),
     k.rotate(0),
-    k.color(255, 0, 0),
     k.z(5),
   ]);
-  const joint2 = k.add([
+  const joint2 = game.add([
     "joint2",
-    k.rect(0.2, JOINT_2_LENGTH),
-    k.anchor("bot"),
+    k.sprite("joint"),
+    k.anchor(k.vec2(0, 0.8)),
+    k.scale(0.058),
+    k.color(100, 255, 100),
     k.pos(0, 0),
     k.rotate(0),
-    k.color(0, 255, 0),
     k.z(6),
   ]);
-  const joint3 = k.add([
+  const joint3 = game.add([
     "joint3",
-    k.rect(0.2, JOINT_3_LENGTH),
-    k.anchor("bot"),
+    k.sprite("jointend"),
+    k.anchor(k.vec2(0, 0.8)),
+    k.scale(0.058),
+    k.color(100, 100, 255),
     k.pos(0, 0),
     k.rotate(0),
-    k.color(0, 0, 255),
     k.z(7),
   ]);
-  const endeffector = k.add([
+  const endeffector = game.add([
     "endeffector",
-    k.circle(0.25),
+    k.sprite("soap"),
+    k.scale(0.03),
     k.anchor("center"),
     k.pos(0, 0),
-    k.color(255, 255, 255),
     k.z(8),
   ]);
 
@@ -132,7 +138,7 @@ export const initializeInverse = () => {
       loopConfig: {
         maxX: 5,
         minX: -5,
-        speed: 1,
+        speed: 2,
       },
       camClampX: {
         min: -5,
