@@ -402,9 +402,11 @@ function handleLoopMovement(
 function updateCamera(
   player: PlayerType,
   k: KAPLAYCtx,
-  camClampX: ClampConfig
+  camClampX?: ClampConfig
 ): void {
-  const camX = Math.max(camClampX.min, Math.min(camClampX.max, player.pos.x));
+  const camX = camClampX
+    ? Math.max(camClampX.min, Math.min(camClampX.max, player.pos.x))
+    : player.pos.x;
   k.setCamPos(k.lerp(k.getCamPos(), k.vec2(camX, -BACKGROUND_OFFSET), 0.1));
 }
 
@@ -452,7 +454,7 @@ function applyMovement(
 
 function clampPlayerPosition(
   player: PlayerType,
-  clampConfig: ClampConfig | undefined
+  clampConfig?: ClampConfig
 ): void {
   if (!clampConfig) return;
   player.pos.x = Math.max(
@@ -470,7 +472,7 @@ export function animPlayer(
     movementMode = "node",
     loopConfig,
     playerClampX,
-    camClampX = DEFAULT_CAMERA_CLAMP,
+    camClampX,
     enableCameraUpdate = true,
     updateStoreData = true,
   } = config;

@@ -15,7 +15,7 @@ export const initializeMove = () => {
 
   const { raccoon, goalFlag } = addGameobjects(["raccoon", "goalFlag"]);
 
-  goalFlag.pos.x = -22;
+  goalFlag.pos.x = -15;
 
   game.onUpdate(() => {
     if (useGameStore.getState().isPaused) return;
