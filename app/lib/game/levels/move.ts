@@ -7,7 +7,6 @@ import {
   animPlayer,
   handleReset,
 } from "../utils/game-helper";
-import { globalKeyTracker } from "../utils/global-keytracker";
 
 export const initializeMove = () => {
   const { k, game } = getKaplayCtx();
@@ -27,17 +26,7 @@ export const initializeMove = () => {
 
     if (distGoal <= 1) {
       //TODO: Raccoon continues walking after "Continue Playing" is clicked
-
-      if (
-        globalKeyTracker.isKeyDown("w") ||
-        globalKeyTracker.isKeyDown("a") ||
-        globalKeyTracker.isKeyDown("s") ||
-        globalKeyTracker.isKeyDown("d") ||
-        globalKeyTracker.isKeyDown("space") ||
-        globalKeyTracker.isKeyDown("enter")
-      ) {
-        useGameStore.getState().setLevelCompleted(true);
-      }
+      useGameStore.getState().setLevelCompleted(true);
     }
 
     if (useDataStore.getState().initData) {

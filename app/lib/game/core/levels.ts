@@ -220,7 +220,6 @@ export const LEVELS = {
     ],
     difficulty: 1,
   },
-
   move: {
     slug: "move",
     name: "Move",
@@ -243,8 +242,8 @@ export const LEVELS = {
       {
         id: "raccoon",
         connections: [
-          { label: "x", access: "export" },
-          { label: "y", access: "export" },
+          { label: "x", access: "all" },
+          { label: "y", access: "all" },
         ],
       },
     ],
