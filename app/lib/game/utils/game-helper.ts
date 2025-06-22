@@ -107,11 +107,6 @@ const BACKGROUND_CONFIGS: Record<Background, BackgroundConfig> = {
   },
 };
 
-const DEFAULT_PLAYER_CLAMP: ClampConfig = {
-  min: -22.7,
-  max: 22.7,
-};
-
 const DEFAULT_CAMERA_CLAMP: ClampConfig = {
   min: -15,
   max: 15,
@@ -382,6 +377,12 @@ function handleInputMovement(player: PlayerType, k: KAPLAYCtx): void {
   if (moveRight) {
     player.pos.x += SPEED * k.dt();
   }
+
+  if (globalKeyTracker.isKeyPressed("space")) {
+    if (player.isGrounded()) {
+      player.jump(20);
+    }
+  }
 }
 
 function handleLoopMovement(
@@ -423,12 +424,14 @@ interface AnimPlayerConfig {
   playerClampX?: ClampConfig;
   camClampX?: ClampConfig;
   enableCameraUpdate?: boolean;
+  updateStoreData?: boolean;
 }
 
 function applyMovement(
   player: PlayerType,
   k: KAPLAYCtx,
   movementMode: MovementMode,
+  updateStoreData: boolean,
   loopConfig?: LoopConfig
 ): void {
   switch (movementMode) {
@@ -444,13 +447,14 @@ function applyMovement(
       }
       break;
   }
-  updateDataStore(player);
+  if (updateStoreData) updateDataStore(player);
 }
 
 function clampPlayerPosition(
   player: PlayerType,
-  clampConfig: ClampConfig
+  clampConfig: ClampConfig | undefined
 ): void {
+  if (!clampConfig) return;
   player.pos.x = Math.max(
     clampConfig.min,
     Math.min(clampConfig.max, player.pos.x)
@@ -465,14 +469,15 @@ export function animPlayer(
   const {
     movementMode = "node",
     loopConfig,
-    playerClampX = DEFAULT_PLAYER_CLAMP,
+    playerClampX,
     camClampX = DEFAULT_CAMERA_CLAMP,
     enableCameraUpdate = true,
+    updateStoreData = true,
   } = config;
 
   const lastX = player.pos.x;
 
-  applyMovement(player, k, movementMode, loopConfig);
+  applyMovement(player, k, movementMode, updateStoreData, loopConfig);
 
   clampPlayerPosition(player, playerClampX);
 

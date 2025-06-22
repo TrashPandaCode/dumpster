@@ -70,7 +70,7 @@ export const initializeForward = () => {
     k.z(2),
   ]);
   const platform = k.add([
-    k.rect(4, 0.2),
+    k.rect(5, 0.2),
     k.anchor("bot"),
     k.pos(leftArmX, -2),
     k.area(),
@@ -102,7 +102,7 @@ export const initializeForward = () => {
     k.z(2),
   ]);
   const platform2 = k.add([
-    k.rect(4, 0.2),
+    k.rect(5, 0.2),
     k.anchor("bot"),
     k.pos(rightArmX, -2),
     k.area(),
@@ -143,17 +143,17 @@ export const initializeForward = () => {
     // Movement
     animPlayer(raccoon, k, {
       movementMode: "input",
+      updateStoreData: false,
       camClampX: {
-        min: -2,
+        min: -8,
         max: 12,
+      },
+      playerClampX: {
+        min: -12,
+        max: 20,
       },
     });
 
-    k.onKeyDown("space", () => {
-      if (raccoon.isGrounded()) {
-        raccoon.jump(20);
-      }
-    });
     // Raccoon fall die :(
     if (raccoon.pos.y > 10) {
       raccoon.pos.x = -10;
