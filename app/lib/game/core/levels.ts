@@ -76,7 +76,7 @@ export type Level = {
    */
   modifiableGameObjects: ModifiableGameObject[];
   availableNodes: NodeType[];
-  difficulty: 0 | 1 | 2;
+  difficulty: 0 | 1 | 2 | 3;
 };
 
 export type ModifiableGameObject = {
@@ -256,7 +256,7 @@ export const LEVELS = {
       "ImportFromGameobject",
       "ExportToGameobject",
     ],
-    difficulty: 2,
+    difficulty: 1,
   },
   parenting: {
     slug: "parenting",
@@ -340,7 +340,7 @@ export const LEVELS = {
       },
     ],
     availableNodes: ["Display", "Value", "Math", "ExportToGameobject", "Time"],
-    difficulty: 1,
+    difficulty: 2,
   },
   reverse: {
     slug: "reverse",
@@ -369,7 +369,7 @@ export const LEVELS = {
       },
     ],
     availableNodes: ["Display", "Value", "Math", "ExportToGameobject", "Time"],
-    difficulty: 1,
+    difficulty: 2,
   },
   forward: {
     slug: "forward",
@@ -443,7 +443,7 @@ export const LEVELS = {
       "ExportToGameobject",
       "ForLoop",
     ],
-    difficulty: 1,
+    difficulty: 2,
   },
   inverse: {
     slug: "inverse",
@@ -511,7 +511,7 @@ export const LEVELS = {
       "ForLoop",
       "MousePosition",
     ],
-    difficulty: 1,
+    difficulty: 3,
   },
   playground: {
     slug: "playground",
