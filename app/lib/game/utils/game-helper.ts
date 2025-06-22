@@ -366,6 +366,11 @@ function handleNodeMovement(player: PlayerType): void {
   player.pos.y = useDataStore.getState().getData("raccoon", "y");
 }
 
+function updateDataStore(player: PlayerType): void {
+  useDataStore.getState().setData("raccoon", "x", player.pos.x);
+  useDataStore.getState().setData("raccoon", "y", player.pos.y);
+}
+
 function handleInputMovement(player: PlayerType, k: KAPLAYCtx): void {
   const SPEED = 5;
   const moveLeft = globalKeyTracker.isKeyDown("a");
@@ -429,7 +434,7 @@ function applyMovement(
   switch (movementMode) {
     case "node":
       handleNodeMovement(player);
-      break;
+      return;
     case "input":
       handleInputMovement(player, k);
       break;
@@ -439,6 +444,7 @@ function applyMovement(
       }
       break;
   }
+  updateDataStore(player);
 }
 
 function clampPlayerPosition(

@@ -460,6 +460,13 @@ export const LEVELS = {
     hints: [],
     modifiableGameObjects: [
       {
+        id: "raccoon",
+        connections: [
+          { label: "x", access: "import" },
+          { label: "y", access: "import" },
+        ],
+      },
+      {
         id: "joint1",
         connections: [
           { label: "rotation", access: "all" },

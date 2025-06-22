@@ -192,6 +192,6 @@ export function createLevelDataHelpers<L extends LevelId>(level: L) {
     ) => {
       store.removeHandle(gameObject as GameObject, label as AllPossibleLabels);
     },
-    initData: store.initData,
+    initData: () => useDataStore.getState().initData,
   };
 }

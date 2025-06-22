@@ -15,7 +15,11 @@ export const initializeParenting = () => {
 
   addBackgrounds(["default"]);
 
-  const { raccoon, goalFlag, trashcanFilled: trashcan } = addGameobjects(["raccoon", "goalFlag", "trashcanFilled"]);
+  const {
+    raccoon,
+    goalFlag,
+    trashcanFilled: trashcan,
+  } = addGameobjects(["raccoon", "goalFlag", "trashcanFilled"]);
 
   k.loadSprite("trashcan", "/game/sprites/trashcan_spritesheet.png", {
     sliceX: 2,
@@ -79,14 +83,13 @@ export const initializeParenting = () => {
       }
 
       if (timeParenting >= 5 && trashCounter === 3) {
-        useGameStore.getState().setLevelCompleteDialogOpen(true);
         useGameStore.getState().setLevelCompleted(true);
       }
     } else {
       timeParenting = 0;
     }
 
-    if (dataHelper.initData) {
+    if (dataHelper.initData()) {
       handleReset(raccoon, 1);
     }
   });

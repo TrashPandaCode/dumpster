@@ -71,10 +71,10 @@ export const initializeReverse = () => {
     pocketwatchHand.rotateTo(userTime);
 
     // check that they are running in opposite directions
-    if (userTime == -(lastTime * TIME_SCALE + TIME_OFFSET)) matchTimer -= k.dt();
+    if (userTime == -(lastTime * TIME_SCALE + TIME_OFFSET))
+      matchTimer -= k.dt();
 
-    if (matchTimer < 0 && !useGameStore.getState().levelCompleted) {
-      useGameStore.getState().setLevelCompleteDialogOpen(true);
+    if (matchTimer < 0) {
       useGameStore.getState().setLevelCompleted(true);
     }
 

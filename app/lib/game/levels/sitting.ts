@@ -29,8 +29,7 @@ export const initializeSitting = () => {
 
     const dist = raccoon.pos.dist(trashcanFilled!.pos);
 
-    if (dist <= 0.5 && !useGameStore.getState().levelCompleted) {
-      useGameStore.getState().setLevelCompleteDialogOpen(true);
+    if (dist <= 0.5) {
       useGameStore.getState().setLevelCompleted(true);
     }
 

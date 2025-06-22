@@ -98,7 +98,7 @@ export const initializeBounce = () => {
     const trashcanFilled = trashcan1IsFilled ? trashcan1 : trashcan2;
     const distFilled = raccoon.pos.dist(trashcanFilled!.pos);
 
-    if (distFilled <= 0.5 && !useGameStore.getState().levelCompleted) {
+    if (distFilled <= 0.5) {
       timeInFilled += k.dt();
       graceTimer = 0;
 
@@ -106,11 +106,10 @@ export const initializeBounce = () => {
       const countdown = Math.max(0, Math.ceil(5 - timeInFilled));
       timerText.text = countdown.toString();
       if (timeInFilled >= 5) {
-        useGameStore.getState().setLevelCompleteDialogOpen(true);
         useGameStore.getState().setLevelCompleted(true);
         timerText.opacity = 0;
       }
-    } else if (timeInFilled > 0 && !useGameStore.getState().levelCompleted) {
+    } else if (timeInFilled > 0) {
       graceTimer += k.dt();
       if (graceTimer >= GRACE_PERIOD) {
         timeInFilled = 0;
@@ -120,7 +119,7 @@ export const initializeBounce = () => {
       }
     }
 
-    if (dataHelper.initData) {
+    if (dataHelper.initData()) {
       handleReset(raccoon, 1);
     }
   });

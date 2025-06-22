@@ -35,7 +35,7 @@ export const initializePlayground = () => {
     goalFlag.pos.x = dataHelper.getData("goalFlag", "x");
     goalFlag.pos.y = dataHelper.getData("goalFlag", "y");
 
-    if (dataHelper.initData) {
+    if (dataHelper.initData()) {
       handleReset(raccoon, 1);
     }
   });

@@ -25,12 +25,11 @@ export const initializeCalculator = () => {
     // Get value from exportToGameObject node
     const value = dataHelper.getData("raccoon", "solution");
 
-    if (value == 16 && !useGameStore.getState().levelCompleted) {
-      useGameStore.getState().setLevelCompleteDialogOpen(true);
+    if (value == 16) {
       useGameStore.getState().setLevelCompleted(true);
     }
 
-    if (dataHelper.initData) {
+    if (dataHelper.initData()) {
       handleReset(raccoon, -1);
     }
   });

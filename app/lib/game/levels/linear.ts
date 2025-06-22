@@ -58,8 +58,7 @@ export const initializeLinear = () => {
     pocketwatchHand.rotateTo(userTime);
     if ((lastTime + TIME_OFFSET) * TIME_SCALE - userTime < Number.EPSILON)
       matchTimer -= k.dt();
-    if (matchTimer < 0 && !useGameStore.getState().levelCompleted) {
-      useGameStore.getState().setLevelCompleteDialogOpen(true);
+    if (matchTimer < 0) {
       useGameStore.getState().setLevelCompleted(true);
     }
     lastTime = getTime();

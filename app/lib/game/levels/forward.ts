@@ -163,11 +163,10 @@ export const initializeForward = () => {
 
     //Handle Finish + Reset
     const distGoal = raccoon.pos.dist(goalFlag.pos);
-    if (distGoal <= 1 && !useGameStore.getState().levelCompleted) {
-      useGameStore.getState().setLevelCompleteDialogOpen(true);
+    if (distGoal <= 1) {
       useGameStore.getState().setLevelCompleted(true);
     }
-    if (dataHelper.initData) {
+    if (dataHelper.initData()) {
       handleReset(raccoon, 1);
       raccoon.pos = k.vec2(-10, 0);
     }

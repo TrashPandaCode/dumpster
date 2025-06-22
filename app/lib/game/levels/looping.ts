@@ -24,7 +24,7 @@ export const initializeLooping = () => {
     // useGameStore.getState().setLevelCompleteDialogOpen(true);
     // useGameStore.getState().setLevelCompleted(true);
 
-    if (dataHelper.initData) {
+    if (dataHelper.initData()) {
       handleReset(raccoon, 1);
     }
   });

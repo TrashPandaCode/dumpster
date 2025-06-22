@@ -128,17 +128,16 @@ export const initializeInverse = () => {
     setJointPos();
 
     animPlayer(raccoon, k, {
-      movementMode: "input",
+      movementMode: "loop",
+      loopConfig: {
+        maxX: 5,
+        minX: -5,
+        speed: 1,
+      },
       camClampX: {
         min: -5,
         max: 5,
       },
-    });
-
-    k.onKeyDown("space", () => {
-      if (raccoon.isGrounded()) {
-        raccoon.jump(20);
-      }
     });
 
     // wincon
@@ -151,14 +150,13 @@ export const initializeInverse = () => {
     ) {
       pettingTimer += k.dt();
       if (pettingTimer > 5) {
-        useGameStore.getState().setLevelCompleteDialogOpen(true);
         useGameStore.getState().setLevelCompleted(true);
       }
     } else {
       pettingTimer = 0;
     }
 
-    if (dataHelper.initData) {
+    if (dataHelper.initData()) {
       handleReset(raccoon, -1);
     }
   });
