@@ -1,8 +1,9 @@
-import { Panel, useReactFlow } from "@xyflow/react";
+import { Panel, useReactFlow, type Node } from "@xyflow/react";
 import React, { useCallback } from "react";
 
 import { useClipboardStore } from "~/lib/zustand/clipboard";
 import useIsMac from "../hooks/useMac";
+import { collectRelevantNodes } from "../hooks/useRelevantNodes";
 import { duplicateNodes } from "../utils/duplicate";
 
 const SelectionContextMenu = React.forwardRef<
@@ -20,10 +21,19 @@ const SelectionContextMenu = React.forwardRef<
 
   // handle copying selected nodes
   const copyNodes = useCallback(() => {
-    const nodesToCopy = getNodes().filter((n) => nodeIds.includes(n.id));
+    const allNodes = getNodes();
+    const nodesToCopy = collectRelevantNodes(nodeIds, allNodes);
     setCopiedNodes(nodesToCopy);
     onClose();
   }, [getNodes, nodeIds, setCopiedNodes, onClose]);
+
+  // handle duplicating selected nodes with proper loop/group handling
+  const duplicateSelectedNodes = useCallback(() => {
+    const allNodes = getNodes();
+    const nodesToDuplicate = collectRelevantNodes(nodeIds, allNodes);
+    duplicateNodes(nodesToDuplicate, getEdges, getNodes, setEdges, setNodes);
+    onClose();
+  }, [getNodes, getEdges, setNodes, setEdges, nodeIds, onClose]);
 
   const deleteNodes = useCallback(() => {
     const nodes = getNodes();
@@ -54,16 +64,7 @@ const SelectionContextMenu = React.forwardRef<
         </button>
         <button
           className="w-full rounded px-2 py-1 text-left text-sm text-white hover:bg-slate-700"
-          onClick={() => {
-            duplicateNodes(
-              getNodes().filter((n) => nodeIds.includes(n.id)),
-              getEdges,
-              getNodes,
-              setEdges,
-              setNodes
-            );
-            onClose();
-          }}
+          onClick={duplicateSelectedNodes}
         >
           <span>Duplicate {nodeIds.length} nodes</span>
           <span className="ml-2 rounded bg-slate-600 px-1.5 py-0.5 font-mono text-xs text-gray-300">

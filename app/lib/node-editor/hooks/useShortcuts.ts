@@ -1,4 +1,4 @@
-import { useReactFlow } from "@xyflow/react";
+import { useReactFlow, type Node } from "@xyflow/react";
 import { useHotkeys } from "react-hotkeys-hook";
 
 import { useClipboardStore } from "~/lib/zustand/clipboard";
@@ -6,6 +6,7 @@ import { useNodeAddMenuStore } from "../../zustand/node-add-menu-store";
 import { duplicateNodes } from "../utils/duplicate";
 import { redo, undo } from "../utils/undo";
 import useIsMac from "./useMac";
+import { collectRelevantNodes } from "./useRelevantNodes";
 
 // Hook to handle copying nodes with a hotkey
 export function useCopyHotkey() {
@@ -17,9 +18,14 @@ export function useCopyHotkey() {
   useHotkeys(
     shortcuts,
     (e) => {
-      const selectedNodes = getNodes().filter((n) => n.selected);
-      if (selectedNodes.length > 0) {
-        setCopiedNodes(selectedNodes);
+      const allNodes = getNodes();
+      const selectedNodeIds = allNodes
+        .filter((n) => n.selected)
+        .map((n) => n.id);
+
+      if (selectedNodeIds.length > 0) {
+        const nodesToCopy = collectRelevantNodes(selectedNodeIds, allNodes);
+        setCopiedNodes(nodesToCopy);
       }
     },
     {
@@ -117,9 +123,23 @@ export function useDuplicateHotkey() {
   useHotkeys(
     shortcuts,
     (e) => {
-      const selectedNodes = getNodes().filter((n) => n.selected);
-      if (selectedNodes.length > 0) {
-        duplicateNodes(selectedNodes, getEdges, getNodes, setEdges, setNodes);
+      const allNodes = getNodes();
+      const selectedNodeIds = allNodes
+        .filter((n) => n.selected)
+        .map((n) => n.id);
+
+      if (selectedNodeIds.length > 0) {
+        const nodesToDuplicate = collectRelevantNodes(
+          selectedNodeIds,
+          allNodes
+        );
+        duplicateNodes(
+          nodesToDuplicate,
+          getEdges,
+          getNodes,
+          setEdges,
+          setNodes
+        );
       }
     },
     {
