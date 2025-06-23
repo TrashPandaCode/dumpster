@@ -486,7 +486,11 @@ export function animPlayer(
 }
 
 export function handleReset(raccoon: PlayerType, initDirection: number): void {
-  raccoon?.scaleTo(SPRITE_SCALE * initDirection, SPRITE_SCALE);
+  if(raccoon){
+    raccoon?.scaleTo(SPRITE_SCALE * initDirection, SPRITE_SCALE);
+    raccoon!.pos.x = 0;
+    raccoon!.pos.y = 0;
+  }
   useDataStore.setState({ initData: false });
 }
 
