@@ -368,7 +368,7 @@ export const LEVELS = {
       "ImportFromGameobject",
       "ExportToGameobject",
     ],
-    difficulty: 1,
+    difficulty: 2,
   },
   forward: {
     slug: "forward",
