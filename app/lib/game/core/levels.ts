@@ -477,6 +477,7 @@ export const LEVELS = {
       },
       {
         id: "joint1",
+        displayName: "redJoint",
         connections: [
           { label: "rotation", access: "all" },
           { label: "x", access: "import" },
@@ -485,6 +486,7 @@ export const LEVELS = {
       },
       {
         id: "joint2",
+        displayName: "greenJoint",
         connections: [
           { label: "rotation", access: "all" },
           { label: "x", access: "import" },
@@ -493,6 +495,7 @@ export const LEVELS = {
       },
       {
         id: "joint3",
+        displayName: "blueJoint",
         connections: [
           { label: "rotation", access: "all" },
           { label: "x", access: "import" },
@@ -501,6 +504,7 @@ export const LEVELS = {
       },
       {
         id: "endeffector",
+        displayName: "soap",
         connections: [
           { label: "x", access: "import" },
           { label: "y", access: "import" },
