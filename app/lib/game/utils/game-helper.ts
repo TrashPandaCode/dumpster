@@ -107,12 +107,7 @@ const BACKGROUND_CONFIGS: Record<Background, BackgroundConfig> = {
   },
 };
 
-const DEFAULT_CAMERA_CLAMP: ClampConfig = {
-  min: -15,
-  max: 15,
-};
-
-function createRaccoon(k: KAPLAYCtx, game: any): PlayerType {
+export function createRaccoon(k: KAPLAYCtx, game: any): PlayerType {
   k.loadSprite("raccoon", "/game/sprites/raccoon_spritesheet.png", {
     sliceX: 4,
     sliceY: 4,

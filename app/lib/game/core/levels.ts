@@ -426,11 +426,24 @@ export const LEVELS = {
     hints: [""],
     modifiableGameObjects: [
       {
-        id: "raccoon",
-        connections: [
-          { label: "x", access: "all" },
-          { label: "y", access: "all" },
-        ],
+        id: "raccoon1",
+        connections: [{ label: "y", access: "all" }],
+      },
+      {
+        id: "raccoon2",
+        connections: [{ label: "y", access: "all" }],
+      },
+      {
+        id: "raccoon3",
+        connections: [{ label: "y", access: "all" }],
+      },
+      {
+        id: "raccoon4",
+        connections: [{ label: "y", access: "all" }],
+      },
+      {
+        id: "raccoon5",
+        connections: [{ label: "y", access: "all" }],
       },
     ],
     availableNodes: [
