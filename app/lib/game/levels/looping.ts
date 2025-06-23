@@ -24,7 +24,7 @@ export const initializeLooping = () => {
         k.sprite("box"),
         k.anchor("bot"),
         k.pos(x, -i),
-        k.scale(0.022),
+        k.scale(0.0475),
       ]);
     }
   };
