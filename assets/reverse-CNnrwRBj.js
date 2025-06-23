@@ -1,0 +1,1 @@
+import{o as n}from"./chunk-AYJ5UCUI-BS9SflA5.js";const s={title:"Reverse"};function o(t){const e={h1:"h1",...t.components};return n.jsx(e.h1,{children:"Reverse"})}function c(t={}){const{wrapper:e}=t.components||{};return e?n.jsx(e,{...t,children:n.jsx(o,{...t})}):o(t)}export{c as default,s as frontmatter};
