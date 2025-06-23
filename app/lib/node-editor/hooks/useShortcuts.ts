@@ -35,7 +35,8 @@ export function useNewNodeHotkey() {
   useHotkeys(
     shortcuts,
     (e) => {
-      visible ? closeAddMenu() : openAddMenu();
+      if (visible) closeAddMenu();
+      else openAddMenu();
     },
     {
       enableOnFormTags: true,
