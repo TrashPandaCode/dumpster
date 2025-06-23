@@ -220,45 +220,6 @@ export const LEVELS = {
     ],
     difficulty: 1,
   },
-  move: {
-    slug: "move",
-    name: "Move",
-    description:
-      "This is the first level of the main game, introducing movement mechanics.",
-    dialog: [
-      "Alright, today's the day — I'm finally gonna learn how to walk! I mean, even tiny humans can do it, so how hard can it be?",
-      "Left paw, right paw... wait, which one is my right again?",
-      "Imagine: me, strutting around, hunting for snacks all by myself! No more waiting for food to come to me—I'm gonna chase those leftovers down!",
-    ],
-    goals: ["Move the raccoon to the flag."],
-    success:
-      "Right foot, left foot, right foot, left foot...I could do this all day!",
-    category: "Main Game",
-    image: houseImage,
-    initialNodes: [],
-    initialState: initializeMove,
-    hints: [],
-    modifiableGameObjects: [
-      {
-        id: "raccoon",
-        connections: [
-          { label: "x", access: "all" },
-          { label: "y", access: "all" },
-        ],
-      },
-    ],
-    availableNodes: [
-      "Display",
-      "Value",
-      "Math",
-      "Switch",
-      "KeyPress",
-      "Time",
-      "ImportFromGameobject",
-      "ExportToGameobject",
-    ],
-    difficulty: 1,
-  },
   parenting: {
     slug: "parenting",
     name: "Parenting",
@@ -276,7 +237,7 @@ export const LEVELS = {
       "Bring trashcans to the flag (3 total).",
     ],
     success: "That should be enough food for a while... or at least two days.",
-    category: "Main Game",
+    category: "Hierarchies",
     image: alleyTwo,
     initialNodes: [],
     initialState: initializeParenting,
@@ -369,6 +330,45 @@ export const LEVELS = {
     ],
     availableNodes: ["Display", "Value", "Math", "ExportToGameobject", "Time"],
     difficulty: 2,
+  },
+  move: {
+    slug: "move",
+    name: "Move",
+    description:
+      "This is the first level of the main game, introducing movement mechanics.",
+    dialog: [
+      "Alright, today's the day — I'm finally gonna learn how to walk! I mean, even tiny humans can do it, so how hard can it be?",
+      "Left paw, right paw... wait, which one is my right again?",
+      "Imagine: me, strutting around, hunting for snacks all by myself! No more waiting for food to come to me—I'm gonna chase those leftovers down!",
+    ],
+    goals: ["Move the raccoon to the flag."],
+    success:
+      "Right foot, left foot, right foot, left foot...I could do this all day!",
+    category: "Motion",
+    image: houseImage,
+    initialNodes: [],
+    initialState: initializeMove,
+    hints: [],
+    modifiableGameObjects: [
+      {
+        id: "raccoon",
+        connections: [
+          { label: "x", access: "all" },
+          { label: "y", access: "all" },
+        ],
+      },
+    ],
+    availableNodes: [
+      "Display",
+      "Value",
+      "Math",
+      "Switch",
+      "KeyPress",
+      "Time",
+      "ImportFromGameobject",
+      "ExportToGameobject",
+    ],
+    difficulty: 1,
   },
   forward: {
     slug: "forward",
@@ -477,6 +477,7 @@ export const LEVELS = {
       },
       {
         id: "joint1",
+        displayName: "redJoint",
         connections: [
           { label: "rotation", access: "all" },
           { label: "x", access: "import" },
@@ -485,6 +486,7 @@ export const LEVELS = {
       },
       {
         id: "joint2",
+        displayName: "greenJoint",
         connections: [
           { label: "rotation", access: "all" },
           { label: "x", access: "import" },
@@ -493,6 +495,7 @@ export const LEVELS = {
       },
       {
         id: "joint3",
+        displayName: "blueJoint",
         connections: [
           { label: "rotation", access: "all" },
           { label: "x", access: "import" },
@@ -501,6 +504,7 @@ export const LEVELS = {
       },
       {
         id: "endeffector",
+        displayName: "soap",
         connections: [
           { label: "x", access: "import" },
           { label: "y", access: "import" },
