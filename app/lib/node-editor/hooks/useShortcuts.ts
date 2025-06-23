@@ -4,9 +4,9 @@ import { useHotkeys } from "react-hotkeys-hook";
 import { useClipboardStore } from "~/lib/zustand/clipboard";
 import { useNodeAddMenuStore } from "../../zustand/node-add-menu-store";
 import { duplicateNodes } from "../utils/duplicate";
+import { collectRelevantNodes } from "../utils/relevantnodes";
 import { redo, undo } from "../utils/undo";
 import useIsMac from "./useMac";
-import { collectRelevantNodes } from "./useRelevantNodes";
 
 // Hook to handle copying nodes with a hotkey
 export function useCopyHotkey() {

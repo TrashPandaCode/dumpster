@@ -4,6 +4,7 @@ import React, { useCallback } from "react";
 import { useClipboardStore } from "~/lib/zustand/clipboard";
 import useIsMac from "../hooks/useMac";
 import { duplicateNodes } from "../utils/duplicate";
+import { collectRelevantNodes } from "../utils/relevantnodes";
 import AddNodes from "./AddNodes";
 
 const NodeContextMenu = React.forwardRef<
@@ -58,40 +59,22 @@ const DefaultNodeContextMenu = ({
 
   // handle node copying
   const copyNode = useCallback(() => {
-    const node = getNode(nodeId);
-    if (!node) return;
-
-    const nodesToCopy = getNodes().filter(
-      (n) =>
-        n.id === node.id || // always copy the node itself
-        n.parentId === node.id || // if the node is a group, copy all its children
-        ((n.data.loopId === node.data.loopId || // if node is part of a loop, copy both start and end nodes
-          n.data.parentLoopId === node.data.loopId) && // also get all children if its a loop node
-          node.data.loopId != undefined) // ensure we are dealing with a loop node
-    );
+    const allNodes = getNodes();
+    const nodesToCopy = collectRelevantNodes([nodeId], allNodes);
 
     setCopiedNodes(nodesToCopy);
     onClose();
-  }, [getNode, getNodes, nodeId, setCopiedNodes, onClose]);
+  }, [getNodes, nodeId, setCopiedNodes, onClose]);
 
   // handle node duplication
   const duplicateNode = useCallback(() => {
-    const node = getNode(nodeId);
-    if (!node) return;
-
-    const nodesToDuplicate = getNodes().filter(
-      (n) =>
-        n.id === node.id || // always duplicate the node itself
-        n.parentId === node.id || // if the node is a group, duplicate all its children
-        ((n.data.loopId === node.data.loopId || // if node is part of a loop, duplicate both start and end nodes
-          n.data.parentLoopId === node.data.loopId) && // also get all children if its a loop node
-          node.data.loopId != undefined) // ensure we are dealing with a loop node
-    );
+    const allNodes = getNodes();
+    const nodesToDuplicate = collectRelevantNodes([nodeId], allNodes);
 
     duplicateNodes(nodesToDuplicate, getEdges, getNodes, setEdges, setNodes);
 
     onClose();
-  }, [getEdges, getNode, getNodes, nodeId, onClose, setEdges, setNodes]);
+  }, [getEdges, getNodes, nodeId, onClose, setEdges, setNodes]);
 
   const deleteNode = useCallback(() => {
     const idsToDelete = [nodeId];

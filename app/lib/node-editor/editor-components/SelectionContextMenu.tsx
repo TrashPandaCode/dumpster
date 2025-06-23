@@ -3,8 +3,8 @@ import React, { useCallback } from "react";
 
 import { useClipboardStore } from "~/lib/zustand/clipboard";
 import useIsMac from "../hooks/useMac";
-import { collectRelevantNodes } from "../hooks/useRelevantNodes";
 import { duplicateNodes } from "../utils/duplicate";
+import { collectRelevantNodes } from "../utils/relevantnodes";
 
 const SelectionContextMenu = React.forwardRef<
   HTMLDivElement,
