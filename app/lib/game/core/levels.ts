@@ -276,7 +276,7 @@ export const LEVELS = {
       "Bring trashcans to the flag (3 total).",
     ],
     success: "That should be enough food for a while... or at least two days.",
-    category: "Main Game",
+    category: "Hierarchies",
     image: alleyTwo,
     initialNodes: [],
     initialState: initializeParenting,
