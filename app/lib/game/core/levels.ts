@@ -21,6 +21,7 @@ import { initializeParenting } from "../levels/parenting";
 import { initializePlayground } from "../levels/playground";
 import { initializeReverse } from "../levels/reverse";
 import { initializeSitting } from "../levels/sitting";
+import { initializeGravity } from "../levels/gravity";
 
 export type ConnectionAccess = "export" | "import" | "all";
 
@@ -367,6 +368,59 @@ export const LEVELS = {
       "Time",
       "ImportFromGameobject",
       "ExportToGameobject",
+    ],
+    difficulty: 2,
+  },
+  gravity: {
+    slug: "gravity",
+    name: "Gravity",
+    description:
+      "This level introduces gravity.",
+    dialog: [
+      "Oh! I was just... uh... inspecting this totally-not-impossibly-floating trashcan!",
+      "See, I may have dropped my midnight snack up there. Or maybe it floated away? Or maybe I threw it too hard. Who can say, really!",
+      "BUT! I have a cunning plan! Could you please make that beautiful trashcan fall from the sky?",
+      "And, uh, also... if you could help me jump... that would be AMAZING. My legs are... more wiggly than springy."
+    ],
+    goals: [
+      "Make the trashcan drop from the sky",
+      "Give the raccoon the ability to jump",
+      "Jump into the trashcan!"
+    ],
+    success:
+      "Wheee! Into the bin I go. Smells like victory... and old fries!",
+    category: "Main Game",
+    image: houseImage,
+    initialNodes: [],
+    initialState: initializeGravity,
+    hints: [
+      "The inputs of the trashcan and the raccoon are different. They both require you to do different things",
+      "Make sure to check wether the raccoon is hitting the ground or not. Otherwise your velocity might just keep adding up while you're standing still."
+    ],
+    modifiableGameObjects: [
+      {
+        id: "trashcanFilled",
+        connections: [
+          { label: "y vel", access: "all" },
+        ],
+      },
+      {
+        id: "raccoon",
+        connections: [
+          { label: "y pos", access: "all" },
+        ],
+      },
+    ],
+    availableNodes: [
+      "Display",
+      "Value",
+      "Math",
+      "Switch",
+      "KeyPress",
+      "Time",
+      "ImportFromGameobject",
+      "ExportToGameobject",
+      "Group"
     ],
     difficulty: 2,
   },
