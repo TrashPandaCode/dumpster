@@ -10,24 +10,25 @@ import {
   CubeIcon,
   PlusIcon,
 } from "@radix-ui/react-icons";
-import { Panel, useReactFlow, type ReactFlowInstance } from "@xyflow/react";
+import { Panel, useReactFlow } from "@xyflow/react";
 import { useState } from "react";
 
+import { useDataStore } from "~/lib/zustand/data";
+import { useGameStore } from "~/lib/zustand/game";
+import useIsMac from "../hooks/useMac";
 import { useFlowStore } from "../node-store/flow-store";
-import { globalKeyTracker } from "~/lib/game/utils/globalKeyTracker";
+import { useLoopStore } from "../node-store/loop-store";
 import { useNodeStore } from "../node-store/node-store";
 import AddNodes from "./AddNodes";
 import HelpMenu from "./HelpMenu";
 import { IconButton } from "./IconButton";
 
-const RightPanel: React.FC<{ rfInstance: ReactFlowInstance | undefined }> = ({
-  rfInstance,
-}) => {
-  const { getNodes, getEdges, setViewport, setEdges, setNodes } =
-    useReactFlow();
+const RightPanel = () => {
+  const { getNodes, getEdges } = useReactFlow();
 
   const nodeStateDebugPrint = useNodeStore((state) => state.debugPrint);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const isMac = useIsMac();
 
   return (
     <Panel
@@ -43,7 +44,7 @@ const RightPanel: React.FC<{ rfInstance: ReactFlowInstance | undefined }> = ({
               <p>
                 Add Node
                 <span className="ml-2 rounded bg-slate-600 px-1.5 py-0.5 font-mono text-xs text-gray-300">
-                  {globalKeyTracker.isMac ? "⌥+Space" : "Ctrl+Space"}
+                  {isMac ? "⌥+Space" : "Ctrl+Space"}
                 </span>
               </p>
             }
@@ -106,8 +107,27 @@ const RightPanel: React.FC<{ rfInstance: ReactFlowInstance | undefined }> = ({
             tooltip="Copy State"
             side="left"
             onClick={() => {
-              const flow = rfInstance?.toObject();
-              navigator.clipboard.writeText(JSON.stringify(flow));
+              const currentLevel = useGameStore.getState().currentLevel;
+              const flowStore = localStorage.getItem(
+                `flow-store-${currentLevel}`
+              );
+              const nodeStore = localStorage.getItem(
+                `node-store-${currentLevel}`
+              );
+              const loopStore = localStorage.getItem(
+                `loop-store-${currentLevel}`
+              );
+              const dataStore = localStorage.getItem(
+                `data-store-${currentLevel}`
+              );
+              navigator.clipboard.writeText(
+                JSON.stringify({
+                  flowStore,
+                  nodeStore,
+                  loopStore,
+                  dataStore,
+                })
+              );
             }}
           >
             <CopyIcon className="text-white" />
@@ -116,14 +136,29 @@ const RightPanel: React.FC<{ rfInstance: ReactFlowInstance | undefined }> = ({
             tooltip="Paste State"
             side="left"
             onClick={async () => {
-              const flow = JSON.parse(await navigator.clipboard.readText());
+              const stores = JSON.parse(await navigator.clipboard.readText());
+              const currentLevel = useGameStore.getState().currentLevel;
+              localStorage.setItem(
+                `flow-store-${currentLevel}`,
+                stores.flowStore
+              );
+              localStorage.setItem(
+                `node-store-${currentLevel}`,
+                stores.nodeStore
+              );
+              localStorage.setItem(
+                `loop-store-${currentLevel}`,
+                stores.loopStore
+              );
+              localStorage.setItem(
+                `data-store-${currentLevel}`,
+                stores.dataStore
+              );
 
-              if (flow) {
-                const { x = 0, y = 0, zoom = 1 } = flow.viewport;
-                setNodes(flow.nodes);
-                setEdges(flow.edges);
-                setViewport({ x, y, zoom });
-              }
+              useFlowStore.getState().init(currentLevel);
+              useNodeStore.getState().init();
+              useLoopStore.getState().init();
+              useDataStore.getState().init(currentLevel);
             }}
           >
             <ClipboardIcon className="text-white" />

@@ -1,7 +1,7 @@
 import { Position } from "@xyflow/react";
 import { memo, useMemo, useRef } from "react";
 
-import { type GameObject } from "~/lib/game/gameObjects";
+import { type GameObject } from "~/lib/game/game-objects";
 import { useGameobjectSelect } from "~/lib/node-editor/hooks/useGameobjectSelect";
 import BaseHandle from "~/lib/node-editor/node-components/BaseHandle";
 import LabelHandle from "~/lib/node-editor/node-components/LabelHandle";
@@ -9,7 +9,7 @@ import MultiSelectDropDown from "~/lib/node-editor/node-components/MultiSelectDr
 import NodeContent from "~/lib/node-editor/node-components/NodeContent";
 import { IN_HANDLE_1 } from "~/lib/node-editor/nodes/constants";
 import { getHandleIntersection } from "~/lib/node-editor/utils/handles";
-import { type GameObjectsData } from "~/lib/zustand/data";
+import { HandleData, type GameObjectsData } from "~/lib/zustand/data";
 
 const DocsImportFromGameobject = memo(
   ({ id, data }: { id: string; data: any }) => {
@@ -18,23 +18,23 @@ const DocsImportFromGameobject = memo(
         [
           "raccoon",
           new Map([
-            ["xpos", { access: "all", value: 145.7 }],
-            ["ypos", { access: "all", value: 89.3 }],
-            ["rotation", { access: "export", value: 1.57 }],
-            ["xvelocity", { access: "import", value: -2.4 }],
-            ["yvelocity", { access: "import", value: 0.8 }],
-            ["health", { access: "all", value: 85.0 }],
+            ["x", new HandleData("all", 145.7)],
+            ["y", new HandleData("all", 89.3)],
+            ["rotation", new HandleData("export", 1.57)],
+            ["x_velocity", new HandleData("import", -2.4)],
+            ["y_velocity", new HandleData("import", 0.8)],
+            ["health", new HandleData("all", 85.0)],
           ]),
         ],
         [
           "trashcanFilled",
           new Map([
-            ["xpos", { access: "export", value: 145.7 }],
-            ["ypos", { access: "export", value: 89.3 }],
-            ["rotation", { access: "export", value: 1.57 }],
-            ["xvelocity", { access: "import", value: -2.4 }],
-            ["yvelocity", { access: "import", value: 0.8 }],
-            ["health", { access: "all", value: 85.0 }],
+            ["x", new HandleData("export", 145.7)],
+            ["y", new HandleData("export", 89.3)],
+            ["rotation", new HandleData("export", 1.57)],
+            ["x_velocity", new HandleData("import", -2.4)],
+            ["y_velocity", new HandleData("import", 0.8)],
+            ["health", new HandleData("all", 85.0)],
           ]),
         ],
       ])
@@ -51,6 +51,7 @@ const DocsImportFromGameobject = memo(
       highlightedIndex,
       getItemProps,
       selectedGameObjects,
+      handleReorder,
     } = useGameobjectSelect(
       selectableGameObjects,
       data.selectedGameObjects
@@ -85,6 +86,7 @@ const DocsImportFromGameobject = memo(
               isOpen={isOpen}
               selectableObjects={selectableGameObjects}
               selectedObjects={selectedGameObjects}
+              onReorder={handleReorder}
               useSelectProps={{
                 getItemProps: getItemProps,
                 getLabelProps: getLabelProps,

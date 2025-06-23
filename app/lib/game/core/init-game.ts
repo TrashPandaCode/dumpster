@@ -3,8 +3,9 @@ import { useGameStore } from "~/lib/zustand/game";
 import { useKeyStore } from "~/lib/zustand/key";
 import { useMouseStore } from "~/lib/zustand/mouse";
 import { useTimeStore } from "~/lib/zustand/time";
-import { globalKeyTracker } from "../utils/globalKeyTracker";
-import { getKaplayCtx } from "./kaplayCtx";
+import { BACKGROUND_OFFSET, CAM_SCALE } from "../constants";
+import { globalKeyTracker } from "../utils/global-keytracker";
+import { getKaplayCtx } from "./kaplay-ctx";
 
 export const state = {
   first: true,
@@ -33,6 +34,9 @@ export default function initGame(canvas: HTMLCanvasElement) {
 
   useTimeStore.getState().setTimeFunction(() => k.time() - totalPausedTime);
   useTimeStore.getState().setDeltaTimeFunction(() => k.dt());
+
+  k.setCamPos(0, -BACKGROUND_OFFSET);
+  k.setCamScale((CAM_SCALE * k.height()) / 947);
 
   //Game Loop, runs at 60 frames per second
   k.onUpdate(() => {

@@ -2,8 +2,8 @@ import { DragHandleDots2Icon } from "@radix-ui/react-icons";
 import { useEffect, useRef, useState } from "react";
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 
-import initGame from "~/lib/game/core/initGame";
-import { loadLevel } from "~/lib/game/core/loadLevel";
+import initGame from "~/lib/game/core/init-game";
+import { loadLevel } from "~/lib/game/core/load-level";
 import NodeEditor from "~/lib/node-editor/NodeEditor";
 import type { Route } from "./+types/Game";
 
@@ -13,9 +13,9 @@ import GoalsDialog from "~/lib/game/components/GoalsDialog";
 import LevelCompleteDialog from "~/lib/game/components/LevelCompleteDialog";
 import LevelDialog from "~/lib/game/components/LevelDialog";
 import Tutorial from "~/lib/game/components/Tutorial";
-import { cleanupKaplay } from "~/lib/game/core/kaplayCtx";
+import { cleanupKaplay } from "~/lib/game/core/kaplay-ctx";
 import { LEVELS, type LevelId } from "~/lib/game/core/levels";
-import { globalKeyTracker } from "~/lib/game/utils/globalKeyTracker";
+import { globalKeyTracker } from "~/lib/game/utils/global-keytracker";
 import { useFlowStore } from "~/lib/node-editor/node-store/flow-store";
 import { useLoopStore } from "~/lib/node-editor/node-store/loop-store";
 import { useNodeStore } from "~/lib/node-editor/node-store/node-store";

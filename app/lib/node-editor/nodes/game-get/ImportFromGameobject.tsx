@@ -1,8 +1,10 @@
 import { Position, useReactFlow } from "@xyflow/react";
-import { memo, useEffect, useMemo } from "react";
+import { memo, useCallback, useEffect, useMemo } from "react";
 
-import type { GameObject } from "~/lib/game/gameObjects";
+import { LEVELS, type ModifiableGameObject } from "~/lib/game/core/levels";
+import type { GameObject } from "~/lib/game/game-objects";
 import { useDataStore } from "~/lib/zustand/data";
+import { useGameStore } from "~/lib/zustand/game";
 import { useGameobjectSelect } from "../../hooks/useGameobjectSelect";
 import BaseHandle from "../../node-components/BaseHandle";
 import LabelHandle from "../../node-components/LabelHandle";
@@ -10,6 +12,7 @@ import MultiSelectDropDown from "../../node-components/MultiSelectDropDown";
 import NodeContent from "../../node-components/NodeContent";
 import type { nodeInputs, nodeResults } from "../../node-store/node-store";
 import { getInput } from "../../utils/compute";
+import { getDisplayName } from "../../utils/display";
 import { getHandleIntersection } from "../../utils/handles";
 import { IN_HANDLE_1 } from "../constants";
 
@@ -33,7 +36,16 @@ import { IN_HANDLE_1 } from "../constants";
  */
 const ImportFromGameobject = memo(({ id, data }: { id: string; data: any }) => {
   const gameObjects = useDataStore((state) => state.gameObjects);
+  const level = useGameStore((state) => state.currentLevel);
+  const modifiableGameObjects: ModifiableGameObject[] =
+    LEVELS[level].modifiableGameObjects;
   const selectableGameObjects: GameObject[] = Array.from(gameObjects.keys());
+
+  const callbackDisplayName = useCallback(
+    (gameObject: GameObject) =>
+      getDisplayName(gameObject, modifiableGameObjects),
+    [modifiableGameObjects]
+  );
 
   const {
     isOpen,
@@ -43,6 +55,7 @@ const ImportFromGameobject = memo(({ id, data }: { id: string; data: any }) => {
     highlightedIndex,
     getItemProps,
     selectedGameObjects,
+    handleReorder,
   } = useGameobjectSelect(
     selectableGameObjects,
     data.selectedGameObjects
@@ -71,7 +84,7 @@ const ImportFromGameobject = memo(({ id, data }: { id: string; data: any }) => {
         }
         const gob = selectedGameObjects[index];
         handleIntersection.forEach((handle) => {
-          results.set(handle, gameObjects.get(gob)!.get(handle)!.value);
+          results.set(handle, gameObjects.get(gob)!.get(handle)!.getValue());
         });
       },
       selectedGameObjects,
@@ -94,6 +107,8 @@ const ImportFromGameobject = memo(({ id, data }: { id: string; data: any }) => {
             isOpen={isOpen}
             selectableObjects={selectableGameObjects}
             selectedObjects={selectedGameObjects}
+            onReorder={handleReorder}
+            getDisplayName={callbackDisplayName}
             useSelectProps={{
               getItemProps: getItemProps,
               getLabelProps: getLabelProps,

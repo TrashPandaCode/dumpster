@@ -1,9 +1,4 @@
-import {
-  Background,
-  ReactFlow,
-  ReactFlowProvider,
-  type ReactFlowInstance,
-} from "@xyflow/react";
+import { Background, ReactFlow, ReactFlowProvider, type ReactFlowInstance } from "@xyflow/react";
 
 import "@xyflow/react/dist/style.css";
 
@@ -31,10 +26,28 @@ const Editor = () => {
 
   const logSolution = useTelemetryStore((state) => state.logSolution);
   const levelCompleted = useGameStore((state) => state.levelCompleted);
+  const currentLevel = useGameStore.getState().currentLevel;
+  const flowStore = localStorage.getItem(
+    `flow-store-${currentLevel}`
+  );
+  const nodeStore = localStorage.getItem(
+    `node-store-${currentLevel}`
+  );
+  const loopStore = localStorage.getItem(
+    `loop-store-${currentLevel}`
+  );
+  const dataStore = localStorage.getItem(
+    `data-store-${currentLevel}`
+  );
 
   useEffect(() => {
     if(levelCompleted){
-      logSolution(rfInstance?.toObject());
+      logSolution(JSON.stringify({
+        flowStore,
+        nodeStore,
+        loopStore,
+        dataStore,
+      }));
     };
   }, [levelCompleted, rfInstance]);
 
@@ -73,7 +86,6 @@ const Editor = () => {
     <>
       <ReactFlow
         id="node-editor"
-        onInit={setRfInstance}
         nodeTypes={nodeTypes}
         edgeTypes={edgeTypes}
         nodes={nodes}
@@ -97,7 +109,7 @@ const Editor = () => {
         }}
       >
         <Background bgColor="#14141d" color="#a7abc2" />
-        <RightPanel rfInstance={rfInstance} />
+        <RightPanel />
         <CenterPanel />
         <LeftPanel />
         <Toaster />

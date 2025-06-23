@@ -1,0 +1,55 @@
+---
+title: Bounce
+---
+
+# Level 3: Bounce
+
+## Objective
+
+In this introductory level, the player must set the **x** and **y** position of the raccoon character so that it aligns with the position of a **filled trashcan**. Each trashcan provides a `filled` output — a boolean indicating whether it contains trash. The `filled` state of the trashcans change over time.
+
+The player is tasked with selecting the correct trashcan coordinates based on this condition, using **switch** nodes to route positional data conditionally.
+
+## Concepts to Learn
+
+This level introduces the fundamental idea of **conditional logic** in a node-based system, which corresponds to `if` statements in traditional programming. In node-based systems, conditional execution is **decomposed** into:
+
+1. **Evaluation of a boolean condition** (e.g., using comparators like `==`, `>`, `<`)
+   - Evaluating the `filled` state is not needed as it is already provided as a truth value
+2. **Selection logic** (e.g., using a switch node to choose between values based on the condition)
+
+## Key Principles Introduced
+
+- Boolean values and conditional logic
+- Separation of **evaluation** and **control**
+- Use of **switch nodes** to branch behavior based on truth values
+
+## Suggested Node Pattern
+
+The user might, for example, connect each trashcan's `filled` output to a switch node that selects the associated x/y coordinates.
+
+## Relevant Documentation
+
+While this level is mainly logical in nature, it lays groundwork for spatial reasoning. The following topics will be relevant later:
+
+- [Coordinate Systems](/docs/hierarchies/coordinate-systems)
+- [Scene API](/docs/hierarchies/scene-api)
+
+## Educational Notes
+
+In traditional code, you might write:
+
+```plaintext
+IF trashcan1 is filled THEN
+    raccoon's x-position <- trashcan1's x-position
+ELSE
+    raccoon's x-position <- trashcan2's x-position
+END IF
+```
+
+In a node-based system, this becomes a **value-based graph**:
+
+- One node evaluates `trashcan1.filled`
+- A switch node uses this boolean to select between `trashcan1.x` and `trashcan2.x`
+
+This architecture highlights a **dataflow model** of computation — the foundation of many animation and visual scripting environments.

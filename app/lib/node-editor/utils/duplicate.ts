@@ -6,6 +6,10 @@ import { MAIN_LOOP_CONNECTOR } from "../nodes/constants";
 import { connectionToEdgeId } from "./edges";
 import { connectNodesToLoop, createForLoop } from "./loops";
 
+interface DuplicateOptions {
+  targetPosition?: { x: number; y: number };
+}
+
 // this accepts a list of nodes and duplicates them
 // loops and groups will be handled automatically, just include them and their children
 export function duplicateNodes(
@@ -13,15 +17,56 @@ export function duplicateNodes(
   getEdges: () => Edge[],
   getNodes: () => Node[],
   setEdges: (payload: Edge[] | ((edges: Edge[]) => Edge[])) => void,
-  setNodes: (payload: Node[] | ((nodes: Node[]) => Node[])) => void
+  setNodes: (payload: Node[] | ((nodes: Node[]) => Node[])) => void,
+  options?: DuplicateOptions
 ) {
   // if this is called with no nodes, return
   if (!nodes || nodes.length === 0) return;
+
+  // Default offset when no specific position is provided
+  const offset = { x: 50, y: 50 };
+
+  // Calculate the bounding box of all selected nodes to determine the offset
+  let minX = Infinity;
+  let minY = Infinity;
+
+  if (options?.targetPosition) {
+    nodes.forEach((node) => {
+      minX = Math.min(minX, node.position.x);
+      minY = Math.min(minY, node.position.y);
+    });
+  }
 
   // this map will keep track of which new parent ids should be assigned to children
   const oldToNewIdMap = new Map<string, string>();
   const newNodes: Node[] = [];
   const newEdges: Edge[] = [];
+
+  // Helper function to calculate new position
+  const calculateNewPosition = (node: Node) => {
+    if (options?.targetPosition) {
+      // Calculate relative position from the top-left of the selection
+      const relativeX = node.position.x - minX;
+      const relativeY = node.position.y - minY;
+      return {
+        x: options.targetPosition.x + relativeX,
+        y: options.targetPosition.y + relativeY,
+      };
+    } else {
+      // Use default offset behavior
+      return {
+        x:
+          node.parentId && oldToNewIdMap.has(node.parentId)
+            ? node.position.x
+            : node.position.x + offset.x,
+        y:
+          node.parentId && oldToNewIdMap.has(node.parentId)
+            ? node.position.y
+            : node.position.y + offset.y,
+      };
+    }
+  };
+
   // create copies of group nodes
   const groupNodes: Node[] = nodes.filter((node) => node.type === "Group");
   newNodes.push(
@@ -32,10 +77,7 @@ export function duplicateNodes(
       return {
         ...node,
         id: newId,
-        position: {
-          x: node.position.x + 50,
-          y: node.position.y + 50,
-        },
+        position: calculateNewPosition(node),
         data: {
           ...node.data,
         },
@@ -62,29 +104,12 @@ export function duplicateNodes(
 
   // duplicate the loops
   loops.forEach((loop) => {
+    const startPosition = calculateNewPosition(loop.start);
+    const endPosition = calculateNewPosition(loop.end);
+
     const loopBox = createForLoop(
-      // startPosition
-      {
-        x:
-          loop.start.parentId && oldToNewIdMap.has(loop.start.parentId)
-            ? loop.start.position.x
-            : loop.start.position.x + 50,
-        y:
-          loop.start.parentId && oldToNewIdMap.has(loop.start.parentId)
-            ? loop.start.position.y
-            : loop.start.position.y + 50,
-      },
-      // endPosition
-      {
-        x:
-          loop.end.parentId && oldToNewIdMap.has(loop.end.parentId)
-            ? loop.end.position.x
-            : loop.end.position.x + 50,
-        y:
-          loop.end.parentId && oldToNewIdMap.has(loop.end.parentId)
-            ? loop.end.position.y
-            : loop.end.position.y + 50,
-      },
+      startPosition,
+      endPosition,
       oldToNewIdMap.get(loop.start.data.parentLoopId as string) ??
         (loop.start.data.parentLoopId as string),
       oldToNewIdMap.get(loop.start.parentId as string) ?? loop.start.parentId,
@@ -116,16 +141,7 @@ export function duplicateNodes(
       parentId: node.parentId
         ? (oldToNewIdMap.get(node.parentId) ?? node.parentId)
         : undefined,
-      position: {
-        x:
-          node.parentId && oldToNewIdMap.has(node.parentId)
-            ? node.position.x
-            : node.position.x + 50,
-        y:
-          node.parentId && oldToNewIdMap.has(node.parentId)
-            ? node.position.y
-            : node.position.y + 50,
-      },
+      position: calculateNewPosition(node),
       data: {
         ...node.data,
         parentLoopId:

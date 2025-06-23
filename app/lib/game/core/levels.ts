@@ -9,15 +9,19 @@ import playgroundCard from "~/assets/home-cards/playground_card.png";
 import sittingCard from "~/assets/home-cards/sitting_card.png";
 import houseImage from "~/assets/house.png";
 import type { NodeType } from "~/lib/node-editor/nodes/node-types";
-import { type GameObject } from "../gameObjects";
+import { type GameObject } from "../game-objects";
 import { initializeBounce } from "../levels/bounce";
 import { initializeCalculator } from "../levels/calculator";
+import { initializeForward } from "../levels/forward";
+import { initializeInverse } from "../levels/inverse";
+import { initializeLinear } from "../levels/linear";
+import { initializeLooping } from "../levels/looping";
 import { initializeMove } from "../levels/move";
 import { initializeParenting } from "../levels/parenting";
 import { initializePlayground } from "../levels/playground";
+import { initializeReverse } from "../levels/reverse";
 import { initializeSitting } from "../levels/sitting";
-import { initializeTimeTransform } from "../levels/timeTransform";
-import { initializeKinematics } from "../levels/kinematic";
+import { initializeGravity } from "../levels/gravity";
 
 export type ConnectionAccess = "export" | "import" | "all";
 
@@ -58,8 +62,7 @@ export type Level = {
    */
   image: string;
   /**
-   * Initial nodes to be spawned on level init.
-   * TODO: move inital node declarations to separate file
+   * Initial nodes to be spawned on level init or path to nodes JSON file.
    */
   initialNodes: Node[];
   /**
@@ -74,11 +77,12 @@ export type Level = {
    */
   modifiableGameObjects: ModifiableGameObject[];
   availableNodes: NodeType[];
-  difficulty: 0 | 1 | 2;
+  difficulty: 0 | 1 | 2 | 3;
 };
 
 export type ModifiableGameObject = {
   id: GameObject;
+  displayName?: string;
   connections: { label: string; access: ConnectionAccess }[];
 };
 
@@ -153,8 +157,8 @@ export const LEVELS = {
       {
         id: "raccoon",
         connections: [
-          { label: "xpos", access: "export" },
-          { label: "ypos", access: "export" },
+          { label: "x", access: "export" },
+          { label: "y", access: "export" },
         ],
       },
     ],
@@ -186,24 +190,26 @@ export const LEVELS = {
       {
         id: "raccoon",
         connections: [
-          { label: "xpos", access: "export" },
-          { label: "ypos", access: "export" },
+          { label: "x", access: "export" },
+          { label: "y", access: "export" },
         ],
       },
       {
-        id: "trashcan1",
+        id: "trashcanFilled",
+        displayName: "trashcan1",
         connections: [
           { label: "filled", access: "import" },
-          { label: "xpos", access: "import" },
-          { label: "ypos", access: "import" },
+          { label: "x", access: "import" },
+          { label: "y", access: "import" },
         ],
       },
       {
-        id: "trashcan2",
+        id: "trashcanEmpty",
+        displayName: "trashcan2",
         connections: [
           { label: "filled", access: "import" },
-          { label: "xpos", access: "import" },
-          { label: "ypos", access: "import" },
+          { label: "x", access: "import" },
+          { label: "y", access: "import" },
         ],
       },
     ],
@@ -215,64 +221,24 @@ export const LEVELS = {
     ],
     difficulty: 1,
   },
-  move: {
-    slug: "move",
-    name: "Move",
-    description:
-      "This is the first level of the main game, introducing movement mechanics.",
-    // feel free to change the dialog
-    dialog: [
-      "Alright, today's the day — I’m finally gonna learn how to walk! I mean, even tiny humans can do it, so how hard can it be?",
-      "Left paw, right paw... wait, which one is my right again?",
-      "Imagine: me, strutting around, hunting for snacks all by myself! No more waiting for food to come to me—I'm gonna chase those leftovers down!",
-    ],
-    goals: ["Move the raccoon to the flag."],
-    success:
-      "Right foot, left foot, right foot, left foot...I could do this all day!",
-    category: "Main Game",
-    image: houseImage,
-    initialNodes: [],
-    initialState: initializeMove,
-    hints: [],
-    modifiableGameObjects: [
-      {
-        id: "raccoon",
-        connections: [
-          { label: "xpos", access: "export" },
-          { label: "ypos", access: "export" },
-        ],
-      },
-    ],
-    availableNodes: [
-      "Display",
-      "Value",
-      "Math",
-      "Switch",
-      "KeyPress",
-      "ImportFromGameobject",
-      "ExportToGameobject",
-    ],
-    difficulty: 2,
-  },
   parenting: {
     slug: "parenting",
     name: "Parenting",
     description:
       "This is the second level of the main game, introducing parenting mechanics.",
-    // feel free to change the dialog
     dialog: [
       "Whoa... this trash can is a real goldmine!",
-      "There’s so much food in here, there’s no way I can eat it all right now.",
+      "There's so much food in here, there's no way I can eat it all right now.",
       "Maybe I should just take the whole can with me... but how?",
       "Would you help me carry it back to my secret little hideout?",
       "Just be careful not to drop it, okay?",
     ],
     goals: [
       "Parent the trashcan to the raccoon.",
-      `Bring trashcans to the flag (3 total).`,
+      "Bring trashcans to the flag (3 total).",
     ],
     success: "That should be enough food for a while... or at least two days.",
-    category: "Main Game",
+    category: "Hierarchies",
     image: alleyTwo,
     initialNodes: [],
     initialState: initializeParenting,
@@ -281,15 +247,16 @@ export const LEVELS = {
       {
         id: "raccoon",
         connections: [
-          { label: "xpos", access: "import" },
-          { label: "ypos", access: "import" },
+          { label: "x", access: "import" },
+          { label: "y", access: "import" },
         ],
       },
       {
-        id: "trashcanP",
+        id: "trashcanFilled",
+        displayName: "trashcan",
         connections: [
-          { label: "xpos", access: "all" },
-          { label: "ypos", access: "all" },
+          { label: "x", access: "all" },
+          { label: "y", access: "all" },
         ],
       },
     ],
@@ -297,46 +264,98 @@ export const LEVELS = {
       "Display",
       "Value",
       "Math",
-      "Switch",
-      "KeyPress",
       "ImportFromGameobject",
       "ExportToGameobject",
     ],
     difficulty: 1,
   },
-  timeTransform: {
-    slug: "timeTransform",
-    name: "Time Transform",
+  linear: {
+    slug: "linear",
+    name: "Linear",
     description:
-      "This is a level of the main game, introducing time-based transformations.",
-    // feel free to change the dialog
+      "This level introduces linear time-based signal transformations.",
     dialog: [
-      "Well... we just found, what ever this is, with all those numbers on it.",
-      "And there’s this thing spinning around in the middle really fast!",
-      "I’ve seen people use this, especially when they’re in a hurry. But it was never going that fast.",
-      "It might be broken... maybe I can fix it?",
-      "There might be a ladder we could use to get onto the roof — maybe we can spot something that helps us fixing our new little treasure.",
+      "This watch isn't doing anything… maybe it needs a time signal?",
+      "Now I want this clock to move faster than that big clock over there!",
+      "The clock tower is soooo slow. Also could you offset my time?",
+      "Try adding an offset of 50 seconds and maybe make my time 100 times faster?",
+      "If this works for like... 5 seconds, I'll call it good enough.",
     ],
-    goals: [
-      "Climb the ladder to the roof.",
-      "Find something that helps you fix the clock.",
-      "Make the clock spin in the proper speed and direction.",
-    ],
+    goals: ["Make the pocketwatch match the clock tower."],
     success:
-      "My brothers always said humans are stupid, but how can someone inventing such a masterpiece be stupid? I'm so happy we were able to save this!",
-    category: "Main Game",
+      "Nice! The watch finally works like I want it to — it looks great now.",
+    category: "Time Transformation",
     image: alleyOne,
     initialNodes: [],
-    initialState: initializeTimeTransform,
+    initialState: initializeLinear,
+    hints: [
+      "Try add a time and an export node.",
+      "Now connect the time output of the time node into the time input of the export node.",
+      "The pocketwatch should have an offset of 50 seconds, so try adding this to the time",
+      "The pocketwatch should be 100 times faster than the clock tower, so try multiplying the time by 100.",
+    ],
+    modifiableGameObjects: [
+      {
+        id: "pocketwatch",
+        connections: [{ label: "time", access: "export" }],
+      },
+    ],
+    availableNodes: ["Display", "Value", "Math", "ExportToGameobject", "Time"],
+    difficulty: 2,
+  },
+  reverse: {
+    slug: "reverse",
+    name: "Reverse",
+    description: "",
+    dialog: [
+      "Okay... maybe I rushed things with that last watch.",
+      "I think I messed it up even more—now it's ticking at a totally different speed.",
+      "All I want is for it to run at the same speed as the big clock... just in reverse.",
+      "Please, if you can get it working for at least 5 seconds, I promise I'll stop bugging you about it.",
+    ],
+    goals: [
+      "Make the small watch run in reverse at the same speed as the big clock.",
+    ],
+    success:
+      "Whoa! It's actually working! Backwards brilliance! I knew bothering you would pay off!",
+    category: "Time Transformation",
+    image: alleyOne,
+    initialNodes: [],
+    initialState: initializeReverse,
+    hints: [],
+    modifiableGameObjects: [
+      {
+        id: "pocketwatch",
+        connections: [{ label: "time", access: "export" }],
+      },
+    ],
+    availableNodes: ["Display", "Value", "Math", "ExportToGameobject", "Time"],
+    difficulty: 2,
+  },
+  move: {
+    slug: "move",
+    name: "Move",
+    description:
+      "This is the first level of the main game, introducing movement mechanics.",
+    dialog: [
+      "Alright, today's the day — I'm finally gonna learn how to walk! I mean, even tiny humans can do it, so how hard can it be?",
+      "Left paw, right paw... wait, which one is my right again?",
+      "Imagine: me, strutting around, hunting for snacks all by myself! No more waiting for food to come to me—I'm gonna chase those leftovers down!",
+    ],
+    goals: ["Move the raccoon to the flag."],
+    success:
+      "Right foot, left foot, right foot, left foot...I could do this all day!",
+    category: "Motion",
+    image: houseImage,
+    initialNodes: [],
+    initialState: initializeMove,
     hints: [],
     modifiableGameObjects: [
       {
         id: "raccoon",
         connections: [
-          { label: "xpos", access: "import" },
-          { label: "ypos", access: "import" },
-          { label: "xpos", access: "export" },
-          { label: "ypos", access: "export" },
+          { label: "x", access: "all" },
+          { label: "y", access: "all" },
         ],
       },
     ],
@@ -345,41 +364,224 @@ export const LEVELS = {
       "Value",
       "Math",
       "Switch",
+      "KeyPress",
+      "Time",
       "ImportFromGameobject",
       "ExportToGameobject",
-      "Time",
     ],
-    difficulty: 1,
+    difficulty: 2,
   },
-  kinematics: {
-    slug: "kinematics",
-    name: "Kinematics",
+  gravity: {
+    slug: "gravity",
+    name: "Gravity",
     description:
-      "PlaceHolder",
+      "This level introduces gravity.",
     dialog: [
-      "PlaceHolder",
+      "Oh! I was just... uh... inspecting this totally-not-impossibly-floating trashcan!",
+      "See, I may have dropped my midnight snack up there. Or maybe it floated away? Or maybe I threw it too hard. Who can say, really!",
+      "BUT! I have a cunning plan! Could you please make that beautiful trashcan fall from the sky?",
+      "And, uh, also... if you could help me jump... that would be AMAZING. My legs are... more wiggly than springy."
     ],
-    goals: ["Do something!"],
-    success: "Wow!",
+    goals: [
+      "Make the trashcan drop from the sky",
+      "Give the raccoon the ability to jump",
+      "Jump into the trashcan!"
+    ],
+    success:
+      "Wheee! Into the bin I go. Smells like victory... and old fries!",
     category: "Main Game",
+    image: houseImage,
+    initialNodes: [],
+    initialState: initializeGravity,
+    hints: [
+      "The inputs of the trashcan and the raccoon are different. They both require you to do different things",
+      "Make sure to check wether the raccoon is hitting the ground or not. Otherwise your velocity might just keep adding up while you're standing still."
+    ],
+    modifiableGameObjects: [
+      {
+        id: "trashcanFilled",
+        connections: [
+          { label: "y vel", access: "all" },
+        ],
+      },
+      {
+        id: "raccoon",
+        connections: [
+          { label: "y pos", access: "all" },
+        ],
+      },
+    ],
+    availableNodes: [
+      "Display",
+      "Value",
+      "Math",
+      "Switch",
+      "KeyPress",
+      "Time",
+      "ImportFromGameobject",
+      "ExportToGameobject",
+      "Group"
+    ],
+    difficulty: 2,
+  },
+  forward: {
+    slug: "forward",
+    name: "Forward",
+    description:
+      "This is a level of the main game, introducing forward kinematics.",
+    dialog: [
+      "Hey! Quick, I could use some help here!",
+      "I was fighting this cat for some left over rotissery chicken and I thought I scared it away..",
+      "But it came back with a bunch of its friends and now I'm stuck on this roof.",
+      "Can you move these platforms for me so I can make a quick escape?",
+    ],
+    goals: [
+      "Find a way to move the platforms.",
+      "Jump over to the other roof.",
+    ],
+    success: "Oh, just in time.",
+    category: "Kinematics",
     image: alleyOne,
     initialNodes: [],
-    initialState: initializeKinematics,
+    initialState: initializeForward,
     hints: [],
     modifiableGameObjects: [
       {
         id: "arm",
         connections: [
-          { label: "joint1x", access: "import" },
-          { label: "joint1y", access: "import" },
-          { label: "joint1rot", access: "all"},
-          { label: "joint2x", access: "import" },
-          { label: "joint2y", access: "import" },
-          { label: "joint2rot", access: "all"},
-          { label: "joint3x", access: "import" },
-          { label: "joint3y", access: "import" },
+          { label: "Red Rotation", access: "all" },
+          { label: "Green Rotation", access: "all" },
+          { label: "Orange Rotation", access: "all" },
+          { label: "Blue Rotation", access: "all" },
         ],
-      }
+      },
+    ],
+    availableNodes: [
+      "Display",
+      "Value",
+      "Math",
+      "ExportToGameobject",
+      "ImportFromGameobject",
+      "Group",
+    ],
+    difficulty: 1,
+  },
+  looping: {
+    slug: "looping",
+    name: "Looping",
+    description: "This level introduces the concept of for loops.",
+    dialog: [
+      "Alright, here's the deal: I've got five raccoons and five pillars of boxes.",
+      "They each want to sit on top of their own tower, obviously. Dignity and all that.",
+      "I could do it manually... but I heard you know how to use a for loop?",
+      "Think you can loop through them and get each raccoon in place?",
+    ],
+    goals: [
+      "Use a for loop to move the 5 raccoons.",
+      "Ensure the placement adapts to the height of each pillar.",
+    ],
+    success: "Perfectly perched! Efficient and elegant - just like a well-written loop",
+    category: "Introduction",
+    image: bounceCard,
+    initialNodes: [],
+    initialState: initializeLooping,
+    hints: [""],
+    modifiableGameObjects: [
+      {
+        id: "raccoon1",
+        connections: [{ label: "y", access: "export" }],
+      },
+      {
+        id: "raccoon2",
+        connections: [{ label: "y", access: "export" }],
+      },
+      {
+        id: "raccoon3",
+        connections: [{ label: "y", access: "export" }],
+      },
+      {
+        id: "raccoon4",
+        connections: [{ label: "y", access: "export" }],
+      },
+      {
+        id: "raccoon5",
+        connections: [{ label: "y", access: "export" }],
+      },
+    ],
+    availableNodes: [
+      "Display",
+      "Value",
+      "Math",
+      "ExportToGameobject",
+      "ForLoop",
+    ],
+    difficulty: 1,
+  },
+  inverse: {
+    slug: "inverse",
+    name: "Inverse",
+    description: "PlaceHolder",
+    dialog: [
+      "Okay, don't freak out, but I haven't had a proper wash in... a while.",
+      "There's a robot arm over there and a nice slippery piece of soap - can you get it to reach me?",
+      "You'll probably need to use that fancy CCD algorithm to make the arm bend the right way.",
+      "Just don't poke me in the eye or anything, alright?",
+    ],
+    goals: [
+      "Use inverse kinematics (CCD) to control the robot arm.",
+      "Position the soap so it reaches the raccoon's body.",
+      "The soap must stay in contact with the raccoon for at least 5 seconds.",
+    ],
+    success:
+      "Ahhh... finally! I feel like a brand-new raccoon. Thanks for the scrub, robot whisperer!",
+    category: "Kinematics",
+    image: alleyOne,
+    initialNodes: [],
+    initialState: initializeInverse,
+    hints: [],
+    modifiableGameObjects: [
+      {
+        id: "raccoon",
+        connections: [
+          { label: "x", access: "import" },
+          { label: "y", access: "import" },
+        ],
+      },
+      {
+        id: "joint1",
+        displayName: "redJoint",
+        connections: [
+          { label: "rotation", access: "all" },
+          { label: "x", access: "import" },
+          { label: "y", access: "import" },
+        ],
+      },
+      {
+        id: "joint2",
+        displayName: "greenJoint",
+        connections: [
+          { label: "rotation", access: "all" },
+          { label: "x", access: "import" },
+          { label: "y", access: "import" },
+        ],
+      },
+      {
+        id: "joint3",
+        displayName: "blueJoint",
+        connections: [
+          { label: "rotation", access: "all" },
+          { label: "x", access: "import" },
+          { label: "y", access: "import" },
+        ],
+      },
+      {
+        id: "endeffector",
+        displayName: "soap",
+        connections: [
+          { label: "x", access: "import" },
+          { label: "y", access: "import" },
+        ],
+      },
     ],
     availableNodes: [
       "Display",
@@ -387,6 +589,7 @@ export const LEVELS = {
       "Time",
       "KeyPress",
       "Math",
+      "WorldToLocal",
       "ExportToGameobject",
       "ImportFromGameobject",
       "Switch",
@@ -394,7 +597,7 @@ export const LEVELS = {
       "ForLoop",
       "MousePosition",
     ],
-    difficulty: 1,
+    difficulty: 3,
   },
   playground: {
     slug: "playground",
@@ -423,29 +626,29 @@ export const LEVELS = {
       {
         id: "raccoon",
         connections: [
-          { label: "xpos", access: "all" },
-          { label: "ypos", access: "all" },
+          { label: "x", access: "all" },
+          { label: "y", access: "all" },
         ],
       },
       {
         id: "trashcanEmpty",
         connections: [
-          { label: "xpos", access: "all" },
-          { label: "ypos", access: "all" },
+          { label: "x", access: "all" },
+          { label: "y", access: "all" },
         ],
       },
       {
         id: "trashcanFilled",
         connections: [
-          { label: "xpos", access: "all" },
-          { label: "ypos", access: "all" },
+          { label: "x", access: "all" },
+          { label: "y", access: "all" },
         ],
       },
       {
         id: "goalFlag",
         connections: [
-          { label: "xpos", access: "all" },
-          { label: "ypos", access: "all" },
+          { label: "x", access: "all" },
+          { label: "y", access: "all" },
         ],
       },
     ],
@@ -464,6 +667,6 @@ export const LEVELS = {
     ],
     difficulty: 0,
   },
-} satisfies Record<string, Level>;
+} as const satisfies Record<string, Level>;
 
 export type LevelId = keyof typeof LEVELS;

@@ -1,9 +1,9 @@
 import { CrossCircledIcon } from "@radix-ui/react-icons";
 import { Position, useReactFlow } from "@xyflow/react";
-import { memo, useEffect, useMemo, useRef } from "react";
+import { memo, useCallback, useEffect, useMemo } from "react";
 
-import { LEVELS } from "~/lib/game/core/levels";
-import type { GameObject } from "~/lib/game/gameObjects";
+import { LEVELS, type ModifiableGameObject } from "~/lib/game/core/levels";
+import type { GameObject } from "~/lib/game/game-objects";
 import { useDataStore } from "~/lib/zustand/data";
 import { useGameStore } from "~/lib/zustand/game";
 import { useGameobjectSelect } from "../../hooks/useGameobjectSelect";
@@ -12,8 +12,9 @@ import BaseHandle from "../../node-components/BaseHandle";
 import LabelHandle from "../../node-components/LabelHandle";
 import MultiSelectDropDown from "../../node-components/MultiSelectDropDown";
 import NodeContent from "../../node-components/NodeContent";
-import type { nodeInputs, nodeResults } from "../../node-store/node-store";
+import type { nodeInputs } from "../../node-store/node-store";
 import { getInput } from "../../utils/compute";
+import { getDisplayName } from "../../utils/display";
 import { getHandleIntersection } from "../../utils/handles";
 import { IN_HANDLE_1 } from "../constants";
 
@@ -51,10 +52,17 @@ import { IN_HANDLE_1 } from "../constants";
 const ExportToGameobject = memo(
   ({ id, data, selected }: { id: string; data: any; selected: boolean }) => {
     const level = useGameStore((state) => state.currentLevel);
-    const modifiableGameObjects = LEVELS[level].modifiableGameObjects;
+    const modifiableGameObjects: ModifiableGameObject[] =
+      LEVELS[level].modifiableGameObjects;
 
     const gameObjects = useDataStore((state) => state.gameObjects);
     const selectableGameObjects: GameObject[] = Array.from(gameObjects.keys());
+
+    const callbackDisplayName = useCallback(
+      (gameObject: GameObject) =>
+        getDisplayName(gameObject, modifiableGameObjects),
+      [modifiableGameObjects]
+    );
 
     const {
       isOpen,
@@ -64,6 +72,7 @@ const ExportToGameobject = memo(
       highlightedIndex,
       getItemProps,
       selectedGameObjects,
+      handleReorder,
     } = useGameobjectSelect(
       selectableGameObjects,
       data.selectedGameObjects
@@ -80,13 +89,12 @@ const ExportToGameobject = memo(
     const setData = useDataStore((state) => state.setData);
     const addHandle = useDataStore((state) => state.addHandle);
     const removeHandle = useDataStore((state) => state.removeHandle);
-    const curLabel = useRef(data.curLabel ? data.curLabel.current : "");
 
     const { updateNodeData } = useReactFlow();
 
     useEffect(() => {
       updateNodeData(id, {
-        compute: (inputs: nodeInputs, _: nodeResults) => {
+        compute: (inputs: nodeInputs) => {
           const index =
             selectedGameObjects.length === 1
               ? 0
@@ -119,6 +127,8 @@ const ExportToGameobject = memo(
               isOpen={isOpen}
               selectableObjects={selectableGameObjects}
               selectedObjects={selectedGameObjects}
+              onReorder={handleReorder}
+              getDisplayName={callbackDisplayName}
               useSelectProps={{
                 getItemProps: getItemProps,
                 getLabelProps: getLabelProps,
@@ -159,11 +169,10 @@ const ExportToGameobject = memo(
           ))}
           {!!selectedGameObjects.length && (
             <AddHandle
-              addHandle={(id, label) => addHandle(id as GameObject, label)}
               handleIdentifiers={selectedGameObjects}
-              handleLabel={curLabel}
               nodeId={id}
-              updateNodeData={updateNodeData}
+              initialLabel={data.handleLabel ?? ""}
+              addHandle={(id, label) => addHandle(id as GameObject, label)}
             />
           )}
         </NodeContent>

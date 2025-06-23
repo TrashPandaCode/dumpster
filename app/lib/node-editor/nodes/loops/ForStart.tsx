@@ -1,6 +1,6 @@
 import { CrossCircledIcon } from "@radix-ui/react-icons";
 import { Position, useReactFlow } from "@xyflow/react";
-import { memo, useEffect, useMemo, useRef, useState } from "react";
+import { memo, useEffect, useMemo, useState } from "react";
 
 import AddHandle from "../../node-components/AddHandle";
 import BaseHandle from "../../node-components/BaseHandle";
@@ -47,14 +47,12 @@ import { IN_HANDLE_1, MAIN_LOOP_CONNECTOR, OUT_HANDLE_1 } from "../constants";
 
 const ForStart = memo(
   ({ id, data, selected }: { id: string; data: any; selected: boolean }) => {
-    const [iterations, setIterations] = useState(1);
+    const [iterations, setIterations] = useState<number>(data.iterations ?? 1);
     const [iterDisplay, setIterDisplay] = useState(1);
 
     const loops = useLoopStore((state) => state.loops);
     const addHandle = useLoopStore((state) => state.addHandle);
     const removeHandle = useLoopStore((state) => state.removeHandle);
-
-    const curLabel = useRef("");
 
     const { updateNodeData } = useReactFlow();
     const handles = useMemo(
@@ -89,6 +87,7 @@ const ForStart = memo(
           }
         },
         loopStart: true,
+        iterations,
       });
     }, [iterations]);
 
@@ -141,11 +140,10 @@ const ForStart = memo(
             </div>
           ))}
           <AddHandle
-            addHandle={addHandle}
             handleIdentifiers={[data.loopId]}
-            handleLabel={curLabel}
             nodeId={id}
-            updateNodeData={updateNodeData}
+            initialLabel=""
+            addHandle={addHandle}
           />
         </NodeContent>
       </div>

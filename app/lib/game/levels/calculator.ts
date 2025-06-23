@@ -1,36 +1,33 @@
-import { useDataStore } from "~/lib/zustand/data";
+import { createLevelDataHelpers } from "~/lib/zustand/data";
 import { useGameStore } from "~/lib/zustand/game";
-import { BACKGROUND_OFFSET, CAM_SCALE } from "../constants";
-import { getKaplayCtx } from "../core/kaplayCtx";
+import { BACKGROUND_OFFSET } from "../constants";
+import { getKaplayCtx } from "../core/kaplay-ctx";
 import {
   addBackgrounds,
   addGameobjects,
   handleReset,
-} from "../utils/gameHelper";
+} from "../utils/game-helper";
 
 import { useTelemetryStore } from "~/lib/zustand/telemetry";
 
 export const initializeCalculator = () => {
   const { k, game } = getKaplayCtx();
+  const dataHelper = createLevelDataHelpers("calculator");
 
-  addBackgrounds(["backgroundCalc"], -200);
+  addBackgrounds(["withEquation"], -200);
 
   const { raccoon } = addGameobjects(["raccoon"]);
-  k.setCamPos(-5, -BACKGROUND_OFFSET);
-  k.setCamScale((CAM_SCALE * k.height()) / 947);
-  raccoon!.scaleBy(-1, 1);
+  raccoon.scaleBy(-1, 1);
 
-  game.onUpdate(() => {    
+  k.setCamPos(-5, -BACKGROUND_OFFSET);
+
+  game.onUpdate(() => {
     if (useGameStore.getState().isPaused) return;
 
     // Get value from exportToGameObject node
-    const value = useDataStore
-      .getState()
-      .gameObjects.get("raccoon")!
-      .get("solution")!.value;
+    const value = dataHelper.getData("raccoon", "solution");
 
-    if (value == 16 && !useGameStore.getState().levelCompleted) {
-      useGameStore.getState().setLevelCompleteDialogOpen(true);
+    if (value == 16) {
       useGameStore.getState().setLevelCompleted(true);
 
       useTelemetryStore.getState().logFinish(new Date().toLocaleTimeString('en-GB', {
@@ -41,8 +38,8 @@ export const initializeCalculator = () => {
       }));
     }
 
-    if (useDataStore.getState().initData) {
-      handleReset(raccoon!, -1);
+    if (dataHelper.initData()) {
+      handleReset(raccoon, -1);
     }
   });
 };

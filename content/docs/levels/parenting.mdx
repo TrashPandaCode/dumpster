@@ -1,0 +1,55 @@
+---
+title: Parenting
+---
+
+# Level 4: Parenting
+
+## Objective
+
+In this level, the player must **parent a trashcan to the raccoon** so that the trashcan moves together with the raccoon as it runs back and forth. For this the node graph exposes:
+
+- **Import nodes**: provide the current `x` and `y` position of the raccoon
+- **Export nodes**: allow writing to the `x` and `y` position of the trashcan
+
+By wiring the raccoon's positions directly into the trashcan's inputs, the user effectively **binds** the trashcan's transformation to the raccoon — a form of functional parenting.
+
+The raccoon will then carry the trashcan toward a goal flag.
+
+## Concepts to Learn
+
+This level introduces the core principles of **transformation hierarchies** and **parenting** in animation systems.
+
+## Key Principles Introduced
+
+- **Parent-child relationships** between scene objects
+- **Local vs. global coordinate systems**
+- Reusing transformation data via **node-based bindings**
+- Introduction to inheritance of position
+
+## Node Structure Example
+
+```plaintext
+[Import: Raccoon x] ──▶ [Export: Trashcan x]
+[Import: Raccoon y] ──▶ [Export: Trashcan y]
+```
+
+This simple binding reproduces the effect of parenting: the trashcan now **inherits** the transformation of the raccoon, remaining at a constant offset (zero, in this case).
+
+The trashcan's position is now $$(0, 0)$$ in the raccoon's local coordinate system.
+
+## Relevant Documentation
+
+- [Coordinate Systems](/docs/hierarchies/coordinate-systems)
+- [Transformation Hierarchies](/docs/hierarchies/transformation-hierarchies)
+- [Scene Graphs](/docs/hierarchies/scene-graphs)
+
+## Educational Notes
+
+In many animation systems, parenting implies that a child object's **local transformation** is applied **relative to the parent's global transformation**. This level simulates this idea explicitly: the user must wire one object's transformation into another, creating a dependency in the node graph.
+
+The same concept may allow offsets or rotations — but here, the goal is to understand **the fundamental mechanics** of transformation composition through node bindings.
+
+This level also foreshadows advanced systems like:
+
+- **Forward kinematics**, where transformations propagate down a hierarchy
+- **Scene graph traversal**, where updates follow parent-child chains

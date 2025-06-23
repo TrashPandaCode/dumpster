@@ -6,7 +6,7 @@ import {
 } from "downshift";
 import { useState } from "react";
 
-import type { GameObject } from "~/lib/game/gameObjects";
+import type { GameObject } from "~/lib/game/game-objects";
 
 export function useGameobjectSelect(
   items: GameObject[],
@@ -46,6 +46,7 @@ export function useGameobjectSelect(
       } else {
         newSelection = [...selectedGameObjects, selectedItem];
       }
+
       setSelectedGameObjects(newSelection);
       updateNodeInternals(id);
       setEdges((edgs) =>
@@ -56,6 +57,10 @@ export function useGameobjectSelect(
     },
   });
 
+  const handleReorder = (newOrder: GameObject[]) => {
+    setSelectedGameObjects(newOrder);
+  };
+
   return {
     isOpen,
     getToggleButtonProps,
@@ -64,6 +69,7 @@ export function useGameobjectSelect(
     highlightedIndex,
     getItemProps,
     selectedGameObjects,
+    handleReorder,
   };
 }
 

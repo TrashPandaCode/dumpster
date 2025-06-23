@@ -15,6 +15,10 @@
         "path": "/docs/nodes/math"
       },
       {
+        "title": "World To Local",
+        "path": "/docs/nodes/worldtolocal"
+      },
+      {
         "title": "Export To Gameobject",
         "path": "/docs/nodes/export"
       },
@@ -49,6 +53,55 @@
       {
         "title": "Group",
         "path": "/docs/nodes/group"
+      }
+    ]
+  },
+  {
+    "title": "Level Guides",
+    "items": [
+      {
+        "title": "Calculator",
+        "path": "/docs/levels/calculator"
+      },
+      {
+        "title": "Sitting",
+        "path": "/docs/levels/sitting"
+      },
+      {
+        "title": "Bounce",
+        "path": "/docs/levels/bounce"
+      },
+      {
+        "title": "Parenting",
+        "path": "/docs/levels/parenting"
+      },
+      {
+        "title": "Linear",
+        "path": "/docs/levels/linear"
+      },
+      {
+        "title": "Reverse",
+        "path": "/docs/levels/reverse"
+      },
+      {
+        "title": "Move",
+        "path": "/docs/levels/move"
+      },
+      {
+        "title": "Forward",
+        "path": "/docs/levels/forward"
+      },
+      {
+        "title": "Looping",
+        "path": "/docs/levels/looping"
+      },
+      {
+        "title": "Inverse",
+        "path": "/docs/levels/inverse"
+      },
+      {
+        "title": "Playground",
+        "path": "/docs/levels/playground"
       }
     ]
   },

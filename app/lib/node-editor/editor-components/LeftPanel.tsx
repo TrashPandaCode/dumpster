@@ -15,7 +15,6 @@ import {
 import { Panel } from "@xyflow/react";
 
 import LevelDialog from "~/lib/game/components/LevelDialog";
-import { globalKeyTracker } from "~/lib/game/utils/globalKeyTracker";
 import { useDataStore } from "~/lib/zustand/data";
 import { useGameStore } from "~/lib/zustand/game";
 import { useFlowStore } from "../node-store/flow-store";
@@ -23,12 +22,15 @@ import { useLoopStore } from "../node-store/loop-store";
 import { useNodeStore } from "../node-store/node-store";
 import { redo, undo } from "../utils/undo";
 import { IconButton } from "./IconButton";
+import useIsMac from "../hooks/useMac";
 
 const LeftPanel = () => {
   const currentLevel = useGameStore((state) => state.currentLevel);
   const isPaused = useGameStore((state) => state.isPaused);
   const play = useGameStore((state) => state.play);
   const pause = useGameStore((state) => state.pause);
+
+  const isMac = useIsMac();
 
   return (
     <Panel
@@ -95,7 +97,7 @@ const LeftPanel = () => {
           <p>
             Undo
             <span className="ml-2 rounded bg-slate-600 px-1.5 py-0.5 font-mono text-xs text-gray-300">
-              {globalKeyTracker.isMac ? "⌥+Z" : "Ctrl+Z"}
+              {isMac ? "⌥+Z" : "Ctrl+Z"}
             </span>
           </p>
         }
@@ -111,7 +113,7 @@ const LeftPanel = () => {
           <p>
             Redo
             <span className="ml-2 rounded bg-slate-600 px-1.5 py-0.5 font-mono text-xs text-gray-300">
-              {globalKeyTracker.isMac ? "⌥+Y" : "Ctrl+Y"}
+              {isMac ? "⌥+Y" : "Ctrl+Y"}
             </span>
           </p>
         }
