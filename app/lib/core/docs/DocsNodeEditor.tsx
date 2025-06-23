@@ -83,7 +83,7 @@ const Editor: React.FC<{ type: string }> = ({ type }) => {
           disableKeyboardA11y={true}
           fitView
           proOptions={{ hideAttribution: true }}
-          deleteKeyCode={["Delete", "Backspace"]}
+          deleteKeyCode={[]}
         >
           <Background bgColor="#14141d" color="#a7abc2" />
         </ReactFlow>
