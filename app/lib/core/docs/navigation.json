@@ -61,47 +61,47 @@
     "items": [
       {
         "title": "Calculator",
-        "path": "/docs/levels/calculator"
+        "path": "/docs/level-guides/calculator"
       },
       {
         "title": "Sitting",
-        "path": "/docs/levels/sitting"
+        "path": "/docs/level-guides/sitting"
       },
       {
         "title": "Bounce",
-        "path": "/docs/levels/bounce"
+        "path": "/docs/level-guides/bounce"
       },
       {
         "title": "Parenting",
-        "path": "/docs/levels/parenting"
+        "path": "/docs/level-guides/parenting"
       },
       {
         "title": "Linear",
-        "path": "/docs/levels/linear"
+        "path": "/docs/level-guides/linear"
       },
       {
         "title": "Reverse",
-        "path": "/docs/levels/reverse"
+        "path": "/docs/level-guides/reverse"
       },
       {
         "title": "Move",
-        "path": "/docs/levels/move"
+        "path": "/docs/level-guides/move"
       },
       {
         "title": "Forward",
-        "path": "/docs/levels/forward"
+        "path": "/docs/level-guides/forward"
       },
       {
         "title": "Looping",
-        "path": "/docs/levels/looping"
+        "path": "/docs/level-guides/looping"
       },
       {
         "title": "Inverse",
-        "path": "/docs/levels/inverse"
+        "path": "/docs/level-guides/inverse"
       },
       {
         "title": "Playground",
-        "path": "/docs/levels/playground"
+        "path": "/docs/level-guides/playground"
       }
     ]
   },

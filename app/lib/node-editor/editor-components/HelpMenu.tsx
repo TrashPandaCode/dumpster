@@ -62,7 +62,7 @@ const HelpMenu = () => {
             <NavLink
               className="text-slate-400 italic hover:underline"
               target="_blank"
-              to={`/docs/levels/${LEVELS[level].slug}`}
+              to={`/docs/level-guides/${LEVELS[level].slug}`}
             >
               Find information on this topic here
             </NavLink>

@@ -831,7 +831,7 @@ describe("Documentation System Tests", () => {
       const levelSlugs = Object.keys(LEVELS);
 
       levelSlugs.forEach((levelSlug) => {
-        const expectedLevelDocPath = `/docs/levels/${levelSlug}`;
+        const expectedLevelDocPath = `/docs/level-guides/${levelSlug}`;
 
         if (!navigationPaths.includes(expectedLevelDocPath)) {
           missingLevelDocs.push(levelSlug);
@@ -842,7 +842,7 @@ describe("Documentation System Tests", () => {
         console.log("Levels missing documentation files:", missingLevelDocs);
         console.log(
           "Expected paths:",
-          missingLevelDocs.map((slug) => `/docs/levels/${slug}`)
+          missingLevelDocs.map((slug) => `/docs/level-guides/${slug}`)
         );
       }
 
@@ -854,12 +854,12 @@ describe("Documentation System Tests", () => {
 
       // Find all level documentation files
       const levelDocPaths = navigationPaths.filter((path) =>
-        path.startsWith("/docs/levels/")
+        path.startsWith("/docs/level-guides/")
       );
 
       levelDocPaths.forEach((docPath) => {
         const levelSlug = docPath.replace(
-          "/docs/levels/",
+          "/docs/level-guides/",
           ""
         ) as keyof typeof LEVELS;
 
@@ -904,7 +904,7 @@ describe("Documentation System Tests", () => {
 
     test("should have proper level documentation organization in navigation", () => {
       const levelDocPaths = navigationPaths.filter((path) =>
-        path.startsWith("/docs/levels/")
+        path.startsWith("/docs/level-guides/")
       );
 
       // Check if there's a levels section in navigation
@@ -913,7 +913,7 @@ describe("Documentation System Tests", () => {
         (section) =>
           section.title.toLowerCase().includes("level") ||
           (section.items &&
-            section.items.some((item) => item.path.startsWith("/docs/levels/")))
+            section.items.some((item) => item.path.startsWith("/docs/level-guides/")))
       );
 
       if (levelDocPaths.length > 0) {
@@ -923,10 +923,10 @@ describe("Documentation System Tests", () => {
           // All level docs should be properly categorized
           const navigationLevelPaths = levelsSection.items
             ? levelsSection.items
-                .filter((item) => item.path.startsWith("/docs/levels/"))
+                .filter((item) => item.path.startsWith("/docs/level-guides/"))
                 .map((item) => item.path)
             : levelsSection.path &&
-                levelsSection.path.startsWith("/docs/levels/")
+                levelsSection.path.startsWith("/docs/level-guides/")
               ? [levelsSection.path]
               : [];
 
