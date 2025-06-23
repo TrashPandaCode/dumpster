@@ -22,12 +22,7 @@ const PaneContextMenu = React.forwardRef<
       style={{ position: "absolute", top: y, left: x, zIndex: 1000 }}
     >
       <AddNodes x={x} y={y} onClose={onClose}>
-        {hasCopiedNodes() && (
-          <>
-            <hr className="mx-auto h-1 w-44 rounded-sm border-0 bg-slate-700" />
-            <PasteSection x={x} y={y} onClose={onClose} />
-          </>
-        )}
+        {hasCopiedNodes() && <PasteSection x={x} y={y} onClose={onClose} />}
       </AddNodes>
     </div>
   );

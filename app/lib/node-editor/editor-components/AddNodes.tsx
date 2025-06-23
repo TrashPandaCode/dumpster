@@ -217,7 +217,12 @@ const AddNodes = ({
           </button>
         ))}
       </div>
-      {nodeSearch === "" && <>{children}</>}
+      {nodeSearch === "" && (
+        <>
+          <hr className="mx-auto h-1 w-44 rounded-sm border-0 bg-slate-700" />
+          {children}
+        </>
+      )}
     </div>
   );
 };
