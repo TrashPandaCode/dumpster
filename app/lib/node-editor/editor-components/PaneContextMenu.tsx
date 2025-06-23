@@ -21,15 +21,14 @@ const PaneContextMenu = React.forwardRef<
       ref={ref}
       style={{ position: "absolute", top: y, left: x, zIndex: 1000 }}
     >
-      {hasCopiedNodes() ? (
-        <div className="flex w-70 flex-col justify-center gap-1 rounded bg-slate-800 p-2 font-mono shadow-lg outline-1 outline-slate-700 outline-solid">
-          <PasteSection x={x} y={y} onClose={onClose} />
-          <hr className="mx-auto h-1 w-32 rounded-sm border-0 bg-slate-700" />
-          <AddNodes x={x} y={y} onClose={onClose} />
-        </div>
-      ) : (
-        <AddNodes x={x} y={y} onClose={onClose} />
-      )}
+      <AddNodes x={x} y={y} onClose={onClose}>
+        {hasCopiedNodes() && (
+          <>
+            <hr className="mx-auto h-1 w-44 rounded-sm border-0 bg-slate-700" />
+            <PasteSection x={x} y={y} onClose={onClose} />
+          </>
+        )}
+      </AddNodes>
     </div>
   );
 });
@@ -80,16 +79,14 @@ const PasteSection = ({
   ]);
 
   return (
-    <div className="flex justify-center">
-      <button
-        className="w-full rounded px-2 py-1 text-center text-sm text-white hover:bg-slate-700"
-        onClick={handlePaste}
-      >
-        <span>Paste</span>
-        <span className="ml-2 rounded bg-slate-600 px-1.5 py-0.5 font-mono text-xs text-gray-300">
-          {isMac ? "⌥+V" : "Ctrl+V"}
-        </span>
-      </button>
-    </div>
+    <button
+      className="w-full rounded px-2 py-1 text-left text-sm text-white hover:bg-slate-700"
+      onClick={handlePaste}
+    >
+      <span>Paste</span>
+      <span className="ml-2 rounded bg-slate-600 px-1.5 py-0.5 font-mono text-xs text-gray-300">
+        {isMac ? "⌥+V" : "Ctrl+V"}
+      </span>
+    </button>
   );
 };
