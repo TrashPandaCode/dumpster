@@ -20,7 +20,6 @@ export function useDuplicateHotkey() {
       }
     },
     {
-      enableOnFormTags: false,
       preventDefault: true,
     },
     [getNodes, getEdges, setEdges, setNodes]
@@ -56,7 +55,7 @@ export function useUndoHotkey() {
     (e) => {
       undo();
     },
-    { preventDefault: true, enableOnFormTags: true, useKey: true },
+    { preventDefault: true, useKey: true },
     [isMacOS]
   );
 }
@@ -73,7 +72,7 @@ export function useRedoHotkey() {
     (e) => {
       redo();
     },
-    { preventDefault: true, enableOnFormTags: true, useKey: true },
+    { preventDefault: true, useKey: true },
     [isMacOS]
   );
 }
