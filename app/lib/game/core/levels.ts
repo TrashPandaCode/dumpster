@@ -427,35 +427,33 @@ export const LEVELS = {
     modifiableGameObjects: [
       {
         id: "raccoon1",
-        connections: [{ label: "y", access: "all" }],
+        connections: [{ label: "y", access: "export" }],
       },
       {
         id: "raccoon2",
-        connections: [{ label: "y", access: "all" }],
+        connections: [{ label: "y", access: "export" }],
       },
       {
         id: "raccoon3",
-        connections: [{ label: "y", access: "all" }],
+        connections: [{ label: "y", access: "export" }],
       },
       {
         id: "raccoon4",
-        connections: [{ label: "y", access: "all" }],
+        connections: [{ label: "y", access: "export" }],
       },
       {
         id: "raccoon5",
-        connections: [{ label: "y", access: "all" }],
+        connections: [{ label: "y", access: "export" }],
       },
     ],
     availableNodes: [
       "Display",
       "Value",
       "Math",
-      "KeyPress",
-      "ImportFromGameobject",
       "ExportToGameobject",
       "ForLoop",
     ],
-    difficulty: 2,
+    difficulty: 1,
   },
   inverse: {
     slug: "inverse",
