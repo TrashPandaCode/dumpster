@@ -72,20 +72,32 @@
         "path": "/docs/levels/bounce"
       },
       {
-        "title": "Move",
-        "path": "/docs/levels/move"
-      },
-      {
         "title": "Parenting",
         "path": "/docs/levels/parenting"
       },
       {
-        "title": "Time Transform",
-        "path": "/docs/levels/time-transform"
+        "title": "Linear",
+        "path": "/docs/levels/linear"
       },
       {
-        "title": "Kinematics",
-        "path": "/docs/levels/kinematics"
+        "title": "Reverse",
+        "path": "/docs/levels/reverse"
+      },
+      {
+        "title": "Move",
+        "path": "/docs/levels/move"
+      },
+      {
+        "title": "Forward",
+        "path": "/docs/levels/forward"
+      },
+      {
+        "title": "Looping",
+        "path": "/docs/levels/looping"
+      },
+      {
+        "title": "Inverse",
+        "path": "/docs/levels/inverse"
       },
       {
         "title": "Playground",

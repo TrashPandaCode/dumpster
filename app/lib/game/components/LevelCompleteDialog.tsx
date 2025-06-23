@@ -8,6 +8,7 @@ import CustomDialog from "./CustomDialog";
 
 const LevelCompleteDialog = () => {
   const currentLevel = useGameStore((state) => state.currentLevel);
+  const levelName = LEVELS[currentLevel].name;
   const nextLevel = getNeighborLevels(currentLevel)?.next;
   const pause = useGameStore((state) => state.pause);
 
@@ -20,11 +21,11 @@ const LevelCompleteDialog = () => {
 
   return (
     <CustomDialog
-      title={currentLevel}
+      title={levelName}
       open={levelCompleteDialogOpen}
       onOpenChange={setLevelCompleteDialogOpen}
       desc={`This dialog displays the level completion dialog of the
-            ${currentLevel} level. You can now get to the main menu 
+            ${levelName} level. You can now get to the main menu 
             using the To Menu button or to the next level using the 
             Next Level button.`}
     >

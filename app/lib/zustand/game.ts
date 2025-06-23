@@ -14,7 +14,7 @@ interface GameState {
   init: (level: LevelId) => void;
 }
 
-export const useGameStore = create<GameState>((set) => ({
+export const useGameStore = create<GameState>((set, get) => ({
   isPaused: false,
   pause: () => set({ isPaused: true }),
   play: () => set({ isPaused: false }),
@@ -25,6 +25,10 @@ export const useGameStore = create<GameState>((set) => ({
     set({ levelCompleteDialogOpen: open }),
   levelCompleted: false,
   setLevelCompleted: (completed: boolean) => {
+    if (completed && !get().levelCompleted) {
+      get().setLevelCompleteDialogOpen(true);
+    }
+
     const levelId = localStorage.getItem("level")!; // we can be sure a level has been loaded
 
     const gameStoreData = {
@@ -40,21 +44,12 @@ export const useGameStore = create<GameState>((set) => ({
   init: (level) => {
     localStorage.setItem("level", level);
     const stored = localStorage.getItem(`game-store-${level}`);
-    if (!stored)
-      return set({
-        isPaused: false,
-        currentLevel: level,
-        levelCompleteDialogOpen: false,
-        levelCompleted: false,
-      });
-
-    const gameStoreData = JSON.parse(stored);
 
     set({
       isPaused: false,
       currentLevel: level,
       levelCompleteDialogOpen: false,
-      levelCompleted: gameStoreData.levelCompleted,
+      levelCompleted: stored ? JSON.parse(stored).levelCompleted : false,
     });
   },
 }));

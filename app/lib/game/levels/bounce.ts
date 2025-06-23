@@ -1,28 +1,28 @@
 import { createLevelDataHelpers } from "~/lib/zustand/data";
 import { useGameStore } from "~/lib/zustand/game";
-import { BACKGROUND_OFFSET, CAM_SCALE, SPRITE_SCALE } from "../constants";
-import { getKaplayCtx } from "../core/kaplayCtx";
+import { getKaplayCtx } from "../core/kaplay-ctx";
 import {
   addBackgrounds,
   addGameobjects,
   animPlayer,
   handleReset,
-} from "../utils/gameHelper";
+  type StandardGameObjectType,
+} from "../utils/game-helper";
 
-const TRASHCAN1 = "trashcan1";
-const TRASHCAN2 = "trashcan2";
-
-export const BOUNCE_GAME_OBJECTS = [TRASHCAN1, TRASHCAN2] as const;
+const GRACE_PERIOD = 0.2;
+const TIMER_DURATION = 4;
 
 export const initializeBounce = () => {
   const { k, game } = getKaplayCtx();
   const dataHelper = createLevelDataHelpers("bounce");
 
-  addBackgrounds(["background1"]);
+  addBackgrounds(["default"]);
 
-  const { raccoon } = addGameobjects(["raccoon"]);
-  k.setCamPos(0, -BACKGROUND_OFFSET);
-  k.setCamScale((CAM_SCALE * k.height()) / 947);
+  const {
+    raccoon,
+    trashcanFilled: trashcan1,
+    trashcanEmpty: trashcan2,
+  } = addGameobjects(["raccoon", "trashcanFilled", "trashcanEmpty"]);
 
   k.loadSprite("trashcan", "/game/sprites/trashcan_spritesheet.png", {
     sliceX: 2,
@@ -32,66 +32,55 @@ export const initializeBounce = () => {
       filled: { from: 1, to: 1, loop: false },
     },
   });
-  const trashcan1 = game.add([
-    k.sprite("trashcan", {
-      anim: "empty",
-    }),
-    k.anchor("bot"),
-    k.pos(0, 0),
-    k.scale(SPRITE_SCALE),
-    k.area(),
-    k.z(1),
-    "trashcan1",
-  ]);
-  const trashcan2 = game.add([
-    k.sprite("trashcan", {
-      anim: "filled",
-    }),
-    k.anchor("bot"),
-    k.pos(0, 0),
-    k.scale(SPRITE_SCALE),
-    k.area(),
-    k.z(1),
-    "trashcan2",
-  ]);
 
   // Initialize trashcan states in the data store
-  dataHelper.setData("trashcan1", "filled", 0);
-  dataHelper.setData("trashcan1", "xpos", -7);
-  dataHelper.setData("trashcan1", "ypos", -1.75);
+  const setupTrashcan = (
+    can: StandardGameObjectType,
+    x: number,
+    y: number,
+    filled: number
+  ) => {
+    can.z = 3;
+    can.pos = k.vec2(x, y);
+    dataHelper.setData(
+      can === trashcan1 ? "trashcanFilled" : "trashcanEmpty",
+      "filled",
+      filled
+    );
+    dataHelper.setData(
+      can === trashcan1 ? "trashcanFilled" : "trashcanEmpty",
+      "x",
+      x
+    );
+    dataHelper.setData(
+      can === trashcan1 ? "trashcanFilled" : "trashcanEmpty",
+      "y",
+      y
+    );
+  };
 
-  dataHelper.setData("trashcan2", "filled", 1);
-  dataHelper.setData("trashcan2", "xpos", -5);
-  dataHelper.setData("trashcan2", "ypos", -2);
+  setupTrashcan(trashcan1, -7, -1.75, 0);
+  setupTrashcan(trashcan2, -5, -2, 1);
+  const cans = [trashcan1, trashcan2];
 
-  // Set initial positions and z-index for trashcans
-  trashcan1!.z = 3;
-  trashcan1!.pos.x = -7;
-  trashcan1!.pos.y = -1.75;
-
-  trashcan2!.z = 3;
-  trashcan2!.pos.x = -5;
-  trashcan2!.pos.y = -2;
-
-  let swapTimer = 0;
-  let nextSwap = Math.random() * 4 + 1; // Random time between 1 and 5 seconds
-
-  let timeInFilled = 0;
-  let graceTimer = 0;
-  const GRACE_PERIOD = 0.2;
-
+  k.loadFont("Pixelify Sans", "/fonts/PixelifySans-VariableFont_wght.ttf", {
+    filter: "nearest",
+  });
   const timerText = game.add([
-    k.text("5", {
-      size: 2,
-      font: "satoshi",
-    }),
-    k.pos(0, -8),
+    k.text(TIMER_DURATION.toString(), { size: 2, font: "Pixelify Sans" }),
+    k.pos(-6, -6),
     k.anchor("center"),
     k.z(10),
     k.opacity(0),
     "timerText",
   ]);
 
+  const newSwap = () => Math.random() * (TIMER_DURATION / 2) + 1;
+
+  let swapTimer = 0,
+    nextSwap = newSwap();
+  let timeInFilled = 0,
+    graceTimer = 0;
   let trashcan1IsFilled = false;
 
   game.onUpdate(() => {
@@ -100,51 +89,47 @@ export const initializeBounce = () => {
     swapTimer += k.dt();
     if (swapTimer >= nextSwap) {
       // Swap the trashcan sprites and filled states
-      if (trashcan1IsFilled) {
-        trashcan1!.play("empty");
-        trashcan2!.play("filled");
-      } else {
-        trashcan1!.play("filled");
-        trashcan2!.play("empty");
-      }
       trashcan1IsFilled = !trashcan1IsFilled;
+      cans[0].play(trashcan1IsFilled ? "filled" : "empty");
+      cans[1].play(trashcan1IsFilled ? "empty" : "filled");
 
-      dataHelper.setData("trashcan1", "filled", trashcan1IsFilled ? 1 : 0);
-      dataHelper.setData("trashcan2", "filled", trashcan1IsFilled ? 0 : 1);
+      dataHelper.setData("trashcanFilled", "filled", trashcan1IsFilled ? 1 : 0);
+      dataHelper.setData("trashcanEmpty", "filled", trashcan1IsFilled ? 0 : 1);
 
       swapTimer = 0;
-      nextSwap = Math.random() * 4 + 1; // Reset the timer with a new random value
+      nextSwap = newSwap();
     }
 
-    animPlayer(raccoon!, k);
+    animPlayer(raccoon, k);
 
-    const trashcanFilled = trashcan1IsFilled ? trashcan1 : trashcan2;
-    const distFilled = raccoon!.pos.dist(trashcanFilled!.pos);
+    const filledCan = trashcan1IsFilled ? trashcan1 : trashcan2;
+    const isNearFilled = raccoon.pos.dist(filledCan.pos) <= 0.5;
 
-    if (distFilled <= 0.5 && !useGameStore.getState().levelCompleted) {
+    if (isNearFilled) {
       timeInFilled += k.dt();
       graceTimer = 0;
 
       timerText.opacity = 1;
-      const countdown = Math.max(0, Math.ceil(5 - timeInFilled));
-      timerText.text = countdown.toString();
-      if (timeInFilled >= 5) {
-        useGameStore.getState().setLevelCompleteDialogOpen(true);
+      timerText.text = Math.max(
+        0,
+        Math.ceil(TIMER_DURATION - timeInFilled)
+      ).toString();
+
+      if (timeInFilled >= TIMER_DURATION) {
         useGameStore.getState().setLevelCompleted(true);
         timerText.opacity = 0;
       }
-    } else if (timeInFilled > 0 && !useGameStore.getState().levelCompleted) {
+    } else if (timeInFilled > 0) {
       graceTimer += k.dt();
       if (graceTimer >= GRACE_PERIOD) {
         timeInFilled = 0;
         graceTimer = 0;
-
         timerText.opacity = 0;
       }
     }
 
-    if (dataHelper.initData) {
-      handleReset(raccoon!, 1);
+    if (dataHelper.initData()) {
+      handleReset(raccoon, 1);
     }
   });
 };

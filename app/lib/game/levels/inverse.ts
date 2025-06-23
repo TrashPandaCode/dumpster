@@ -1,7 +1,12 @@
 import { createLevelDataHelpers } from "~/lib/zustand/data";
 import { useGameStore } from "~/lib/zustand/game";
-import { CAM_SCALE } from "../constants";
-import { getKaplayCtx } from "../core/kaplayCtx";
+import { getKaplayCtx } from "../core/kaplay-ctx";
+import {
+  addBackgrounds,
+  addGameobjects,
+  animPlayer,
+  handleReset,
+} from "../utils/game-helper";
 
 const JOINT_1 = "joint1";
 const JOINT_1_LENGTH = 3;
@@ -20,8 +25,19 @@ export const INVERSE_GAME_OBJECTS = [
 export const initializeInverse = () => {
   const { k, game } = getKaplayCtx();
 
-  k.setCamPos(0, 0);
-  k.setCamScale((CAM_SCALE * k.height()) / 1500);
+  k.setGravity(100);
+
+  addBackgrounds(["default"]);
+  const { raccoon } = addGameobjects(["raccoon"]);
+
+  const floor1 = k.add([
+    k.rect(100, 1),
+    k.anchor("top"),
+    k.pos(-17.2, 0),
+    k.area(),
+    k.body({ isStatic: true }),
+    k.opacity(0),
+  ]);
 
   const dataHelper = createLevelDataHelpers("inverse");
 
@@ -34,48 +50,46 @@ export const initializeInverse = () => {
   dataHelper.setData("joint3", "x", () => setJointPos().joint3.x);
   dataHelper.setData("joint3", "y", () => setJointPos().joint3.y);
 
-  const joint1 = k.add([
+  k.loadSprite("joint", "/game/sprites/joint.png");
+  k.loadSprite("jointend", "/game/sprites/jointend.png");
+  k.loadSprite("soap", "/game/sprites/soap.png");
+  const joint1 = game.add([
     "joint1",
-    k.rect(0.2, JOINT_1_LENGTH),
-    k.anchor("bot"),
+    k.sprite("joint"),
+    k.anchor(k.vec2(0, 0.8)),
+    k.scale(0.058),
+    k.color(255, 100, 100),
     k.pos(0, 0),
     k.rotate(0),
-    k.area(),
-    k.body({ isStatic: true }),
-    k.color(255, 0, 0),
-    k.z(1),
+    k.z(5),
   ]);
-  const joint2 = k.add([
+  const joint2 = game.add([
     "joint2",
-    k.rect(0.2, JOINT_2_LENGTH),
-    k.anchor("bot"),
+    k.sprite("joint"),
+    k.anchor(k.vec2(0, 0.8)),
+    k.scale(0.058),
+    k.color(100, 255, 100),
     k.pos(0, 0),
     k.rotate(0),
-    k.area(),
-    k.body({ isStatic: true }),
-    k.color(0, 255, 0),
-    k.z(1),
+    k.z(6),
   ]);
-  const joint3 = k.add([
+  const joint3 = game.add([
     "joint3",
-    k.rect(0.2, JOINT_3_LENGTH),
-    k.anchor("bot"),
+    k.sprite("jointend"),
+    k.anchor(k.vec2(0, 0.8)),
+    k.scale(0.058),
+    k.color(100, 100, 255),
     k.pos(0, 0),
     k.rotate(0),
-    k.area(),
-    k.body({ isStatic: true }),
-    k.color(0, 0, 255),
-    k.z(1),
+    k.z(7),
   ]);
-  const endeffector = k.add([
+  const endeffector = game.add([
     "endeffector",
-    k.circle(0.25),
+    k.sprite("soap"),
+    k.scale(0.03),
     k.anchor("center"),
     k.pos(0, 0),
-    k.area(),
-    k.body({ isStatic: true }),
-    k.color(255, 255, 255),
-    k.z(1),
+    k.z(8),
   ]);
 
   // this function is computed multiple times unecessarily
@@ -112,9 +126,44 @@ export const initializeInverse = () => {
     };
   }
 
+  let pettingTimer = 0;
+
   game.onUpdate(() => {
     if (useGameStore.getState().isPaused) return;
 
     setJointPos();
+
+    animPlayer(raccoon, k, {
+      movementMode: "loop",
+      loopConfig: {
+        maxX: 5,
+        minX: -5,
+        speed: 2,
+      },
+      camClampX: {
+        min: -5,
+        max: 5,
+      },
+    });
+
+    // wincon
+    if (
+      Math.pow(
+        Math.pow(endeffector.pos.x - raccoon.pos.x, 2) +
+          Math.pow(endeffector.pos.y - (raccoon.pos.y - 1), 2),
+        0.5
+      ) < 1
+    ) {
+      pettingTimer += k.dt();
+      if (pettingTimer > 5) {
+        useGameStore.getState().setLevelCompleted(true);
+      }
+    } else {
+      pettingTimer = 0;
+    }
+
+    if (dataHelper.initData()) {
+      handleReset(raccoon, 1);
+    }
   });
 };

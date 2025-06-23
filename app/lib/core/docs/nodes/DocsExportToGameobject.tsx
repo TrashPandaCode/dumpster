@@ -1,9 +1,9 @@
 import { CrossCircledIcon } from "@radix-ui/react-icons";
-import { Position, useReactFlow } from "@xyflow/react";
-import { memo, useMemo, useRef, useState } from "react";
+import { Position } from "@xyflow/react";
+import { memo, useMemo, useState } from "react";
 
 import type { ModifiableGameObject } from "~/lib/game/core/levels";
-import { type GameObject } from "~/lib/game/gameObjects";
+import { type GameObject } from "~/lib/game/game-objects";
 import { useGameobjectSelect } from "~/lib/node-editor/hooks/useGameobjectSelect";
 import AddHandle from "~/lib/node-editor/node-components/AddHandle";
 import BaseHandle from "~/lib/node-editor/node-components/BaseHandle";
@@ -20,15 +20,15 @@ const DocsExportToGameobject = memo(
       {
         id: "raccoon",
         connections: [
-          { label: "xpos", access: "all" },
-          { label: "ypos", access: "all" },
+          { label: "x", access: "all" },
+          { label: "y", access: "all" },
         ],
       },
       {
         id: "trashcanFilled",
         connections: [
-          { label: "xpos", access: "export" },
-          { label: "ypos", access: "export" },
+          { label: "x", access: "export" },
+          { label: "y", access: "export" },
         ],
       },
     ] satisfies ModifiableGameObject[];
@@ -38,22 +38,22 @@ const DocsExportToGameobject = memo(
         [
           "raccoon",
           new Map([
-            ["xpos", new HandleData("all", 145.7)],
-            ["ypos", new HandleData("all", 89.3)],
+            ["x", new HandleData("all", 145.7)],
+            ["y", new HandleData("all", 89.3)],
             ["rotation", new HandleData("export", 1.57)],
-            ["xvelocity", new HandleData("import", -2.4)],
-            ["yvelocity", new HandleData("import", 0.8)],
+            ["x_velocity", new HandleData("import", -2.4)],
+            ["y_velocity", new HandleData("import", 0.8)],
             ["health", new HandleData("all", 85.0)],
           ]),
         ],
         [
           "trashcanFilled",
           new Map([
-            ["xpos", new HandleData("export", 145.7)],
-            ["ypos", new HandleData("export", 89.3)],
+            ["x", new HandleData("export", 145.7)],
+            ["y", new HandleData("export", 89.3)],
             ["rotation", new HandleData("export", 1.57)],
-            ["xvelocity", new HandleData("import", -2.4)],
-            ["yvelocity", new HandleData("import", 0.8)],
+            ["x_velocity", new HandleData("import", -2.4)],
+            ["y_velocity", new HandleData("import", 0.8)],
             ["health", new HandleData("all", 85.0)],
           ]),
         ],
@@ -97,9 +97,6 @@ const DocsExportToGameobject = memo(
       newGameObjectsMap.get(id)!.delete(label);
       setGameObjects(newGameObjectsMap);
     };
-    const curLabel = useRef(data.curLabel ? data.curLabel.current : "");
-
-    const { updateNodeData } = useReactFlow();
 
     return (
       <div>
@@ -158,11 +155,10 @@ const DocsExportToGameobject = memo(
           ))}
           {selectedGameObjects.length && (
             <AddHandle
-              addHandle={addHandle}
               handleIdentifiers={selectedGameObjects}
-              handleLabel={curLabel}
               nodeId={id}
-              updateNodeData={updateNodeData}
+              initialLabel={data.handleLabel ?? ""}
+              addHandle={(id, label) => addHandle(id as GameObject, label)}
             />
           )}
         </NodeContent>

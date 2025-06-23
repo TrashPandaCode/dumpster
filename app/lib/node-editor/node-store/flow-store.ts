@@ -4,7 +4,7 @@ import { temporal } from "zundo";
 import { create } from "zustand";
 
 import { LEVELS, type LevelId } from "~/lib/game/core/levels";
-import type { GameObject } from "~/lib/game/gameObjects";
+import type { GameObject } from "~/lib/game/game-objects";
 import { toast } from "../editor-components/Toast";
 
 type HighlightType = "cycle" | "duplicate";

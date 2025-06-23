@@ -1,0 +1,157 @@
+{
+  "nodes": [
+    {
+      "id": "2aef532b-a6f5-4136-9841-9e4bdb255187",
+      "type": "Switch",
+      "position": {
+        "x": 353.7459663355876,
+        "y": 537.162550296586
+      },
+      "data": {
+        "yInputData": 0,
+        "zInputData": 0
+      },
+      "selected": false,
+      "dragging": false,
+      "measured": {
+        "width": 256,
+        "height": 178
+      }
+    },
+    {
+      "id": "abf97281-562c-490e-835d-e01e17262d2c",
+      "type": "ImportFromGameobject",
+      "position": {
+        "x": -0.29461842554114526,
+        "y": 549.254741150493
+      },
+      "data": {
+        "selectedGameObjects": ["trashcanFilled"]
+      },
+      "selected": false,
+      "dragging": false,
+      "measured": {
+        "width": 237,
+        "height": 176
+      }
+    },
+    {
+      "id": "b219fa86-bf70-40e3-a23d-4d0025fa6388",
+      "type": "ImportFromGameobject",
+      "position": {
+        "x": 2.6956511564681165,
+        "y": 779.4587077527907
+      },
+      "data": {
+        "selectedGameObjects": ["trashcanEmpty"]
+      },
+      "selected": false,
+      "dragging": false,
+      "measured": {
+        "width": 237,
+        "height": 176
+      }
+    },
+    {
+      "id": "cb935af0-fdeb-44f5-9727-0e6a74978e40",
+      "type": "Switch",
+      "position": {
+        "x": 361.0889887340775,
+        "y": 802.1885394307287
+      },
+      "data": {
+        "yInputData": 0,
+        "zInputData": 0
+      },
+      "selected": false,
+      "dragging": false,
+      "measured": {
+        "width": 256,
+        "height": 178
+      }
+    },
+    {
+      "id": "aeea0ab6-fc12-41b5-947a-ac16552d4e6d",
+      "type": "ExportToGameobject",
+      "position": {
+        "x": 720.071880054848,
+        "y": 663.7003166189988
+      },
+      "data": {
+        "selectedGameObjects": ["raccoon"]
+      },
+      "selected": false,
+      "dragging": false,
+      "measured": {
+        "width": 222,
+        "height": 190
+      }
+    }
+  ],
+  "edges": [
+    {
+      "type": "Deletable",
+      "source": "abf97281-562c-490e-835d-e01e17262d2c",
+      "sourceHandle": "filled",
+      "target": "2aef532b-a6f5-4136-9841-9e4bdb255187",
+      "targetHandle": "input-handle-x",
+      "id": "xy-edge__abf97281-562c-490e-835d-e01e17262d2cfilled-2aef532b-a6f5-4136-9841-9e4bdb255187input-handle-x"
+    },
+    {
+      "type": "Deletable",
+      "source": "2aef532b-a6f5-4136-9841-9e4bdb255187",
+      "sourceHandle": "output-handle-x",
+      "target": "aeea0ab6-fc12-41b5-947a-ac16552d4e6d",
+      "targetHandle": "x",
+      "id": "xy-edge__2aef532b-a6f5-4136-9841-9e4bdb255187output-handle-x-aeea0ab6-fc12-41b5-947a-ac16552d4e6dx"
+    },
+    {
+      "type": "Deletable",
+      "source": "cb935af0-fdeb-44f5-9727-0e6a74978e40",
+      "sourceHandle": "output-handle-x",
+      "target": "aeea0ab6-fc12-41b5-947a-ac16552d4e6d",
+      "targetHandle": "y",
+      "id": "xy-edge__cb935af0-fdeb-44f5-9727-0e6a74978e40output-handle-x-aeea0ab6-fc12-41b5-947a-ac16552d4e6dy"
+    },
+    {
+      "type": "Deletable",
+      "source": "abf97281-562c-490e-835d-e01e17262d2c",
+      "sourceHandle": "x",
+      "target": "2aef532b-a6f5-4136-9841-9e4bdb255187",
+      "targetHandle": "input-handle-z",
+      "id": "xy-edge__abf97281-562c-490e-835d-e01e17262d2cx-2aef532b-a6f5-4136-9841-9e4bdb255187input-handle-z"
+    },
+    {
+      "type": "Deletable",
+      "source": "b219fa86-bf70-40e3-a23d-4d0025fa6388",
+      "sourceHandle": "x",
+      "target": "2aef532b-a6f5-4136-9841-9e4bdb255187",
+      "targetHandle": "input-handle-y",
+      "id": "xy-edge__b219fa86-bf70-40e3-a23d-4d0025fa6388x-2aef532b-a6f5-4136-9841-9e4bdb255187input-handle-y"
+    },
+    {
+      "type": "Deletable",
+      "source": "b219fa86-bf70-40e3-a23d-4d0025fa6388",
+      "sourceHandle": "filled",
+      "target": "cb935af0-fdeb-44f5-9727-0e6a74978e40",
+      "targetHandle": "input-handle-x",
+      "id": "xy-edge__b219fa86-bf70-40e3-a23d-4d0025fa6388filled-cb935af0-fdeb-44f5-9727-0e6a74978e40input-handle-x"
+    },
+    {
+      "type": "Deletable",
+      "source": "b219fa86-bf70-40e3-a23d-4d0025fa6388",
+      "sourceHandle": "y",
+      "target": "cb935af0-fdeb-44f5-9727-0e6a74978e40",
+      "targetHandle": "input-handle-z",
+      "id": "xy-edge__b219fa86-bf70-40e3-a23d-4d0025fa6388y-cb935af0-fdeb-44f5-9727-0e6a74978e40input-handle-z"
+    },
+    {
+      "type": "Deletable",
+      "source": "abf97281-562c-490e-835d-e01e17262d2c",
+      "sourceHandle": "y",
+      "target": "cb935af0-fdeb-44f5-9727-0e6a74978e40",
+      "targetHandle": "input-handle-y",
+      "id": "xy-edge__abf97281-562c-490e-835d-e01e17262d2cy-cb935af0-fdeb-44f5-9727-0e6a74978e40input-handle-y"
+    }
+  ]
+}

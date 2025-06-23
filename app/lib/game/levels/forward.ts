@@ -1,35 +1,33 @@
 import { createLevelDataHelpers } from "~/lib/zustand/data";
 import { useGameStore } from "~/lib/zustand/game";
-import { BACKGROUND_OFFSET, CAM_SCALE } from "../constants";
-import { getKaplayCtx } from "../core/kaplayCtx";
+import { getKaplayCtx } from "../core/kaplay-ctx";
 import {
   addBackgrounds,
   addGameobjects,
   animPlayer,
   handleReset,
-} from "../utils/gameHelper";
+} from "../utils/game-helper";
 
 const ARM_LENGTH = 3;
 const ARM = "arm";
-export const KINEMATICS_GAME_OBJECTS = [ARM] as const;
+export const FORWARD_GAME_OBJECTS = [ARM] as const;
 
-export const initializeKinematics = () => {
+export const initializeForward = () => {
   const { k, game } = getKaplayCtx();
-  const dataHelper = createLevelDataHelpers("kinematics");
+
+  const dataHelper = createLevelDataHelpers("forward");
 
   k.setGravity(100);
 
-  addBackgrounds(["background2pers2"]);
+  addBackgrounds(["roofWithoutPerspective"]);
 
   const { raccoon, goalFlag } = addGameobjects(["raccoon", "goalFlag"]);
-  k.setCamPos(0, -BACKGROUND_OFFSET);
-  k.setCamScale((CAM_SCALE * k.height()) / 947);
 
-  raccoon!.pos.x = -10
-  goalFlag!.pos.x = 10;
+  raccoon.pos.x = -10;
+  goalFlag.pos.x = 10;
 
   const floor1 = k.add([
-    k.rect(20, 1),
+    k.rect(19, 1),
     k.anchor("top"),
     k.pos(-17.2, 0),
     k.area(),
@@ -38,7 +36,7 @@ export const initializeKinematics = () => {
   ]);
 
   const floor2 = k.add([
-    k.rect(20, 1),
+    k.rect(18.5, 1),
     k.anchor("top"),
     k.pos(17, 0),
     k.area(),
@@ -72,7 +70,7 @@ export const initializeKinematics = () => {
     k.z(2),
   ]);
   const platform = k.add([
-    k.rect(4, 0.2),
+    k.rect(5, 0.2),
     k.anchor("bot"),
     k.pos(leftArmX, -2),
     k.area(),
@@ -81,7 +79,7 @@ export const initializeKinematics = () => {
     k.z(3),
   ]);
 
-    const arm3 = k.add([
+  const arm3 = k.add([
     "arm1",
     k.rect(0.2, ARM_LENGTH),
     k.anchor("bot"),
@@ -104,7 +102,7 @@ export const initializeKinematics = () => {
     k.z(2),
   ]);
   const platform2 = k.add([
-    k.rect(4, 0.2),
+    k.rect(5, 0.2),
     k.anchor("bot"),
     k.pos(rightArmX, -2),
     k.area(),
@@ -112,7 +110,6 @@ export const initializeKinematics = () => {
     k.color(255, 255, 255),
     k.z(3),
   ]);
-
 
   game.onUpdate(() => {
     if (useGameStore.getState().isPaused) return;
@@ -144,30 +141,34 @@ export const initializeKinematics = () => {
       arm4.pos.y - ARM_LENGTH * Math.cos((arm4.angle * Math.PI) / 180);
 
     // Movement
-    animPlayer(raccoon!, k, "input", undefined, undefined, {
-      minX: -2,
-      maxX: 12,
+    animPlayer(raccoon, k, {
+      movementMode: "input",
+      updateStoreData: false,
+      camClampX: {
+        min: -8,
+        max: 12,
+      },
+      playerClampX: {
+        min: -12,
+        max: 20,
+      },
     });
-    k.onKeyDown("space", () => {
-      if (raccoon!.isGrounded()) {
-        raccoon!.jump(20);
-      }
-    });
+
     // Raccoon fall die :(
-    if (raccoon!.pos.y > 10) {
-      raccoon!.pos.x = -10;
-      raccoon!.pos.y = 0;
-      raccoon!.vel = k.vec2(0, 0);
+    if (raccoon.pos.y > 10) {
+      raccoon.pos.x = -10;
+      raccoon.pos.y = 0;
+      raccoon.vel = k.vec2(0, 0);
     }
 
     //Handle Finish + Reset
-    const distGoal = raccoon!.pos.dist(goalFlag!.pos);
-    if (distGoal <= 1 && !useGameStore.getState().levelCompleted) {
-      useGameStore.getState().setLevelCompleteDialogOpen(true);
+    const distGoal = raccoon.pos.dist(goalFlag.pos);
+    if (distGoal <= 1) {
       useGameStore.getState().setLevelCompleted(true);
     }
-    if (dataHelper.initData) {
-      handleReset(raccoon!, 1);
+    if (dataHelper.initData()) {
+      handleReset(raccoon, 1);
+      raccoon.pos = k.vec2(-10, 0);
     }
   });
 };

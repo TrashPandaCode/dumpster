@@ -1,0 +1,72 @@
+---
+title: Linear
+---
+
+# Level 5: Linear
+
+## Objective
+
+This level introduces the concept of **linear time transformation**, a foundational mechanism in animation systems where one time domain is mapped into another. The player must manipulate time values to control a **pocket watch** animation so that it corresponds to the behavior of a **clock tower**, with an applied time **scaling** and **offset**.
+
+## Scenario
+
+A non-functional watch awaits a time input. The player must construct a time signal that behaves differently from the reference clock tower's timeline. Through the in-game dialogue, it becomes evident that the pocket watch should run significantly faster and with a starting offset:
+
+- A time offset of **50 seconds**
+- A time scaling factor of **100**
+
+These adjustments allow the player to create a new timeline that modifies the speed and phase of the animation independently of the base time axis.
+
+## Learning Outcomes
+
+- Understand the principle of linear time transformation in animation.
+- Learn to construct time-based expressions via node graphs.
+- Develop intuition for how **offset** and **scaling** affect temporal behavior in animations.
+- Apply mathematical thinking to dynamic system design.
+
+## Key Concepts
+
+### Time Axes
+
+A **time axis** represents a mapping from real-world (or simulation) time to a local time domain used for evaluation. This abstraction allows decoupling different objects or animations from a global timeline, enabling fine-grained control of pacing and synchronization.
+
+Relevant reading:
+
+- [Time Axes](/docs/time-and-game-loop/time-axes)
+- [Global and Local Time Axes](/docs/time-and-game-loop/global-and-local-time-axes)
+
+### Linear Time Transformation
+
+A linear time transformation maps time `t` from one domain to another using the affine function:
+
+$$
+t' = a \cdot (t + b)
+$$
+
+Where:
+
+- `a` is the **scaling factor** (controls speed)
+- `b` is the **offset** (controls phase shift)
+
+In animation, such transformations allow for:
+
+- Fast-forwarding or slowing down animations
+- Delaying or advancing their onset
+- Creating desynchronized or nested animation loops
+
+This level emphasizes the **mathematical simplicity** and **expressive power** of such mappings, which form the basis of more complex animation behaviors such as non-linear timing and procedural animation control.
+
+## Interaction Goals
+
+- Introduce a **Time Node** that provides a raw time signal.
+- Use **arithmetic nodes** to apply a linear transformation to this signal.
+- Connect the transformed time to the appropriate output or object input.
+- Observe how visual elements respond in real-time to changes in the time signal.
+
+## Suggested Reading
+
+To fully understand and prepare for deeper animation system topics, the following documentation pages are recommended:
+
+- [Global and Local Time Axes](/docs/time-and-game-loop/global-and-local-time-axes)
+- [Frames](/docs/time-and-game-loop/frames): Explains how discrete sampling interacts with continuous time.
+- [Game Loop](/docs/time-and-game-loop/game-loop): Outlines how animation systems process time in interactive applications.

@@ -1,0 +1,47 @@
+import { beforeEach, describe, expect, it, jest } from "bun:test";
+
+import { useTimeStore } from "~/lib/zustand/time";
+
+describe("useTimeStore", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+    useTimeStore.setState({
+      getTime: () => 0,
+      getDeltaTime: () => 0,
+    });
+  });
+
+  it("should have initial time values of 0", () => {
+    const store = useTimeStore.getState();
+    expect(store.getTime()).toBe(0);
+    expect(store.getDeltaTime()).toBe(0);
+  });
+
+  it("should set and use time function", () => {
+    const mockTime = jest.fn(() => 1000);
+    useTimeStore.getState().setTimeFunction(mockTime);
+
+    expect(useTimeStore.getState().getTime()).toBe(1000);
+    expect(mockTime).toHaveBeenCalledTimes(1);
+  });
+
+  it("should set and use delta time function", () => {
+    const mockDeltaTime = jest.fn(() => 16.67);
+    useTimeStore.getState().setDeltaTimeFunction(mockDeltaTime);
+
+    expect(useTimeStore.getState().getDeltaTime()).toBe(16.67);
+    expect(mockDeltaTime).toHaveBeenCalledTimes(1);
+  });
+
+  it("should replace previous time functions", () => {
+    const firstMockTime = jest.fn(() => 500);
+    const secondMockTime = jest.fn(() => 2000);
+
+    useTimeStore.getState().setTimeFunction(firstMockTime);
+    useTimeStore.getState().setTimeFunction(secondMockTime);
+
+    expect(useTimeStore.getState().getTime()).toBe(2000);
+    expect(firstMockTime).not.toHaveBeenCalled();
+    expect(secondMockTime).toHaveBeenCalledTimes(1);
+  });
+});

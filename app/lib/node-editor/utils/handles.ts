@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from "uuid";
 
 import type { ConnectionAccess } from "~/lib/game/core/levels";
-import type { GameObject } from "~/lib/game/gameObjects";
+import type { GameObject } from "~/lib/game/game-objects";
 import type { GameObjectsData } from "~/lib/zustand/data";
 
 export function handleUUID() {
