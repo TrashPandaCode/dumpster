@@ -9,7 +9,7 @@ title: Calculator
 In this introductory level, the player is tasked with solving the arithmetic expression:
 
 $$
-7 + 5 × 2 - 3 ÷ 3
+7 + 5 \\cdot 2 - 3 \\div 3
 $$
 
 The correct result must be computed using the node-based interface and assigned to the \`solution\` output handle of a designated **Export Node** in the scene. The objective is to familiarize the user with basic node-based composition, arithmetic logic, and operator precedence in the context of visual programming.
@@ -33,7 +33,7 @@ The mathematical expression must be parsed and executed in accordance with conve
 Thus, the expression is evaluated as:
 
 $$
-((7 + (5 × 2)) - (3 ÷ 3))
+((7 + (5 \\cdot 2)) - (3 \\div 3))
 $$
 
 This breakdown must be translated into a corresponding **node graph**, where each binary operation is represented by an individual arithmetic node, and the result is sequentially passed along the directed edges.
