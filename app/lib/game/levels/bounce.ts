@@ -6,7 +6,11 @@ import {
   addGameobjects,
   animPlayer,
   handleReset,
+  type StandardGameObjectType,
 } from "../utils/game-helper";
+
+const GRACE_PERIOD = 0.2;
+const TIMER_DURATION = 4;
 
 export const initializeBounce = () => {
   const { k, game } = getKaplayCtx();
@@ -30,45 +34,53 @@ export const initializeBounce = () => {
   });
 
   // Initialize trashcan states in the data store
-  dataHelper.setData("trashcanFilled", "filled", 0);
-  dataHelper.setData("trashcanFilled", "x", -7);
-  dataHelper.setData("trashcanFilled", "y", -1.75);
+  const setupTrashcan = (
+    can: StandardGameObjectType,
+    x: number,
+    y: number,
+    filled: number
+  ) => {
+    can.z = 3;
+    can.pos = k.vec2(x, y);
+    dataHelper.setData(
+      can === trashcan1 ? "trashcanFilled" : "trashcanEmpty",
+      "filled",
+      filled
+    );
+    dataHelper.setData(
+      can === trashcan1 ? "trashcanFilled" : "trashcanEmpty",
+      "x",
+      x
+    );
+    dataHelper.setData(
+      can === trashcan1 ? "trashcanFilled" : "trashcanEmpty",
+      "y",
+      y
+    );
+  };
 
-  dataHelper.setData("trashcanEmpty", "filled", 1);
-  dataHelper.setData("trashcanEmpty", "x", -5);
-  dataHelper.setData("trashcanEmpty", "y", -2);
-
-  // Set initial positions and z-index for trashcans
-  trashcan1.z = 3;
-  trashcan1.pos.x = -7;
-  trashcan1.pos.y = -1.75;
-
-  trashcan2.z = 3;
-  trashcan2.pos.x = -5;
-  trashcan2.pos.y = -2;
-
-  let swapTimer = 0;
-  let nextSwap = Math.random() * 4 + 1; // Random time between 1 and 5 seconds
-
-  let timeInFilled = 0;
-  let graceTimer = 0;
-  const GRACE_PERIOD = 0.2;
+  setupTrashcan(trashcan1, -7, -1.75, 0);
+  setupTrashcan(trashcan2, -5, -2, 1);
+  const cans = [trashcan1, trashcan2];
 
   k.loadFont("Pixelify Sans", "/fonts/PixelifySans-VariableFont_wght.ttf", {
     filter: "nearest",
   });
   const timerText = game.add([
-    k.text("5", {
-      size: 2,
-      font: "Pixelify Sans",
-    }),
-    k.pos(0, -8),
+    k.text(TIMER_DURATION.toString(), { size: 2, font: "Pixelify Sans" }),
+    k.pos(-6, -6),
     k.anchor("center"),
     k.z(10),
     k.opacity(0),
     "timerText",
   ]);
 
+  const newSwap = () => Math.random() * (TIMER_DURATION / 2) + 1;
+
+  let swapTimer = 0,
+    nextSwap = newSwap();
+  let timeInFilled = 0,
+    graceTimer = 0;
   let trashcan1IsFilled = false;
 
   game.onUpdate(() => {
@@ -77,35 +89,33 @@ export const initializeBounce = () => {
     swapTimer += k.dt();
     if (swapTimer >= nextSwap) {
       // Swap the trashcan sprites and filled states
-      if (trashcan1IsFilled) {
-        trashcan1.play("empty");
-        trashcan2.play("filled");
-      } else {
-        trashcan1.play("filled");
-        trashcan2.play("empty");
-      }
       trashcan1IsFilled = !trashcan1IsFilled;
+      cans[0].play(trashcan1IsFilled ? "filled" : "empty");
+      cans[1].play(trashcan1IsFilled ? "empty" : "filled");
 
       dataHelper.setData("trashcanFilled", "filled", trashcan1IsFilled ? 1 : 0);
       dataHelper.setData("trashcanEmpty", "filled", trashcan1IsFilled ? 0 : 1);
 
       swapTimer = 0;
-      nextSwap = Math.random() * 4 + 1; // Reset the timer with a new random value
+      nextSwap = newSwap();
     }
 
     animPlayer(raccoon, k);
 
-    const trashcanFilled = trashcan1IsFilled ? trashcan1 : trashcan2;
-    const distFilled = raccoon.pos.dist(trashcanFilled!.pos);
+    const filledCan = trashcan1IsFilled ? trashcan1 : trashcan2;
+    const isNearFilled = raccoon.pos.dist(filledCan.pos) <= 0.5;
 
-    if (distFilled <= 0.5) {
+    if (isNearFilled) {
       timeInFilled += k.dt();
       graceTimer = 0;
 
       timerText.opacity = 1;
-      const countdown = Math.max(0, Math.ceil(5 - timeInFilled));
-      timerText.text = countdown.toString();
-      if (timeInFilled >= 5) {
+      timerText.text = Math.max(
+        0,
+        Math.ceil(TIMER_DURATION - timeInFilled)
+      ).toString();
+
+      if (timeInFilled >= TIMER_DURATION) {
         useGameStore.getState().setLevelCompleted(true);
         timerText.opacity = 0;
       }
@@ -114,7 +124,6 @@ export const initializeBounce = () => {
       if (graceTimer >= GRACE_PERIOD) {
         timeInFilled = 0;
         graceTimer = 0;
-
         timerText.opacity = 0;
       }
     }

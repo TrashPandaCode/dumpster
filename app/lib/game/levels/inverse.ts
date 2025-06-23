@@ -163,7 +163,7 @@ export const initializeInverse = () => {
     }
 
     if (dataHelper.initData()) {
-      handleReset(raccoon, -1);
+      handleReset(raccoon, 1);
     }
   });
 };
