@@ -88,6 +88,10 @@
         "path": "/docs/level-guides/move"
       },
       {
+        "title": "Gravity",
+        "path": "/docs/level-guides/gravity"
+      },
+      {
         "title": "Forward",
         "path": "/docs/level-guides/forward"
       },

@@ -389,7 +389,7 @@ export const LEVELS = {
     ],
     success:
       "Wheee! Into the bin I go. Smells like victory... and old fries!",
-    category: "Main Game",
+    category: "Motion",
     image: houseImage,
     initialNodes: [],
     initialState: initializeGravity,
