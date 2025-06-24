@@ -1,0 +1,85 @@
+const n=`---
+title: Inverse
+---
+
+# Level 11: Inverse
+
+## Objective
+
+This level introduces the foundational concept of **inverse kinematics (IK)** by requiring the player to control a robotic arm to position a soap block directly above the raccoon. The raccoon moves side-to-side across the scene, and the soap must **stay in contact with the raccoon for at least 5 seconds**.
+
+To solve this, the player must implement a **2D version of the Cyclic Coordinate Descent (CCD) algorithm** using a \`for-loop\`, manipulating the rotations of a kinematic chain consisting of three rotational joints.
+
+## Scene Setup
+
+- A **robotic arm** with **3 joints**, each capable of full $$360\\degree$$ rotation
+- The joints are **positionally parented**, but their rotations remain independent
+- The **soap block** is considered the **end effector** of the arm
+- The **raccoon** runs from left to right beneath the arm
+
+The user's task is to adjust the joint angles such that the end effector (the soap) follows the raccoon's position.
+
+## Key Concepts Introduced
+
+- **Inverse Kinematics (IK)**
+- **Cyclic Coordinate Descent (CCD)** in 2D
+- **World-to-local coordinate transformations**
+- **Iterative refinement using for-loops**
+
+## CCD Algorithm in 2D
+
+In CCD, each joint in the kinematic chain is adjusted iteratively to reduce the distance between the **end effector** and the **target**. In this 2D variant:
+
+- No need to compute 3D rotation axes or quaternions
+- The required joint rotation is computed using the [\`atan2\`](https://en.wikipedia.org/wiki/Atan2) function
+
+### Pseudo Code for CCD Iteration (per joint)
+
+\`\`\`plaintext
+for each joint from last to first:
+    endLocal = worldToLocal(joint, endEffector)
+    targetLocal = worldToLocal(joint, target)
+
+    angleEnd = atan2(endLocal.y, endLocal.x)
+    angleTarget = atan2(targetLocal.y, targetLocal.x)
+
+    deltaAngle = angleTarget - angleEnd
+
+    joint.rotation += deltaAngle
+\`\`\`
+
+This pseudocode can be implemented using basic [\`Math\`](/docs/nodes/math) nodes and the [\`WorldToLocal\`](/docs/nodes/worldtolocal) node.
+
+### Using the \`WorldToLocal\` Helper Node
+
+To simplify the coordinate conversion, use the [\`WorldToLocal\`](/docs/nodes/worldtolocal) utility node.
+
+This utility node avoids manual matrix operations. For advanced users this can be implemented manually.
+
+## Game Object Control
+
+- Use nodes to obtain:
+
+  - The **position of the raccoon** (via \`Import\` node) or
+  - The **mouse position** (via \`MousePos\` node)
+
+- Use the \`Import\` node to get all joint positions and rotations
+- Use the \`Export\` node to apply **new rotation values** to each joint of the robotic arm
+
+## Relevant Documentation
+
+- [Inverse Kinematics](/docs/kinematics/inverse-kinematics)
+- [CCD Algorithm](/docs/kinematics/ccd)
+- [Forward Kinematics](/docs/kinematics/forward-kinematics)
+- [Joint Structures](/docs/kinematics/joint-structures)
+- [Transformation Hierarchies](/docs/hierarchies/transformation-hierarchies)
+- [WorldToLocal Node](/docs/nodes/worldtolocal)
+
+## Educational Notes
+
+This level bridges **mathematical modeling** and **animation logic**, requiring learners to:
+
+- Understand **kinematic chains** and their articulation
+- Apply **rotational geometry** in local vs. world space
+- Implement **iterative convergence algorithms** in a dataflow environment
+`;export{n as default};
