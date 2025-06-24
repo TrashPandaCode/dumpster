@@ -3,3 +3,68 @@ title: Move
 ---
 
 # Level 7: Move
+
+## Objective
+
+Implement a basic left/right movement controller for the raccoon character using keyboard input. The goal is to move the raccoon to the left and reach the flag.
+
+## Scenario
+
+The raccoon needs to move across the scene to reach a flag. You'll enable movement by connecting keyboard inputs to the raccoon's position. The character should move left when e.g. the **A** key is held and right when the **D** key is held.
+
+## Learning Outcomes
+
+By completing this level, learners will:
+
+- Understand how to build a simple input-driven movement controller.
+- Learn how to make movement frame rate independent using **delta time**.
+- Explore different approaches to movement and why direct position control is sometimes the best choice.
+- Gain experience connecting multiple node types in a meaningful system.
+
+## Key Concepts
+
+### Movement Techniques
+
+There are several common techniques for character movement in games:
+
+- **Position-based movement**
+  The character's position is updated directly each frame. This is the most straightforward method.
+
+- **Velocity-based movement**
+  Input changes a velocity value that is added to the position every frame. More flexible, but requires tracking velocity separately.
+
+- **Physics-based movement**
+  Forces are applied to a rigid body, allowing natural responses like friction and bouncing, but adds significant complexity.
+
+- **Animation-driven movement**
+  The character's motion is controlled through animation playback rather than direct position manipulation.
+
+For this level, we use **position-based movement**, which is the simplest and most appropriate for beginner logic and deterministic control.
+
+### Why Multiply by Delta Time?
+
+Games typically run in a loop that updates many times per second — but the exact number of updates per second can vary depending on the computer’s performance, background processes, or the complexity of the scene.
+
+If we just added a fixed amount to the raccoon's x-position each frame, the speed would vary depending on how fast the game is running.
+
+To make movement frame rate independent, we multiply the movement amount by delta time — the time since the last frame. This ensures the raccoon moves the same distance per second, regardless of how many frames the game is running at.
+
+Example:
+
+- Without delta time: 10 pixels per frame → faster on high frame rates, slower on low ones.
+- With delta time: 100 pixels per second → consistent speed on all machines.
+
+## Strategic Goals
+
+- The current x-position is imported from the raccoon using an ImportFromGameObject node.
+- A KeyPress node outputs 1 when the A or D key is pressed.
+- The key press value is multiplied by a speed constant and by delta time (from the Time node).
+- The result is subtracted from or added to the raccoon's current x-position.
+- The new position is sent back to the raccoon via an ExportToGameObject node.
+
+## Suggested Reading
+
+- [Animations Systems](/docs/animation-systems)
+- [Time Axes](/docs/time-and-game-loop/time-axes)
+- [Frames](/docs/time-and-game-loop/frames)
+- [Game Loop](/docs/time-and-game-loop/game-loop)
