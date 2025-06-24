@@ -528,5 +528,41 @@
       "id": "xy-edge__1cee36c2-ff2f-4dc6-906f-16badc253e97output-handle-x-3c9bdb32-13f1-431f-aa29-def79d4decd0vel"
     }
   ],
-  "viewport": { "x": 291.6433172551674, "y": 426.6737152862116, "zoom": 0.5 }
+  "viewport": { "x": 291.6433172551674, "y": 426.6737152862116, "zoom": 0.5 },
+  "data": {
+    "initData": false,
+    "gameObjects": [
+      [
+        "trashcanFilled",
+        [
+          [
+            "y vel",
+            {
+              "access": "all",
+              "value": 0.1
+            }
+          ]
+        ]
+      ],
+      [
+        "raccoon",
+        [
+          [
+            "y pos",
+            {
+              "access": "all",
+              "value": 0
+            }
+          ],
+          [
+            "vel",
+            {
+              "access": "all",
+              "value": 0
+            }
+          ]
+        ]
+      ]
+    ]
+  }
 }

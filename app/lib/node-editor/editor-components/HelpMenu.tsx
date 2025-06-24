@@ -11,6 +11,8 @@ import { useState } from "react";
 import { NavLink } from "react-router";
 
 import { LEVELS } from "~/lib/game/core/levels";
+import type { GameObject } from "~/lib/game/game-objects";
+import { useDataStore, type HandleData } from "~/lib/zustand/data";
 import { useGameStore } from "~/lib/zustand/game";
 import { IconButton } from "./IconButton";
 
@@ -32,9 +34,18 @@ const HelpMenu = () => {
       nodes: Node[];
       edges: Edge[];
       viewport?: { x: number; y: number; zoom: number };
+      data?: {
+        initData: boolean;
+        gameObjects: [GameObject, [string, HandleData][]][];
+      };
     };
 
     if (flow) {
+      if (flow.data) {
+        localStorage.setItem(`data-store-${level}`, JSON.stringify(flow.data));
+        useDataStore.getState().init(level);
+      }
+
       const { x = 0, y = 0, zoom = 1 } = flow.viewport || {};
       setNodes(flow.nodes);
       setEdges(flow.edges);
