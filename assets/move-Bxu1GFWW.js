@@ -1,0 +1,1 @@
+import{o as e}from"./chunk-AYJ5UCUI-BS9SflA5.js";const c={title:"Move"};function o(t){const n={h1:"h1",...t.components};return e.jsx(n.h1,{children:"Level 7: Move"})}function s(t={}){const{wrapper:n}=t.components||{};return n?e.jsx(n,{...t,children:e.jsx(o,{...t})}):o(t)}export{s as default,c as frontmatter};

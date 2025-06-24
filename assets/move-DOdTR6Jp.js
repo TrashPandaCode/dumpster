@@ -2,5 +2,5 @@ const e=`---
 title: Move
 ---
 
-# Move
+# Level 7: Move
 `;export{e as default};
