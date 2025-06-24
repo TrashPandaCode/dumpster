@@ -1,3 +1,4 @@
+import { toast } from "~/lib/node-editor/editor-components/Toast";
 import { createLevelDataHelpers } from "~/lib/zustand/data";
 import { useGameStore } from "~/lib/zustand/game";
 import { BACKGROUND_OFFSET } from "../constants";
@@ -19,6 +20,8 @@ export const initializeCalculator = () => {
 
   k.setCamPos(-5, -BACKGROUND_OFFSET);
 
+  let lastSolution = 0;
+
   game.onUpdate(() => {
     if (useGameStore.getState().isPaused) return;
 
@@ -27,6 +30,12 @@ export const initializeCalculator = () => {
 
     if (value == 16) {
       useGameStore.getState().setLevelCompleted(true);
+    } else if (value !== lastSolution) {
+      toast({
+        title: "Wrong solution!",
+        description: "It seems like a wrong solution was given to the raccoon.",
+      });
+      lastSolution = value;
     }
 
     if (dataHelper.initData()) {
