@@ -15,6 +15,7 @@ There are read and write specific properties, meaning that not all properties of
 - When selecting a single gameobject, all of its available inputs (properties) will be displayed.
 - When selecting multiple gameobjects, only the common (shared) inputs across all selected gameobjects are shown.
 - When multiple gameobjects are selected, an index input appears. Use this input to specify which gameobject's values to access by index.
+- When multiple gameobjects are selected, a reorderable list of the gameobjects is displayed. The order of this list defines which index corresponds to which gameobject.
 
 Properties can be added by using the _Handle_ input field. Only the manually added properties can be deleted. All added properties have read and write access and are therefore shared between the _Import From_ and _Export To Gameobject_ nodes. Each property must have a unique name.
 
