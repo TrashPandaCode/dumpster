@@ -123,11 +123,13 @@ describe("LEVELS Object Validation", () => {
       });
     });
 
-    test("hints should be array of strings", () => {
+    test("hints should be non-empty array of strings", () => {
       levelValues.forEach((level) => {
         expect(Array.isArray(level.hints)).toBe(true);
+        expect(level.hints.length).toBeGreaterThan(0);
         level.hints.forEach((hint) => {
           expect(typeof hint).toBe("string");
+          expect(hint.trim()).not.toBe("");
         });
       });
     });
