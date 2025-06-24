@@ -8,6 +8,7 @@ import{o as n}from"./chunk-AYJ5UCUI-BS9SflA5.js";const l={title:"Export To Gameo
 `,n.jsx(e.li,{children:"When selecting a single gameobject, all of its available inputs (properties) will be displayed."}),`
 `,n.jsx(e.li,{children:"When selecting multiple gameobjects, only the common (shared) inputs across all selected gameobjects are shown."}),`
 `,n.jsx(e.li,{children:"When multiple gameobjects are selected, an index input appears. Use this input to specify which gameobject's values to access by index."}),`
+`,n.jsx(e.li,{children:"When multiple gameobjects are selected, a reorderable list of the gameobjects is displayed. The order of this list defines which index corresponds to which gameobject."}),`
 `]}),`
 `,n.jsxs(e.p,{children:["Properties can be added by using the ",n.jsx(e.em,{children:"Handle"})," input field. Only the manually added properties can be deleted. All added properties have read and write access and are therefore shared between the ",n.jsx(e.em,{children:"Import From"})," and ",n.jsx(e.em,{children:"Export To Gameobject"})," nodes. Each property must have a unique name."]}),`
 `,n.jsx(e.h2,{children:"Properties"}),`

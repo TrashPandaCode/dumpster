@@ -8,6 +8,7 @@ import{o as n}from"./chunk-AYJ5UCUI-BS9SflA5.js";const c={title:"Import From Gam
 `,n.jsx(e.li,{children:"When selecting a single gameobject, all of its available outputs (properties) will be displayed."}),`
 `,n.jsx(e.li,{children:"When selecting multiple gameobjects, only the common (shared) outputs across all selected gameobjects are shown."}),`
 `,n.jsx(e.li,{children:"When multiple gameobjects are selected, an index input appears. Use this input to specify which gameobject's values to access by index."}),`
+`,n.jsx(e.li,{children:"When multiple gameobjects are selected, a reorderable list of the gameobjects is displayed. The order of this list defines which index corresponds to which gameobject."}),`
 `]}),`
 `,n.jsx(e.h2,{children:"Properties"}),`
 `,n.jsxs(e.ul,{children:[`
