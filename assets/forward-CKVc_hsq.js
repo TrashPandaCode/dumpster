@@ -1,0 +1,75 @@
+const n=`---
+title: Forward
+---
+
+# Level 9: Forward
+
+## Objective
+
+This level introduces the concept of **Forward Kinematics (FK)**, a fundamental method in character animation, robotics, and simulation. The player is tasked with adjusting joint angles of two robotic arms to position platform endpoints. These platforms act as bridges, allowing a raccoon character to escape from a rooftop.
+
+## Scenario
+
+The player encounters a canyon between rooftops. Two mechanical arms, each composed of two rotational joints, are attached to the ground. A raccoon is stranded and seeks assistance. The arms terminate in movable platforms which can be manipulated by changing **joint angles** via export nodes. The goal is to position these platforms to form a continuous path across the gap.
+
+## Learning Outcomes
+
+- Understand the concept of **joint hierarchies** and how parent transformations affect child components.
+- Gain intuition for **rotational motion propagation** along kinematic chains.
+- Learn to use FK to compute end-effector positions in a multi-joint system.
+- Understand how **angle-space control** translates to **cartesian-space movement** in linked rigid systems.
+
+## Key Concepts
+
+### Forward Kinematics (FK)
+
+Forward Kinematics computes the position and orientation of an end-effector given the angles of all preceding joints in the kinematic chain. Mathematically, FK is a composition of transformation matrices, typically in 2D or 3D, applied in sequence:
+
+$$
+T_\\text{total} = T_\\text{root} \\cdot R_1 \\cdot T_1 \\cdot R_2 \\cdot T_2 \\cdot ... \\cdot T_\\text{end}
+$$
+
+Where:
+
+- \`R_i\` are rotation matrices defined by joint angles
+- \`T_i\` are translations along segment lengths
+- The final transformation \`T_total\` positions the platform in world space
+
+Relevant readings:
+
+- [Joint Structures](/docs/kinematics/joint-structures)
+- [Forward Kinematics](/docs/kinematics/forward-kinematics)
+- [Transformation Hierarchies](/docs/hierarchies/transformation-hierarchies)
+
+### Scene Graphs and Transformation Hierarchies
+
+The arms operate as hierarchical transformation chains: each joint's rotation is **local** to its parent, but **cumulatively affects** the final position of the platform. This concept is handled efficiently by a **scene graph**, where parent-child relationships determine transformation order.
+
+See:
+
+- [Scene Graphs](/docs/hierarchies/scene-graphs)
+- [Coordinate Systems](/docs/hierarchies/coordinate-systems)
+
+### Interaction and Node Control
+
+In this level:
+
+- Each joint is associated with an **export node**, where users can input angle values in **degrees**.
+- The node interface reflects a **degree-of-freedom (DOF)** model for controlling articulated systems.
+- Manipulating each angle causes real-time visual updates in the scene, reinforcing the **cause-effect relationship** of FK.
+
+## Strategic Goals
+
+- Move the first joint to orient the initial segment of the arm.
+- Adjust the second joint to fine-tune the platform's vertical and horizontal position.
+- Coordinate both arms so that the raccoon can traverse from one platform to the next.
+
+## Suggested Reading
+
+To prepare for more complex kinematic systems and animation blending:
+
+- [Forward Kinematics](/docs/kinematics/forward-kinematics)
+- [Transformation Hierarchies](/docs/hierarchies/transformation-hierarchies)
+- [Euler Angles](/docs/rotation/euler-angles): Clarifies how rotation composition affects orientation.
+- [Scene Graphs](/docs/hierarchies/scene-graphs): Critical for understanding hierarchical transformations.
+`;export{n as default};
