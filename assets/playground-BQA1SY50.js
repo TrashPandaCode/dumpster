@@ -1,0 +1,38 @@
+const e=`---
+title: Playground
+---
+
+# Level 12: Playground
+
+## Objective
+
+This level is designed as an **open-ended playground** where users can freely experiment with all available nodes and concepts introduced in previous levels. There are no explicit puzzles to solve; instead, the focus is on **creative exploration**, hypothesis testing, and system mastery.
+
+## Scenario
+
+The player enters a quiet courtyard filled with a few interactive objects: a waving **flag**, a **trashcan (full and empty)**, and a curious **raccoon**. This space provides a rich canvas for practicing and combining animation techniques, experimenting with node behaviors, and observing system interactions.
+
+## Learning Outcomes
+
+- Gain fluency in connecting, configuring, and modifying various node types.
+- Integrate and apply concepts from motion, time, hierarchy, kinematics, interpolation, and more.
+- Develop a personal understanding of animation system behaviors by observing results of creative compositions.
+- Learn through **trial and error** in a low-pressure environment.
+
+## Available Game Objects
+
+- **Flag**
+- **Trashcan (Filled/Empty)**
+- **Raccoon**
+
+These objects are hookable to the scene graph and respond to exported values through the node system.
+
+## Educational Purpose
+
+By removing external constraints, this sandbox empowers users to:
+
+- Build intuition about system behavior.
+- Discover unexpected outcomes.
+- Reinforce theoretical knowledge with practice.
+- Begin designing custom control systems.
+`;export{e as default};
