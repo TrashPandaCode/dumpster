@@ -2,4 +2,46 @@
 title: Looping
 ---
 
-# Looping
+# Level 10: Looping
+
+## Objective
+
+This level introduces the concept of **iteration using a for-loop** to control multiple gameobjects simultaneously. The player is presented with **five raccoons**, each standing in front of a **tower of wooden crates**. The task is to place each raccoon on top of their respective crate stack.
+
+The solution can be achieved manually with five `Export` nodes, but the intended method is to **use a `for-loop` node** to process all raccoons in a single operation.
+
+## Concepts to Learn
+
+This level introduces **data-driven repetition** and **batch processing** in animation authoring. Players learn how to express scalable behaviors over collections of objects using **loop constructs**, **shared export interfaces**, and **index-driven logic**.
+
+## Key Principles Introduced
+
+- Use of **for-loops** in node-based systems
+- **Indexing and data flow control**
+- **Selection of multiple game objects** in export nodes
+- **Shared attribute access** for heterogeneous sets
+- **Data reuse through parametrization**
+
+## Node Structure Example
+
+In the export node, the user selects all five raccoons simultaneously. When multiple game objects are selected, the editor presents:
+
+- An **intersection of common attributes**
+- A **reorderable list** of selected objects
+
+Proper ordering of raccoons is essential so that index `i` in the loop aligns with raccoon `i` in the export node's list.
+
+## Relevant Documentation
+
+- [For Loop Node](/docs/nodes/forloop)
+- [Export Node](/docs/nodes/export)
+
+## Educational Notes
+
+This level emphasizes **abstraction and scalability** in animation logic. While earlier levels taught single-object control, this challenge requires the player to recognize:
+
+- **Structural repetition** in spatial patterns
+- The power of **parametric control** using loop indices
+- The flexibility of **batch export operations**
+
+Iterating over gameobjects is just one use case of for loops, as they can be used in many other iterative algorithms (e.g. the CCD algorithm).
