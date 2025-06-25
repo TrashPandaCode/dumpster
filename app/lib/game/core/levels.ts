@@ -323,8 +323,10 @@ export const LEVELS = {
     description:
       "This level furthers understanding of linear time-based signal transformations.",
     dialog: [
-      "Okay... maybe I rushed things with that last watch.",
-      "I think I messed it up even more—now it's ticking at a totally different speed.",
+      "Okay... I think I messed it up even more.",
+      "Now the clock tower is ticking way faster than my watch.",
+      "Can you make it catch up?",
+      "I think my watch is now 100 times slower. And behind by 50 clock-tower-seconds.",
       "All I want is for it to run at the same speed as the big clock... just in reverse.",
       "Please, if you can get it working for at least 5 seconds, I promise I'll stop bugging you about it.",
     ],
@@ -339,6 +341,8 @@ export const LEVELS = {
     initialState: initializeReverse,
     hints: [
       "Use the Time node to access the global time.",
+      "Bring the time to the same scale as the clock tower.",
+      "Now add the offset to the time.",
       "A negative scale flips the animation direction.",
       "Multiply the time value by -1 to reverse it.",
     ],
