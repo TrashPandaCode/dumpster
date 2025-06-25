@@ -31,8 +31,9 @@ import{o as e}from"./chunk-AYJ5UCUI-BS9SflA5.js";const t={title:"Reverse"};funct
 `,e.jsx(s.p,{children:"To achieve the reversal:"}),`
 `,e.jsxs(s.ul,{children:[`
 `,e.jsxs(s.li,{children:["Use a ",e.jsx(s.strong,{children:"Time Node"})," to access the base time."]}),`
+`,e.jsx(s.li,{children:"Multiply the time by 100 so that both time axes are scaled the same."}),`
+`,e.jsxs(s.li,{children:["Apply an ",e.jsx(s.strong,{children:"offset"})," to align the phase."]}),`
 `,e.jsxs(s.li,{children:["Apply a ",e.jsx(s.strong,{children:"multiplication node"})," with a factor of ",e.jsx(s.code,{children:"-1"})," to invert the direction."]}),`
-`,e.jsxs(s.li,{children:["Optionally apply an ",e.jsx(s.strong,{children:"offset"})," to align the phase (though not required in this level)."]}),`
 `]}),`
 `,e.jsxs(s.p,{children:["By visually connecting these transformations in the node graph, players build a ",e.jsx(s.strong,{children:"pipeline of time manipulation"}),", which becomes foundational for non-linear animation systems later."]}),`
 `,e.jsx(s.h2,{children:"Suggested Reading"}),`
