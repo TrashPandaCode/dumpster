@@ -235,8 +235,7 @@ export const LEVELS = {
   parenting: {
     slug: "parenting",
     name: "Parenting",
-    description:
-      "This is the second level of the main game, introducing parenting mechanics.",
+    description: "This level introduces parenting mechanics.",
     dialog: [
       "Whoa... this trash can is a real goldmine!",
       "There's so much food in here, there's no way I can eat it all right now.",
@@ -321,7 +320,8 @@ export const LEVELS = {
   reverse: {
     slug: "reverse",
     name: "Reverse",
-    description: "",
+    description:
+      "This level furthers understanding of linear time-based signal transformations.",
     dialog: [
       "Okay... maybe I rushed things with that last watch.",
       "I think I messed it up even more—now it's ticking at a totally different speed.",
@@ -354,8 +354,7 @@ export const LEVELS = {
   move: {
     slug: "move",
     name: "Move",
-    description:
-      "This is the first level of the main game, introducing movement mechanics.",
+    description: "This level introduces movement mechanics.",
     dialog: [
       "Alright, today's the day — I'm finally gonna learn how to walk! I mean, even tiny humans can do it, so how hard can it be?",
       "Left paw, right paw... wait, which one is my right again?",
@@ -448,8 +447,7 @@ export const LEVELS = {
   forward: {
     slug: "forward",
     name: "Forward",
-    description:
-      "This is a level of the main game, introducing forward kinematics.",
+    description: "This level introduces the concept of forward kinematics.",
     dialog: [
       "Hey! Quick, I could use some help here!",
       "I was fighting this cat for some left over rotissery chicken and I thought I scared it away..",
@@ -552,7 +550,7 @@ export const LEVELS = {
   inverse: {
     slug: "inverse",
     name: "Inverse",
-    description: "PlaceHolder",
+    description: "This level introduces the concept of inverse kinematics.",
     dialog: [
       "Okay, don't freak out, but I haven't had a proper wash in... a while.",
       "There's a robot arm over there and a nice slippery piece of soap - can you get it to reach me?",
@@ -570,7 +568,14 @@ export const LEVELS = {
     image: alleyOne,
     initialNodes: [],
     initialState: initializeInverse,
-    hints: [],
+    hints: [
+      "Use a for-loop to iterate from the last joint to the first.",
+      "Either use the mouse position or raccoon position as target coordinates",
+      "Convert both the end-effector and the target to joint-local space using the WorldToLocal node.",
+      "Use atan2 to get angles from vectors pointing to the target and end-effector.",
+      "The difference between these angles gives you the rotation adjustment.",
+      "Add the delta angle to the current joint's rotation.",
+    ],
     modifiableGameObjects: [
       {
         id: "raccoon",
