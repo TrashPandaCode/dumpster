@@ -2,7 +2,6 @@
 title: Reverse
 ---
 
-
 # Level 6: Reverse
 
 ## Objective
@@ -42,6 +41,7 @@ To ensure the reversed clock **ticks at the same rate** as the reference, the ma
 It's essential that the reversed clock remains synchronized in speed but **desynchronized in direction**. This often means controlling the **origin** (through the offset `b`) to ensure alignment of meaningful visual states, such as when both clocks should display the same time at a specific instant.
 
 Relevant concepts:
+
 - [Time Axes](/docs/time-and-game-loop/time-axes)
 - [Global and Local Time Axes](/docs/time-and-game-loop/global-and-local-time-axes)
 
@@ -50,8 +50,9 @@ Relevant concepts:
 To achieve the reversal:
 
 - Use a **Time Node** to access the base time.
+- Multiply the time by 100 so that both time axes are scaled the same.
+- Apply an **offset** to align the phase.
 - Apply a **multiplication node** with a factor of `-1` to invert the direction.
-- Optionally apply an **offset** to align the phase (though not required in this level).
 
 By visually connecting these transformations in the node graph, players build a **pipeline of time manipulation**, which becomes foundational for non-linear animation systems later.
 

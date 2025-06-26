@@ -13,6 +13,7 @@ import { type GameObject } from "../game-objects";
 import { initializeBounce } from "../levels/bounce";
 import { initializeCalculator } from "../levels/calculator";
 import { initializeForward } from "../levels/forward";
+import { initializeGravity } from "../levels/gravity";
 import { initializeInverse } from "../levels/inverse";
 import { initializeLinear } from "../levels/linear";
 import { initializeLooping } from "../levels/looping";
@@ -21,7 +22,6 @@ import { initializeParenting } from "../levels/parenting";
 import { initializePlayground } from "../levels/playground";
 import { initializeReverse } from "../levels/reverse";
 import { initializeSitting } from "../levels/sitting";
-import { initializeGravity } from "../levels/gravity";
 
 export type ConnectionAccess = "export" | "import" | "all";
 
@@ -152,7 +152,12 @@ export const LEVELS = {
     image: sittingCard,
     initialNodes: [],
     initialState: initializeSitting,
-    hints: [],
+    hints: [
+      "Use constant value nodes to define the raccoon's x and y position.",
+      "Connect the constants to the corresponding inputs of the raccoon's export node.",
+      "The export node updates the raccoon's position in the game world.",
+      "Changing the values will instantly move the raccoon to the new location.",
+    ],
     modifiableGameObjects: [
       {
         id: "raccoon",
@@ -185,7 +190,13 @@ export const LEVELS = {
     image: bounceCard,
     initialNodes: [],
     initialState: initializeBounce,
-    hints: [],
+    hints: [
+      "Use a switch node to choose between two positions based on the trashcan's filled state.",
+      "The 'filled' output of a trashcan is already a boolean — you can connect it directly to a switch node.",
+      "Use two switch nodes: one for the x-position, one for the y-position.",
+      "Only one trashcan is filled at a time — route the correct position based on that.",
+      "Connect the outputs of the switch nodes to the raccoon's export node.",
+    ],
     modifiableGameObjects: [
       {
         id: "raccoon",
@@ -224,8 +235,7 @@ export const LEVELS = {
   parenting: {
     slug: "parenting",
     name: "Parenting",
-    description:
-      "This is the second level of the main game, introducing parenting mechanics.",
+    description: "This level introduces parenting mechanics.",
     dialog: [
       "Whoa... this trash can is a real goldmine!",
       "There's so much food in here, there's no way I can eat it all right now.",
@@ -242,7 +252,11 @@ export const LEVELS = {
     image: alleyTwo,
     initialNodes: [],
     initialState: initializeParenting,
-    hints: [],
+    hints: [
+      "Use an import node to read the raccoon's position.",
+      "Use an export node to write to the trashcan's position.",
+      "Connect the raccoon's x and y position to the trashcan's export node.",
+    ],
     modifiableGameObjects: [
       {
         id: "raccoon",
@@ -289,10 +303,10 @@ export const LEVELS = {
     initialNodes: [],
     initialState: initializeLinear,
     hints: [
-      "Try add a time and an export node.",
-      "Now connect the time output of the time node into the time input of the export node.",
-      "The pocketwatch should have an offset of 50 seconds, so try adding this to the time",
-      "The pocketwatch should be 100 times faster than the clock tower, so try multiplying the time by 100.",
+      "Use the Time node to get the current simulation time.",
+      "Add 50 to the time value to apply the time offset.",
+      "Multiply the result by 100 to apply the time scaling.",
+      "Connect the final time value to the pocket watch's input.",
     ],
     modifiableGameObjects: [
       {
@@ -306,10 +320,13 @@ export const LEVELS = {
   reverse: {
     slug: "reverse",
     name: "Reverse",
-    description: "",
+    description:
+      "This level furthers understanding of linear time-based signal transformations.",
     dialog: [
-      "Okay... maybe I rushed things with that last watch.",
-      "I think I messed it up even more—now it's ticking at a totally different speed.",
+      "Okay... I think I messed it up even more.",
+      "Now the clock tower is ticking way faster than my watch.",
+      "Can you make it catch up?",
+      "I think my watch is now 100 times slower. And behind by 50 clock-tower-seconds.",
       "All I want is for it to run at the same speed as the big clock... just in reverse.",
       "Please, if you can get it working for at least 5 seconds, I promise I'll stop bugging you about it.",
     ],
@@ -322,7 +339,13 @@ export const LEVELS = {
     image: alleyOne,
     initialNodes: [],
     initialState: initializeReverse,
-    hints: [],
+    hints: [
+      "Use the Time node to access the global time.",
+      "Bring the time to the same scale as the clock tower.",
+      "Now add the offset to the time.",
+      "A negative scale flips the animation direction.",
+      "Multiply the time value by -1 to reverse it.",
+    ],
     modifiableGameObjects: [
       {
         id: "pocketwatch",
@@ -335,8 +358,7 @@ export const LEVELS = {
   move: {
     slug: "move",
     name: "Move",
-    description:
-      "This is the first level of the main game, introducing movement mechanics.",
+    description: "This level introduces movement mechanics.",
     dialog: [
       "Alright, today's the day — I'm finally gonna learn how to walk! I mean, even tiny humans can do it, so how hard can it be?",
       "Left paw, right paw... wait, which one is my right again?",
@@ -349,7 +371,16 @@ export const LEVELS = {
     image: houseImage,
     initialNodes: [],
     initialState: initializeMove,
-    hints: [],
+    hints: [
+      "Use an Import nodes to get the raccoon's current x-position.",
+      "Use KeyPress nodes to detect if A or D is pressed.",
+      "Pressing A should move the raccoon left (negative x), D moves it right (positive x).",
+      "Use a constant for movement speed, e.g. 100.",
+      "Get delta time from the Time node to ensure frame rate independence.",
+      "Multiply speed times deltaTime times keyPress for movement distance.",
+      "Add the result to the current position for D, subtract for A.",
+      "Export the new x-position back to the raccoon.",
+    ],
     modifiableGameObjects: [
       {
         id: "raccoon",
@@ -374,41 +405,35 @@ export const LEVELS = {
   gravity: {
     slug: "gravity",
     name: "Gravity",
-    description:
-      "This level introduces gravity.",
+    description: "This level introduces gravity.",
     dialog: [
       "Oh! I was just... uh... inspecting this totally-not-impossibly-floating trashcan!",
       "See, I may have dropped my midnight snack up there. Or maybe it floated away? Or maybe I threw it too hard. Who can say, really!",
       "BUT! I have a cunning plan! Could you please make that beautiful trashcan fall from the sky?",
-      "And, uh, also... if you could help me jump... that would be AMAZING. My legs are... more wiggly than springy."
+      "And, uh, also... if you could help me jump... that would be AMAZING. My legs are... more wiggly than springy.",
     ],
     goals: [
       "Make the trashcan drop from the sky",
       "Give the raccoon the ability to jump",
-      "Jump into the trashcan!"
+      "Jump into the trashcan!",
     ],
-    success:
-      "Wheee! Into the bin I go. Smells like victory... and old fries!",
+    success: "Wheee! Into the bin I go. Smells like victory... and old fries!",
     category: "Motion",
     image: houseImage,
     initialNodes: [],
     initialState: initializeGravity,
     hints: [
       "The inputs of the trashcan and the raccoon are different. They both require you to do different things",
-      "Make sure to check wether the raccoon is hitting the ground or not. Otherwise your velocity might just keep adding up while you're standing still."
+      "Make sure to check wether the raccoon is hitting the ground or not. Otherwise your velocity might just keep adding up while you're standing still.",
     ],
     modifiableGameObjects: [
       {
         id: "trashcanFilled",
-        connections: [
-          { label: "y vel", access: "export" },
-        ],
+        connections: [{ label: "y vel", access: "export" }],
       },
       {
         id: "raccoon",
-        connections: [
-          { label: "y pos", access: "all" },
-        ],
+        connections: [{ label: "y pos", access: "all" }],
       },
     ],
     availableNodes: [
@@ -419,15 +444,14 @@ export const LEVELS = {
       "KeyPress",
       "ImportFromGameobject",
       "ExportToGameobject",
-      "Group"
+      "Group",
     ],
     difficulty: 2,
   },
   forward: {
     slug: "forward",
     name: "Forward",
-    description:
-      "This is a level of the main game, introducing forward kinematics.",
+    description: "This level introduces the concept of forward kinematics.",
     dialog: [
       "Hey! Quick, I could use some help here!",
       "I was fighting this cat for some left over rotissery chicken and I thought I scared it away..",
@@ -443,7 +467,10 @@ export const LEVELS = {
     image: alleyOne,
     initialNodes: [],
     initialState: initializeForward,
-    hints: [],
+    hints: [
+      "Use Export nodes to control the angles of each robotic joint (in degrees).",
+      "Experiment with small angle adjustments to see how platform position changes.",
+    ],
     modifiableGameObjects: [
       {
         id: "arm",
@@ -479,12 +506,20 @@ export const LEVELS = {
       "Use a for loop to move the 5 raccoons.",
       "Ensure the placement adapts to the height of each pillar.",
     ],
-    success: "Perfectly perched! Efficient and elegant - just like a well-written loop",
+    success:
+      "Perfectly perched! Efficient and elegant - just like a well-written loop",
     category: "Introduction",
     image: bounceCard,
     initialNodes: [],
     initialState: initializeLooping,
-    hints: [""],
+    hints: [
+      "Use a For Loop node to iterate over the 5 raccoons using an index from 0 to 4.",
+      "In the Export node, select all five raccoons and make sure their order matches the crate stack height.",
+      "The last two raccoons in the export node list must be flipped.",
+      "Each raccoon's target position is based on its crate stack height and index.",
+      "Add 1 to the loop index `i` and multiply with -1 to get the height of the raccoon.",
+      "Pass the computed position into the Export node inside the loop body.",
+    ],
     modifiableGameObjects: [
       {
         id: "raccoon1",
@@ -519,7 +554,7 @@ export const LEVELS = {
   inverse: {
     slug: "inverse",
     name: "Inverse",
-    description: "PlaceHolder",
+    description: "This level introduces the concept of inverse kinematics.",
     dialog: [
       "Okay, don't freak out, but I haven't had a proper wash in... a while.",
       "There's a robot arm over there and a nice slippery piece of soap - can you get it to reach me?",
@@ -537,7 +572,14 @@ export const LEVELS = {
     image: alleyOne,
     initialNodes: [],
     initialState: initializeInverse,
-    hints: [],
+    hints: [
+      "Use a for-loop to iterate from the last joint to the first.",
+      "Either use the mouse position or raccoon position as target coordinates",
+      "Convert both the end-effector and the target to joint-local space using the WorldToLocal node.",
+      "Use atan2 to get angles from vectors pointing to the target and end-effector.",
+      "The difference between these angles gives you the rotation adjustment.",
+      "Add the delta angle to the current joint's rotation.",
+    ],
     modifiableGameObjects: [
       {
         id: "raccoon",
