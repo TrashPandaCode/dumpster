@@ -68,7 +68,17 @@ const HelpMenu = () => {
       <PopoverPortal>
         <PopoverContent side="bottom" className="mr-3">
           <div className="flex w-200 flex-col gap-4 rounded bg-slate-800 p-4 font-mono text-white shadow-lg outline-1 outline-slate-700 outline-solid">
-            <h1 className="text-xl">Hints</h1>
+            <div className="flex flex-row justify-between">
+              <h1 className="text-xl">Hints</h1>
+              <button
+                className="cursor-pointer rounded bg-slate-700 px-2 py-1 text-left text-sm text-white hover:bg-slate-600"
+                onClick={() => {
+                  localStorage.setItem("hideTutorial", "false");
+                }}
+              >
+                Reset Tutorials
+              </button>
+            </div>
             {hints[hintIndex]}
             <NavLink
               className="text-slate-400 italic hover:underline"
