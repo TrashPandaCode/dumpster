@@ -401,7 +401,7 @@ export const LEVELS = {
       {
         id: "trashcanFilled",
         connections: [
-          { label: "y vel", access: "all" },
+          { label: "y vel", access: "export" },
         ],
       },
       {
