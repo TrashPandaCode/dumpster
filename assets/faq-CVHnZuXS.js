@@ -1,4 +1,0 @@
-import{o as n}from"./chunk-AYJ5UCUI-BS9SflA5.js";const c={title:"FAQ"};function r(e){const t={h1:"h1",p:"p",...e.components},{Details:o}=t;return o||s("Details"),n.jsxs(n.Fragment,{children:[n.jsx(t.h1,{children:"FAQ"}),`
-`,n.jsx(t.p,{children:"This section provides answers to frequently asked questions about the project. If you have a question that is not answered here, feel free to reach out to the community or check the project's documentation."}),`
-`,n.jsx(o,{summary:"Can I reset my progress?",children:n.jsx(t.p,{children:`Yes, you can reset individual levels using the reset button in the level
-editor. Be careful though, as this will delete all your nodes for that level.`})})]})}function a(e={}){const{wrapper:t}=e.components||{};return t?n.jsx(t,{...e,children:n.jsx(r,{...e})}):r(e)}function s(e,t){throw new Error("Expected component `"+e+"` to be defined: you likely forgot to import, pass, or provide it.")}export{a as default,c as frontmatter};

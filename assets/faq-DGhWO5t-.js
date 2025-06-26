@@ -1,0 +1,82 @@
+const e=`---
+title: FAQ
+---
+
+# FAQ
+
+This section provides answers to frequently asked questions about the project. If you have a question that is not answered here, feel free to reach out to the community or check the project's documentation.
+
+<Details summary="What is the main goal of this project?">
+  The project aims to teach computer animation concepts through an interactive,
+  gamified environment. Players learn by solving visual challenges using a
+  node-based programming system.
+</Details>
+
+<Details summary="Who is this project designed for?">
+  It's mainly targeted at students and anyone interested in the concepts of
+  interactive systems. No prior programming experience is required.
+</Details>
+
+<Details summary="Do I need to know node based programming systems?">
+  No, we try to slowly introduce you to the concepts of node based programming
+  in the first few levels.
+</Details>
+
+<Details summary="Do I need to install anything to use it?">
+  No installation is required — everything runs in the browser. Just open the
+  site and start playing.
+</Details>
+
+<Details summary="Is this just for learning, or can I build real projects with it?">
+  The main focus is on learning, and while the system is capable of prototyping
+  real interactive behaviors, the current levels and nodes don't yet support
+  fully custom solutions.
+</Details>
+
+<Details summary="How do levels progress in difficulty?">
+  Each level builds on the last, introducing new concepts like loops, inverse
+  kinematics, and abstraction gradually. This scaffolds learning without
+  overwhelming the user.
+</Details>
+
+<Details summary="What if I get stuck on a level?">
+  Hints are built into each level. For each level a level guide exists in the
+  docs. You can also revisit previous levels to reinforce earlier concepts.
+</Details>
+
+<Details summary="Can I share my solutions or learn from others?">
+  No, the current platform doesn't yet include an option to share you solution.
+  But solution is saved so you can revisit them later. Tech savvy users could
+  export and import solutions by modifying the local storage.
+</Details>
+
+<Details summary="Can nodes be copied between levels?">
+  Yes, as long as you don't refresh the website (so no pressing
+  <code>Ctrl+R, F5 or Ctrl+F5</code>).
+</Details>
+
+<Details summary="What is the meaning of the 3 small trashcans on the homepage?">
+  The three small trashcans indicate level difficulty — from easiest (all
+  trashcans are semi-transparent) to hardest (all trashcans are fully opaque).
+</Details>
+
+<Details summary="Can I reset my progress?">
+  Yes, you can reset individual levels using the reset button in the level
+  editor. Be careful though, as this will delete all your nodes for that level.
+</Details>
+
+<Details summary="I accidentally skipped the tutorial prompts.">
+  You can restore all tutorial prompts and guidance messages previously skipped
+  using the reset tutorial button in the help menu. The help menu can be
+  accessed in each level using the button displaying a question mark.
+</Details>
+
+<Details summary="Help, the nodes don't work anymore.">
+  If all things fail, you can try resetting the local storage. To clear the
+  local storage for this webpage, right-click anywhere on the page, select
+  "Inspect", go to the "Application" tab, and choose "Local Storage" from the
+  sidebar — then right-click the entries and select "Clear". This{" "}
+  <strong>must</strong> happen without any level loaded, so either from the
+  homepage or docs pages.
+</Details>
+`;export{e as default};
