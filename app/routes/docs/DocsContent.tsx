@@ -12,6 +12,7 @@ import DocsNodeEditor from "~/lib/core/docs/DocsNodeEditor";
 import type { Route } from "../docs/+types/DocsContent";
 
 import "katex/dist/katex.min.css";
+import Details from "~/lib/core/docs/components/Details";
 
 const docs = import.meta.glob("/content/docs/**/*.{md,mdx}");
 
@@ -43,7 +44,9 @@ export async function clientLoader({ params }: Route.LoaderArgs) {
 
   const mod = (await loader()) as {
     frontmatter: Record<string, any>;
-    default: React.ComponentType<{ components?: Record<string, React.ComponentType<any>> }>;
+    default: React.ComponentType<{
+      components?: Record<string, React.ComponentType<any>>;
+    }>;
   };
 
   return {
@@ -84,7 +87,7 @@ const Docs = ({ loaderData }: Route.ComponentProps) => {
       </Breadcrumb>
 
       <article className="prose prose-slate max-w-4xl">
-        <MDXComponent components={{ DocsNodeEditor }} />
+        <MDXComponent components={{ DocsNodeEditor, Details }} />
       </article>
     </main>
   );
