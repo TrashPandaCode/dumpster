@@ -16,9 +16,9 @@ fully custom solutions.`})}),`
 kinematics, and abstraction gradually. This scaffolds learning without
 overwhelming the user.`})}),`
 `,e.jsx(t,{summary:"What if I get stuck on a level?",children:e.jsx(n.p,{children:`Hints are built into each level. For each level a level guide exists in the
-docs. You can also revisit previous levels to reinforce earlier concepts.`})}),`
-`,e.jsx(t,{summary:"Can I share my solutions or learn from others?",children:e.jsx(n.p,{children:`No, the current platform doesn't yet include an option to share you solution.
-But solution is saved so you can revisit them later. Tech savvy users could
+documentation. You can also revisit previous levels to reinforce earlier concepts.`})}),`
+`,e.jsx(t,{summary:"Can I share my solutions or learn from others?",children:e.jsx(n.p,{children:`No, the current platform doesn't yet include an option to share your solution.
+But solutions are saved so you can revisit them later. Tech savvy users could
 export and import solutions by modifying the local storage.`})}),`
 `,e.jsx(t,{summary:"Can nodes be copied between levels?",children:e.jsxs(n.p,{children:[`Yes, as long as you don't refresh the website (so no pressing
 `,e.jsx("code",{children:"Ctrl+R, F5 or Ctrl+F5"}),")."]})}),`
