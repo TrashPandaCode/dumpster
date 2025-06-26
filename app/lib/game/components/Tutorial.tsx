@@ -1,3 +1,5 @@
+import { Checkbox, CheckboxIndicator } from "@radix-ui/react-checkbox";
+import { CheckIcon } from "@radix-ui/react-icons";
 import Joyride, {
   type CallBackProps,
   type Step,
@@ -95,7 +97,7 @@ export default function Tutorial({ onClose }: { onClose: () => void }) {
       styles={{
         spotlight: {
           border: "2px solid var(--color-blue-200)",
-        }
+        },
       }}
       floaterProps={{
         styles: {
@@ -128,13 +130,17 @@ function CustomTooltip({
       <div className="mb-4">{step.content}</div>
       {(index === 0 || isLastStep) && (
         <div className="mb-4 flex items-center gap-2">
-          <input
-            type="checkbox"
-            onChange={(e) =>
-              localStorage.setItem("hideTutorial", e.target.checked.toString())
+          <Checkbox
+            className="flex size-5 appearance-none items-center justify-center rounded bg-white"
+            onCheckedChange={(checked) =>
+              localStorage.setItem("hideTutorial", checked.toString())
             }
             id="dontShowAgain"
-          />
+          >
+            <CheckboxIndicator>
+              <CheckIcon className="text-black" />
+            </CheckboxIndicator>
+          </Checkbox>
           <label htmlFor="dontShowAgain" className="select-none">
             Don't show again
           </label>
