@@ -45,6 +45,10 @@ const Game = ({ params }: Route.ComponentProps) => {
     initGame(canvasRef.current);
     loadLevel(level);
 
+    setTutorialOpen(
+      !JSON.parse(localStorage.getItem("hideTutorial") ?? "false")
+    );
+
     // register auto save interval
     const intervalId = setInterval(() => {
       useFlowStore.getState().save();
