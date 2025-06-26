@@ -41,12 +41,12 @@ This section provides answers to frequently asked questions about the project. I
 
 <Details summary="What if I get stuck on a level?">
   Hints are built into each level. For each level a level guide exists in the
-  docs. You can also revisit previous levels to reinforce earlier concepts.
+  documentation. You can also revisit previous levels to reinforce earlier concepts.
 </Details>
 
 <Details summary="Can I share my solutions or learn from others?">
-  No, the current platform doesn't yet include an option to share you solution.
-  But solution is saved so you can revisit them later. Tech savvy users could
+  No, the current platform doesn't yet include an option to share your solution.
+  But solutions are saved so you can revisit them later. Tech savvy users could
   export and import solutions by modifying the local storage.
 </Details>
 
