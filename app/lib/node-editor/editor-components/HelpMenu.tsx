@@ -15,6 +15,7 @@ import type { GameObject } from "~/lib/game/game-objects";
 import { useDataStore, type HandleData } from "~/lib/zustand/data";
 import { useGameStore } from "~/lib/zustand/game";
 import { IconButton } from "./IconButton";
+import { Tooltip, TooltipContent, TooltipTrigger } from "./Tooltip";
 
 const solutions = import.meta.glob("/content/solutions/*.json");
 
@@ -70,14 +71,25 @@ const HelpMenu = () => {
           <div className="flex w-200 flex-col gap-4 rounded bg-slate-800 p-4 font-mono text-white shadow-lg outline-1 outline-slate-700 outline-solid">
             <div className="flex flex-row justify-between">
               <h1 className="text-xl">Hints</h1>
-              <button
-                className="cursor-pointer rounded bg-slate-700 px-2 py-1 text-left text-sm text-white hover:bg-slate-600"
-                onClick={() => {
-                  localStorage.setItem("hideTutorial", "false");
-                }}
-              >
-                Reset Tutorials
-              </button>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <button
+                    className="cursor-pointer rounded bg-slate-700 px-2 py-1 text-left text-sm text-white hover:bg-slate-600"
+                    onClick={() => {
+                      localStorage.setItem("hideTutorial", "false");
+                    }}
+                  >
+                    Reset Tutorials
+                  </button>
+                </TooltipTrigger>
+
+                <TooltipContent side="left">
+                  <p>
+                    Restore all tutorial prompts and guidance messages
+                    previously skipped
+                  </p>
+                </TooltipContent>
+              </Tooltip>
             </div>
             {hints[hintIndex]}
             <NavLink
