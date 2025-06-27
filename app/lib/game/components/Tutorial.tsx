@@ -56,7 +56,7 @@ export default function Tutorial({ onClose }: { onClose: () => void }) {
     {
       title: "Hints!",
       content:
-        "Here you can find hints and get a full solution to the current level if you are stuck. Remember, there is also a question mark icon in the right corner of each node that provides additional information about the node's functionality.",
+        "Here you can find hints and get a full solution to the current level if you are stuck. You can also find a direct link to a level-guide here, that provides more in-depth background informations about the level. Remember, there is also a question mark icon in the right corner of each node that provides additional information about the node's functionality.",
       target: "#help-menu",
       disableBeacon: true,
     },
