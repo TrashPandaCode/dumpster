@@ -10,7 +10,7 @@ const CONFIG = {
   extensions: ['ts', 'tsx', 'js', 'jsx'],
   ignorePatterns: ['**/*.test.*', '**/*.spec.*', '**/*.d.ts', '**/*.stories.*'],
   threshold: 70,
-  outputFormats: ['console', 'html'], // json, markdown
+  outputFormats: ['console', 'json', 'html', 'markdown'],
   verbose: false
 };
 
@@ -86,29 +86,93 @@ function analyzeFile(filePath, config) {
     const content = fs.readFileSync(filePath, 'utf8');
     const relativePath = path.relative(process.cwd(), filePath);
     
+    // Remove comments and strings to avoid false matches
+    const cleanContent = removeCommentsAndStrings(content);
+    
     // Enhanced regex patterns for better detection
     const patterns = {
       functions: [
-        /(?:export\s+)?(?:async\s+)?function\s+[a-zA-Z_$][a-zA-Z0-9_$]*/g,
-        /(?:export\s+)?const\s+[a-zA-Z_$][a-zA-Z0-9_$]*\s*[:=]\s*(?:async\s+)?\([^)]*\)\s*(?::\s*[^=]*)?=>/g,
-        /(?:export\s+)?const\s+[a-zA-Z_$][a-zA-Z0-9_$]*\s*[:=]\s*(?:async\s+)?function/g
+        // Named function declarations (not in imports)
+        /(?:^|\n)\s*(?:export\s+)?(?:async\s+)?function\s+([a-zA-Z_$][a-zA-Z0-9_$]*)\s*\(/g,
+        // Arrow functions assigned to const/let/var (exclude simple assignments)
+        /(?:^|\n)\s*(?:export\s+)?(?:const|let|var)\s+([a-zA-Z_$][a-zA-Z0-9_$]*)\s*[:=]\s*(?:async\s+)?\([^)]*\)\s*(?::\s*[^=]*)?=>/g,
+        // Function expressions assigned to const/let/var
+        /(?:^|\n)\s*(?:export\s+)?(?:const|let|var)\s+([a-zA-Z_$][a-zA-Z0-9_$]*)\s*[:=]\s*(?:async\s+)?function/g
       ],
       classes: [
-        /(?:export\s+)?(?:abstract\s+)?class\s+[a-zA-Z_$][a-zA-Z0-9_$]*/g
+        /(?:^|\n)\s*(?:export\s+)?(?:abstract\s+)?class\s+([a-zA-Z_$][a-zA-Z0-9_$]*)/g
       ],
       interfaces: [
-        /(?:export\s+)?interface\s+[a-zA-Z_$][a-zA-Z0-9_$]*/g
+        /(?:^|\n)\s*(?:export\s+)?interface\s+([a-zA-Z_$][a-zA-Z0-9_$]*)/g
       ],
       types: [
-        /(?:export\s+)?type\s+[a-zA-Z_$][a-zA-Z0-9_$]*\s*=/g
+        /(?:^|\n)\s*(?:export\s+)?type\s+([a-zA-Z_$][a-zA-Z0-9_$]*)\s*=/g
       ],
       methods: [
-        /^\s*(?:public\s+|private\s+|protected\s+)?(?:static\s+)?(?:async\s+)?[a-zA-Z_$][a-zA-Z0-9_$]*\s*\(/gm
+        // Class methods (not imports or destructuring)
+        /^\s*(?:public\s+|private\s+|protected\s+)?(?:static\s+)?(?:async\s+)?([a-zA-Z_$][a-zA-Z0-9_$]*)\s*\([^)]*\)\s*[:{]/gm
       ],
       reactComponents: [
-        /(?:export\s+)?(?:const|function)\s+[A-Z][a-zA-Z0-9_$]*.*?(?:React\.FC|JSX\.Element|:\s*React\.|React\.Component)/g,
-        /(?:export\s+default\s+)?(?:function\s+[A-Z][a-zA-Z0-9_$]*|const\s+[A-Z][a-zA-Z0-9_$]*\s*=).*?(?:return\s*<|jsx|TSX)/g
+        // React functional components - be more specific
+        /(?:^|\n)\s*(?:export\s+(?:default\s+)?)?(?:const|let)\s+([A-Z][a-zA-Z0-9_$]*)\s*=\s*(?:memo\s*\(|React\.memo\s*\()?.*?(?:\([^)]*\)\s*=>\s*\{|\([^)]*\)\s*=>\s*\()/g,
+        // Function components
+        /(?:^|\n)\s*(?:export\s+(?:default\s+)?)?function\s+([A-Z][a-zA-Z0-9_$]*)\s*\([^)]*\)\s*[:{]/g
       ]
+    };
+    
+    // Items that should NOT be documented (filters)
+    const shouldExclude = (name, match, type) => {
+      // Skip if it's an import statement
+      if (/^\s*import\s/.test(match)) return true;
+      
+      // Skip destructuring assignments from imports
+      if (/from\s+['"`]/.test(match)) return true;
+      
+      // Skip if it's a type-only import
+      if (/import\s+type/.test(match)) return true;
+      
+      // Skip if it's a re-export
+      if (/export\s*\{.*\}\s*from/.test(match)) return true;
+      
+      // Skip variable declarations that are just imports/requires
+      if (/require\s*\(/.test(match)) return true;
+      
+      // Skip simple variable assignments (not functions)
+      if (type === 'functions' && !/(?:function|\([^)]*\)\s*=>|\(\s*\)\s*=>)/.test(match)) return true;
+      
+      // Skip one-letter variables or common non-documentable patterns
+      if (name.length <= 1) return true;
+      
+      // Skip common utility/config variable names that typically don't need docs
+      const skipNames = ['i', 'j', 'k', 'x', 'y', 'z', 'el', 'e', 'err', 'res', 'req', 'ctx', 'config', 'props', 'state'];
+      if (skipNames.includes(name.toLowerCase())) return true;
+      
+      // Skip if inside an import block (multi-line imports)
+      const lines = content.split('\n');
+      const matchLine = getLineNumber(content, match);
+      const contextLines = lines.slice(Math.max(0, matchLine - 3), matchLine + 2).join('\n');
+      if (/import\s*\{[^}]*$/m.test(contextLines) || /^\s*[^}]*\}\s*from/.test(contextLines)) return true;
+      
+      // Skip destructured imports like { Position, useReactFlow }
+      if (/^\s*[\w\s,{}]+\s*from\s*['"`]/.test(match)) return true;
+      
+      // Skip imports that span multiple lines
+      if (/import\s*\{[\s\S]*?\}\s*from/.test(match)) return true;
+      
+      // Check if this item already has JSDoc documentation immediately before it
+      const itemLine = getLineNumber(content, match);
+      const precedingLines = lines.slice(Math.max(0, itemLine - 10), itemLine);
+      const precedingText = precedingLines.join('\n');
+      
+      // Look for JSDoc block ending just before this item
+      const jsdocPattern = /\/\*\*[\s\S]*?\*\/\s*$/;
+      if (jsdocPattern.test(precedingText)) return true;
+      
+      // Skip if it's just a const assignment without function-like behavior
+      if (type === 'functions' && /^\s*(?:export\s+)?const\s+\w+\s*=\s*[^(]/.test(match) && 
+          !/=>\s*\{|=>\s*\(|=\s*function|=\s*async/.test(match)) return true;
+      
+      return false;
     };
     
     // Count documentable items
@@ -116,19 +180,25 @@ function analyzeFile(filePath, config) {
     
     Object.entries(patterns).forEach(([type, regexes]) => {
       regexes.forEach(regex => {
-        const matches = content.match(regex) || [];
-        matches.forEach(match => {
-          // Extract the name from the match
-          const nameMatch = match.match(/(?:function|const|class|interface|type)\s+([a-zA-Z_$][a-zA-Z0-9_$]*)/);
-          const name = nameMatch ? nameMatch[1] : match.trim().substring(0, 30);
+        let match;
+        regex.lastIndex = 0; // Reset regex state
+        
+        while ((match = regex.exec(cleanContent)) !== null) {
+          const fullMatch = match[0];
+          const name = match[1] || match[2]; // Handle different capture groups
           
-          documentable.push({
-            type,
-            name,
-            line: getLineNumber(content, match),
-            match: match.trim()
-          });
-        });
+          if (name && !shouldExclude(name, fullMatch, type)) {
+            // Get the original match from the content with comments
+            const originalMatch = getOriginalMatch(content, fullMatch, match.index);
+            
+            documentable.push({
+              type,
+              name,
+              line: getLineNumber(content, originalMatch),
+              match: originalMatch.trim()
+            });
+          }
+        }
       });
     });
     
@@ -172,6 +242,37 @@ function analyzeFile(filePath, config) {
     console.error(`Error analyzing ${filePath}:`, error.message);
     return null;
   }
+}
+
+function removeCommentsAndStrings(content) {
+  // Remove single-line comments but keep structure
+  let cleaned = content.replace(/\/\/.*$/gm, '');
+  
+  // Remove multi-line comments but keep structure
+  cleaned = cleaned.replace(/\/\*[\s\S]*?\*\//g, '');
+  
+  // Remove string literals but keep structure
+  cleaned = cleaned.replace(/"(?:[^"\\]|\\.)*"/g, '""');
+  cleaned = cleaned.replace(/'(?:[^'\\]|\\.)*'/g, "''");
+  cleaned = cleaned.replace(/`(?:[^`\\]|\\.)*`/g, '``');
+  
+  return cleaned;
+}
+
+function getOriginalMatch(content, cleanMatch, index) {
+  // Find the corresponding position in the original content
+  // This is a simplified approach - in complex cases you might need more sophisticated mapping
+  const lines = content.split('\n');
+  const cleanLines = removeCommentsAndStrings(content).split('\n');
+  
+  // Find the line that contains our match
+  for (let i = 0; i < cleanLines.length; i++) {
+    if (cleanLines[i].includes(cleanMatch.split('\n')[0])) {
+      return lines[i] || cleanMatch;
+    }
+  }
+  
+  return cleanMatch;
 }
 
 function getLineNumber(content, searchString) {
