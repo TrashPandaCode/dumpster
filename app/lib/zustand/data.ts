@@ -132,10 +132,10 @@ export const useDataStore = create<DataState>((set, get) => ({
   initData: true,
   gameObjects: new Map(),
   setData: (gameObject, label, value) => {
-    get().gameObjects.get(gameObject)!.get(label)!.setValue(value);
+    get().gameObjects.get(gameObject)?.get(label)?.setValue(value);
   },
   getData: (gameObject, label) => {
-    return get().gameObjects.get(gameObject)!.get(label)!.getValue();
+    return get().gameObjects.get(gameObject)?.get(label)?.getValue() ?? 0;
   },
   addHandle: (gameObject, label) =>
     set((state) => {
