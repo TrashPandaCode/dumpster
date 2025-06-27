@@ -6,6 +6,9 @@ import Joyride, {
   type TooltipRenderProps,
 } from "react-joyride";
 
+import exportVideo from "~/assets/videos/nodesexport.mp4";
+import rightclickVideo from "~/assets/videos/nodesrightclick.mp4";
+
 /*
  * This component provides a tutorial for the game, guiding users through the main features.
  * It uses react-joyride to create a step-by-step walkthrough.
@@ -36,8 +39,15 @@ export default function Tutorial({ onClose }: { onClose: () => void }) {
     },
     {
       title: "Add Nodes!",
-      content:
-        "You can add nodes to the editor by right-clicking on the canvas. Each node represents a specific action or condition in your game logic.",
+      content: (
+        <>
+          You can add nodes to the editor by right-clicking on the canvas. Each
+          node represents a specific action or condition in your game logic.
+          <video autoPlay loop className="mt-4 rounded-md">
+            <source src={rightclickVideo} type="video/mp4" />
+          </video>
+        </>
+      ),
       target: "#nodes-panel",
       disableBeacon: true,
     },
@@ -51,8 +61,16 @@ export default function Tutorial({ onClose }: { onClose: () => void }) {
     // Step 4: Export Flow
     {
       title: "Export Flow!",
-      content:
-        "Once you have created your game logic, you can export it to the game window by connecting your node tree(s) to the export node(s). This will allow you to test your logic in the game.",
+      content: (
+        <>
+          Once you have created your game logic, you can export it to the game
+          window by connecting your node tree(s) to the export node(s). This
+          will allow you to test your logic in the game.
+          <video autoPlay loop className="mt-4 rounded-md">
+            <source src={exportVideo} type="video/mp4" />
+          </video>
+        </>
+      ),
       target: "#nodes-panel",
       placement: "center",
       disableBeacon: true,
