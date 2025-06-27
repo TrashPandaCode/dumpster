@@ -10,8 +10,19 @@ interface DuplicateOptions {
   targetPosition?: { x: number; y: number };
 }
 
-// this accepts a list of nodes and duplicates them
-// loops and groups will be handled automatically, just include them and their children
+/**
+ * Duplicates the given nodes and their associated edges, handling groups and loops automatically.
+ * This function creates new nodes and edges based on the provided nodes,
+ * ensuring that the new nodes are positioned relative to the original nodes.
+ * If a target position is provided, the new nodes will be positioned relative to that.
+ * If no target position is provided, the new nodes will be offset by a default value.
+ * @param nodes - The list of nodes to duplicate.
+ * @param getEdges - A function to retrieve the current edges.
+ * @param getNodes - A function to retrieve the current nodes.
+ * @param setEdges - A function to set the new edges.
+ * @param setNodes - A function to set the new nodes.
+ * @param options - Optional parameters for duplication, such as target position.
+ */
 export function duplicateNodes(
   nodes: Node[],
   getEdges: () => Edge[],
