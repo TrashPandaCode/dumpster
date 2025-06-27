@@ -11,6 +11,10 @@ import type { Route } from "./+types/root";
 
 import "./index.css";
 
+/**
+ * The root layout component for the application.
+ * This is the top-level component that wraps all other components.
+ */
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
@@ -33,6 +37,10 @@ export default function App() {
   return <Outlet />;
 }
 
+/**
+ * Error boundary component for handling errors in the application.
+ * This component will display a user-friendly error message when an error occurs.
+ */
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   let message = "Oops!";
   let details = "An unexpected error occurred.";

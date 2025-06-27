@@ -3,7 +3,16 @@ const keysPressed = new Set<string>();
 const keysReleased = new Set<string>();
 
 let initialized = false;
+
+/**
+ * Handler for keydown events.
+ * It tracks keys that are pressed down and adds them to the `keysDown` set.
+ */
 let keydownHandler: (e: KeyboardEvent) => void;
+/**
+ * Handler for keyup events.
+ * It tracks keys that are released and adds them to the `keysReleased` set.
+ */
 let keyupHandler: (e: KeyboardEvent) => void;
 
 /**
