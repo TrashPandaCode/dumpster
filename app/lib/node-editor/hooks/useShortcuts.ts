@@ -1,4 +1,4 @@
-import { useReactFlow, type Node } from "@xyflow/react";
+import { useReactFlow } from "@xyflow/react";
 import { useHotkeys } from "react-hotkeys-hook";
 
 import { useClipboardStore } from "~/lib/zustand/clipboard";
@@ -8,7 +8,9 @@ import { collectRelevantNodes } from "../utils/relevantnodes";
 import { redo, undo } from "../utils/undo";
 import useIsMac from "./useMac";
 
-// Hook to handle copying nodes with a hotkey
+/**
+ * Custom hook to handle copying nodes with a hotkey.
+ */
 export function useCopyHotkey() {
   const { getNodes } = useReactFlow();
   const { setCopiedNodes } = useClipboardStore();
@@ -17,7 +19,7 @@ export function useCopyHotkey() {
 
   useHotkeys(
     shortcuts,
-    (e) => {
+    () => {
       const allNodes = getNodes();
       const selectedNodeIds = allNodes
         .filter((n) => n.selected)
@@ -36,7 +38,9 @@ export function useCopyHotkey() {
   );
 }
 
-// Hook to handle pasting nodes with a hotkey
+/**
+ * Hook to handle pasting nodes with a hotkey
+ */
 export function usePasteHotkey() {
   const { getNodes, getEdges, setEdges, setNodes, screenToFlowPosition } =
     useReactFlow();
@@ -74,7 +78,7 @@ export function usePasteHotkey() {
 
   useHotkeys(
     shortcuts,
-    (e) => {
+    () => {
       if (hasCopiedNodes()) {
         const screenPosition = getPastePosition();
 
@@ -115,14 +119,16 @@ export function usePasteHotkey() {
   );
 }
 
-// Hook to handle duplicating nodes with a hotkey
+/**
+ * Hook to handle duplicating nodes with a hotkey
+ */
 export function useDuplicateHotkey() {
   const { getNodes, getEdges, setEdges, setNodes } = useReactFlow();
   const shortcuts = ["ctrl+d", "alt+d"];
 
   useHotkeys(
     shortcuts,
-    (e) => {
+    () => {
       const allNodes = getNodes();
       const selectedNodeIds = allNodes
         .filter((n) => n.selected)
@@ -149,14 +155,16 @@ export function useDuplicateHotkey() {
   );
 }
 
-// Hook to handle adding a new node with a hotkey
+/**
+ * Hook to handle adding a new node with a hotkey
+ */
 export function useNewNodeHotkey() {
   const { visible, openAddMenu, closeAddMenu } = useNodeAddMenuStore();
   const shortcuts = ["ctrl+space", "alt+space"];
 
   useHotkeys(
     shortcuts,
-    (e) => {
+    () => {
       if (visible) closeAddMenu();
       else openAddMenu();
     },
@@ -168,46 +176,44 @@ export function useNewNodeHotkey() {
   );
 }
 
-// Hook to handle undo
+/**
+ * Hook to handle undo
+ */
 export function useUndoHotkey() {
   const isMacOS = useIsMac();
   const shortcuts = isMacOS ? "alt+y" : "ctrl+z";
 
-  useHotkeys(
-    shortcuts,
-    (e) => {
-      undo();
-    },
-    { preventDefault: true, useKey: true },
-    [isMacOS]
-  );
+  useHotkeys(shortcuts, () => undo(), { preventDefault: true, useKey: true }, [
+    isMacOS,
+  ]);
 }
 
-// Hook to handle redo
+/**
+ * Hook to handle redo
+ */
 export function useRedoHotkey() {
   const isMacOS = useIsMac();
   const shortcuts = isMacOS
     ? ["alt+shift+y", "alt+z"]
     : ["ctrl+y", "ctrl+shift+z"];
 
-  useHotkeys(
-    shortcuts,
-    (e) => {
-      redo();
-    },
-    { preventDefault: true, useKey: true },
-    [isMacOS]
-  );
+  useHotkeys(shortcuts, () => redo(), { preventDefault: true, useKey: true }, [
+    isMacOS,
+  ]);
 }
 
-// Hook to handle the Escape key for closing menus
+/**
+ *  Hook to handle the Escape key for closing menus
+ *  @param callback - Function to call when Escape is pressed.
+ *  @param condition - Condition to check before executing the callback.
+ */
 export function useEscapeHotkey(
   callback?: () => void,
   condition: boolean = true
 ) {
   useHotkeys(
     "esc",
-    (e) => {
+    () => {
       if (condition && callback) callback();
     },
     {
