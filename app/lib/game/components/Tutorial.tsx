@@ -6,6 +6,11 @@ import Joyride, {
   type TooltipRenderProps,
 } from "react-joyride";
 
+/*
+ * This component provides a tutorial for the game, guiding users through the main features.
+ * It uses react-joyride to create a step-by-step walkthrough.
+ * The tutorial can be closed and will not show again if the user opts out.
+ */
 export default function Tutorial({ onClose }: { onClose: () => void }) {
   const steps = [
     {

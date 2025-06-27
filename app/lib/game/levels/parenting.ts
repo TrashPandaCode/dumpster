@@ -6,7 +6,7 @@ import {
   addGameobjects,
   animPlayer,
   handleReset,
-  moveDirection,
+  loopMoveDirection,
 } from "../utils/game-helper";
 
 export const initializeParenting = () => {
@@ -49,10 +49,10 @@ export const initializeParenting = () => {
     const distTrashStart = trashcan.pos.dist(5);
     const distTrashGoal = trashcan.pos.dist(goalFlag!.pos);
 
-    if (moveDirection === -1 && distTrashStart <= 1.5 + 5) {
+    if (loopMoveDirection === -1 && distTrashStart <= 1.5 + 5) {
       // Swap the trashcan sprites
       trashcan.play("filled");
-    } else if (moveDirection === 1 && distTrashGoal <= 1.5) {
+    } else if (loopMoveDirection === 1 && distTrashGoal <= 1.5) {
       trashcan.play("empty");
     }
 

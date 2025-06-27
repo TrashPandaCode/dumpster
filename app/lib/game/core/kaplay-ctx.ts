@@ -4,6 +4,11 @@ import { state } from "./init-game";
 
 let ctx: { k: KAPLAYCtx; game: GameObj<TimerComp> } | undefined = undefined;
 
+/**
+ * Returns the kaplay context, creating it if it doesn't exist.
+ * @param canvas - Optional HTMLCanvasElement to use for the game.
+ * @returns The kaplay context with the highest order game object.
+ */
 export function getKaplayCtx(canvas?: HTMLCanvasElement) {
   if (ctx) {
     return ctx;
@@ -28,6 +33,9 @@ export function getKaplayCtx(canvas?: HTMLCanvasElement) {
   return ctx;
 }
 
+/**
+ * Cleans up the kaplay context by quitting the app and resetting the context.
+ */
 export function cleanupKaplay() {
   if (!ctx) return;
   const { game, app } = ctx.k._k;

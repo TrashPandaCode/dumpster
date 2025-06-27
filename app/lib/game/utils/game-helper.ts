@@ -21,13 +21,21 @@ import {
 import { getKaplayCtx } from "../core/kaplay-ctx";
 import { globalKeyTracker } from "./global-keytracker";
 
-// Type definitions
+/**
+ * The Background type defines the different background styles available in the game.
+ */
 type Background =
   | "default"
   | "roof"
   | "withEquation"
   | "roofWithoutPerspective";
 
+/**
+ * The PlayerType represents the player character in the game, which is a raccoon.
+ * It includes various components such as position, rotation, scale, sprite, anchor,
+ * z-index, state management, body physics, and area detection.
+ * The player can have different states like idle, walking left/right, and holding an item.
+ */
 type PlayerType = GameObj<
   | PosComp
   | RotateComp
@@ -47,24 +55,52 @@ type PlayerType = GameObj<
   | AreaComp
 >;
 
+/**
+ * The StandardGameObjectType represents a standard game object in the game.
+ * It includes components for position, scale, sprite, anchor, z-index, area detection,
+ * and can be used for various objects like trash cans and goal flags.
+ */
 type StandardGameObjectType = GameObj<
   PosComp | ScaleComp | SpriteComp | AnchorComp | ZComp | AreaComp
 >;
 
-type MovementMode = "node" | "input" | "loop";
+/**
+ * The Modes available for player movement.
+ * - "node": The player position is set directly from the data store.
+ * - "keyboard": The player moves based on keyboard input.
+ * - "loop": The player moves in a loop between specified min and max x positions.
+ */
+type MovementMode = "node" | "keyboard" | "loop";
 
+/**
+ * The LoopConfig interface defines the configuration for loop movement.
+ * - minX: The minimum x position for the player.
+ * - maxX: The maximum x position for the player.
+ * - speed: The speed at which the player moves in the loop.
+ */
 interface LoopConfig {
   minX: number;
   maxX: number;
   speed: number;
 }
 
+/**
+ * The ClampConfig interface defines the configuration for clamping player position.
+ * - min: The minimum x position the player can have.
+ * - max: The maximum x position the player can have.
+ */
 interface ClampConfig {
   min: number;
   max: number;
 }
 
-// Type mapping for game objects to their instance types
+/**
+ * The GameObjectTypeMap defines the mapping of game object types to their specific implementations.
+ * - raccoon: Represents the player character.
+ * - trashcanEmpty: Represents an empty trash can.
+ * - trashcanFilled: Represents a filled trash can.
+ * - goalFlag: Represents the goal flag in the game.
+ */
 type GameObjectTypeMap = {
   raccoon: PlayerType;
   trashcanEmpty: StandardGameObjectType;
@@ -72,20 +108,33 @@ type GameObjectTypeMap = {
   goalFlag: StandardGameObjectType;
 };
 
-// Utility type to create return type based on input array
+/**
+ * GameObjectInstancesFromArray is a utility type that creates an object type
+ * from an array of keys of GameObjectTypeMap.
+ * Each key in the array corresponds to a property in the resulting object,
+ * where the property type is the corresponding type from GameObjectTypeMap.
+ */
 type GameObjectInstancesFromArray<
   T extends readonly (keyof GameObjectTypeMap)[],
 > = {
   [K in T[number]]: GameObjectTypeMap[K];
 };
 
+/**
+ * BackgroundConfig defines the configuration for a background.
+ * - spriteKey: The key used to identify the background sprite.
+ * - imagePath: The path to the background image.
+ * - lightPath: Optional path to an overlay image including lighting effects.
+ */
 interface BackgroundConfig {
   spriteKey: string;
   imagePath: string;
   lightPath?: string;
 }
 
-// Constants
+/**
+ * Background configurations for different backgrounds.
+ */
 const BACKGROUND_CONFIGS: Record<Background, BackgroundConfig> = {
   default: {
     spriteKey: "background",
@@ -107,6 +156,12 @@ const BACKGROUND_CONFIGS: Record<Background, BackgroundConfig> = {
   },
 };
 
+/**
+ * Creates a raccoon player character with various animations and states.
+ * @param k - The KAPLAY context.
+ * @param game - The game object to which the raccoon will be added.
+ * @returns The created raccoon player object.
+ */
 export function createRaccoon(k: KAPLAYCtx, game: any): PlayerType {
   k.loadSprite("raccoon", "/game/sprites/raccoon_spritesheet.png", {
     sliceX: 4,
@@ -174,6 +229,10 @@ export function createRaccoon(k: KAPLAYCtx, game: any): PlayerType {
   return raccoon;
 }
 
+/**
+ * Loads the trashcan sprite and its animations.
+ * @param k - The KAPLAY context.
+ */
 function loadTrashcanSprite(k: KAPLAYCtx): void {
   k.loadSprite("trashcan", "/game/sprites/trashcan_spritesheet.png", {
     sliceX: 2,
@@ -185,6 +244,14 @@ function loadTrashcanSprite(k: KAPLAYCtx): void {
   });
 }
 
+/**
+ * Creates a trashcan game object with specified type and tag.
+ * @param k - The KAPLAY context.
+ * @param game - The game object to which the trashcan will be added.
+ * @param type - The type of trashcan ("empty" or "filled").
+ * @param tag - The tag to identify the trashcan.
+ * @returns The created trashcan game object.
+ */
 function createTrashcan(
   k: KAPLAYCtx,
   game: any,
@@ -203,6 +270,12 @@ function createTrashcan(
   ]);
 }
 
+/**
+ * Creates a goal flag game object with animations and an off-screen indicator.
+ * @param k - The KAPLAY context.
+ * @param game - The game object to which the flag will be added.
+ * @returns The created goal flag game object.
+ */
 function createGoalFlag(k: KAPLAYCtx, game: any): StandardGameObjectType {
   k.loadSprite("flag", "/game/sprites/flag_spritesheet.png", {
     sliceX: 2,
@@ -261,6 +334,12 @@ function createGoalFlag(k: KAPLAYCtx, game: any): StandardGameObjectType {
   return flag;
 }
 
+/**
+ * Adds game objects to the game based on the provided array of game object types.
+ * It loads necessary sprites and creates instances of the specified game objects.
+ * @param gameobjects - An array of game object types to add.
+ * @returns An object containing instances of the specified game objects.
+ */
 export function addGameobjects<T extends readonly (keyof GameObjectTypeMap)[]>(
   gameobjects: T
 ): GameObjectInstancesFromArray<T> {
@@ -303,7 +382,12 @@ export function addGameobjects<T extends readonly (keyof GameObjectTypeMap)[]>(
   return instances;
 }
 
-// Background management
+/**
+ * Adds backgrounds to the game based on the provided array of Background types.
+ * It loads necessary sprites and creates background instances with optional lighting effects.
+ * @param backgrounds - An array of Background types to add.
+ * @param lightOffset - Optional offset for the background light position.
+ */
 export function addBackgrounds(
   backgrounds: readonly Background[],
   lightOffset: number = 0
@@ -342,26 +426,29 @@ export function addBackgrounds(
   }
 }
 
-export function removeBackgrounds(): void {
-  const { game } = getKaplayCtx();
-  game.get("background").forEach((bg) => bg.destroy());
-  game.get("backgroundLight").forEach((bg) => bg.destroy());
-}
-
-// Player movement and animation
-export let moveDirection = 1;
-
+/**
+ * Sets the player position based on data from the data store. (assuming the "raccoon" GameObject exists in the level!)
+ */
 function handleNodeMovement(player: PlayerType): void {
   player.pos.x = useDataStore.getState().getData("raccoon", "x");
   player.pos.y = useDataStore.getState().getData("raccoon", "y");
 }
 
+/**
+ * Updates the data store with the current player position.
+ */
 function updateDataStore(player: PlayerType): void {
   useDataStore.getState().setData("raccoon", "x", player.pos.x);
   useDataStore.getState().setData("raccoon", "y", player.pos.y);
 }
 
-function handleInputMovement(player: PlayerType, k: KAPLAYCtx): void {
+/**
+ * Handles player movement based on keyboard input.
+ * The player can move left and right using 'a' and 'd' keys, and jump using the spacebar.
+ * @param player - The player character object.
+ * @param k - The KAPLAY context.
+ */
+function handleKeyboardMovement(player: PlayerType, k: KAPLAYCtx): void {
   const SPEED = 5;
   const moveLeft = globalKeyTracker.isKeyDown("a");
   const moveRight = globalKeyTracker.isKeyDown("d");
@@ -380,20 +467,36 @@ function handleInputMovement(player: PlayerType, k: KAPLAYCtx): void {
   }
 }
 
+export let loopMoveDirection = 1;
+
+/**
+ * Handles loop movement for the player character.
+ * The player moves back and forth between specified min and max x positions.
+ * @param player - The player character object.
+ * @param k - The KAPLAY context.
+ * @param config - The configuration for loop movement, including minX, maxX, and speed.
+ */
 function handleLoopMovement(
   player: PlayerType,
   k: KAPLAYCtx,
   config: LoopConfig
 ): void {
-  player.pos.x += config.speed * moveDirection * k.dt();
+  player.pos.x += config.speed * loopMoveDirection * k.dt();
 
   if (player.pos.x >= config.maxX) {
-    moveDirection = -1;
+    loopMoveDirection = -1;
   } else if (player.pos.x <= config.minX) {
-    moveDirection = 1;
+    loopMoveDirection = 1;
   }
 }
 
+/**
+ * Updates the camera position based on the player's position.
+ * The camera follows the player, clamping its position within specified limits if provided.
+ * @param player - The player character object.
+ * @param k - The KAPLAY context.
+ * @param camClampX - Optional configuration for clamping the camera's x position.
+ */
 function updateCamera(
   player: PlayerType,
   k: KAPLAYCtx,
@@ -405,6 +508,13 @@ function updateCamera(
   k.setCamPos(k.lerp(k.getCamPos(), k.vec2(camX, -BACKGROUND_OFFSET), 0.1));
 }
 
+/**
+ * Updates the player's animation state based on their movement.
+ * If the player is not moving, they enter the "idle" state.
+ * If they are moving left or right, they enter the corresponding walking state.
+ * @param player - The player character object.
+ * @param lastX - The player's last x position before movement.
+ */
 function updatePlayerAnimation(player: PlayerType, lastX: number): void {
   const deltaX = player.pos.x - lastX;
   const newState =
@@ -415,6 +525,16 @@ function updatePlayerAnimation(player: PlayerType, lastX: number): void {
   }
 }
 
+/**
+ * AnimPlayerConfig defines the configuration options for the animPlayer function.
+ * - movementMode: The mode of movement for the player (node, keyboard, or loop
+ * movement).
+ * - loopConfig: Optional configuration for loop movement, including minX, maxX, and speed.
+ * - playerClampX: Optional configuration for clamping the player's x position.
+ * - camClampX: Optional configuration for clamping the camera's x position.
+ * - enableCameraUpdate: Whether to update the camera position based on the player's position.
+ * - updateStoreData: Whether to update the data store with the player's position.
+ */
 interface AnimPlayerConfig {
   movementMode?: MovementMode;
   loopConfig?: LoopConfig;
@@ -424,6 +544,15 @@ interface AnimPlayerConfig {
   updateStoreData?: boolean;
 }
 
+/**
+ * Applies movement to the player based on the specified movement mode.
+ * It handles node-based movement, keyboard input, or loop movement.
+ * @param player - The player character object.
+ * @param k - The KAPLAY context.
+ * @param movementMode - The mode of movement for the player (node, keyboard, or loop).
+ * @param updateStoreData - Whether to update the data store with the player's position.
+ * @param loopConfig - Optional configuration for loop movement, including minX, maxX, and speed.
+ */
 function applyMovement(
   player: PlayerType,
   k: KAPLAYCtx,
@@ -435,8 +564,8 @@ function applyMovement(
     case "node":
       handleNodeMovement(player);
       return;
-    case "input":
-      handleInputMovement(player, k);
+    case "keyboard":
+      handleKeyboardMovement(player, k);
       break;
     case "loop":
       if (loopConfig) {
@@ -447,6 +576,12 @@ function applyMovement(
   if (updateStoreData) updateDataStore(player);
 }
 
+/**
+ * Clamps the player's x position within specified limits.
+ * If no clampConfig is provided, the player's position remains unchanged.
+ * @param player - The player character object.
+ * @param clampConfig - Optional configuration for clamping the player's x position.
+ */
 function clampPlayerPosition(
   player: PlayerType,
   clampConfig?: ClampConfig
@@ -458,6 +593,14 @@ function clampPlayerPosition(
   );
 }
 
+/**
+ * The main function that animates the player character.
+ * It applies movement, clamps the player's position, updates the camera,
+ * and updates the player's animation state based on their movement.
+ * @param player - The player character object.
+ * @param k - The KAPLAY context.
+ * @param config - Configuration options for the animation player.
+ */
 export function animPlayer(
   player: PlayerType,
   k: KAPLAYCtx,
@@ -486,7 +629,7 @@ export function animPlayer(
 }
 
 export function handleReset(raccoon: PlayerType, initDirection: number): void {
-  if(raccoon){
+  if (raccoon) {
     raccoon?.scaleTo(SPRITE_SCALE * initDirection, SPRITE_SCALE);
     raccoon!.pos.x = 0;
     raccoon!.pos.y = 0;

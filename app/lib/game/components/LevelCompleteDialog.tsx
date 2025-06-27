@@ -6,6 +6,10 @@ import { LEVELS } from "../core/levels";
 import { getNeighborLevels } from "../utils/navigator";
 import CustomDialog from "./CustomDialog";
 
+/**
+ * LevelCompleteDialog component displays the dialog for level completion.
+ * It shows the level name, success message, and buttons to navigate to the main menu or next level.
+ */
 const LevelCompleteDialog = () => {
   const currentLevel = useGameStore((state) => state.currentLevel);
   const levelName = LEVELS[currentLevel].name;

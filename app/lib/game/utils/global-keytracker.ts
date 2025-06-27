@@ -18,6 +18,10 @@ function normalizeKey(key: string): string {
   return key;
 }
 
+/**
+ * Initializes the global key tracker.
+ * It sets up event listeners for keydown and keyup events to track pressed, released, and currently down keys.
+ */
 function initGlobalKeyTracker() {
   if (initialized) return;
   initialized = true;
@@ -40,6 +44,10 @@ function initGlobalKeyTracker() {
   window.addEventListener("keyup", keyupHandler);
 }
 
+/**
+ * Cleans up the global key tracker by removing event listeners and clearing the sets.
+ * It should be called when the application is no longer using the key tracker.
+ */
 function cleanupGlobalKeyTracker() {
   if (!initialized) return;
   window.removeEventListener("keydown", keydownHandler);
@@ -51,18 +59,37 @@ function cleanupGlobalKeyTracker() {
   keysReleased.clear();
 }
 
+/**
+ * Checks if a key is currently pressed down.
+ * @param key The key to check.
+ * @returns True if the key is down, false otherwise.
+ */
 function isKeyDown(key: string) {
   return keysDown.has(normalizeKey(key));
 }
 
+/**
+ * Checks if a key was pressed since the last frame.
+ * @param key The key to check.
+ * @returns True if the key was pressed, false otherwise.
+ */
 function isKeyPressed(key: string) {
   return keysPressed.has(normalizeKey(key));
 }
 
+/**
+ * Checks if a key was released since the last frame.
+ * @param key The key to check.
+ * @returns True if the key was released, false otherwise.
+ */
 function isKeyReleased(key: string) {
   return keysReleased.has(normalizeKey(key));
 }
 
+/**
+ * Clears the sets of pressed and released keys.
+ * This should be called at the end of each frame to reset the state.
+ */
 function clearPressedAndReleased() {
   keysPressed.clear();
   keysReleased.clear();

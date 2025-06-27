@@ -11,6 +11,20 @@ import {
 import { Cross2Icon } from "@radix-ui/react-icons";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 
+/**
+ * CustomDialog component provides a customizable dialog with a title, description, and content.
+ * It can be triggered by a button or any other React node.
+ * The dialog can be controlled via props for open state and change events.
+ * It supports accessibility features like visually hidden descriptions.
+ * @param {Object} props - The component props.
+ * @param {string} props.title - The title of the dialog.
+ * @param {React.ReactNode} [props.trigger] - Element to trigger the dialog.
+ * @param {boolean} [props.defaultOpen] - Whether the dialog should be open by default.
+ * @param {boolean} [props.open] - Controlled open state of the dialog.
+ * @param {function} [props.onOpenChange] - Callback function to handle open state changes.
+ * @param {string} [props.desc] - Description for accessibility, visually hidden.
+ * @param {React.ReactNode} [props.children] - Content to be displayed inside the dialog.
+ */
 const CustomDialog = ({
   title,
   trigger,

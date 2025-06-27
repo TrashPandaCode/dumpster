@@ -6,6 +6,16 @@ import { useGameStore } from "~/lib/zustand/game";
 import { LEVELS } from "../core/levels";
 import CustomDialog from "./CustomDialog";
 
+/**
+ * LevelDialog component displays the dialog for the current level.
+ * It shows the level name, dialog text with a typing effect, and navigation buttons.
+ * The dialog can be opened or closed, and it supports a trigger element.
+ *
+ * @param {Object} props - The component props.
+ * @param {boolean} [props.open] - Whether the dialog is open.
+ * @param {function} [props.onOpenChange] - Callback function to handle open state changes.
+ * @param {React.ReactNode} [props.trigger] - Element to trigger the dialog.
+ */
 const LevelDialog = ({
   open,
   onOpenChange,

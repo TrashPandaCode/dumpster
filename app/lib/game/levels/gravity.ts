@@ -47,7 +47,7 @@ export const initializeGravity = () => {
         if (useGameStore.getState().isPaused) return;
 
         animPlayer(raccoon, k, {
-            movementMode: "input",
+            movementMode: "keyboard",
             updateStoreData: false,
             camClampX: {
                 min: -8,

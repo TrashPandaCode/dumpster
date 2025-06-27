@@ -11,6 +11,14 @@ import { useEffect, useRef, useState } from "react";
 import { useGameStore } from "~/lib/zustand/game";
 import { LEVELS } from "../core/levels";
 
+/**
+ * GoalsDialog component displays the goals for the current level.
+ * It allows users to drag the dialog around the screen.
+ * The dialog can be opened or closed based on the `open` prop.
+ *
+ * @param {Object} props - The component props.
+ * @param {boolean} props.open - Whether the dialog is open.
+ */
 export default function GoalsDialog({ open }: { open: boolean }) {
   const currentLevel = useGameStore((state) => state.currentLevel);
   const goals = LEVELS[currentLevel]?.goals || [

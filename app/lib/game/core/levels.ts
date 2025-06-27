@@ -27,6 +27,12 @@ import { initializePlayground } from "../levels/playground";
 import { initializeReverse } from "../levels/reverse";
 import { initializeSitting } from "../levels/sitting";
 
+/**
+ * The ConnectionAccess type defines the access level for GameObject handles.
+ * - "export" allows exporting data from node to the GameObject.
+ * - "import" allows importing data into the node from the GameObject.
+ * - "all" allows both importing and exporting data.
+ */
 export type ConnectionAccess = "export" | "import" | "all";
 
 /**
@@ -84,6 +90,10 @@ export type Level = {
   difficulty: 0 | 1 | 2 | 3;
 };
 
+/**
+ * The ModifiableGameObject type represents a game object that can be modified using nodes in the level.
+ * It includes an ID, optional display name, and a list of connections with access levels.
+ */
 export type ModifiableGameObject = {
   id: GameObject;
   displayName?: string;

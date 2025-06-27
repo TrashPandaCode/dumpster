@@ -142,7 +142,7 @@ export const initializeForward = () => {
 
     // Movement
     animPlayer(raccoon, k, {
-      movementMode: "input",
+      movementMode: "keyboard",
       updateStoreData: false,
       camClampX: {
         min: -8,
