@@ -5,6 +5,7 @@ import Navigation from "../docs/components/Navigation";
 const Header = () => {
   const location = useLocation();
   const isDocsPage = location.pathname.startsWith("/docs");
+  const prevLevel = localStorage.getItem("level");
 
   return (
     <header className="px-8">
@@ -24,7 +25,7 @@ const Header = () => {
               Docs
             </NavLink>
             <NavLink
-              to="/levels"
+              to={prevLevel ? `/levels/${prevLevel}` : "/levels"}
               className="hover:text-jam-600 transition-all duration-300"
             >
               Game
