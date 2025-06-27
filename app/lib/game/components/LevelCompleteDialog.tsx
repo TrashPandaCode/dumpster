@@ -1,6 +1,7 @@
 import { DialogClose } from "@radix-ui/react-dialog";
 import { NavLink } from "react-router";
 
+import raccoonImage from "~/assets/raccoon.png";
 import { useGameStore } from "~/lib/zustand/game";
 import { LEVELS } from "../core/levels";
 import { getNeighborLevels } from "../utils/navigator";
@@ -34,22 +35,12 @@ const LevelCompleteDialog = () => {
             Next Level button.`}
     >
       <div className="flex flex-col gap-5">
-        <div className="flex flex-1 flex-row">
-          {/* Left side: Raccoon sprite */}
-          <div className="my-auto w-1/3">
-            <div
-              style={{
-                aspectRatio: "7 / 6",
-                width: "100%",
-                backgroundImage: "url('/game/sprites/raccoon_spritesheet.png')",
-                backgroundPosition: "0 0",
-                backgroundSize: "400% 400%",
-                backgroundRepeat: "no-repeat",
-                imageRendering: "pixelated",
-              }}
-            ></div>
-          </div>
-          {/* Right side: Success text */}
+        <div className="flex flex-1 flex-row items-center">
+          <img
+            src={raccoonImage}
+            className="pixelate mr-8 aspect-square h-full w-1/3"
+          />
+
           <div className="relative my-auto flex h-36 w-full flex-col items-center justify-center rounded-lg bg-slate-700 p-4 text-white shadow-lg">
             <div className="absolute top-1/2 -left-2.5 h-0 w-0 -translate-y-1/2 border-t-10 border-r-10 border-b-10 border-t-transparent border-r-slate-700 border-b-transparent"></div>
             <p className="mb-2 text-2xl font-bold">
