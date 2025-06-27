@@ -7,6 +7,12 @@ import { ChevronDownIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 import classnames from "classnames";
 import { useState, type ReactNode } from "react";
 
+/**
+ * Details component that renders a collapsible section with a summary and content.
+ * It uses Radix UI's Collapsible component for the collapsible functionality.
+ * The summary can be a string or a ReactNode, and the content is rendered inside the
+ * collapsible section. The component also supports a default open state.
+ */
 const Details = ({
   summary,
   children,
@@ -35,8 +41,8 @@ const Details = ({
           )}
         </span>
       </CollapsibleTrigger>
-      <CollapsibleContent className="overflow-hidden data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down">
-        <div className="border-x border-b border-slate-200 bg-white p-4 text-slate-700 rounded-b-lg">
+      <CollapsibleContent className="data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down overflow-hidden">
+        <div className="rounded-b-lg border-x border-b border-slate-200 bg-white p-4 text-slate-700">
           {children}
         </div>
       </CollapsibleContent>
