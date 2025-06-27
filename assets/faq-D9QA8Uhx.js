@@ -41,7 +41,8 @@ This section provides answers to frequently asked questions about the project. I
 
 <Details summary="What if I get stuck on a level?">
   Hints are built into each level. For each level a level guide exists in the
-  documentation. You can also revisit previous levels to reinforce earlier concepts.
+  documentation. You can also revisit previous levels to reinforce earlier
+  concepts.
 </Details>
 
 <Details summary="Can I share my solutions or learn from others?">
@@ -68,7 +69,7 @@ This section provides answers to frequently asked questions about the project. I
 <Details summary="I accidentally skipped the tutorial prompts.">
   You can restore all tutorial prompts and guidance messages previously skipped
   using the reset tutorial button in the help menu. The help menu can be
-  accessed in each level using the button displaying a question mark.
+  accessed in each level using the **?** button.
 </Details>
 
 <Details summary="Help, the nodes don't work anymore.">

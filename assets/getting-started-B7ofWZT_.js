@@ -1,2 +1,0 @@
-import{o as e}from"./chunk-AYJ5UCUI-BS9SflA5.js";const i={title:"Gettings Started"};function o(t){const n={h1:"h1",p:"p",...t.components};return e.jsxs(e.Fragment,{children:[e.jsx(n.h1,{children:"Getting Started"}),`
-`,e.jsx(n.p,{children:"This section will help you get started with the project. It will cover the following topics:"})]})}function s(t={}){const{wrapper:n}=t.components||{};return n?e.jsx(n,{...t,children:e.jsx(o,{...t})}):o(t)}export{s as default,i as frontmatter};

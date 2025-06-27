@@ -1,0 +1,51 @@
+const e=`---
+title: Gettings Started
+---
+
+# Getting Started
+
+Welcome to the learning platform for computer animation and visual programming. Whether you're completely new or just need a refresher, this guide will walk you through the first steps.
+
+## What is This?
+
+This project is an interactive learning environment for computer animation concepts. It features:
+
+- **Levels** that introduce computer animation topics
+- **A visual programming interface** allowing the user to control gameobjects
+- **Documentation** for every node and computer animation concept
+- A global **FAQ page** answering common questions
+
+## Step 1: Start the First Level
+
+Click the big **Play** button on the homepage to jump into the first level. An interactive tutorial will walk you through:
+
+- What each part of the interface does
+- How to interact with the node editor
+
+Alternatively, you can pick a level manually by selecting one of the **level cards** on the homepage.
+
+## Step 2: Learn by Doing
+
+Each level introduces a specific concept (e.g., time-transformations, for-loops, inverse kinematics). Levels are designed to be solved using the node-based system — experiment freely!
+
+If you're ever stuck, click the **?** button to view hints or navigate to the level guide outlining detailed explanations and strategies.
+
+## Step 3: Explore the Docs
+
+The [Docs](/docs) page contains everything you need:
+
+- Full documentation for every **node type**
+- Reference guides for **animation concepts** like forward/inverse kinematics, hierarchies, and time-transformations
+
+## Tips for Success
+
+- Use the **Import** and **Export** nodes to read and write data from and to game objects
+- Don't be afraid to experiment — levels are safe to reset at any time
+- Revisit solved levels to reinforce your understanding
+
+Ready to begin? Hit **Play** and start creating!
+
+---
+
+Need help? Visit the [FAQ](/docs/faq) or check the documentation for more details.
+`;export{e as default};

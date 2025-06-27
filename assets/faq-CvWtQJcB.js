@@ -1,4 +1,4 @@
-import{o as e}from"./chunk-AYJ5UCUI-BS9SflA5.js";const a={title:"FAQ"};function o(s){const n={h1:"h1",p:"p",...s.components},{Details:t}=n;return t||r("Details"),e.jsxs(e.Fragment,{children:[e.jsx(n.h1,{children:"FAQ"}),`
+import{o as e}from"./chunk-AYJ5UCUI-BS9SflA5.js";const a={title:"FAQ"};function o(s){const n={h1:"h1",p:"p",strong:"strong",...s.components},{Details:t}=n;return t||r("Details"),e.jsxs(e.Fragment,{children:[e.jsx(n.h1,{children:"FAQ"}),`
 `,e.jsx(n.p,{children:"This section provides answers to frequently asked questions about the project. If you have a question that is not answered here, feel free to reach out to the community or check the project's documentation."}),`
 `,e.jsx(t,{summary:"What is the main goal of this project?",children:e.jsx(n.p,{children:`The project aims to teach computer animation concepts through an interactive,
 gamified environment. Players learn by solving visual challenges using a
@@ -16,7 +16,8 @@ fully custom solutions.`})}),`
 kinematics, and abstraction gradually. This scaffolds learning without
 overwhelming the user.`})}),`
 `,e.jsx(t,{summary:"What if I get stuck on a level?",children:e.jsx(n.p,{children:`Hints are built into each level. For each level a level guide exists in the
-documentation. You can also revisit previous levels to reinforce earlier concepts.`})}),`
+documentation. You can also revisit previous levels to reinforce earlier
+concepts.`})}),`
 `,e.jsx(t,{summary:"Can I share my solutions or learn from others?",children:e.jsx(n.p,{children:`No, the current platform doesn't yet include an option to share your solution.
 But solutions are saved so you can revisit them later. Tech savvy users could
 export and import solutions by modifying the local storage.`})}),`
@@ -26,9 +27,9 @@ export and import solutions by modifying the local storage.`})}),`
 trashcans are semi-transparent) to hardest (all trashcans are fully opaque).`})}),`
 `,e.jsx(t,{summary:"Can I reset my progress?",children:e.jsx(n.p,{children:`Yes, you can reset individual levels using the reset button in the level
 editor. Be careful though, as this will delete all your nodes for that level.`})}),`
-`,e.jsx(t,{summary:"I accidentally skipped the tutorial prompts.",children:e.jsx(n.p,{children:`You can restore all tutorial prompts and guidance messages previously skipped
+`,e.jsx(t,{summary:"I accidentally skipped the tutorial prompts.",children:e.jsxs(n.p,{children:[`You can restore all tutorial prompts and guidance messages previously skipped
 using the reset tutorial button in the help menu. The help menu can be
-accessed in each level using the button displaying a question mark.`})}),`
+accessed in each level using the `,e.jsx(n.strong,{children:"?"})," button."]})}),`
 `,e.jsx(t,{summary:"Help, the nodes don't work anymore.",children:e.jsxs(n.p,{children:[`If all things fail, you can try resetting the local storage. To clear the
 local storage for this webpage, right-click anywhere on the page, select
 "Inspect", go to the "Application" tab, and choose "Local Storage" from the
