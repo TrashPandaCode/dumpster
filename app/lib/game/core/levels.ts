@@ -1,13 +1,17 @@
 import type { Node } from "@xyflow/react";
 import { v4 as uuidv4 } from "uuid";
 
-import alleyOne from "~/assets/alley_one.jpg";
-import alleyTwo from "~/assets/alley_two.png";
 import bounceCard from "~/assets/home-cards/bounce_card.png";
 import calcCard from "~/assets/home-cards/calc_card.png";
-import playgroundCard from "~/assets/home-cards/playground_card.png";
 import sittingCard from "~/assets/home-cards/sitting_card.png";
-import houseImage from "~/assets/house.png";
+import forwardCard from "~/assets/home-cards/forward_card.png";
+import gravityCard from "~/assets/home-cards/gravity_card.png";
+import inverseCard from "~/assets/home-cards/inverse_card.png";
+import linearCard from "~/assets/home-cards/linear_card.png";
+import loopingCard from "~/assets/home-cards/looping_card.png";
+import moveCard from "~/assets/home-cards/move_card.png";
+import parentingCard from "~/assets/home-cards/parenting_card.png";
+import playgroundCard from "~/assets/home-cards/playground_card.png";
 import type { NodeType } from "~/lib/node-editor/nodes/node-types";
 import { type GameObject } from "../game-objects";
 import { initializeBounce } from "../levels/bounce";
@@ -249,7 +253,7 @@ export const LEVELS = {
     ],
     success: "That should be enough food for a while... or at least two days.",
     category: "Hierarchies",
-    image: alleyTwo,
+    image: parentingCard,
     initialNodes: [],
     initialState: initializeParenting,
     hints: [
@@ -299,7 +303,7 @@ export const LEVELS = {
     success:
       "Nice! The watch finally works like I want it to — it looks great now.",
     category: "Time Transformation",
-    image: alleyOne,
+    image: linearCard,
     initialNodes: [],
     initialState: initializeLinear,
     hints: [
@@ -336,7 +340,7 @@ export const LEVELS = {
     success:
       "Whoa! It's actually working! Backwards brilliance! I knew bothering you would pay off!",
     category: "Time Transformation",
-    image: alleyOne,
+    image: linearCard,
     initialNodes: [],
     initialState: initializeReverse,
     hints: [
@@ -368,7 +372,7 @@ export const LEVELS = {
     success:
       "Right foot, left foot, right foot, left foot...I could do this all day!",
     category: "Motion",
-    image: houseImage,
+    image: moveCard,
     initialNodes: [],
     initialState: initializeMove,
     hints: [
@@ -419,7 +423,7 @@ export const LEVELS = {
     ],
     success: "Wheee! Into the bin I go. Smells like victory... and old fries!",
     category: "Motion",
-    image: houseImage,
+    image: gravityCard,
     initialNodes: [],
     initialState: initializeGravity,
     hints: [
@@ -464,7 +468,7 @@ export const LEVELS = {
     ],
     success: "Oh, just in time.",
     category: "Kinematics",
-    image: alleyOne,
+    image: forwardCard,
     initialNodes: [],
     initialState: initializeForward,
     hints: [
@@ -509,7 +513,7 @@ export const LEVELS = {
     success:
       "Perfectly perched! Efficient and elegant - just like a well-written loop",
     category: "Introduction",
-    image: bounceCard,
+    image: loopingCard,
     initialNodes: [],
     initialState: initializeLooping,
     hints: [
@@ -569,7 +573,7 @@ export const LEVELS = {
     success:
       "Ahhh... finally! I feel like a brand-new raccoon. Thanks for the scrub, robot whisperer!",
     category: "Kinematics",
-    image: alleyOne,
+    image: inverseCard,
     initialNodes: [],
     initialState: initializeInverse,
     hints: [
