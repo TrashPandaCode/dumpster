@@ -8,10 +8,18 @@ import classnames from "classnames";
 import { useEffect, useState, type ReactNode } from "react";
 import { useLocation } from "react-router";
 
+/**
+ * Collapsible component that can be used to create collapsible sections in the documentation sidebar.
+ * It uses Radix UI's Collapsible component for accessibility and animation.
+ *
+ * @param title - The title of the collapsible section.
+ * @param children - The content to display inside the collapsible section.
+ * @param open - Optional prop to control the initial open state of the collapsible section.
+ */
 const Collapsible = ({
   title,
   children,
-  open
+  open,
 }: {
   title: string;
   children: ReactNode;
@@ -34,7 +42,6 @@ const Collapsible = ({
 
   return (
     <Root open={internalOpen} onOpenChange={setInternalOpen}>
-
       <CollapsibleTrigger
         className={classnames(
           "group flex w-full items-baseline justify-between rounded p-2 text-left text-sm",

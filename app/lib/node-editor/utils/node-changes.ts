@@ -1,5 +1,8 @@
 import type { Node, NodeChange } from "@xyflow/react";
 
+// This code is inspired by the `applyChanges` function from the xyflow library.
+// https://github.com/xyflow/xyflow/blob/main/packages/react/src/utils/changes.ts/#L140
+
 /*
  * This function applies changes to nodes or edges that are triggered by React Flow internally.
  * When you drag a node for example, React Flow will send a position change update.
@@ -96,7 +99,12 @@ function applyChanges(changes: any[], elements: any[]): any[] {
   return updatedElements;
 }
 
-// Applies a single change to an element. This is a *mutable* update.
+/**
+ * Applies a single change to an element.
+ * @param change - The change to apply.
+ * @param element - The element to apply the change to.
+ * @returns The updated element.
+ */
 function applyChange(change: any, element: any): any {
   switch (change.type) {
     case "select": {

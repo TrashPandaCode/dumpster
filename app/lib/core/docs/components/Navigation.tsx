@@ -16,12 +16,20 @@ import {
 } from "../search-utils";
 import Collapsible from "./Collapsible";
 
+/**
+ * Divider component to separate sections in the navigation.
+ * Displays a title for the section.
+ */
 const Divider: React.FC<{ title: string }> = ({ title }) => (
   <div className="border-b border-slate-200 px-2 py-1 text-xs font-semibold text-slate-600 uppercase">
     {title}
   </div>
 );
 
+/**
+ * Props for the NavItem component.
+ * Represents a single navigation item in the sidebar.
+ */
 interface NavItemProps {
   item: NavigationItem | SearchableItem;
   className?: string;
@@ -29,11 +37,20 @@ interface NavItemProps {
   showDescription?: boolean;
 }
 
+/**
+ * Globally imports all markdown and mdx files in the /content/docs directory.
+ * This allows for dynamic loading of documentation content.
+ * The query "?raw" ensures that the content is loaded as raw text.
+ */
 const docs = import.meta.glob("/content/docs/**/*.{md,mdx}", {
   query: "?raw",
   import: "default",
 });
 
+/**
+ * Navigation component that displays the sidebar navigation for the application.
+ * It includes a search bar and collapsible sections for different documentation categories.
+ */
 const NavigationContent: React.FC<{ onItemClick?: () => void }> = ({
   onItemClick,
 }) => {
@@ -345,6 +362,11 @@ const NavigationContent: React.FC<{ onItemClick?: () => void }> = ({
   );
 };
 
+/**
+ * This component renders the navigation sidebar for the application.
+ * It includes both desktop and mobile versions, with a collapsible sidebar for mobile.
+ * The desktop version is always visible, while the mobile version can be toggled.
+ */
 const Navigation: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
 
