@@ -97,7 +97,7 @@ const HelpMenu = () => {
               target="_blank"
               to={`/docs/level-guides/${LEVELS[level].slug}`}
             >
-              Find information on this topic here
+              Find the level guide for this topic here
             </NavLink>
             <hr className="mx-auto h-1 w-full rounded-sm border-0 bg-slate-700" />
             <div className="flex flex-row justify-center gap-2">
