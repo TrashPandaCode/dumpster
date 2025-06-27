@@ -62,7 +62,7 @@ const Group = memo(({ id, data }: { id: string; data: any }) => {
         className="h-full bg-slate-900"
         docsName="group"
       >
-        {!data.isParent && ( // TODO: the hint doesn't come back after all nodes are removed, do we event want this?
+        {!data.isParent && (
           <div className="flex flex-col items-center justify-center p-2 text-xs italic opacity-60">
             <p>Drag and drop nodes here,</p>
             <p>to group them together.</p>

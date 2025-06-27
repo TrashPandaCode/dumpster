@@ -84,10 +84,6 @@ export default function Tutorial({ onClose }: { onClose: () => void }) {
   ] satisfies Step[];
 
   const handleJoyrideCallback = (data: CallBackProps) => {
-    if (data.status === "skipped") {
-      //TODO: track telemetry
-    }
-
     if (data.status === "finished" || data.status === "skipped") {
       onClose();
     }

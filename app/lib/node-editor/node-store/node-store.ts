@@ -68,7 +68,7 @@ export class AppNode {
     { targetNode: AppNode; targetHandleId: string; sourceHandleId: string }
   > = new Map();
   results: nodeResults = new Map(); // string: handle-id of corresponding output handle
-  mark: Mark | null = null; // TODO: null or undefined
+  mark: Mark | null = null;
   nodeId: string;
 
   /**
@@ -89,7 +89,7 @@ export class AppNode {
   loopEnd = false;
   loopId: string | undefined = undefined;
 
-  type: string | undefined = ""; //TODO: DEBUG
+  type: string | undefined = "";
 
   /**
    * Creates a new AppNode instance with the specified ID, data, and type.
@@ -106,7 +106,7 @@ export class AppNode {
   ) {
     this.nodeId = nodeId;
     this.updateData(data);
-    this.type = type; //TODO: DEBUG
+    this.type = type;
   }
 
   /**
@@ -168,8 +168,8 @@ export class AppNode {
           },
         ])
       ),
-      results: Object.fromEntries(this.results), //TODO: do we need to save this?
-      mark: this.mark, //TODO: do we need to save this?
+      results: Object.fromEntries(this.results),
+      mark: this.mark,
       loopStart: this.loopStart,
       loopEnd: this.loopEnd,
       loopId: this.loopId,

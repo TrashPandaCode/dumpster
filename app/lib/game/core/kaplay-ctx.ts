@@ -43,5 +43,5 @@ export function cleanupKaplay() {
     app.quit();
   });
   ctx = undefined;
-  state.first = true; //TODO: remove just for react strict mode
+  state.first = true;
 }

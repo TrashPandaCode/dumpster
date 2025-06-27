@@ -6,9 +6,10 @@ import { BACKGROUND_OFFSET, CAM_SCALE } from "../constants";
 import { globalKeyTracker } from "../utils/global-keytracker";
 import { getKaplayCtx } from "./kaplay-ctx";
 
+// Module state to track if the game has been initialized (needs to be an object to maintain state across imports)
 export const state = {
   first: true,
-}; //TODO: remove just for react strict mode
+};
 
 /**
  * Initializes the game with a canvas element and sets up basic game-node interactions.
@@ -17,8 +18,8 @@ export const state = {
  * @returns Kaplay context
  */
 export default function initGame(canvas: HTMLCanvasElement) {
-  if (!state.first) return; //TODO: remove just for react strict mode
-  state.first = false; //TODO: remove just for react strict mode
+  if (!state.first) return;
+  state.first = false;
 
   let pauseStart = 0;
   let totalPausedTime = 0;

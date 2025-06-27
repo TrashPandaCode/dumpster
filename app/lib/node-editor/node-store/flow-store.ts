@@ -12,7 +12,7 @@ type HighlightType = "cycle" | "duplicate";
 interface FlowState {
   nodes: Node[];
   edges: Edge[];
-  highlightNodes: Map<HighlightType, string[]>; //TODO: track?
+  highlightNodes: Map<HighlightType, string[]>;
   setNodes: (updater: (nodes: Node[]) => Node[]) => void;
   setEdges: (updater: (edges: Edge[]) => Edge[]) => void;
   resetHighlight: (type: HighlightType) => void;
@@ -192,7 +192,6 @@ export const useFlowStore = create<FlowState>()(
             measured: undefined,
           };
 
-          //TODO: replace stringify for performance
           if (
             JSON.stringify(pastWithoutPosition) !==
             JSON.stringify(currentWithoutPosition)

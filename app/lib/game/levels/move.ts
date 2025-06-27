@@ -25,7 +25,6 @@ export const initializeMove = () => {
     const distGoal = raccoon.pos.dist(goalFlag.pos);
 
     if (distGoal <= 1) {
-      //TODO: Raccoon continues walking after "Continue Playing" is clicked
       useGameStore.getState().setLevelCompleted(true);
     }
 

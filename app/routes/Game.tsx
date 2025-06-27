@@ -30,7 +30,6 @@ const Game = ({ params }: Route.ComponentProps) => {
   if (!(level in LEVELS)) {
     throw new Error(`Level ${level} not found`);
   }
-  //TODO: navigate to /levels/calculator too. easy option: use navigate("/levels/calculator") in the useEffect below, nice option: handle in router directly
 
   const [tutorialOpen, setTutorialOpen] = useState(
     !JSON.parse(localStorage.getItem("hideTutorial") ?? "false")
