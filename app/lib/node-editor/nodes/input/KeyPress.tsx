@@ -2,7 +2,7 @@ import { Position, useReactFlow } from "@xyflow/react";
 import classnames from "classnames";
 import { memo, useEffect, useState } from "react";
 
-import { useKeyStore } from "~/lib/zustand/key";
+import { globalKeyTracker } from "~/lib/game/utils/global-keytracker";
 import LabelHandle from "../../node-components/LabelHandle";
 import NodeContent from "../../node-components/NodeContent";
 import SelectDropDown from "../../node-components/SelectDropDown";
@@ -53,9 +53,6 @@ const KeyPress = memo(({ id, data }: { id: string; data: any }) => {
     data.keyPressType ?? "down"
   );
 
-  const keyDown = useKeyStore((state) => state.isKeyDown);
-  const keyPressed = useKeyStore((state) => state.isKeyPressed);
-  const keyReleased = useKeyStore((state) => state.isKeyReleased);
   const [active, setActive] = useState(false);
 
   useEffect(() => {
@@ -64,15 +61,15 @@ const KeyPress = memo(({ id, data }: { id: string; data: any }) => {
         let active = false;
         switch (keyPressType) {
           case "down":
-            active = keyDown(curKey);
+            active = globalKeyTracker.isKeyDown(curKey);
             results.set(OUT_HANDLE_1, +active);
             break;
           case "press":
-            active = keyPressed(curKey);
+            active = globalKeyTracker.isKeyPressed(curKey);
             results.set(OUT_HANDLE_1, +active);
             break;
           case "release":
-            active = keyReleased(curKey);
+            active = globalKeyTracker.isKeyReleased(curKey);
             results.set(OUT_HANDLE_1, +active);
             break;
         }

@@ -1,6 +1,5 @@
 import { useNodeStore } from "~/lib/node-editor/node-store/node-store";
 import { useGameStore } from "~/lib/zustand/game";
-import { useKeyStore } from "~/lib/zustand/key";
 import { useMouseStore } from "~/lib/zustand/mouse";
 import { useTimeStore } from "~/lib/zustand/time";
 import { BACKGROUND_OFFSET, CAM_SCALE } from "../constants";
@@ -25,10 +24,6 @@ export default function initGame(canvas: HTMLCanvasElement) {
   let totalPausedTime = 0;
 
   const { k, game } = getKaplayCtx(canvas);
-
-  useKeyStore.getState().setKeyDownFunction(globalKeyTracker.isKeyDown);
-  useKeyStore.getState().setKeyPressedFunction(globalKeyTracker.isKeyPressed);
-  useKeyStore.getState().setKeyReleasedFunction(globalKeyTracker.isKeyReleased);
 
   useMouseStore.getState().setMousePosFunction(() => k.toWorld(k.mousePos()));
 
