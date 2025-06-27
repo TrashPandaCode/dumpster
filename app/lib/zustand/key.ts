@@ -9,6 +9,10 @@ interface KeyState {
   setKeyReleasedFunction: (keyFunction: (key: string) => boolean) => void;
 }
 
+/**
+ * This store allows us the make key events more flexible.
+ * It allows us to set custom functions for key down, pressed, and released events.
+ */
 export const useKeyStore = create<KeyState>((set) => ({
   isKeyDown: () => false,
   setKeyDownFunction: (keyFunction) => set({ isKeyDown: keyFunction }),

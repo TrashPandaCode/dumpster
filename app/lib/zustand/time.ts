@@ -7,6 +7,9 @@ interface TimeState {
   setDeltaTimeFunction: (timeFunction: () => number) => void;
 }
 
+/**
+ * This store allows re-exports of the time functions from the game engine.
+ */
 export const useTimeStore = create<TimeState>((set) => ({
   getTime: () => 0,
   setTimeFunction: (timeFunction) => set({ getTime: timeFunction }),

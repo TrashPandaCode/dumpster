@@ -14,6 +14,11 @@ interface GameState {
   init: (level: LevelId) => void;
 }
 
+/**
+ * Game state management using Zustand.
+ * This store manages the game state, including pause/play status,
+ * current level, level completion status, and dialog visibility.
+ */
 export const useGameStore = create<GameState>((set, get) => ({
   isPaused: false,
   pause: () => set({ isPaused: true }),
