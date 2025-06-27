@@ -20,6 +20,7 @@ import { useFlowStore } from "~/lib/node-editor/node-store/flow-store";
 import { useLoopStore } from "~/lib/node-editor/node-store/loop-store";
 import { useNodeStore } from "~/lib/node-editor/node-store/node-store";
 import { useDataStore } from "~/lib/zustand/data";
+import { initStores } from "~/lib/zustand/init-stores";
 
 const Game = ({ params }: Route.ComponentProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -42,6 +43,7 @@ const Game = ({ params }: Route.ComponentProps) => {
     }
 
     globalKeyTracker.init();
+    initStores(level);
     initGame(canvasRef.current);
     loadLevel(level);
 
@@ -55,7 +57,7 @@ const Game = ({ params }: Route.ComponentProps) => {
       useNodeStore.getState().save();
       useLoopStore.getState().save();
       useDataStore.getState().save();
-    }, 1000);
+    }, 10000);
 
     return () => {
       cleanupKaplay();
