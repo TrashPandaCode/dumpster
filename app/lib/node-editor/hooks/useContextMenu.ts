@@ -12,6 +12,11 @@ import {
   useUndoHotkey,
 } from "./useShortcuts";
 
+/**
+ * Custom hook to manage context menus in a node editor.
+ * It provides handlers for pane, node, and selection context menus,
+ * as well as dimensions and visibility management.
+ */
 export function useContextMenu() {
   const [paneContextMenu, setPaneContextMenu] = useState<{
     x: number;

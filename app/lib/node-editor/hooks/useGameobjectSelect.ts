@@ -8,6 +8,14 @@ import { useState } from "react";
 
 import type { GameObject } from "~/lib/game/game-objects";
 
+/**
+ * Custom hook to manage game object selection in a node editor.
+ * It provides handlers for selecting, deselecting, and reordering game objects.
+ *
+ * @param items - List of game objects to select from.
+ * @param initialSelection - Initial selection of game objects.
+ * @param id - Identifier for the node being edited.
+ */
 export function useGameobjectSelect(
   items: GameObject[],
   initialSelection: GameObject[],

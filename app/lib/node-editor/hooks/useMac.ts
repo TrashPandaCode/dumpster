@@ -1,5 +1,11 @@
 import { useEffect, useState } from "react";
 
+/**
+ * Custom hook to determine if the user's operating system is macOS.
+ * It checks the user agent string to identify macOS and excludes iOS devices.
+ *
+ * @returns {boolean} - True if the OS is macOS, false otherwise.
+ */
 const useIsMac = () => {
   const [isMac, setIsMacOS] = useState(false);
 

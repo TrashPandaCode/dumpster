@@ -33,6 +33,10 @@ const selector = (state: {
   highlightDuplicateNodes: state.highlightDuplicateNodes,
 });
 
+/**
+ * Custom hook to manage the flow of nodes and edges in a React Flow instance.
+ * It provides handlers for node and edge changes, connections, and deletion.
+ */
 export function useFlow() {
   const { getIntersectingNodes, getNode, getNodes, getEdges } = useReactFlow();
   const { nodes, edges, setNodes, setEdges, highlightDuplicateNodes } =
