@@ -7,7 +7,6 @@ import {
     animPlayer,
     handleReset,
 } from "../utils/game-helper";
-import { globalKeyTracker } from "../utils/global-keytracker";
 
 export const initializeGravity = () => {
     const { k, game } = getKaplayCtx();
@@ -38,10 +37,7 @@ export const initializeGravity = () => {
     trashcanFilled.pos.x = 5;
     trashcanFilled.pos.y = -10;
 
-    let trashcanVelx = 0;
-    let trashcanVely = 0;
-
-    
+    let trashcanVely = 0;    
 
     game.onUpdate(() => {
         if (useGameStore.getState().isPaused) return;
@@ -74,7 +70,7 @@ export const initializeGravity = () => {
         dataHelper.setData("raccoon", "y pos", () => raccoon.pos.y);
 
 
-        let trashcanTop = trashcanFilled.pos.sub(k.vec2(0, 2));
+        const trashcanTop = trashcanFilled.pos.sub(k.vec2(0, 2));
 
         if(raccoon.pos.dist(trashcanTop) <= 1){
             useGameStore.getState().setLevelCompleted(true);
