@@ -75,8 +75,9 @@ This section provides answers to frequently asked questions about the project. I
 <Details summary="Help, the nodes don't work anymore.">
   If all things fail, you can try resetting the local storage. To clear the
   local storage for this webpage, right-click anywhere on the page, select
-  "Inspect", go to the "Application" tab, and choose "Local Storage" from the
-  sidebar — then right-click the entries and select "Clear". This{" "}
+  "Inspect", go to the "Application" (Chrome) or "Storage" (Firefox) tab, and
+  choose "Local Storage" from the sidebar — then right-click the entries and
+  select "Clear". This
   <strong>must</strong> happen without any level loaded, so either from the
   homepage or docs pages.
 </Details>

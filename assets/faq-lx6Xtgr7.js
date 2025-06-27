@@ -32,7 +32,8 @@ using the reset tutorial button in the help menu. The help menu can be
 accessed in each level using the `,e.jsx(n.strong,{children:"?"})," button."]})}),`
 `,e.jsx(t,{summary:"Help, the nodes don't work anymore.",children:e.jsxs(n.p,{children:[`If all things fail, you can try resetting the local storage. To clear the
 local storage for this webpage, right-click anywhere on the page, select
-"Inspect", go to the "Application" tab, and choose "Local Storage" from the
-sidebar — then right-click the entries and select "Clear". This`," ",`
+"Inspect", go to the "Application" (Chrome) or "Storage" (Firefox) tab, and
+choose "Local Storage" from the sidebar — then right-click the entries and
+select "Clear". This
 `,e.jsx("strong",{children:"must"}),` happen without any level loaded, so either from the
 homepage or docs pages.`]})})]})}function l(s={}){const{wrapper:n}=s.components||{};return n?e.jsx(n,{...s,children:e.jsx(o,{...s})}):o(s)}function r(s,n){throw new Error("Expected component `"+s+"` to be defined: you likely forgot to import, pass, or provide it.")}export{l as default,a as frontmatter};
