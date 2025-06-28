@@ -453,6 +453,7 @@ export const LEVELS = {
     availableNodes: [
       "Display",
       "Value",
+      "Time",
       "Math",
       "Switch",
       "KeyPress",

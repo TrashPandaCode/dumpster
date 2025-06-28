@@ -1,25 +1,126 @@
 {
   "nodes": [
     {
-      "id": "c32ca01f-094e-4f18-aa0c-c160b0b37e27",
+      "id": "f8d5ca64-ee7f-4646-949d-96e1da546197",
       "type": "Group",
       "position": {
-        "x": 852.2471796444722,
-        "y": 618.4211581850266
+        "x": 2118.925929923566,
+        "y": 358.42115818502657
       },
       "data": {
-        "editLabel": "check if grounded",
+        "editLabel": "apply velocity",
         "isParent": true,
-        "minWidth": 927.3867604830991,
-        "minHeight": 460.38168727494235
+        "minWidth": 304.40484223281237,
+        "minHeight": 260
       },
-      "height": 460.38168727494235,
-      "width": 927.3867604830991,
+      "height": 271,
+      "width": 306,
       "selected": false,
       "dragging": false,
       "measured": {
-        "width": 927.3867604830991,
-        "height": 460.38168727494235
+        "width": 306,
+        "height": 271
+      },
+      "style": {
+        "zIndex": -1
+      }
+    },
+    {
+      "id": "eee667b7-8f88-4033-8ea7-92e5bd1cbc4e",
+      "type": "Group",
+      "position": {
+        "x": 1240.0860001909714,
+        "y": 394.48214344520926
+      },
+      "data": {
+        "editLabel": "reset vel if grounded",
+        "isParent": true,
+        "minWidth": 303.7264828035816,
+        "minHeight": 260
+      },
+      "height": 260,
+      "width": 303.7264828035816,
+      "selected": false,
+      "dragging": false,
+      "measured": {
+        "width": 304,
+        "height": 260
+      },
+      "style": {
+        "zIndex": -1
+      }
+    },
+    {
+      "id": "b8c08112-c3f3-42c9-a904-4d7bd4d3cb81",
+      "type": "Group",
+      "position": {
+        "x": -174.89463919213358,
+        "y": 841.1321813686527
+      },
+      "data": {
+        "editLabel": "jump strength",
+        "isParent": true,
+        "minWidth": 260.52857931970493,
+        "minHeight": 200
+      },
+      "height": 200,
+      "width": 260.52857931970493,
+      "selected": false,
+      "dragging": false,
+      "measured": {
+        "width": 261,
+        "height": 200
+      },
+      "style": {
+        "zIndex": -1
+      }
+    },
+    {
+      "id": "4f5513f8-5461-4deb-8695-17014d10a82f",
+      "type": "Group",
+      "position": {
+        "x": 110.24717964447223,
+        "y": 879.3110082528474
+      },
+      "data": {
+        "editLabel": "handle button press",
+        "isParent": true,
+        "minWidth": 659.3867604830991,
+        "minHeight": 265.49183720712153
+      },
+      "height": 266,
+      "width": 659.3867604830991,
+      "selected": false,
+      "dragging": false,
+      "measured": {
+        "width": 659,
+        "height": 266
+      },
+      "style": {
+        "zIndex": -1
+      },
+      "resizing": false
+    },
+    {
+      "id": "cbd891eb-43e0-4acf-b7fe-4083a4cefab5",
+      "type": "Group",
+      "position": {
+        "x": 157.6560825965302,
+        "y": 224.1507296134522
+      },
+      "data": {
+        "editLabel": "gravity per frame",
+        "isParent": true,
+        "minWidth": 552.6146787320861,
+        "minHeight": 335.2202666463922
+      },
+      "height": 335.2202666463922,
+      "width": 552.6146787320861,
+      "selected": false,
+      "dragging": false,
+      "measured": {
+        "width": 553,
+        "height": 335
       },
       "style": {
         "zIndex": -1
@@ -30,92 +131,70 @@
       "id": "16b735e4-8b9c-47a6-927b-5bb0c862b17b",
       "type": "Group",
       "position": {
-        "x": 1054.2471796444722,
-        "y": 306.42115818502657
+        "x": 886.6648623756847,
+        "y": 393.16963141477885
       },
       "data": {
         "editLabel": "add gravity to vel",
         "isParent": true,
-        "minWidth": 303.0835925119061,
-        "minHeight": 260
+        "minWidth": 297.0835925119061,
+        "minHeight": 264
       },
-      "height": 260,
-      "width": 303.0835925119061,
+      "height": 264,
+      "width": 303,
       "selected": false,
       "dragging": false,
       "measured": {
         "width": 303,
-        "height": 260
+        "height": 264
       },
       "style": {
         "zIndex": -1
       }
     },
     {
-      "id": "cbd891eb-43e0-4acf-b7fe-4083a4cefab5",
+      "id": "c32ca01f-094e-4f18-aa0c-c160b0b37e27",
       "type": "Group",
       "position": {
-        "x": 290.2471796444722,
-        "y": 213.3110082528475
+        "x": 834.8843750924516,
+        "y": 746.905911869981
       },
       "data": {
-        "editLabel": "gravity",
+        "editLabel": "check if grounded",
         "isParent": true,
-        "minWidth": 254.91031196687572,
-        "minHeight": 201.42998739091092
+        "minWidth": 615.8542948465654,
+        "minHeight": 281.3653616891854
       },
-      "height": 201.42998739091092,
-      "width": 254.91031196687572,
+      "height": 281.3653616891854,
+      "width": 615.8542948465654,
       "selected": false,
       "dragging": false,
       "measured": {
-        "width": 255,
-        "height": 201
+        "width": 616,
+        "height": 281
       },
       "style": {
         "zIndex": -1
-      }
-    },
-    {
-      "id": "4f5513f8-5461-4deb-8695-17014d10a82f",
-      "type": "Group",
-      "position": {
-        "x": 218.24717964447223,
-        "y": 795.3110082528474
       },
-      "data": {
-        "editLabel": "jump value",
-        "isParent": true,
-        "minWidth": 253.38676048309912,
-        "minHeight": 200
-      },
-      "height": 200,
-      "width": 253.38676048309912,
-      "selected": false,
-      "dragging": false,
-      "measured": {
-        "width": 253,
-        "height": 200
-      },
-      "style": {
-        "zIndex": -1
-      }
+      "resizing": false
     },
     {
       "id": "e86e5d19-befb-429b-a281-fd189f15407c",
       "type": "ExportToGameobject",
       "position": {
-        "x": 1137.486981475924,
-        "y": 65.81917104572597
+        "x": 985.486981475924,
+        "y": 75.81917104572597
       },
       "data": {
-        "selectedGameObjects": ["trashcanFilled"]
+        "selectedGameObjects": [
+          "trashcanFilled"
+        ]
       },
       "selected": false,
       "dragging": false,
       "measured": {
         "width": 221,
-        "height": 190
+        "height": 166
       },
       "style": {}
     },
@@ -123,11 +202,11 @@
       "id": "11a6ae34-d87f-46c8-b789-7863c97baa01",
       "type": "Value",
       "position": {
-        "x": 42.910311966875724,
-        "y": 77.42998739091092
+        "x": 28.910311966875724,
+        "y": 211.2202666463922
       },
       "data": {
-        "value": 0.1
+        "value": 9.81
       },
       "selected": false,
       "dragging": false,
@@ -141,11 +220,13 @@
       "id": "3c9bdb32-13f1-431f-aa29-def79d4decd0",
       "type": "ExportToGameobject",
       "position": {
-        "x": 2467.4103459191856,
-        "y": 620.0131915049972
+        "x": 2449.4103459191856,
+        "y": 650.0131915049972
       },
       "data": {
-        "selectedGameObjects": ["raccoon"],
+        "selectedGameObjects": [
+          "raccoon"
+        ],
         "handleLabel": "vel"
       },
       "selected": false,
@@ -153,24 +234,26 @@
       "style": {},
       "measured": {
         "width": 221,
-        "height": 214
+        "height": 190
       }
     },
     {
       "id": "2183bd80-dbaf-466d-b466-c582d13435ab",
       "type": "ImportFromGameobject",
       "position": {
-        "x": 358.5303633271034,
-        "y": 579.6911475576558
+        "x": 276.9251819326053,
+        "y": 642.1972439449308
       },
       "data": {
-        "selectedGameObjects": ["raccoon"]
+        "selectedGameObjects": [
+          "raccoon"
+        ]
       },
       "selected": false,
       "dragging": false,
       "measured": {
         "width": 237,
-        "height": 176
+        "height": 152
       }
     },
     {
@@ -197,8 +280,8 @@
       "id": "795c1e59-91d9-46b6-8e0e-f57ac918861a",
       "type": "Math",
       "position": {
-        "x": 341.59057530176733,
-        "y": 278.05311316466737
+        "x": 339.8542948465654,
+        "y": 97.4799458236505
       },
       "data": {
         "initialComputeType": "NOT",
@@ -217,8 +300,8 @@
       "id": "1f702166-7102-404c-8b94-11b1b0d72119",
       "type": "Math",
       "position": {
-        "x": 27.08359251190609,
-        "y": 60
+        "x": 21.08359251190609,
+        "y": 64
       },
       "data": {
         "initialComputeType": "Addition",
@@ -237,7 +320,7 @@
       "id": "b72d0c2a-d6a3-4bc0-8ec9-725cb6d00d56",
       "type": "Math",
       "position": {
-        "x": 589.0835925119061,
+        "x": 27.726482803581575,
         "y": 60
       },
       "data": {
@@ -251,14 +334,14 @@
         "width": 256,
         "height": 180
       },
-      "parentId": "c32ca01f-094e-4f18-aa0c-c160b0b37e27"
+      "parentId": "eee667b7-8f88-4033-8ea7-92e5bd1cbc4e"
     },
     {
       "id": "674fe584-6907-469e-98ce-77357ab6b8b0",
       "type": "Math",
       "position": {
-        "x": 2163.3307721563783,
-        "y": 480.42115818502657
+        "x": 28.40484223281237,
+        "y": 60
       },
       "data": {
         "initialComputeType": "Addition",
@@ -270,14 +353,15 @@
       "measured": {
         "width": 256,
         "height": 180
-      }
+      },
+      "parentId": "f8d5ca64-ee7f-4646-949d-96e1da546197"
     },
     {
       "id": "8d542c68-c5f7-4f94-9871-6f4374f57a95",
       "type": "KeyPress",
       "position": {
-        "x": 196.60061493225885,
-        "y": 1038.552845459969
+        "x": 28.353435287786624,
+        "y": 105.24183720712142
       },
       "data": {
         "curKey": "space",
@@ -288,14 +372,15 @@
       "measured": {
         "width": 240,
         "height": 136
-      }
+      },
+      "parentId": "4f5513f8-5461-4deb-8695-17014d10a82f"
     },
     {
       "id": "cfed8e05-f48e-4024-97ad-8a7e2f5f05b7",
       "type": "Math",
       "position": {
-        "x": 527.6339401275713,
-        "y": 892.8028454599689
+        "x": 383.3867604830991,
+        "y": 65.49183720712153
       },
       "data": {
         "initialComputeType": "Multiply",
@@ -307,17 +392,18 @@
       "measured": {
         "width": 256,
         "height": 180
-      }
+      },
+      "parentId": "4f5513f8-5461-4deb-8695-17014d10a82f"
     },
     {
       "id": "fbdd6353-3339-446a-a093-5ee109895bd3",
       "type": "Value",
       "position": {
-        "x": 41.386760483099124,
-        "y": 69.49183720712142
+        "x": 48.52857931970493,
+        "y": 65.6706640913161
       },
       "data": {
-        "value": -0.7
+        "value": -1.3
       },
       "selected": false,
       "dragging": false,
@@ -325,14 +411,14 @@
         "width": 192,
         "height": 104
       },
-      "parentId": "4f5513f8-5461-4deb-8695-17014d10a82f"
+      "parentId": "b8c08112-c3f3-42c9-a904-4d7bd4d3cb81"
     },
     {
       "id": "d2a66bf5-0a64-4def-8225-fb54e0bf57c0",
       "type": "Math",
       "position": {
-        "x": 651.3867604830991,
-        "y": 260.38168727494235
+        "x": 1505.1065010379752,
+        "y": 891.2418708935023
       },
       "data": {
         "initialComputeType": "Multiply",
@@ -344,18 +430,53 @@
       "measured": {
         "width": 256,
         "height": 180
-      },
-      "parentId": "c32ca01f-094e-4f18-aa0c-c160b0b37e27"
+      }
     },
     {
       "id": "1cee36c2-ff2f-4dc6-906f-16badc253e97",
       "type": "Math",
       "position": {
-        "x": 1853.6339401275713,
-        "y": 672.8028454599689
+        "x": 1788.2040646218088,
+        "y": 648.0970576348581
       },
       "data": {
         "initialComputeType": "Addition",
+        "xInputData": 0,
+        "yInputData": 0
+      },
+      "selected": false,
+      "dragging": false,
+      "measured": {
+        "width": 256,
+        "height": 180
+      }
+    },
+    {
+      "id": "410907a8-26cb-4cf2-99da-411326283a81",
+      "type": "Time",
+      "position": {
+        "x": 25.459847128421927,
+        "y": 74
+      },
+      "parentId": "cbd891eb-43e0-4acf-b7fe-4083a4cefab5",
+      "data": {},
+      "selected": false,
+      "dragging": false,
+      "measured": {
+        "width": 192,
+        "height": 126
+      }
+    },
+    {
+      "id": "61a1b51c-b4be-4461-9e6d-86e4588a7ea0",
+      "type": "Math",
+      "position": {
+        "x": 276.6146787320862,
+        "y": 83.41517679386072
+      },
+      "parentId": "cbd891eb-43e0-4acf-b7fe-4083a4cefab5",
+      "data": {
+        "initialComputeType": "Multiply",
         "xInputData": 0,
         "yInputData": 0
       },
@@ -374,7 +495,8 @@
       "sourceHandle": "y pos",
       "target": "3c9bdb32-13f1-431f-aa29-def79d4decd0",
       "targetHandle": "last",
-      "id": "xy-edge__2183bd80-dbaf-466d-b466-c582d13435aby pos-3c9bdb32-13f1-431f-aa29-def79d4decd0last"
+      "id": "xy-edge__2183bd80-dbaf-466d-b466-c582d13435aby pos-3c9bdb32-13f1-431f-aa29-def79d4decd0last",
+      "selected": false
     },
     {
       "type": "Deletable",
@@ -408,7 +530,8 @@
       "sourceHandle": "y pos",
       "target": "674fe584-6907-469e-98ce-77357ab6b8b0",
       "targetHandle": "input-handle-x",
-      "id": "xy-edge__2183bd80-dbaf-466d-b466-c582d13435aby pos-674fe584-6907-469e-98ce-77357ab6b8b0input-handle-x"
+      "id": "xy-edge__2183bd80-dbaf-466d-b466-c582d13435aby pos-674fe584-6907-469e-98ce-77357ab6b8b0input-handle-x",
+      "selected": false
     },
     {
       "type": "Deletable",
@@ -425,22 +548,6 @@
       "target": "b72d0c2a-d6a3-4bc0-8ec9-725cb6d00d56",
       "targetHandle": "input-handle-x",
       "id": "xy-edge__1f702166-7102-404c-8b94-11b1b0d72119output-handle-x-b72d0c2a-d6a3-4bc0-8ec9-725cb6d00d56input-handle-x"
-    },
-    {
-      "type": "Deletable",
-      "source": "11a6ae34-d87f-46c8-b789-7863c97baa01",
-      "sourceHandle": "output-handle-x",
-      "target": "1f702166-7102-404c-8b94-11b1b0d72119",
-      "targetHandle": "input-handle-x",
-      "id": "xy-edge__11a6ae34-d87f-46c8-b789-7863c97baa01output-handle-x-1f702166-7102-404c-8b94-11b1b0d72119input-handle-x"
-    },
-    {
-      "type": "Deletable",
-      "source": "11a6ae34-d87f-46c8-b789-7863c97baa01",
-      "sourceHandle": "output-handle-x",
-      "target": "e86e5d19-befb-429b-a281-fd189f15407c",
-      "targetHandle": "y vel",
-      "id": "xy-edge__11a6ae34-d87f-46c8-b789-7863c97baa01output-handle-x-e86e5d19-befb-429b-a281-fd189f15407cy vel"
     },
     {
       "type": "Deletable",
@@ -484,7 +591,8 @@
       "sourceHandle": "output-handle-x",
       "target": "1cee36c2-ff2f-4dc6-906f-16badc253e97",
       "targetHandle": "input-handle-x",
-      "id": "xy-edge__b72d0c2a-d6a3-4bc0-8ec9-725cb6d00d56output-handle-x-1cee36c2-ff2f-4dc6-906f-16badc253e97input-handle-x"
+      "id": "xy-edge__b72d0c2a-d6a3-4bc0-8ec9-725cb6d00d56output-handle-x-1cee36c2-ff2f-4dc6-906f-16badc253e97input-handle-x",
+      "selected": false
     },
     {
       "type": "Deletable",
@@ -492,7 +600,8 @@
       "sourceHandle": "output-handle-x",
       "target": "674fe584-6907-469e-98ce-77357ab6b8b0",
       "targetHandle": "input-handle-y",
-      "id": "xy-edge__1cee36c2-ff2f-4dc6-906f-16badc253e97output-handle-x-674fe584-6907-469e-98ce-77357ab6b8b0input-handle-y"
+      "id": "xy-edge__1cee36c2-ff2f-4dc6-906f-16badc253e97output-handle-x-674fe584-6907-469e-98ce-77357ab6b8b0input-handle-y",
+      "selected": false
     },
     {
       "type": "Deletable",
@@ -513,56 +622,53 @@
     },
     {
       "type": "Deletable",
+      "source": "1cee36c2-ff2f-4dc6-906f-16badc253e97",
+      "sourceHandle": "output-handle-x",
+      "target": "3c9bdb32-13f1-431f-aa29-def79d4decd0",
+      "targetHandle": "vel",
+      "id": "xy-edge__1cee36c2-ff2f-4dc6-906f-16badc253e97output-handle-x-3c9bdb32-13f1-431f-aa29-def79d4decd0vel",
+      "selected": false
+    },
+    {
+      "type": "Deletable",
+      "source": "410907a8-26cb-4cf2-99da-411326283a81",
+      "sourceHandle": "output-handle-y",
+      "target": "61a1b51c-b4be-4461-9e6d-86e4588a7ea0",
+      "targetHandle": "input-handle-x",
+      "id": "xy-edge__410907a8-26cb-4cf2-99da-411326283a81output-handle-y-61a1b51c-b4be-4461-9e6d-86e4588a7ea0input-handle-x"
+    },
+    {
+      "type": "Deletable",
+      "source": "11a6ae34-d87f-46c8-b789-7863c97baa01",
+      "sourceHandle": "output-handle-x",
+      "target": "61a1b51c-b4be-4461-9e6d-86e4588a7ea0",
+      "targetHandle": "input-handle-y",
+      "id": "xy-edge__11a6ae34-d87f-46c8-b789-7863c97baa01output-handle-x-61a1b51c-b4be-4461-9e6d-86e4588a7ea0input-handle-y"
+    },
+    {
+      "type": "Deletable",
+      "source": "61a1b51c-b4be-4461-9e6d-86e4588a7ea0",
+      "sourceHandle": "output-handle-x",
+      "target": "e86e5d19-befb-429b-a281-fd189f15407c",
+      "targetHandle": "y vel",
+      "id": "xy-edge__61a1b51c-b4be-4461-9e6d-86e4588a7ea0output-handle-x-e86e5d19-befb-429b-a281-fd189f15407cy vel"
+    },
+    {
+      "type": "Deletable",
+      "source": "61a1b51c-b4be-4461-9e6d-86e4588a7ea0",
+      "sourceHandle": "output-handle-x",
+      "target": "1f702166-7102-404c-8b94-11b1b0d72119",
+      "targetHandle": "input-handle-x",
+      "id": "xy-edge__61a1b51c-b4be-4461-9e6d-86e4588a7ea0output-handle-x-1f702166-7102-404c-8b94-11b1b0d72119input-handle-x"
+    },
+    {
+      "type": "Deletable",
       "source": "674fe584-6907-469e-98ce-77357ab6b8b0",
       "sourceHandle": "output-handle-x",
       "target": "3c9bdb32-13f1-431f-aa29-def79d4decd0",
       "targetHandle": "y pos",
       "id": "xy-edge__674fe584-6907-469e-98ce-77357ab6b8b0output-handle-x-3c9bdb32-13f1-431f-aa29-def79d4decd0y pos"
-    },
-    {
-      "type": "Deletable",
-      "source": "1cee36c2-ff2f-4dc6-906f-16badc253e97",
-      "sourceHandle": "output-handle-x",
-      "target": "3c9bdb32-13f1-431f-aa29-def79d4decd0",
-      "targetHandle": "vel",
-      "id": "xy-edge__1cee36c2-ff2f-4dc6-906f-16badc253e97output-handle-x-3c9bdb32-13f1-431f-aa29-def79d4decd0vel"
     }
   ],
-  "viewport": { "x": 291.6433172551674, "y": 426.6737152862116, "zoom": 0.5 },
-  "data": {
-    "initData": false,
-    "gameObjects": [
-      [
-        "trashcanFilled",
-        [
-          [
-            "y vel",
-            {
-              "access": "all",
-              "value": 0.1
-            }
-          ]
-        ]
-      ],
-      [
-        "raccoon",
-        [
-          [
-            "y pos",
-            {
-              "access": "all",
-              "value": 0
-            }
-          ],
-          [
-            "vel",
-            {
-              "access": "all",
-              "value": 0
-            }
-          ]
-        ]
-      ]
-    ]
-  }
+  "viewport": { "x": 291.6433172551674, "y": 426.6737152862116, "zoom": 0.5 }
 }
