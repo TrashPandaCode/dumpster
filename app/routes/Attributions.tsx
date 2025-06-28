@@ -201,6 +201,32 @@ const Imprint = () => {
             <li>prettier-plugin-tailwindcss - Tailwind-aware formatting</li>
           </ul>
 
+          <h2>Assets</h2>
+          <ul>
+            <li>
+              <strong>
+                <a
+                  href="https://ambientcg.com/"
+                  target="_blank"
+                >
+                  ambientCG
+                </a>
+              </strong>{" "}
+              Materials
+            </li>
+            <li>
+              <strong>
+                <a
+                  href="https://polyhaven.com/"
+                  target="_blank"
+                >
+                  Poly Haven
+                </a>
+              </strong>{" "}
+              3D Models & Materials
+            </li>
+          </ul>
+
           <p>
             All libraries are used under their respective open-source licenses.
             We are deeply grateful to the maintainers and contributors who make
