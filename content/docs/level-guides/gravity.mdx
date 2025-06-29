@@ -7,10 +7,11 @@ title: Gravity
 ## Objective
 
 In this level the player is tasked with creating a simple physics system to move two gameobjects:
+
 - The trashcan needs to be assigned a **downward velocity**.
 - The raccoon needs to be given a **custom velocity handle** to handle gravity and a jump input.
 - The raccoons Y axis position needs to be calculated for every frame.
-When all these mechanics are implemented the player has to make the raccoon jump intro the trashcan.
+  When all these mechanics are implemented the player has to make the raccoon jump intro the trashcan.
 
 ## Scenario
 
@@ -22,7 +23,7 @@ With the help of the player the raccoon wants to make the trashcan fall from the
 
 ### Velocity-based movement
 
-In this level we are using velocity-based movement to further expand on the movement we already added in the "Move" level. 
+In this level we are using velocity-based movement to further expand on the movement we already added in the [Move](/docs/level-guides/move) level.
 Velocity describes how fast an object is moving and in what direction.
 So instead of the movement keys directly affeting the raccoons position, they will only affect the velocity of the raccoon.
 This means that each frame the raccoons position needs to be calculated using its last position and it's current velocity.
@@ -31,7 +32,7 @@ For simplicity we are only applying this concept to the Y axis in this level.
 
 ### Custom handles
 
-Custom handles can be added using the `exportToGameobject` node. They help in tracking more data over from the last frame.
+Custom handles can be added using the `ExportToGameobject` node. They help in carrying over additional data from the previous frame.
 
 In this level the player only has the raccoons Y axis position available as import and export.
 A custom velocity handle needs to be added to keep track of the raccoons momentum in each frame.
@@ -39,13 +40,19 @@ A custom velocity handle needs to be added to keep track of the raccoons momentu
 ## Strategic Goals
 
 - Assign a value to the trashcans Y axis velocity
-- Create a custom velocity handle and calculate the raccoons Y axis position for each frame using the velocity
-- Create a constant gravity force using `deltaTime` and add it to the velocity each frame
-    - Make sure the velocity doesn't scale infinitely while the raccoon is standing on the ground
-- Add a `KeyPress` node, which triggers a jump force being added to the velocity
+- Create a custom velocity handle for the raccoon and calculate the raccoons Y axis position for each frame using the velocity
 
+The formula with which to calculate the displacement of the raccoon per frame is:
+
+$$
+v \cdot \Delta t = d
+$$
+
+- Create a constant gravity force using `deltaTime` and add it to the velocity each frame
+  - Make sure the velocity doesn't scale infinitely while the raccoon is standing on the ground
+- Add a `KeyPress` node, which triggers a jump force being added to the velocity
 
 ## Relevant Documentation
 
 - [Physically Based Animation](/docs/physically-based-animation/dynamics-of-a-point-mass)
-- [Export Node](docs/nodes/export)
+- [Export Node](/docs/nodes/export)
