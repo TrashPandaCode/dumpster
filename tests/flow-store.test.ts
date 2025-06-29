@@ -1,18 +1,13 @@
-import { beforeEach, describe, expect, mock, test } from "bun:test";
+import { beforeEach, describe, expect, test } from "bun:test";
 
 import { LEVELS } from "~/lib/game/core/levels";
 import { useFlowStore } from "~/lib/node-editor/node-store/flow-store";
-
-mock.module("../editor-components/Toast", () => ({
-  toast: mock(() => {}),
-}));
 
 describe("useFlowStore", () => {
   beforeEach(() => {
     localStorage.clear();
     localStorage.setItem("level", "calculator");
     useFlowStore.getState().reset("calculator");
-    mock.restore();
   });
 
   test("should reset to initial level state", () => {
