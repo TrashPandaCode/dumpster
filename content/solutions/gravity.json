@@ -186,9 +186,7 @@
         "y": 75.81917104572597
       },
       "data": {
-        "selectedGameObjects": [
-          "trashcanFilled"
-        ]
+        "selectedGameObjects": ["trashcanFilled"]
       },
       "selected": false,
       "dragging": false,
@@ -224,9 +222,7 @@
         "y": 650.0131915049972
       },
       "data": {
-        "selectedGameObjects": [
-          "raccoon"
-        ],
+        "selectedGameObjects": ["raccoon"],
         "handleLabel": "vel"
       },
       "selected": false,
@@ -245,9 +241,7 @@
         "y": 642.1972439449308
       },
       "data": {
-        "selectedGameObjects": [
-          "raccoon"
-        ]
+        "selectedGameObjects": ["raccoon"]
       },
       "selected": false,
       "dragging": false,
@@ -670,5 +664,41 @@
       "id": "xy-edge__674fe584-6907-469e-98ce-77357ab6b8b0output-handle-x-3c9bdb32-13f1-431f-aa29-def79d4decd0y pos"
     }
   ],
-  "viewport": { "x": 291.6433172551674, "y": 426.6737152862116, "zoom": 0.5 }
+  "viewport": { "x": 291.6433172551674, "y": 426.6737152862116, "zoom": 0.5 },
+  "data": {
+    "initData": false,
+    "gameObjects": [
+      [
+        "trashcanFilled",
+        [
+          [
+            "y vel",
+            {
+              "access": "export",
+              "value": 1.0231829999999504
+            }
+          ]
+        ]
+      ],
+      [
+        "raccoon",
+        [
+          [
+            "y pos",
+            {
+              "access": "all",
+              "value": 0.3614739999998573
+            }
+          ],
+          [
+            "vel",
+            {
+              "access": "all",
+              "value": -1.3
+            }
+          ]
+        ]
+      ]
+    ]
+  }
 }
