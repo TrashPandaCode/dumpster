@@ -41,4 +41,6 @@ A custom velocity handle needs to be added to keep track of the raccoons momentu
 `,e.jsxs(n.ul,{children:[`
 `,e.jsx(n.li,{children:e.jsx(n.a,{href:"/docs/physically-based-animation/dynamics-of-a-point-mass",children:"Physically Based Animation"})}),`
 `,e.jsx(n.li,{children:e.jsx(n.a,{href:"/docs/nodes/export",children:"Export Node"})}),`
-`]})]})}function c(s={}){const{wrapper:n}=s.components||{};return n?e.jsx(n,{...s,children:e.jsx(a,{...s})}):a(s)}export{c as default,i as frontmatter};
+`]}),`
+`,e.jsx(n.h2,{children:"Full Solution"}),`
+`,e.jsx(n.p,{children:"The solution for this level is partially incorrect. The raccoon's displacement is calculated without multiplying its velocity by delta time, causing inconsistent jump heights. Additionally, the trashcan's velocity input is incorrectly implemented as a displacement input, resulting in incorrect movement when a velocity is provided."})]})}function l(s={}){const{wrapper:n}=s.components||{};return n?e.jsx(n,{...s,children:e.jsx(a,{...s})}):a(s)}export{l as default,i as frontmatter};

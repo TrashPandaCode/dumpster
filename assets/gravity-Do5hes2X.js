@@ -56,4 +56,8 @@ $$
 
 - [Physically Based Animation](/docs/physically-based-animation/dynamics-of-a-point-mass)
 - [Export Node](/docs/nodes/export)
+
+## Full Solution
+
+The solution for this level is partially incorrect. The raccoon's displacement is calculated without multiplying its velocity by delta time, causing inconsistent jump heights. Additionally, the trashcan's velocity input is incorrectly implemented as a displacement input, resulting in incorrect movement when a velocity is provided.
 `;export{e as default};
