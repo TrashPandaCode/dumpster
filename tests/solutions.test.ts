@@ -1,6 +1,6 @@
 import fs from "fs";
 import path from "path";
-import { beforeAll, describe, expect, it } from "bun:test";
+import { beforeAll, describe, expect, test } from "bun:test";
 
 import { LEVELS } from "~/lib/game/core/levels";
 
@@ -14,7 +14,7 @@ describe("solutions", () => {
     }
   });
 
-  it("every level should have a corresponding solution file", () => {
+  test("every level should have a corresponding solution file", () => {
     const levelKeys = Object.keys(LEVELS);
     const missingSolutions: string[] = [];
 
@@ -32,7 +32,7 @@ describe("solutions", () => {
     ).toHaveLength(0);
   });
 
-  it("no orphaned solution files should exist", () => {
+  test("no orphaned solution files should exist", () => {
     const levelKeys = Object.keys(LEVELS);
     const solutionFiles = fs
       .readdirSync(solutionsDir)

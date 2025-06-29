@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, jest } from "bun:test";
+import { beforeEach, describe, expect, jest, test } from "bun:test";
 
 import { useTimeStore } from "~/lib/zustand/time";
 
@@ -11,13 +11,13 @@ describe("useTimeStore", () => {
     });
   });
 
-  it("should have initial time values of 0", () => {
+  test("should have initial time values of 0", () => {
     const store = useTimeStore.getState();
     expect(store.getTime()).toBe(0);
     expect(store.getDeltaTime()).toBe(0);
   });
 
-  it("should set and use time function", () => {
+  test("should set and use time function", () => {
     const mockTime = jest.fn(() => 1000);
     useTimeStore.getState().setTimeFunction(mockTime);
 
@@ -25,7 +25,7 @@ describe("useTimeStore", () => {
     expect(mockTime).toHaveBeenCalledTimes(1);
   });
 
-  it("should set and use delta time function", () => {
+  test("should set and use delta time function", () => {
     const mockDeltaTime = jest.fn(() => 16.67);
     useTimeStore.getState().setDeltaTimeFunction(mockDeltaTime);
 
@@ -33,7 +33,7 @@ describe("useTimeStore", () => {
     expect(mockDeltaTime).toHaveBeenCalledTimes(1);
   });
 
-  it("should replace previous time functions", () => {
+  test("should replace previous time functions", () => {
     const firstMockTime = jest.fn(() => 500);
     const secondMockTime = jest.fn(() => 2000);
 

@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, jest, spyOn } from "bun:test";
+import { beforeEach, describe, expect, jest, spyOn, test } from "bun:test";
 
 import { LEVELS, type LevelId } from "~/lib/game/core/levels";
 import {
@@ -12,13 +12,13 @@ describe("HandleData", () => {
     jest.clearAllMocks();
   });
 
-  it("should create HandleData with number value", () => {
+  test("should create HandleData with number value", () => {
     const handle = new HandleData("import", 42);
     expect(handle.access).toBe("import");
     expect(handle.getValue()).toBe(42);
   });
 
-  it("should create HandleData with function value", () => {
+  test("should create HandleData with function value", () => {
     const mockFn = jest.fn(() => 100);
     const handle = new HandleData("export", mockFn);
     expect(handle.access).toBe("export");
@@ -26,12 +26,12 @@ describe("HandleData", () => {
     expect(mockFn).toHaveBeenCalledTimes(1);
   });
 
-  it("should return 0 for invalid value types", () => {
+  test("should return 0 for invalid value types", () => {
     const handle = new HandleData("all", "invalid" as any);
     expect(handle.getValue()).toBe(0);
   });
 
-  it("should update value with setValue", () => {
+  test("should update value with setValue", () => {
     const handle = new HandleData("import", 10);
     handle.setValue(20);
     expect(handle.getValue()).toBe(20);
@@ -55,7 +55,7 @@ describe("useDataStore", () => {
   });
 
   describe("initial state", () => {
-    it("should have correct initial state", () => {
+    test("should have correct initial state", () => {
       expect(useDataStore.getState().initData).toBe(true);
       expect(useDataStore.getState().gameObjects).toBeInstanceOf(Map);
       expect(useDataStore.getState().gameObjects.size).toBe(0);
@@ -63,7 +63,7 @@ describe("useDataStore", () => {
   });
 
   describe("reset", () => {
-    it("should reset store with level data for all levels", () => {
+    test("should reset store with level data for all levels", () => {
       // Test each level in LEVELS
       Object.entries(LEVELS).forEach(([_, level]) => {
         // Reset store for current level
@@ -110,14 +110,14 @@ describe("useDataStore", () => {
       useDataStore.getState().reset("calculator");
     });
 
-    it("should set and get numeric data", () => {
+    test("should set and get numeric data", () => {
       useDataStore.getState().setData("raccoon", "solution", 42);
 
       const value = useDataStore.getState().getData("raccoon", "solution");
       expect(value).toBe(42);
     });
 
-    it("should set and get function data", () => {
+    test("should set and get function data", () => {
       const mockFn = jest.fn(() => 100);
 
       useDataStore.getState().setData("raccoon", "solution", mockFn);
@@ -133,7 +133,7 @@ describe("useDataStore", () => {
       useDataStore.getState().reset("calculator");
     });
 
-    it("should add new handle", () => {
+    test("should add new handle", () => {
       useDataStore.getState().addHandle("raccoon", "newHandle");
 
       const gameObject1Data = useDataStore
@@ -147,7 +147,7 @@ describe("useDataStore", () => {
       expect(newHandle!.getValue()).toBe(0);
     });
 
-    it("should not add duplicate handle", () => {
+    test("should not add duplicate handle", () => {
       const initialSize = useDataStore
         .getState()
         .gameObjects.get("raccoon")!.size;
@@ -160,7 +160,7 @@ describe("useDataStore", () => {
       expect(finalSize).toBe(initialSize);
     });
 
-    it("should remove handle", () => {
+    test("should remove handle", () => {
       useDataStore.getState().addHandle("raccoon", "newHandle");
       useDataStore.getState().removeHandle("raccoon", "newHandle");
 
@@ -179,7 +179,7 @@ describe("useDataStore", () => {
       useDataStore.getState().reset("calculator");
     });
 
-    it("should save store state to localStorage", () => {
+    test("should save store state to localStorage", () => {
       const store = useDataStore.getState();
 
       store.reset(localStorage.getItem("level")! as LevelId);
@@ -199,7 +199,7 @@ describe("useDataStore", () => {
       );
     });
 
-    it("should initialize from localStorage when data exists", () => {
+    test("should initialize from localStorage when data exists", () => {
       // Prepare saved data
       const savedData = {
         initData: false,
@@ -225,7 +225,7 @@ describe("useDataStore", () => {
       expect(store.getData("raccoon", "solution")).toBe(42);
     });
 
-    it("should reset when no saved data exists", () => {
+    test("should reset when no saved data exists", () => {
       const store = useDataStore.getState();
       const resetSpy = spyOn(store, "reset");
 
@@ -242,7 +242,7 @@ describe("createLevelDataHelpers", () => {
     useDataStore.getState().reset("calculator");
   });
 
-  it("should create type-safe helpers for a specific level", () => {
+  test("should create type-safe helpers for a specific level", () => {
     const helpers = createLevelDataHelpers("calculator");
 
     expect(helpers.initData()).toBe(true);
@@ -252,7 +252,7 @@ describe("createLevelDataHelpers", () => {
     expect(typeof helpers.removeHandle).toBe("function");
   });
 
-  it("should provide working setData and getData methods", () => {
+  test("should provide working setData and getData methods", () => {
     const helpers = createLevelDataHelpers("calculator");
 
     // These calls should be type-safe based on the level configuration
@@ -264,7 +264,7 @@ describe("createLevelDataHelpers", () => {
 });
 
 describe("integration tests", () => {
-  it("should handle complete workflow: reset -> modify -> save -> init", () => {
+  test("should handle complete workflow: reset -> modify -> save -> init", () => {
     localStorage.clear();
     localStorage.setItem("level", "calculator");
     let store = useDataStore.getState();
