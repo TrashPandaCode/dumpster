@@ -1,3 +1,9 @@
+/*
+ * Authors: Jonathan Kron
+ *
+ * Purpose:
+ * React component representing an input node that detects keyboard key events.
+ */
 import { Position, useReactFlow } from "@xyflow/react";
 import classnames from "classnames";
 import { memo, useEffect, useState } from "react";

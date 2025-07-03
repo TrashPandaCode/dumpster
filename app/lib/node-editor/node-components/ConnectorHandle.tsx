@@ -1,3 +1,8 @@
+/*
+ * Authors:
+ *
+ * Purpose:
+ */
 import { Handle, Position } from "@xyflow/react";
 
 const ConnectorHandle = ({
@@ -7,15 +12,19 @@ const ConnectorHandle = ({
   id: string;
   position: Position;
 }) => {
-  const handleConfig: Partial<Record<Position, { type: "source" | "target"; className: string }>> = {
+  const handleConfig: Partial<
+    Record<Position, { type: "source" | "target"; className: string }>
+  > = {
     [Position.Right]: {
       type: "source" as const,
-      className: "!static float-right mt-3 flex !h-3 !w-3 items-baseline justify-center !rounded-full !border-blue-300 !bg-blue-300 text-[8px]"
+      className:
+        "!static float-right mt-3 flex !h-3 !w-3 items-baseline justify-center !rounded-full !border-blue-300 !bg-blue-300 text-[8px]",
     },
     [Position.Left]: {
       type: "target" as const,
-      className: "!static float-left mt-3 flex !h-3 !w-3 items-baseline justify-center !rounded-full !border-blue-300 !bg-blue-300 text-[8px]"
-    }
+      className:
+        "!static float-left mt-3 flex !h-3 !w-3 items-baseline justify-center !rounded-full !border-blue-300 !bg-blue-300 text-[8px]",
+    },
   };
 
   const config = handleConfig[position];

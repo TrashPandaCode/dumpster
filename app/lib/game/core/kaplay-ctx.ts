@@ -1,3 +1,8 @@
+/*
+ * Authors:
+ *
+ * Purpose:
+ */
 import kaplay, { type GameObj, type KAPLAYCtx, type TimerComp } from "kaplay";
 
 import { state } from "./init-game";

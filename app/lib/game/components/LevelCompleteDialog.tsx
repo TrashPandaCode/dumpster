@@ -1,3 +1,8 @@
+/*
+ * Authors:
+ *
+ * Purpose:
+ */
 import { DialogClose } from "@radix-ui/react-dialog";
 import { NavLink } from "react-router";
 

@@ -1,3 +1,10 @@
+/*
+ * Authors: Jonathan Kron
+ *
+ * Purpose:
+ * This code offers helper functions to convert a UUID to a color. It is used for for loop edges.
+ */
+
 /**
  * Converts a UUID string to a CSS color optimized for visibility against a dark blue background
  * @param {string} uuid - The UUID to convert (e.g. "123e4567-e89b-12d3-a456-426614174000")

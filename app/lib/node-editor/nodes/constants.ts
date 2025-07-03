@@ -1,3 +1,9 @@
+/*
+ * Authors: Jonathan Kron
+ *
+ * Purpose:
+ * This file exports node constants.
+ */
 export const IN_HANDLE_1: string = "input-handle-x";
 export const IN_HANDLE_2: string = "input-handle-y";
 export const IN_HANDLE_3: string = "input-handle-z";

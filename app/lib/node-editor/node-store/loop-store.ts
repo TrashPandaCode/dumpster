@@ -1,3 +1,9 @@
+/*
+ * Authors: Jonathan Kron
+ *
+ * Purpose:
+ * This file contains the store that handles all for loop data, including handles and serialization.
+ */
 import { create } from "zustand";
 
 import { handleUUID } from "../utils/handles";

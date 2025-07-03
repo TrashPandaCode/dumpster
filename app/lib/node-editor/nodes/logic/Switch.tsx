@@ -1,3 +1,9 @@
+/*
+ * Authors: Jonathan Kron
+ *
+ * Purpose:
+ * React component representing a conditional switch node.
+ */
 import { Position, useReactFlow } from "@xyflow/react";
 import { memo, useEffect, useState } from "react";
 

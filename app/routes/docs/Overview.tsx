@@ -1,3 +1,8 @@
+/*
+ * Authors:
+ *
+ * Purpose:
+ */
 import { useOutlet } from "react-router";
 
 import Footer from "~/lib/core/components/Footer";

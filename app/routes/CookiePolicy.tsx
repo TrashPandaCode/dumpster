@@ -1,3 +1,8 @@
+/*
+ * Authors:
+ *
+ * Purpose:
+ */
 import Footer from "~/lib/core/components/Footer";
 import Header from "~/lib/core/components/Header";
 

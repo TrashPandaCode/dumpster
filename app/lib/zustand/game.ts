@@ -1,3 +1,9 @@
+/*
+ * Authors: Jonathan Kron
+ *
+ * Purpose:
+ * This Zustand store manages the game's state, including pause/play status, current level, level completion, dialog visibility, and persistence of progress in localStorage.
+ */
 import { create } from "zustand";
 
 import type { LevelId } from "../game/core/levels";

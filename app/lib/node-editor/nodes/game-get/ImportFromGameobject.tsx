@@ -1,3 +1,10 @@
+/*
+ * Authors: Jonathan Kron
+ *
+ * Purpose:
+ * React component that allows node data to be read from one or more
+ * GameObjects in the game state.
+ */
 import { Position, useReactFlow } from "@xyflow/react";
 import { memo, useCallback, useEffect, useMemo } from "react";
 

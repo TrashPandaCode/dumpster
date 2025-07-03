@@ -1,3 +1,9 @@
+/*
+ * Authors: Jonathan Kron
+ *
+ * Purpose:
+ * This file exports all node types for use in the ReactFlow component.
+ */
 import Display from "./debug/Display";
 import ImportFromGameobject from "./game-get/ImportFromGameobject";
 import Time from "./game-get/Time";

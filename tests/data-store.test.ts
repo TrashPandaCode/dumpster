@@ -1,3 +1,11 @@
+/*
+ * Authors: Jonathan Kron
+ *
+ * Purpose:
+ * This file contains unit and integration tests for the `HandleData` class and the `useDataStore` Zustand store,
+ * verifying their correct creation, data handling, state resetting, persistence to localStorage,
+ * and level-specific helper functions.
+ */
 import { beforeEach, describe, expect, jest, spyOn, test } from "bun:test";
 
 import { LEVELS, type LevelId } from "~/lib/game/core/levels";

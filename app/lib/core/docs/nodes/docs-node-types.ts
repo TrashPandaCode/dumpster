@@ -1,3 +1,8 @@
+/*
+ * Authors:
+ *
+ * Purpose:
+ */
 import Display from "~/lib/node-editor/nodes/debug/Display";
 import Time from "~/lib/node-editor/nodes/game-get/Time";
 import Group from "~/lib/node-editor/nodes/groups/Group";

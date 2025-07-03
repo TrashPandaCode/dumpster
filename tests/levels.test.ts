@@ -1,3 +1,10 @@
+/*
+ * Authors: Jonathan Kron
+ *
+ * Purpose:
+ * This test suite performs thorough validation of the LEVELS object,
+ * which defines the game levels.
+ */
 import { describe, expect, test } from "bun:test";
 
 import { LEVELS, type Level, type LevelId } from "~/lib/game/core/levels";

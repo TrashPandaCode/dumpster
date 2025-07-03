@@ -1,3 +1,8 @@
+/*
+ * Authors:
+ *
+ * Purpose:
+ */
 import { Handle, Position, useNodeConnections } from "@xyflow/react";
 
 const BaseHandle = ({ id, position }: { id: string; position: Position }) => {

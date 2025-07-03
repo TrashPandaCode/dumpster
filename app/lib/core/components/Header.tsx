@@ -1,3 +1,8 @@
+/*
+ * Authors:
+ *
+ * Purpose:
+ */
 import { NavLink, useLocation } from "react-router";
 
 import Navigation from "../docs/components/Navigation";

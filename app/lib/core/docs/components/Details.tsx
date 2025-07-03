@@ -1,3 +1,8 @@
+/*
+ * Authors:
+ *
+ * Purpose:
+ */
 import {
   Collapsible,
   CollapsibleContent,

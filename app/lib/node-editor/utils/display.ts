@@ -1,3 +1,8 @@
+/*
+ * Authors:
+ *
+ * Purpose:
+ */
 import type { ModifiableGameObject } from "~/lib/game/core/levels";
 import type { GameObject } from "~/lib/game/game-objects";
 

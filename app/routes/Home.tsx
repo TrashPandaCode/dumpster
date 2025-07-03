@@ -1,3 +1,10 @@
+/*
+ * Authors: Jonathan Kron
+ *
+ * Purpose:
+ * This React component renders the home page of an educational game website,
+ * featuring a header, footer, interactive level selection carousel, informational sections about the game, and links to documentation pages.
+ */
 import { useRef } from "react";
 import { NavLink } from "react-router";
 

@@ -1,3 +1,9 @@
+/*
+ * Authors: Jonathan Kron
+ *
+ * Purpose:
+ * This code offers helper functions to create for loops and connect nodes to for loops.
+ */
 import type { Edge, Node, XYPosition } from "@xyflow/react";
 import { v4 as uuidv4 } from "uuid";
 

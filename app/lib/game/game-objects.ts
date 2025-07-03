@@ -1,3 +1,8 @@
+/*
+ * Authors:
+ *
+ * Purpose:
+ */
 import { FORWARD_GAME_OBJECTS } from "./levels/forward";
 import { INVERSE_GAME_OBJECTS } from "./levels/inverse";
 import { LINEAR_GAME_OBJECTS } from "./levels/linear";

@@ -1,3 +1,8 @@
+/*
+ * Authors:
+ *
+ * Purpose:
+ */
 import type { Node } from "@xyflow/react";
 import { useCallback, useLayoutEffect, useRef, useState } from "react";
 

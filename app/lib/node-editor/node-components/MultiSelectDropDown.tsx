@@ -1,3 +1,9 @@
+/*
+ * Authors: Jonathan Kron
+ *
+ * Purpose:
+ * This code offers a React component for multi select drop down menus. This is used in the export node.
+ */
 import {
   CheckIcon,
   ChevronDownIcon,

@@ -1,3 +1,10 @@
+/*
+ * Authors: Jonathan Kron
+ *
+ * Purpose:
+ * This file contains the store that represents the entire node tree. This file offers function to handle tree ordering, computation and for loops.
+ * Serialization, saving and loading of the node tree is also handled in this file.
+ */
 import { type Connection, type Edge, type Node } from "@xyflow/react";
 import { create } from "zustand";
 

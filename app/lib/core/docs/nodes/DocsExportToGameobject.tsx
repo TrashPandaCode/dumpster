@@ -1,3 +1,8 @@
+/*
+ * Authors:
+ *
+ * Purpose:
+ */
 import { CrossCircledIcon } from "@radix-ui/react-icons";
 import { Position } from "@xyflow/react";
 import { memo, useMemo, useState } from "react";

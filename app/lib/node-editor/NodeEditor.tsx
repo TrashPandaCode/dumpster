@@ -1,3 +1,10 @@
+/*
+ * Authors: Jonathan Kron
+ *
+ * Purpose:
+ * This React component implements a node-based editor using React Flow,
+ * managing nodes, edges, context menus, and UI panels with custom hooks and state for interactive graph editing.
+ */
 import { Background, ReactFlow, ReactFlowProvider } from "@xyflow/react";
 
 import "@xyflow/react/dist/style.css";

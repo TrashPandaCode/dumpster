@@ -1,3 +1,10 @@
+/*
+ * Authors: Jonathan Kron
+ *
+ * Purpose:
+ * This Zustand store manages the dynamic state of game objects and their connection handles,
+ * providing methods to initialize, update, retrieve, add, remove, save, and reset handle data specific to each game level and gameobject.
+ */
 import { create } from "zustand";
 
 import {

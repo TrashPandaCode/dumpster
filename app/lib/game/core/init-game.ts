@@ -1,3 +1,8 @@
+/*
+ * Authors:
+ *
+ * Purpose:
+ */
 import { useNodeStore } from "~/lib/node-editor/node-store/node-store";
 import { useGameStore } from "~/lib/zustand/game";
 import { useMouseStore } from "~/lib/zustand/mouse";

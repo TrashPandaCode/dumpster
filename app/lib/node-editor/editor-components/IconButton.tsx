@@ -1,3 +1,8 @@
+/*
+ * Authors:
+ *
+ * Purpose:
+ */
 import classnames from "classnames";
 import React from "react";
 
@@ -26,7 +31,7 @@ export const IconButton = React.forwardRef<
       </TooltipTrigger>
 
       <TooltipContent side={side}>
-        { typeof tooltip === "string" ? <p>{tooltip}</p> : tooltip }
+        {typeof tooltip === "string" ? <p>{tooltip}</p> : tooltip}
       </TooltipContent>
     </Tooltip>
   );

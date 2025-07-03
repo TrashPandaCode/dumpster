@@ -1,3 +1,10 @@
+/*
+ * Authors: Jonathan Kron
+ *
+ * Purpose:
+ * This file tests the integrity of the solution files for game levels by ensuring that each level has a corresponding JSON solution file
+ * and that there are no extra files without a matching level.
+ */
 import fs from "fs";
 import path from "path";
 import { beforeAll, describe, expect, test } from "bun:test";

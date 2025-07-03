@@ -1,3 +1,10 @@
+/*
+ * Authors: Jonathan Kron
+ *
+ * Purpose:
+ * React component for a resizable "Group" node used to visually
+ * group multiple nodes together in the node editor.
+ */
 import { SizeIcon } from "@radix-ui/react-icons";
 import { NodeResizeControl, useReactFlow } from "@xyflow/react";
 import { memo, useEffect, useState } from "react";

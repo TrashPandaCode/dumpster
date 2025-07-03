@@ -1,3 +1,8 @@
+/*
+ * Authors:
+ *
+ * Purpose:
+ */
 const keysDown = new Set<string>();
 const keysPressed = new Set<string>();
 const keysReleased = new Set<string>();

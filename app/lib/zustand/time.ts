@@ -1,3 +1,9 @@
+/*
+ * Authors: Jonathan Kron
+ *
+ * Purpose:
+ * This Zustand store manages and exposes dynamically set functions to retrieve the current time and delta time from the game engine.
+ */
 import { create } from "zustand";
 
 interface TimeState {

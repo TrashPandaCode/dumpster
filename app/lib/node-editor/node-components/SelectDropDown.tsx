@@ -1,3 +1,9 @@
+/*
+ * Authors: Jonathan Kron
+ *
+ * Purpose:
+ * This code offers a React component for single select drop down menus. This is used in the math node.
+ */
 import {
   CheckIcon,
   ChevronDownIcon,

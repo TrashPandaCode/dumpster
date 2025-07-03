@@ -1,3 +1,8 @@
+/*
+ * Authors:
+ *
+ * Purpose:
+ */
 import type { Node } from "@xyflow/react";
 
 import { INITIAL_GROUP_SIZE } from "../nodes/constants";

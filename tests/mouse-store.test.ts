@@ -1,3 +1,10 @@
+/*
+ * Authors: Jonathan Kron
+ *
+ * Purpose:
+ * This file tests the `useMouseStore` Zustand store.
+ * It ensures the initial position is at (0,0), supports setting custom position functions, and properly replaces previous ones.
+ */
 import { beforeEach, describe, expect, jest, test } from "bun:test";
 import type { Vec2 } from "kaplay";
 

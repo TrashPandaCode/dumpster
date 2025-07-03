@@ -1,3 +1,11 @@
+/*
+ * Authors: Jonathan Kron
+ *
+ * Purpose:
+ * This React component renders the main game interface,
+ * initializing the game state and level, managing tutorial and dialogs,
+ * and providing a resizable split view with the game canvas and the node-based editor.
+ */
 import { DragHandleDots2Icon } from "@radix-ui/react-icons";
 import { useEffect, useRef, useState } from "react";
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";

@@ -1,3 +1,8 @@
+/*
+ * Authors:
+ *
+ * Purpose:
+ */
 import { DialogClose } from "@radix-ui/react-dialog";
 import classNames from "classnames";
 import React, { useEffect, useRef, useState } from "react";

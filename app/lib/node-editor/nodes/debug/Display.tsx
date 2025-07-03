@@ -1,3 +1,9 @@
+/*
+ * Authors: Jonathan Kron
+ *
+ * Purpose:
+ * React component representing a node that displays all incoming data.
+ */
 import { Position, useReactFlow } from "@xyflow/react";
 import { memo, useEffect, useState } from "react";
 

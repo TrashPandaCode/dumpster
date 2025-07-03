@@ -1,3 +1,9 @@
+/*
+ * Authors: Jonathan Kron
+ *
+ * Purpose:
+ * This code offers helper functions for node handles, e.g. getting the intersection of handles from multiple gameobjects.
+ */
 import { v4 as uuidv4 } from "uuid";
 
 import type { ConnectionAccess } from "~/lib/game/core/levels";

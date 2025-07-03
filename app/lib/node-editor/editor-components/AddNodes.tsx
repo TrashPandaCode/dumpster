@@ -1,3 +1,8 @@
+/*
+ * Authors:
+ *
+ * Purpose:
+ */
 import { ChevronRightIcon } from "@radix-ui/react-icons";
 import {
   useReactFlow,

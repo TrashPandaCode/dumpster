@@ -1,3 +1,10 @@
+/*
+ * Authors: Jonathan Kron
+ *
+ * Purpose:
+ * This file tests the `useTimeStore` Zustand store.
+ * It verifies that initial values are zero, custom functions can be set, and previously set functions are properly replaced.
+ */
 import { beforeEach, describe, expect, jest, test } from "bun:test";
 
 import { useTimeStore } from "~/lib/zustand/time";

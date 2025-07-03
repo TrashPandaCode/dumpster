@@ -1,3 +1,8 @@
+/*
+ * Authors:
+ *
+ * Purpose:
+ */
 import { PlusIcon } from "@radix-ui/react-icons";
 import { useReactFlow } from "@xyflow/react";
 import { useRef } from "react";

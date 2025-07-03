@@ -1,3 +1,9 @@
+/*
+ * Authors: Jonathan Kron
+ *
+ * Purpose:
+ * React component representing an input node that outputs the current mouse position in the game canvas.
+ */
 import { Position, useReactFlow } from "@xyflow/react";
 import { memo, useEffect } from "react";
 

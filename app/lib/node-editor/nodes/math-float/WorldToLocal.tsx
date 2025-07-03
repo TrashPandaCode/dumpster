@@ -1,3 +1,10 @@
+/*
+ * Authors: Jonathan Kron
+ *
+ * Purpose:
+ * React component representing a coordinate transformation node that converts a world-space point
+ * to local-space coordinates of another point, based on a given origin and rotation.
+ */
 import { Position, useReactFlow } from "@xyflow/react";
 import { memo, useEffect, useState } from "react";
 

@@ -1,3 +1,10 @@
+/*
+ * Authors: Jonathan Kron
+ *
+ * Purpose:
+ * This file contains the store that represents all React Flow data, this includes nodes and edges.
+ * Highlighting of nodes, saving and loading of the React Flow state and undo redo is also implemented here.
+ */
 import { type Edge, type Node } from "@xyflow/react";
 import { diff } from "deep-object-diff";
 import { temporal } from "zundo";

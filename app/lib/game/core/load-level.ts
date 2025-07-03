@@ -1,3 +1,8 @@
+/*
+ * Authors:
+ *
+ * Purpose:
+ */
 import { LEVELS, type LevelId } from "./levels";
 
 /**

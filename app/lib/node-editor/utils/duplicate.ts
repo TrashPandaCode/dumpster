@@ -1,3 +1,8 @@
+/*
+ * Authors:
+ *
+ * Purpose:
+ */
 import type { Edge, Node } from "@xyflow/react";
 import { v4 as uuidv4 } from "uuid";
 

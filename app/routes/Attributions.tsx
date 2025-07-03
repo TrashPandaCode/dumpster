@@ -1,3 +1,8 @@
+/*
+ * Authors:
+ *
+ * Purpose:
+ */
 import Footer from "~/lib/core/components/Footer";
 import Header from "~/lib/core/components/Header";
 
@@ -205,10 +210,7 @@ const Imprint = () => {
           <ul>
             <li>
               <strong>
-                <a
-                  href="https://ambientcg.com/"
-                  target="_blank"
-                >
+                <a href="https://ambientcg.com/" target="_blank">
                   ambientCG
                 </a>
               </strong>{" "}
@@ -216,10 +218,7 @@ const Imprint = () => {
             </li>
             <li>
               <strong>
-                <a
-                  href="https://polyhaven.com/"
-                  target="_blank"
-                >
+                <a href="https://polyhaven.com/" target="_blank">
                   Poly Haven
                 </a>
               </strong>{" "}

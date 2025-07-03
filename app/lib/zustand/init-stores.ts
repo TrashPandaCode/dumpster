@@ -1,3 +1,9 @@
+/*
+ * Authors: Jonathan Kron
+ *
+ * Purpose:
+ * This function initializes multiple state stores with data for a specified game level to prepare the application state.
+ */
 import { type LevelId } from "../game/core/levels";
 import { useFlowStore } from "../node-editor/node-store/flow-store";
 import { useLoopStore } from "../node-editor/node-store/loop-store";

@@ -1,3 +1,8 @@
+/*
+ * Authors:
+ *
+ * Purpose:
+ */
 import { CheckCircledIcon } from "@radix-ui/react-icons";
 import { NavLink } from "react-router";
 

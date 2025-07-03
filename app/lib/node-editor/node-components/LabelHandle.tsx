@@ -1,3 +1,9 @@
+/*
+ * Authors: Jonathan Kron
+ *
+ * Purpose:
+ * This code offers a React component for labeled node handles.
+ */
 import { Position } from "@xyflow/react";
 
 import BaseHandle from "./BaseHandle";

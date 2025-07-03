@@ -1,3 +1,9 @@
+/*
+ * Authors: Jonathan Kron
+ *
+ * Purpose:
+ * React component representing a node that outputs the current time and delta time of the game view.
+ */
 import { Position, useReactFlow } from "@xyflow/react";
 import { memo, useEffect } from "react";
 

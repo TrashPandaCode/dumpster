@@ -1,3 +1,9 @@
+/*
+ * Authors: Jonathan Kron
+ *
+ * Purpose:
+ * This file offers a React component for the node body.
+ */
 import { QuestionMarkCircledIcon } from "@radix-ui/react-icons";
 import { Position } from "@xyflow/react";
 import classnames from "classnames";

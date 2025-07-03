@@ -1,3 +1,10 @@
+/*
+ * Authors: Jonathan Kron
+ *
+ * Purpose:
+ * This file tests the `useLoopStore` Zustand store.
+ * It verifies adding, removing, retrieving, persisting, and resetting loop handles, as well as proper initialization from and saving to `localStorage`.
+ */
 import { beforeEach, describe, expect, test } from "bun:test";
 
 import { useLoopStore } from "~/lib/node-editor/node-store/loop-store";

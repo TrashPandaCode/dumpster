@@ -1,3 +1,8 @@
+/*
+ * Authors:
+ *
+ * Purpose:
+ */
 import { toast as sonnerToast } from "sonner";
 
 export function toast(toast: ToastProps) {
@@ -10,7 +15,7 @@ function Toast(props: ToastProps) {
   const { title, description } = props;
 
   return (
-    <div className="flex w-full items-center  font-mono rounded-md bg-slate-800 p-2 text-white outline outline-slate-500 md:max-w-[364px]">
+    <div className="flex w-full items-center rounded-md bg-slate-800 p-2 font-mono text-white outline outline-slate-500 md:max-w-[364px]">
       <div className="flex flex-1 items-center">
         <div className="w-full">
           <p className="text-sm font-medium text-white">{title}</p>

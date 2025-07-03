@@ -1,3 +1,9 @@
+/*
+ * Authors: Jonathan Kron
+ *
+ * Purpose:
+ * React component representing a node that outputs a constant numerical value.
+ */
 import { Position, useReactFlow } from "@xyflow/react";
 import { memo, useEffect, useState } from "react";
 

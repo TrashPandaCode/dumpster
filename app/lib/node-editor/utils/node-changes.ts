@@ -1,3 +1,9 @@
+/*
+ * Authors: React Flow, Jonathan Kron
+ *
+ * Purpose:
+ * This code shadows React Flow's own applyChanges function, to change the behaviour of how group nodes are added to the flow store.
+ */
 import type { Node, NodeChange } from "@xyflow/react";
 
 // This code is inspired by the `applyChanges` function from the xyflow library.

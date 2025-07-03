@@ -1,3 +1,11 @@
+/*
+ * Authors: Jonathan Kron
+ *
+ * Purpose:
+ * This test file verifies the functionality of the `useFlowStore` Zustand store.
+ * It checks proper resetting of state to initial level data, updating of nodes and edges,
+ * node highlighting and unhighlighting, and saving of sanitized state to localStorage.
+ */
 import { beforeEach, describe, expect, test } from "bun:test";
 
 import { LEVELS } from "~/lib/game/core/levels";

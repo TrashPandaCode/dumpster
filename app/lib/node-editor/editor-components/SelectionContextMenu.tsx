@@ -1,3 +1,8 @@
+/*
+ * Authors:
+ *
+ * Purpose:
+ */
 import { Panel, useReactFlow, type Node } from "@xyflow/react";
 import React, { useCallback } from "react";
 

@@ -1,3 +1,11 @@
+/*
+ * Authors: Jonathan Kron
+ *
+ * Purpose:
+ * This file tests consistency between math node type definitions,
+ * ensuring that every declared type in `TYPES` has corresponding
+ * `INPUTS` and `COMPUTE` entries, and that no extraneous keys exist in either mapping.
+ */
 import { describe, expect, test } from "bun:test";
 
 import {

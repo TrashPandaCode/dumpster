@@ -1,3 +1,9 @@
+/*
+ * Authors: Jonathan Kron
+ *
+ * Purpose:
+ * This file exports all math node types, as well as their required inputs and compute functions.
+ */
 export type NumberInputType = {
   enable: boolean;
   type: undefined | "float" | "int";

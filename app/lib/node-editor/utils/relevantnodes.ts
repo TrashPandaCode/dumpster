@@ -1,3 +1,8 @@
+/*
+ * Authors:
+ *
+ * Purpose:
+ */
 import type { Node } from "@xyflow/react";
 
 // Helper function to collect all relevant nodes for copy/duplicate operations
