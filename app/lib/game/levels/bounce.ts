@@ -1,7 +1,9 @@
 /*
- * Authors:
+ * Authors: Jonathan Kron
  *
  * Purpose:
+ * This function initializes a game level where the player must stay near a randomly swapping "filled" trashcan for a continuous
+ * duration to complete the level, with a brief grace period allowing temporary departure without resetting progress.
  */
 import { createLevelDataHelpers } from "~/lib/zustand/data";
 import { useGameStore } from "~/lib/zustand/game";

@@ -1,7 +1,9 @@
 /*
- * Authors:
+ * Authors: Jonathan Kron
  *
  * Purpose:
+ * This function initializes a game level where the player must input the correct
+ * solution (16) to complete the level, providing feedback via a toast message on incorrect attempts.
  */
 import { toast } from "~/lib/node-editor/editor-components/Toast";
 import { createLevelDataHelpers } from "~/lib/zustand/data";
