@@ -1,7 +1,8 @@
 /*
- * Authors:
+ * Authors: Leo Kling
  *
- * Purpose:
+ * Purpose: This module provides utility functions and types for managing game objects,
+ * backgrounds, and player animations in a game.
  */
 import type {
   AnchorComp,

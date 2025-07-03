@@ -1,7 +1,7 @@
 /*
- * Authors:
+ * Authors: Leo Kling, Jonathan Kron
  *
- * Purpose:
+ * Purpose: This module provides the kaplay context for the game, initializing it if it doesn't exist.
  */
 import kaplay, { type GameObj, type KAPLAYCtx, type TimerComp } from "kaplay";
 

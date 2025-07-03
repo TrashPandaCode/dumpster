@@ -1,7 +1,7 @@
 /*
- * Authors:
+ * Authors: Jonathan Kron, Leo Kling
  *
- * Purpose:
+ * Purpose: A card component for displaying levels on the home page.
  */
 import { CheckCircledIcon } from "@radix-ui/react-icons";
 import { NavLink } from "react-router";

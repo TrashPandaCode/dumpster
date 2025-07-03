@@ -1,7 +1,7 @@
 /*
- * Authors:
+ * Authors: Leo Kling, Markus Heming
  *
- * Purpose:
+ * Purpose: This component displays the goals for the current level in a draggable dialog.
  */
 import {
   Dialog,

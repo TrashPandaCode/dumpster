@@ -1,7 +1,7 @@
 /*
- * Authors:
+ * Authors: Leo Kling
  *
- * Purpose:
+ * Purpose: Utility functions for managing navigation items and sections, as well as full-text search in the documentation.
  */
 import { Index } from "flexsearch";
 

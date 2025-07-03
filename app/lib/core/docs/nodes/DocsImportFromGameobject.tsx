@@ -1,7 +1,7 @@
 /*
- * Authors:
+ * Authors: Jonathan Kron, Leo Kling
  *
- * Purpose:
+ * Purpose: Wrapper for the Import To Gameobject node, used in the documentation.
  */
 import { Position } from "@xyflow/react";
 import { memo, useMemo, useRef } from "react";

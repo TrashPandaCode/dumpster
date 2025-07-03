@@ -1,7 +1,7 @@
 /*
- * Authors:
+ * Authors: Leo Kling
  *
- * Purpose:
+ * Purpose: Footer component for the landing page.
  */
 import { NavLink } from "react-router";
 

@@ -1,7 +1,7 @@
 /*
- * Authors:
+ * Authors: Leo Kling, Jonathan Kron, Markus Heming, David Klein
  *
- * Purpose:
+ * Purpose: This module defines the levels of the game, including their properties, initial states, and modifiable game objects.
  */
 import type { Node } from "@xyflow/react";
 import { v4 as uuidv4 } from "uuid";

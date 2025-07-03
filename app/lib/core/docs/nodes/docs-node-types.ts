@@ -1,7 +1,7 @@
 /*
- * Authors:
+ * Authors: Jonathan Kron
  *
- * Purpose:
+ * Purpose: Exports the node types used in the documentation.
  */
 import Display from "~/lib/node-editor/nodes/debug/Display";
 import Time from "~/lib/node-editor/nodes/game-get/Time";

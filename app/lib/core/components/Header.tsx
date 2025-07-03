@@ -1,7 +1,7 @@
 /*
- * Authors:
+ * Authors: Leo Kling
  *
- * Purpose:
+ * Purpose: Header component for the landing page. Displays navigation links to Docs and Game sections.
  */
 import { NavLink, useLocation } from "react-router";
 

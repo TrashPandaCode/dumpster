@@ -1,7 +1,9 @@
 /*
- * Authors:
+ * Authors: Leo Kling
  *
- * Purpose:
+ * Purpose: Navigation component for the documentation sidebar.
+ * It includes a search bar and collapsible sections for different documentation categories.
+ * The component dynamically loads markdown content for each section and item.
  */
 import * as Sheet from "@radix-ui/react-dialog";
 import { HamburgerMenuIcon, MagnifyingGlassIcon } from "@radix-ui/react-icons";

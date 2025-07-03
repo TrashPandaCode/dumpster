@@ -1,7 +1,7 @@
 /*
- * Authors:
+ * Authors: Jonathan Kron, Leo Kling
  *
- * Purpose:
+ * Purpose: Wrapper for the Export To Gameobject node, used in the documentation.
  */
 import { CrossCircledIcon } from "@radix-ui/react-icons";
 import { Position } from "@xyflow/react";
