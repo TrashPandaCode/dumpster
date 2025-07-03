@@ -1,7 +1,7 @@
 /*
- * Authors:
+ * Authors: Leo Kling
  *
- * Purpose:
+ * Purpose: This file defines the routes for the Dumpster application using React Router.
  */
 import { index, route, type RouteConfig } from "@react-router/dev/routes";
 

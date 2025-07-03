@@ -1,7 +1,7 @@
 /*
- * Authors:
+ * Authors: Leo Kling
  *
- * Purpose:
+ * Purpose: Custom edge component with a delete button.
  */
 import {
   BaseEdge,

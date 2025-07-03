@@ -1,7 +1,7 @@
 /*
- * Authors:
+ * Authors: Leo Kling
  *
- * Purpose:
+ * Purpose: This file defines the Imprint route for the application.
  */
 import Footer from "~/lib/core/components/Footer";
 import Header from "~/lib/core/components/Header";

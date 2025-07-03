@@ -1,7 +1,7 @@
 /*
- * Authors:
+ * Authors: Leo Kling
  *
- * Purpose:
+ * Purpose: This module exports custom edge types for the node editor.
  */
 import Deletable from "./Deleteable";
 

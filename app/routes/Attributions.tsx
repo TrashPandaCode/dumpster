@@ -1,7 +1,7 @@
 /*
- * Authors:
+ * Authors: Leo Kling
  *
- * Purpose:
+ * Purpose: Renders the Attributions page, listing all libraries and tools used in the Dumpster project.
  */
 import Footer from "~/lib/core/components/Footer";
 import Header from "~/lib/core/components/Header";

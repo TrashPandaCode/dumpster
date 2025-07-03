@@ -1,7 +1,8 @@
 /*
- * Authors: 
+ * Authors: Leo Kling
  *
- * Purpose:
+ * Purpose: This file contains the global styles for the Dumpster application,
+ * including custom fonts, animations, and styles for various components.
  */
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";

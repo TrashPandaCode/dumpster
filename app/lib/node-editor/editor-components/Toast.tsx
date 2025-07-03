@@ -1,7 +1,7 @@
 /*
- * Authors:
+ * Authors: Leo Kling
  *
- * Purpose:
+ * Purpose: This module provides a custom toast component using Sonner for displaying notifications.
  */
 import { toast as sonnerToast } from "sonner";
 

@@ -1,7 +1,7 @@
 /*
- * Authors:
+ * Authors: Leo Kling
  *
- * Purpose:
+ * Purpose: This file defines the Docs route for the application.
  */
 import { useOutlet } from "react-router";
 

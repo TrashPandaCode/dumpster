@@ -1,5 +1,5 @@
 /*
- * Authors: Jonathan Kron
+ * Authors: Jonathan Kron, Leo Kling
  *
  * Purpose:
  * This code provides undo and redo functions that update the flow store's history and synchronize the node store by resetting and replacing its nodes and edges accordingly.
