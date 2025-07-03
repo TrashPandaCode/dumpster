@@ -1,7 +1,7 @@
 /*
- * Authors:
+ * Authors: Leo Kling
  *
- * Purpose:
+ * Purpose: Initialize the reverse level in the game. This level involves a raccoon and a pocketwatch.
  */
 import { createLevelDataHelpers } from "~/lib/zustand/data";
 import { useGameStore } from "~/lib/zustand/game";
