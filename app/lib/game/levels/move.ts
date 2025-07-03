@@ -1,7 +1,10 @@
 /*
- * Authors:
+ * Authors: Jonathan Kron
  *
  * Purpose:
+ * This function initializes the "move" game scene by adding backgrounds and game objects,
+ * animates the player, checks for goal completion,
+ * and resets the player state when needed during game updates.
  */
 import { useDataStore } from "~/lib/zustand/data";
 import { useGameStore } from "~/lib/zustand/game";

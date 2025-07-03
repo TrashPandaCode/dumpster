@@ -1,7 +1,11 @@
 /*
- * Authors:
+ * Authors: Jonathan Kron
  *
  * Purpose:
+ * This function sets up a linear game level by adding backgrounds and objects,
+ * animating clock hands based on game and user time,
+ * and marking the level as completed when the user's time
+ * matches the game time for a set duration.
  */
 import { createLevelDataHelpers } from "~/lib/zustand/data";
 import { useGameStore } from "~/lib/zustand/game";
