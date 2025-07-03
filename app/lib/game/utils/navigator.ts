@@ -1,7 +1,8 @@
 /*
- * Authors:
+ * Authors: Jonathan Kron
  *
  * Purpose:
+ * This code exports a helper function to get neighboring levels of the current level.
  */
 import { LEVELS } from "../core/levels";
 
