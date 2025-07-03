@@ -1,2 +1,5 @@
+# Authors: Jonathan Kron
+# Purpose: Configuration for the Bun runtime environment.
+
 [test]
 preload = "./happydom.ts"
