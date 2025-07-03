@@ -1,7 +1,11 @@
 /*
- * Authors:
+ * Authors: Jonathan Kron
  *
  * Purpose:
+ * This function initializes an inverse kinematics game level
+ * by setting up joints and an end-effector, updating their positions based
+ * on rotation data, and completing the level when the end-effector stays
+ * near the player for a certain time.
  */
 import { createLevelDataHelpers } from "~/lib/zustand/data";
 import { useGameStore } from "~/lib/zustand/game";

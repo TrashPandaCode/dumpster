@@ -1,7 +1,11 @@
 /*
- * Authors:
+ * Authors: Jonathan Kron
  *
  * Purpose:
+ * This function sets up a looping game level with multiple raccoons
+ * positioned before stacked boxes of varying heights,
+ * updating their vertical positions from stored data and completing
+ * the level when all raccoons reach their target heights.
  */
 import { createLevelDataHelpers } from "~/lib/zustand/data";
 import { useGameStore } from "~/lib/zustand/game";
