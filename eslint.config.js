@@ -1,3 +1,10 @@
+/*
+ * Authors: Leo Kling, Jonathan Kron
+ *
+ * Purpose:
+ * This code configures ESLint with recommended JavaScript and TypeScript rules, adds React Hooks and React Refresh plugins with custom rules,
+ * sets browser globals, ignores the `dist` folder, and integrates Prettier for code formatting.
+ */
 import js from "@eslint/js";
 import prettierConfig from "eslint-config-prettier";
 import reactHooks from "eslint-plugin-react-hooks";
