@@ -1,7 +1,10 @@
 /*
- * Authors:
+ * Authors: Philipp Wendt
  *
  * Purpose:
+ * This utility function collects all relevant nodes for copy/duplicate operations
+ * in a node editor. It ensures that when copying or duplicating nodes, all related
+ * nodes are included, such as group members and loop nodes.
  */
 import type { Node } from "@xyflow/react";
 

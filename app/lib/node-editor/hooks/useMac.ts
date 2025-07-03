@@ -1,7 +1,8 @@
 /*
- * Authors:
+ * Authors: Philipp Wendt
  *
  * Purpose:
+ * Custom hook to determine if the user's operating system is macOS.
  */
 import { useEffect, useState } from "react";
 

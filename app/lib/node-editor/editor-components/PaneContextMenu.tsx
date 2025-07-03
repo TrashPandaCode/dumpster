@@ -1,7 +1,9 @@
 /*
- * Authors:
+ * Authors: Philipp Wendt
  *
  * Purpose:
+ * This code offers a React component for the right click context menu on the node editor pane.
+ * It opens the AddNodes menu at the clicked position and includes a Paste option if nodes are copied.
  */
 import { useReactFlow } from "@xyflow/react";
 import React, { useCallback } from "react";

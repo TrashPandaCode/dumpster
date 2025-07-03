@@ -1,7 +1,10 @@
 /*
- * Authors:
+ * Authors: Philipp Wendt
  *
  * Purpose:
+ * This code provides a Zustand store for managing the state of a node add menu in the node editor.
+ * It tracks mouse position, allows opening and closing the add menu, and manages the last menu position.
+ * It also provides a hook to initialize mouse tracking in a specific pane.
  */
 import { useEffect } from "react";
 import { create } from "zustand";

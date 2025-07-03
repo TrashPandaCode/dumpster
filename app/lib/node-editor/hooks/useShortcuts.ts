@@ -1,7 +1,8 @@
 /*
- * Authors:
+ * Authors: Philipp Wendt
  *
  * Purpose:
+ * This code provides custom hooks for handling keyboard shortcuts in the node editor
  */
 import { useReactFlow } from "@xyflow/react";
 import { useHotkeys } from "react-hotkeys-hook";

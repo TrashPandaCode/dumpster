@@ -1,5 +1,5 @@
 /*
- * Authors: Jonathan Kron
+ * Authors: Jonathan Kron, Philipp Wendt
  *
  * Purpose:
  * This code offers a React component for the node right click menu.

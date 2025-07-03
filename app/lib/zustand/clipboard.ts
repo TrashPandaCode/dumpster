@@ -1,7 +1,9 @@
 /*
- * Authors:
+ * Authors: Philipp Wendt
  *
  * Purpose:
+ * This code provides a Zustand store for managing clipboard state in the node editor.
+ * It allows copying nodes, clearing the clipboard, and checking if there are copied nodes.
  */
 import type { Node } from "@xyflow/react";
 import { create } from "zustand";

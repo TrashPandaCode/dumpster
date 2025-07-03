@@ -1,5 +1,5 @@
 /*
- * Authors: Jonathan Kron, Leo Kling
+ * Authors: Jonathan Kron, Leo Kling, Philipp Wendt
  *
  * Purpose:
  * This React component implements a node-based editor using React Flow,

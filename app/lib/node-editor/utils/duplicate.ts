@@ -1,7 +1,9 @@
 /*
- * Authors:
+ * Authors: Philipp Wendt
  *
  * Purpose:
+ * This function duplicates the given nodes and their associated edges,
+ * handling groups and loops automatically.
  */
 import type { Edge, Node } from "@xyflow/react";
 import { v4 as uuidv4 } from "uuid";
