@@ -1,7 +1,7 @@
 /*
- * Authors:
+ * Authors: Jonathan Kron, Leo Kling, David Klein
  *
- * Purpose:
+ * Purpose: This module initializes the game with a canvas element and sets up basic game-node interactions.
  */
 import { useNodeStore } from "~/lib/node-editor/node-store/node-store";
 import { useGameStore } from "~/lib/zustand/game";

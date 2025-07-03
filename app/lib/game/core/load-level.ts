@@ -1,7 +1,7 @@
 /*
- * Authors:
+ * Authors: Leo Kling, Jonathan Kron
  *
- * Purpose:
+ * Purpose: This module initializes the level by calling the initialState function of the level.
  */
 import { LEVELS, type LevelId } from "./levels";
 

@@ -1,7 +1,7 @@
 /*
- * Authors:
+ * Authors: Leo Kling
  *
- * Purpose:
+ * Purpose: Collapsible component for the documentation sidebar.
  */
 import {
   CollapsibleContent,

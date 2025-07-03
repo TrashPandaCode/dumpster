@@ -1,7 +1,7 @@
 /*
- * Authors:
+ * Authors: Leo Kling
  *
- * Purpose:
+ * Purpose: Details component for the FAQ section in the documentation.
  */
 import {
   Collapsible,

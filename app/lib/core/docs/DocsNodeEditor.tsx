@@ -1,7 +1,7 @@
 /*
- * Authors:
+ * Authors: Leo Kling, Jonathan Kron
  *
- * Purpose:
+ * Purpose: Node editor for the documentation, allowing users to create and manipulate nodes and edges.
  */
 import {
   addEdge,

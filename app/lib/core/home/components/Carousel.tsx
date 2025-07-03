@@ -1,7 +1,7 @@
 /*
- * Authors:
+ * Authors: Leo Kling
  *
- * Purpose:
+ * Purpose: A carousel component built with Embla Carousel. Used for level selection on the home page.
  */
 "use client";
 

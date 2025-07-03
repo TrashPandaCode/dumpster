@@ -1,7 +1,8 @@
 /*
- * Authors:
+ * Authors: Leo Kling
  *
- * Purpose:
+ * Purpose: This module provides a global key tracker that allows the application to track
+ * which keys are currently pressed, which were pressed since the last frame, and which were released since the last frame.
  */
 const keysDown = new Set<string>();
 const keysPressed = new Set<string>();

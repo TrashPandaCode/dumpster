@@ -1,7 +1,7 @@
 /*
- * Authors:
+ * Authors: Leo Kling
  *
- * Purpose:
+ * Purpose: A button component for starting a game, linking to the last played level or the levels page. 
  */
 import classnames from "classnames";
 import React from "react";

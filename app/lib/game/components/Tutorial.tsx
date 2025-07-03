@@ -1,7 +1,7 @@
 /*
- * Authors:
+ * Authors: Leo Kling, Markus Heming, Jonathan Kron
  *
- * Purpose:
+ * Purpose: This component provides a step-by-step tour of the game, guiding users through the main features.
  */
 import { Checkbox, CheckboxIndicator } from "@radix-ui/react-checkbox";
 import { CheckIcon } from "@radix-ui/react-icons";
