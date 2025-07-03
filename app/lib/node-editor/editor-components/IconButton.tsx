@@ -1,7 +1,7 @@
 /*
- * Authors:
+ * Authors: Leo Kling
  *
- * Purpose:
+ * Purpose: IconButton component that renders a button with an icon and an optional tooltip.
  */
 import classnames from "classnames";
 import React from "react";

@@ -1,7 +1,8 @@
 /*
- * Authors:
+ * Authors: Leo Kling
  *
- * Purpose:
+ * Purpose: A wrapper around Radix UI's Tooltip component to provide a consistent
+ *         styling and behavior across the application.
  */
 import * as TooltipPrimitive from "@radix-ui/react-tooltip";
 import classNames from "classnames";

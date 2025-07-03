@@ -1,7 +1,7 @@
 /*
- * Authors: 
+ * Authors: Jonathan Kron, Leo Kling
  *
- * Purpose:
+ * Purpose: Clear the body overflow to prevent scrolling when the game is active.
  */
 body {
   overflow: hidden;

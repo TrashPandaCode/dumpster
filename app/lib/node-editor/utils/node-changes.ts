@@ -6,7 +6,7 @@
  */
 import type { Node, NodeChange } from "@xyflow/react";
 
-// This code is inspired by the `applyChanges` function from the xyflow library.
+// This code is taken from the `applyChanges` function from the xyflow library and slightly modified to support group nodes.
 // https://github.com/xyflow/xyflow/blob/main/packages/react/src/utils/changes.ts/#L140
 
 /*

@@ -1,7 +1,7 @@
 /*
- * Authors:
+ * Authors: Leo Kling
  *
- * Purpose:
+ * Purpose: This file defines the root layout and error boundary for the application.
  */
 import {
   isRouteErrorResponse,

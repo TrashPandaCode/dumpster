@@ -1,7 +1,7 @@
 /*
- * Authors:
+ * Authors: Philipp Wendt, Leo Kling
  *
- * Purpose:
+ * Purpose: A custom hook to manage context menus in a node editor.
  */
 import type { Node } from "@xyflow/react";
 import { useCallback, useLayoutEffect, useRef, useState } from "react";
