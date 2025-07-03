@@ -1,5 +1,5 @@
 /*
- * Authors: Jonathan Kron
+ * Authors: Jonathan Kron, Milan Jezovsek
  *
  * Purpose:
  * This code offers helper functions to create for loops and connect nodes to for loops.

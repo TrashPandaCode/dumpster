@@ -1,5 +1,5 @@
 /*
- * Authors: Jonathan Kron
+ * Authors: Jonathan Kron, Milan Jezovsek
  *
  * Purpose:
  * This code offers a React component for single select drop down menus. This is used in the math node.

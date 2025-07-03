@@ -1,5 +1,5 @@
 /*
- * Authors: Jonathan Kron
+ * Authors: Jonathan Kron, Milan Jezovsek
  *
  * Purpose:
  * This code offers a React component that lets users add handles to loops and gameobjects.

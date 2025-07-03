@@ -1,5 +1,5 @@
 /*
- * Authors: Jonathan Kron
+ * Authors: Jonathan Kron, Milan Jezovsek
  *
  * Purpose:
  * React component representing a node that outputs a constant numerical value.

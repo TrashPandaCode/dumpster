@@ -1,5 +1,5 @@
 /*
- * Authors: Jonathan Kron
+ * Authors: Jonathan Kron, Milan Jezovsek
  *
  * Purpose:
  * This file contains unit and integration tests for the `HandleData` class and the `useDataStore` Zustand store,

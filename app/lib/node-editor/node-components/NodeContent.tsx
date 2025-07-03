@@ -1,5 +1,5 @@
 /*
- * Authors: Jonathan Kron, Leo Kling
+ * Authors: Jonathan Kron, Leo Kling, Milan Jezovsek
  *
  * Purpose:
  * This file offers a React component for the node body.

@@ -1,5 +1,5 @@
 /*
- * Authors: Philipp Wendt
+ * Authors: Milan Jezovsek, Philipp Wendt
  *
  * Purpose:
  * This function duplicates the given nodes and their associated edges,

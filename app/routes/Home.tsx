@@ -1,5 +1,5 @@
 /*
- * Authors: Jonathan Kron, Leo Kling
+ * Authors: Jonathan Kron, Leo Kling, Milan Jezovsek
  *
  * Purpose:
  * This React component renders the home page of an educational game website,

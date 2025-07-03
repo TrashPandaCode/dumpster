@@ -1,5 +1,5 @@
 /*
- * Authors: Philipp Wendt
+ * Authors: Philipp Wendt, Milan Jezovsek
  *
  * Purpose:
  * This code offers a React component for the right click context menu on the node editor pane.

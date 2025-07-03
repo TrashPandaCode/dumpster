@@ -1,5 +1,5 @@
 /*
- * Authors: Jonathan Kron, Leo Kling
+ * Authors: Jonathan Kron, Leo Kling, Milan Jezovsek
  *
  * Purpose:
  * This file exports all node types for use in the ReactFlow component.

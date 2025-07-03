@@ -1,7 +1,8 @@
 /*
- * Authors:
+ * Authors: Milan Jezovsek
  *
  * Purpose:
+ * This code abstracts the computation of the size of a parent node based on its child nodes.
  */
 import type { Node } from "@xyflow/react";
 

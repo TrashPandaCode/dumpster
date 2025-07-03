@@ -1,5 +1,5 @@
 /*
- * Authors: Jonathan Kron
+ * Authors: Jonathan Kron, Milan Jezovsek
  *
  * Purpose:
  * This file contains the store that represents the entire node tree. This file offers function to handle tree ordering, computation and for loops.

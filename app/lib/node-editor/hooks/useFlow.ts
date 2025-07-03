@@ -1,5 +1,5 @@
 /*
- * Authors: Jonathan Kron, Philipp Wendt
+ * Authors: Jonathan Kron, Philipp Wendt, Milan Jezovsek
  *
  * Purpose:
  * This code handles all interaction with the node editor, including node or edge addition and deletion and node dragging.
