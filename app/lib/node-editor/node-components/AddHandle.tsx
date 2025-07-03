@@ -1,7 +1,8 @@
 /*
- * Authors:
+ * Authors: Jonathan Kron
  *
  * Purpose:
+ * This code offers a React component that lets users add handles to loops and gameobjects.
  */
 import { PlusIcon } from "@radix-ui/react-icons";
 import { useReactFlow } from "@xyflow/react";

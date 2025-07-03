@@ -1,7 +1,9 @@
 /*
- * Authors:
+ * Authors: Jonathan Kron
  *
  * Purpose:
+ * This code handles all interaction with the node editor, including node or edge addition and deletion and node dragging.
+ * The node store is updated when nodes or edges are removed or added.
  */
 import {
   addEdge,

@@ -1,7 +1,9 @@
 /*
- * Authors:
+ * Authors: Jonathan Kron
  *
  * Purpose:
+ * This code offers a React component for the left hand side panel of the node editor.
+ * It includes functionality for playing, pausing and resetting the game as well as opening the level dialog.
  */
 import {
   ChatBubbleIcon,

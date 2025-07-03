@@ -1,7 +1,9 @@
 /*
- * Authors:
+ * Authors: Jonathan Kron
  *
  * Purpose:
+ * This code offers a React component for the right hand side panel of the node editor.
+ * It includes functionality for adding nodes and the help menu.
  */
 import {
   DropdownMenu,

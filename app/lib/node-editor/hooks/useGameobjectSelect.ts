@@ -1,7 +1,8 @@
 /*
- * Authors:
+ * Authors: Jonathan Kron
  *
  * Purpose:
+ * This code implements the functionality for the multi select drop down menu.
  */
 import { useReactFlow, useUpdateNodeInternals } from "@xyflow/react";
 import {

@@ -1,7 +1,9 @@
 /*
- * Authors:
+ * Authors: Jonathan Kron
  *
  * Purpose:
+ * This code offers the React component of the help menu.
+ * Functionality to cycle through hints and loading a solution are implemented.
  */
 import { QuestionMarkIcon } from "@radix-ui/react-icons";
 import {

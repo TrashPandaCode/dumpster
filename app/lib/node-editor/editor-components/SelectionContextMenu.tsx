@@ -1,9 +1,10 @@
 /*
- * Authors:
+ * Authors: Jonathan Kron
  *
  * Purpose:
+ * This code offers a React component for the right click context menu on a node editor selection.
  */
-import { Panel, useReactFlow, type Node } from "@xyflow/react";
+import { Panel, useReactFlow } from "@xyflow/react";
 import React, { useCallback } from "react";
 
 import { useClipboardStore } from "~/lib/zustand/clipboard";

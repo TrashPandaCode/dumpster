@@ -1,7 +1,8 @@
 /*
- * Authors:
+ * Authors: Jonathan Kron
  *
  * Purpose:
+ * This code offers a React component for React Flow connection handles.
  */
 import { Handle, Position } from "@xyflow/react";
 

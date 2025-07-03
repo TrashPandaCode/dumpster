@@ -1,7 +1,9 @@
 /*
- * Authors:
+ * Authors: Jonathan Kron
  *
  * Purpose:
+ * This code offers the React component for the center panel of the node editor.
+ * It includes functionality for navigating home or to neighboring levels.
  */
 import { ArrowLeftIcon, ArrowRightIcon, HomeIcon } from "@radix-ui/react-icons";
 import { Panel } from "@xyflow/react";

@@ -1,7 +1,9 @@
 /*
- * Authors:
+ * Authors: Jonathan Kron
  *
  * Purpose:
+ * This code offers the React component for the add nodes menu.
+ * It includes functionality for adding nodes to the node canvas, to for loops and to groups.
  */
 import { ChevronRightIcon } from "@radix-ui/react-icons";
 import {

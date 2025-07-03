@@ -1,7 +1,8 @@
 /*
- * Authors:
+ * Authors: Jonathan Kron
  *
  * Purpose:
+ * This is a base React component for styled React Flow handles. It is used in ConnectorHandles and LabelHandles.
  */
 import { Handle, Position, useNodeConnections } from "@xyflow/react";
 

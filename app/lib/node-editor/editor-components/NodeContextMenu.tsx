@@ -1,7 +1,9 @@
 /*
- * Authors:
+ * Authors: Jonathan Kron
  *
  * Purpose:
+ * This code offers a React component for the node right click menu.
+ * It includes functionality for copying, deletion, duplication and adding nodes to for loops.
  */
 import { useReactFlow } from "@xyflow/react";
 import React, { useCallback } from "react";
