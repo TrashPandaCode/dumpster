@@ -1,7 +1,7 @@
 /*
- * Authors:
+ * Authors: Leo Kling
  *
- * Purpose:
+ * Purpose: Tests for the documentation system, including navigation structure, markdown file coverage, and content validation.
  */
 import { readdirSync, readFileSync, statSync } from "fs";
 import { join } from "path";

@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 /*
- * Authors:
+ * Authors: Leo Kling
  *
- * Purpose:
+ * Purpose: Documentation coverage analysis tool for JavaScript/TypeScript projects.
  */
 
 const fs = require("fs");
