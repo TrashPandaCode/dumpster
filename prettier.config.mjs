@@ -1,3 +1,11 @@
+/*
+ * Authors: Leo Kling
+ *
+ * Purpose:
+ * This code defines a Prettier configuration that enforces consistent code style,
+ * sorts imports using a plugin with a specified order, and integrates Tailwind CSS class sorting.
+ */
+
 /**
  * @type {import('prettier').Config & import('prettier-plugin-tailwindcss').PluginOptions &
  *       import("@ianvs/prettier-plugin-sort-imports").PluginConfig}

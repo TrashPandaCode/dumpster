@@ -1,3 +1,11 @@
+/*
+ * Authors: Leo Kling
+ *
+ * Purpose:
+ * This Vite configuration sets up a React project with TailwindCSS, MDX support,
+ * React Router integration and dev tools, and TypeScript path aliasing, while adjusting the base path for GitHub Pages deployment.
+ */
+
 import mdx from "@mdx-js/rollup";
 import { reactRouter } from "@react-router/dev/vite";
 import tailwindcss from "@tailwindcss/vite";
@@ -15,7 +23,12 @@ export default defineConfig(({ mode }: { mode: string }) => ({
   plugins: [
     tailwindcss(),
     mdx({
-      remarkPlugins: [remarkMath, remarkFrontmatter, remarkMdxFrontmatter, remarkGfm],
+      remarkPlugins: [
+        remarkMath,
+        remarkFrontmatter,
+        remarkMdxFrontmatter,
+        remarkGfm,
+      ],
       rehypePlugins: [rehypeKatex],
     }),
     reactRouterDevTools(),
