@@ -1,5 +1,5 @@
 /*
- * Authors: Jonathan Kron, Milan Jezovsek
+ * Authors: Jonathan Kron
  *
  * Purpose:
  * This test suite performs thorough validation of the LEVELS object,
