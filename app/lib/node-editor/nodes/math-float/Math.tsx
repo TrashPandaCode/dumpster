@@ -1,5 +1,5 @@
 /*
- * Authors: Jonathan Kron, Milan Jezovsek
+ * Authors: Jonathan Kron
  *
  * Purpose:
  * React component representing a math or logic operation node with one or two inputs and one output.
