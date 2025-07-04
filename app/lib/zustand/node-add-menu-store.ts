@@ -1,5 +1,5 @@
 /*
- * Authors: Philipp Wendt, Milan Jezovsek
+ * Authors: Philipp Wendt
  *
  * Purpose:
  * This code provides a Zustand store for managing the state of a node add menu in the node editor.
