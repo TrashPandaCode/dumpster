@@ -1,5 +1,5 @@
 /*
- * Authors: Jonathan Kron, Leo Kling
+ * Authors: Jonathan Kron, Leo Kling, Philipp Wendt
  *
  * Purpose:
  * This file contains the store that represents all React Flow data, this includes nodes and edges.

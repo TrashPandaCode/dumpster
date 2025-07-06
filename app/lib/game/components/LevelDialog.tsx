@@ -1,5 +1,5 @@
 /*
- * Authors:
+ * Authors: Jonathan Kron, Leo Kling
  *
  * Purpose:
  */
