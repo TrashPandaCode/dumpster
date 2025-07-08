@@ -72,6 +72,14 @@ This section provides answers to frequently asked questions about the project. I
   accessed in each level using the **?** button.
 </Details>
 
+<Details summary="Why is the app running slowly?">
+  Hardware acceleration allows the app to use your computer's GPU to render
+  graphics and animations more efficiently. If it's turned off, you may notice
+  **significantly slower performance**. <br /> In most browsers, go to Settings
+  → System → and make sure "Use hardware acceleration when available" is turned
+  on.
+</Details>
+
 <Details summary="Help, the nodes don't work anymore.">
   If all things fail, you can try resetting the local storage. To clear the
   local storage for this webpage, right-click anywhere on the page, select
