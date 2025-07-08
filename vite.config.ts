@@ -15,7 +15,12 @@ export default defineConfig(({ mode }: { mode: string }) => ({
   plugins: [
     tailwindcss(),
     mdx({
-      remarkPlugins: [remarkMath, remarkFrontmatter, remarkMdxFrontmatter, remarkGfm],
+      remarkPlugins: [
+        remarkMath,
+        remarkFrontmatter,
+        remarkMdxFrontmatter,
+        remarkGfm,
+      ],
       rehypePlugins: [rehypeKatex],
     }),
     reactRouterDevTools(),

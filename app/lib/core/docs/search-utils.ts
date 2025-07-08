@@ -61,10 +61,10 @@ export const cleanMarkdownContent = (content: string): string => {
  * @returns A short description string.
  */
 export const extractDescription = (content: string): string => {
-  if (!content) return '';
-  const firstParagraph = content.split('\n\n')[0] || content.split('.')[0];
-  return firstParagraph.length > 150 
-    ? firstParagraph.substring(0, 150) + '...' 
+  if (!content) return "";
+  const firstParagraph = content.split("\n\n")[0] || content.split(".")[0];
+  return firstParagraph.length > 150
+    ? firstParagraph.substring(0, 150) + "..."
     : firstParagraph;
 };
 

@@ -88,7 +88,7 @@ export default function GoalsDialog({ open }: { open: boolean }) {
     <Dialog open={open} modal={false}>
       <DialogPortal>
         <DialogContent
-        ref={dialogRef}
+          ref={dialogRef}
           style={{
             left: pos.x,
             top: pos.y,
