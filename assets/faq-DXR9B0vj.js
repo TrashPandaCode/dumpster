@@ -1,4 +1,4 @@
-import{o as e}from"./chunk-AYJ5UCUI-BS9SflA5.js";const a={title:"FAQ"};function o(s){const n={h1:"h1",p:"p",strong:"strong",...s.components},{Details:t}=n;return t||r("Details"),e.jsxs(e.Fragment,{children:[e.jsx(n.h1,{children:"FAQ"}),`
+import{o as e}from"./chunk-AYJ5UCUI-BS9SflA5.js";const a={title:"FAQ"};function r(s){const n={h1:"h1",p:"p",strong:"strong",...s.components},{Details:t}=n;return t||o("Details"),e.jsxs(e.Fragment,{children:[e.jsx(n.h1,{children:"FAQ"}),`
 `,e.jsx(n.p,{children:"This section provides answers to frequently asked questions about the project. If you have a question that is not answered here, feel free to reach out to the community or check the project's documentation."}),`
 `,e.jsx(t,{summary:"What is the main goal of this project?",children:e.jsx(n.p,{children:`The project aims to teach computer animation concepts through an interactive,
 gamified environment. Players learn by solving visual challenges using a
@@ -30,10 +30,15 @@ editor. Be careful though, as this will delete all your nodes for that level.`})
 `,e.jsx(t,{summary:"I accidentally skipped the tutorial prompts.",children:e.jsxs(n.p,{children:[`You can restore all tutorial prompts and guidance messages previously skipped
 using the reset tutorial button in the help menu. The help menu can be
 accessed in each level using the `,e.jsx(n.strong,{children:"?"})," button."]})}),`
+`,e.jsx(t,{summary:"Why is the app running slowly?",children:e.jsxs(n.p,{children:[`Hardware acceleration allows the app to use your computer's GPU to render
+graphics and animations more efficiently. If it's turned off, you may notice
+`,e.jsx(n.strong,{children:"significantly slower performance"}),". ",e.jsx("br",{}),` In most browsers, go to Settings
+→ System → and make sure "Use hardware acceleration when available" is turned
+on.`]})}),`
 `,e.jsx(t,{summary:"Help, the nodes don't work anymore.",children:e.jsxs(n.p,{children:[`If all things fail, you can try resetting the local storage. To clear the
 local storage for this webpage, right-click anywhere on the page, select
 "Inspect", go to the "Application" (Chrome) or "Storage" (Firefox) tab, and
 choose "Local Storage" from the sidebar — then right-click the entries and
 select "Clear". This
 `,e.jsx("strong",{children:"must"}),` happen without any level loaded, so either from the
-homepage or docs pages.`]})})]})}function l(s={}){const{wrapper:n}=s.components||{};return n?e.jsx(n,{...s,children:e.jsx(o,{...s})}):o(s)}function r(s,n){throw new Error("Expected component `"+s+"` to be defined: you likely forgot to import, pass, or provide it.")}export{l as default,a as frontmatter};
+homepage or docs pages.`]})})]})}function l(s={}){const{wrapper:n}=s.components||{};return n?e.jsx(n,{...s,children:e.jsx(r,{...s})}):r(s)}function o(s,n){throw new Error("Expected component `"+s+"` to be defined: you likely forgot to import, pass, or provide it.")}export{l as default,a as frontmatter};
