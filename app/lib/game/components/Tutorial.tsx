@@ -1,5 +1,6 @@
 import { Checkbox, CheckboxIndicator } from "@radix-ui/react-checkbox";
 import { CheckIcon } from "@radix-ui/react-icons";
+import { useEffect } from "react";
 import Joyride, {
   type CallBackProps,
   type Step,
@@ -106,6 +107,10 @@ export default function Tutorial({ onClose }: { onClose: () => void }) {
       onClose();
     }
   };
+
+  useEffect(() => {
+    return () => onClose();
+  }, []);
 
   return (
     <Joyride

@@ -3,7 +3,6 @@ import { v4 as uuidv4 } from "uuid";
 
 import bounceCard from "~/assets/home-cards/bounce_card.png";
 import calcCard from "~/assets/home-cards/calc_card.png";
-import sittingCard from "~/assets/home-cards/sitting_card.png";
 import forwardCard from "~/assets/home-cards/forward_card.png";
 import gravityCard from "~/assets/home-cards/gravity_card.png";
 import inverseCard from "~/assets/home-cards/inverse_card.png";
@@ -12,6 +11,7 @@ import loopingCard from "~/assets/home-cards/looping_card.png";
 import moveCard from "~/assets/home-cards/move_card.png";
 import parentingCard from "~/assets/home-cards/parenting_card.png";
 import playgroundCard from "~/assets/home-cards/playground_card.png";
+import sittingCard from "~/assets/home-cards/sitting_card.png";
 import type { NodeType } from "~/lib/node-editor/nodes/node-types";
 import { type GameObject } from "../game-objects";
 import { initializeBounce } from "../levels/bounce";

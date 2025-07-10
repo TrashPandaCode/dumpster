@@ -913,7 +913,9 @@ describe("Documentation System Tests", () => {
         (section) =>
           section.title.toLowerCase().includes("level") ||
           (section.items &&
-            section.items.some((item) => item.path.startsWith("/docs/level-guides/")))
+            section.items.some((item) =>
+              item.path.startsWith("/docs/level-guides/")
+            ))
       );
 
       if (levelDocPaths.length > 0) {
