@@ -1,5 +1,5 @@
 /*
- * Authors: Jonathan Kron
+ * Authors: Jonathan Kron, Leo Kling
  *
  * Purpose:
  * React component that allows node data to be written to one or more
