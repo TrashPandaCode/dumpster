@@ -1,7 +1,7 @@
 /*
- * Authors:
+ * Authors: David Klein
  *
- * Purpose:
+ * Purpose: Constants to handle sprite scaling and placement in relation to the background
  */
 export const SPRITE_SCALE = 0.1;
 export const BACKGROUND_OFFSET = 4.727;

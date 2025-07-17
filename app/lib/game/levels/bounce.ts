@@ -1,5 +1,5 @@
 /*
- * Authors: Jonathan Kron
+ * Authors: Jonathan Kron, David KLein
  *
  * Purpose:
  * This function initializes a game level where the player must stay near a randomly swapping "filled" trashcan for a continuous

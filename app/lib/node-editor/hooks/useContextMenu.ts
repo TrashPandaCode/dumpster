@@ -1,5 +1,5 @@
 /*
- * Authors: Philipp Wendt, Leo Kling, Milan Jezovsek
+ * Authors: Philipp Wendt, Leo Kling, Milan Jezovsek, David Klein
  *
  * Purpose: A custom hook to manage context menus in a node editor.
  */

@@ -1,5 +1,5 @@
 /*
- * Authors: Jonathan Kron, Leo Kling
+ * Authors: Jonathan Kron, Leo Kling, David Klein
  *
  * Purpose:
  * This Zustand store manages the dynamic state of game objects and their connection handles,

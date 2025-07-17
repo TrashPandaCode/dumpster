@@ -1,7 +1,7 @@
 /*
- * Authors:
+ * Authors: David Klein
  *
- * Purpose:
+ * Purpose: Basic Error 404 Page
  */
 import React from "react";
 

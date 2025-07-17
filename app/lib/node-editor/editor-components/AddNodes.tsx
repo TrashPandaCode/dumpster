@@ -1,5 +1,5 @@
 /*
- * Authors: Jonathan Kron, Leo Kling, Milan Jezovsek
+ * Authors: Jonathan Kron, Leo Kling, Milan Jezovsek, David Klein
  *
  * Purpose:
  * This code offers the React component for the add nodes menu.

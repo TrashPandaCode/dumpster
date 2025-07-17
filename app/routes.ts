@@ -1,5 +1,5 @@
 /*
- * Authors: Leo Kling
+ * Authors: Leo Kling, David Klein
  *
  * Purpose: This file defines the routes for the Dumpster application using React Router.
  */

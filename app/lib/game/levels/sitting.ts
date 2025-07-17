@@ -1,7 +1,8 @@
 /*
- * Authors:
+ * Authors: David Klein
  *
- * Purpose:
+ * Purpose: Initializes the sitting level. Contains a trashcan and raccoon.
+ * The level is completed when the raccoon is withing 0.5 units of the trashcan.
  */
 import { useDataStore } from "~/lib/zustand/data";
 import { useGameStore } from "~/lib/zustand/game";

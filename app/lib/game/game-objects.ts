@@ -1,7 +1,8 @@
 /*
- * Authors:
+ * Authors: David Klein
  *
- * Purpose:
+ * Purpose: Creates array of objects, which can be used in the Export & Import Nodes
+ * Temporary objects (if needed) are defined within each level, imported here and combined into the array.
  */
 import { FORWARD_GAME_OBJECTS } from "./levels/forward";
 import { INVERSE_GAME_OBJECTS } from "./levels/inverse";

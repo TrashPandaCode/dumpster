@@ -1,5 +1,5 @@
 /*
- * Authors: Leo Kling
+ * Authors: Leo Kling, David Klein
  *
  * Purpose: This module provides utility functions and types for managing game objects,
  * backgrounds, and player animations in a game.

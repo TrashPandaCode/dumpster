@@ -1,7 +1,9 @@
 /*
- * Authors:
+ * Authors: David Klein
  *
- * Purpose:
+ * Purpose: Initializes the gravity level, which contains a trashcan.
+ * The function checks wether the trashcan has been moved to it's designated position, to then make it static.
+ * The level is completed when the raccoon is sitting on top of the trashcan.
  */
 import { createLevelDataHelpers } from "~/lib/zustand/data";
 import { useGameStore } from "~/lib/zustand/game";

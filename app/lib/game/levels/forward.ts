@@ -1,7 +1,10 @@
 /*
- * Authors:
+ * Authors: David Klein
  *
- * Purpose:
+ * Purpose: Initializes a kinematics level, containing two platforms attached to two seperate arms and a flag.
+ * The position of the platform and the arms is calculated each frame from the angles of each object,
+ * which are read from the GameStore.
+ * The level is completed when the raccoon is within one unit of the flag.
  */
 import { createLevelDataHelpers } from "~/lib/zustand/data";
 import { useGameStore } from "~/lib/zustand/game";

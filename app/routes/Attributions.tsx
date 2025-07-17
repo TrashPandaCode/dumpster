@@ -1,5 +1,5 @@
 /*
- * Authors: Leo Kling
+ * Authors: Leo Kling, David Klein
  *
  * Purpose: Renders the Attributions page, listing all libraries and tools used in the Dumpster project.
  */
