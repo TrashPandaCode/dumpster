@@ -1,5 +1,5 @@
 /*
- * Authors: David Klein
+ * Authors: David Klein, Markus Heming
  *
  * Purpose: Initializes the sitting level. Contains a trashcan and raccoon.
  * The level is completed when the raccoon is withing 0.5 units of the trashcan.

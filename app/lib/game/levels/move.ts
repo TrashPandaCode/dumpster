@@ -1,5 +1,5 @@
 /*
- * Authors: Jonathan Kron
+ * Authors: Jonathan Kron, Markus Heming
  *
  * Purpose:
  * This function initializes the "move" game scene by adding backgrounds and game objects,

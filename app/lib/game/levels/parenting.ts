@@ -1,7 +1,8 @@
 /*
- * Authors:
+ * Authors: Markus Heming
  *
- * Purpose:
+ * Purpose: Initializes the "parenting" game level where a filled trashcan must be emptied by parenting it to the raccoon,
+ * in order to drop off the trash at a marked location.
  */
 import { createLevelDataHelpers } from "~/lib/zustand/data";
 import { useGameStore } from "~/lib/zustand/game";

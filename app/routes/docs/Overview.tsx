@@ -1,5 +1,5 @@
 /*
- * Authors: Leo Kling
+ * Authors: Leo Kling, Markus Heming
  *
  * Purpose: This file defines the Docs route for the application.
  */

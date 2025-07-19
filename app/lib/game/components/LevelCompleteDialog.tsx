@@ -1,7 +1,7 @@
 /*
- * Authors:
+ * Authors: Markus Heming
  *
- * Purpose:
+ * Purpose: This component displays a dialog when a level is completed.
  */
 import { DialogClose } from "@radix-ui/react-dialog";
 import { NavLink } from "react-router";

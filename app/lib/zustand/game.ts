@@ -1,5 +1,5 @@
 /*
- * Authors: Jonathan Kron, Leo Kling
+ * Authors: Jonathan Kron, Leo Kling, Markus Heming
  *
  * Purpose:
  * This Zustand store manages the game's state, including pause/play status, current level, level completion, dialog visibility, and persistence of progress in localStorage.

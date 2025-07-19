@@ -1,5 +1,5 @@
 /*
- * Authors: David Klein
+ * Authors: David Klein, Markus Heming
  *
  * Purpose: Constants to handle sprite scaling and placement in relation to the background
  */

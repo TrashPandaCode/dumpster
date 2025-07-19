@@ -1,7 +1,7 @@
 /*
- * Authors: Jonathan Kron, Leo Kling
+ * Authors: Jonathan Kron, Leo Kling, Markus Heming
  *
- * Purpose:
+ * Purpose: This component displays a dialog for the current level, giving instructions and goals for the level.
  */
 import { DialogClose } from "@radix-ui/react-dialog";
 import classNames from "classnames";

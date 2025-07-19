@@ -1,5 +1,5 @@
 /*
- * Authors: Jonathan Kron, Leo Kling
+ * Authors: Jonathan Kron, Leo Kling, Markus Heming
  *
  * Purpose:
  * This React component renders the main game interface,

@@ -1,5 +1,5 @@
 /*
- * Authors: David Klein
+ * Authors: David Klein, Markus Heming
  *
  * Purpose: Initializes the Playground level, a sandbox level with all nodes and multiple game objects available.
  */

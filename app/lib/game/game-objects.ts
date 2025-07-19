@@ -1,5 +1,5 @@
 /*
- * Authors: David Klein
+ * Authors: David Klein, Markus Heming
  *
  * Purpose: Creates array of objects, which can be used in the Export & Import Nodes
  * Temporary objects (if needed) are defined within each level, imported here and combined into the array.

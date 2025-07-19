@@ -1,7 +1,7 @@
 /*
- * Authors: Jonathan Kron
+ * Authors: Jonathan Kron, Markus Heming
  *
- * Purpose:
+ * Purpose: This component provides a customizable dialog with a title, description, and content.
  */
 import {
   Dialog,

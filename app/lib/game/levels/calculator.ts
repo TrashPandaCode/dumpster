@@ -1,5 +1,5 @@
 /*
- * Authors: Jonathan Kron, David Klein
+ * Authors: Jonathan Kron, David Klein, Markus Heming
  *
  * Purpose:
  * This function initializes a game level where the player must input the correct
