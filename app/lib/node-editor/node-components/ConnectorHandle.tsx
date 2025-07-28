@@ -32,13 +32,15 @@ const ConnectorHandle = ({
 
   if (config) {
     return (
-      <Handle
-        id={id}
-        type={config.type}
-        position={position}
-        isConnectable={false}
-        className={config.className}
-      />
+      <div>
+        <Handle
+          id={id}
+          type={config.type}
+          position={position}
+          isConnectable={false}
+          className={config.className}
+        />
+      </div>
     );
   }
 
