@@ -4,11 +4,11 @@ title: Animation Systems
 
 # Animation Systems
 
-In this context, _animation_ means that we can change the state of scene objects depending on time. On its own, a **scene graph** can only be used for static scenes. There is no unified standard for animation systems — in practice, many different implementations exist.
+In this context, *animation* means that we can change the state of scene objects depending on time. On its own, a **scene graph** can only be used for static scenes. There is no unified standard for animation systems — in practice, many different implementations exist.
 
 ## Simulation Objects
 
-All objects to be animated are referred to as **simulation objects** (_game objects_). The state of such an object can be considered an element $z$ of a set $\mathcal{Z}$.
+All objects to be animated are referred to as **simulation objects** (*game objects*). The state of such an object can be considered an element $z$ of a set $\mathcal{Z}$.
 $\mathcal{Z}$ is the set of all possible states and is called the **state space**.
 
 Our task in animation is to repeatedly execute a **state transition function**:
@@ -19,7 +19,7 @@ $$
 
 This function calculates a new state based on the current state and input/control values ($\mathcal{I}$).
 
-The call to the state transition function is also provided with a time variable $t \in \mathbb{R}$ (see [Time and Game Loop](/docs/time-and-game-loop/game-loop)), which acts as an ordering dimension, defining a _before_ and _after_.
+The call to the state transition function is also provided with a time variable $t \in \mathbb{R}$ (see [Time and Game Loop](/docs/time-and-game-loop/game-loop)), which acts as an ordering dimension, defining a *before* and *after*.
 
 The inputs and outputs of the objects can be connected to each other more or less arbitrarily. However, it is not allowed to connect multiple outputs to a single input. Cyclic connections are typically not permitted.
 
