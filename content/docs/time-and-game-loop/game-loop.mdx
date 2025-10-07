@@ -15,8 +15,8 @@ If updates and rendering complete faster than the frame duration, the system sim
 
 If updates $u(t)$ and rendering $r(t)$ take longer than the frame duration $\Delta t$, there are two options:
 
-- * **Extend the frame duration**: If a frame takes too long, delay the next frame by
+* **Extend the frame duration**: If a frame takes too long, delay the next frame by
   $\Delta t - (u(t) + r(t))$.
-- * **Wait for the next frame start**: After rendering finishes, wait until the next scheduled frame start.
+* **Wait for the next frame start**: After rendering finishes, wait until the next scheduled frame start.
 
 In both implementations, if updates and rendering take too long, the **visual result suffers**, possibly leading to stuttering or a loss of smooth animation.
