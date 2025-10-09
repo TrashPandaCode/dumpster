@@ -23,11 +23,4 @@ The call to the state transition function is also provided with a time variable 
 
 The inputs and outputs of the objects can be connected to each other more or less arbitrarily. However, it is not allowed to connect multiple outputs to a single input. Cyclic connections are typically not permitted.
 
-
-**Figure:**
-Block diagram with multiple inputs (left) and with vector inputs.
-
-![Block diagram](/docs/anim1.png)
-![Screenshot](/docs/anim2.png)
-
 Before we render our scene graph, we must first call the state transition functions of all our objects. An evaluation **order must be agreed upon**, otherwise the results may vary.
