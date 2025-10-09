@@ -11,13 +11,6 @@ Ideally, the time required to update all objects and render the scene remains co
 However, due to background processes and other factors, update and render durations vary with time:
 $u(t)$ for updates and $r(t)$ for rendering.
 
-
-**Figure:**
-Frame duration $\\Delta t$ for various update $u(t)$ and rendering $r(t)$ times.
-
-![Frameduration in a Game Loop](/docs/game-loop.png)
-
-
 If updates and rendering complete faster than the frame duration, the system simply waits for the frame to end (*sleep timer*).
 
 If updates $u(t)$ and rendering $r(t)$ take longer than the frame duration $\\Delta t$, there are two options:

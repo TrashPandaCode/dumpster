@@ -46,7 +46,12 @@ Due to linear interpolation of different vertex positions, the center vertex may
 
 
 **Figure:**
+Position of the vertex before a rotation of $\\alpha = \\pi$ around the x-axis.
+
+![Candy wrapper effect](/docs/candy1.png)
+
+**Figure:**
 Position of the vertex after a rotation of $\\alpha = \\pi$ around the x-axis.
 
-![Candy wrapper effect](/docs/candy.png)
+![Candy wrapper effect](/docs/candy2.png)
 `;export{e as default};
